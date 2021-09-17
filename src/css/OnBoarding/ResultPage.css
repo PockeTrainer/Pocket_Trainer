@@ -1,0 +1,43 @@
+.ResultPage {
+    text-align: center;
+}
+
+.ResultPage .GNB {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 35px;
+}
+
+.ResultPage .mainsource {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.ResultPage .mainsource img {
+    margin-bottom: 10px;
+}
+
+.ResultPage .mainsource input {
+    width: 85%;
+    height: 25px;
+    margin-bottom: 10px;
+    border: solid 1px black;
+    border-radius: 7px;
+}
+
+.ResultPage .mainsource textarea {
+    width: 85%;
+    height: 120px;
+    margin-bottom: 20px;
+    border: solid 1px black;
+    border-radius: 7px;
+}
+
+.ResultPage .mainsource button {
+    width: 200px;
+    height: 30px;
+    border: solid 1px gray;
+    border-radius: 20px;
+}
