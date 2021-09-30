@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../../css/Login/LoginPage.css';
 
 class LoginPage extends Component {
@@ -22,41 +23,20 @@ class LoginPage extends Component {
 
             <div className="changePage">
                 <div className="upLine">
-                    <a href="" onClick={function(e){
-                        e.preventDefault();
-                        this.props.goIdSearchPage();
-                    }.bind(this)}>아이디 찾기</a>
-                    <a href="" onClick={function(e){
-                        e.preventDefault();
-                        this.props.goPwSearchPage();
-                    }.bind(this)}>비밀번호 찾기</a>
+                    <Link to="/Login/IdSearchPage">아이디 찾기</Link>
+                    <Link to="/Login/PwSearchPage">비밀번호 찾기</Link>
                 </div>
                 <div className="downLine">
-                    <a href="" onClick={function(e){
-                        e.preventDefault();
-                        this.props.goSignUpPage();
-                    }.bind(this)}>회원가입</a>
+                    <Link to="/Login/SignUpPage">회원가입</Link>
                 </div>
             </div>
         </div>
 
         <div className="buttons">
-            <button onClick={function(e){
-                    e.preventDefault();
-                    this.props.goOnBoarding();
-                }.bind(this)}>onBoarding 이동</button>
-            <button onClick={function(e){
-                    e.preventDefault();
-                    this.props.goMain();
-                }.bind(this)}>main 이동</button>
-            <button onClick={function(e){
-                    e.preventDefault();
-                    this.props.goHistory();
-                }.bind(this)}>history 이동</button>
-            <button onClick={function(e){
-                    e.preventDefault();
-                    this.props.goMyPage();
-                }.bind(this)}>mypage 이동</button>
+            <Link to="/OnBoarding/BodyInfoPage"><button>onBoarding 이동</button></Link>
+            <Link to="/Main/MainPage"><button>main 이동</button></Link>
+            <Link to="/History/HistoryPage"><button>history 이동</button></Link>
+            <Link to="/MyPage/CheckPwPage"><button>mypage 이동</button></Link>
         </div>
 
     </div>

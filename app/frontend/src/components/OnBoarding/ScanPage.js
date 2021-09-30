@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import humanIcon from '../../icons/human.png'
 import timerIcon from '../../icons/timer.png'
 import switchCameraIcon from '../../icons/switchCamera.png'
@@ -22,10 +23,7 @@ class ScanPage extends Component {
                 <img id="switchCameraIcon" src={switchCameraIcon} alt="" />   
             </div> 
             <div className="downLineIcon">
-                <img src={takePhotoImgIcon} alt="" onClick={function(e){
-                    e.preventDefault();
-                    this.props.goResultPage();
-                }.bind(this)}/> 
+                <Link to="/OnBoarding/ResultPage"><img src={takePhotoImgIcon} /></Link>
             </div> 
         </div>
     </div>

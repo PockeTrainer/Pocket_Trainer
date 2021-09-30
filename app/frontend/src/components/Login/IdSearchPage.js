@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../../css/Login/IdSearchPage.css';
 
 class IdSearchPage extends Component {
@@ -23,10 +24,7 @@ class IdSearchPage extends Component {
                     <label htmlFor="codeCheck">인증번호 입력</label>
                     <input type="codeCheck" name="codeCheck" id="codeCheck" />
 
-                    <button id="submitBTN" onClick={function(e){
-                        e.preventDefault();
-                        this.props.goYourIdPage();
-                    }.bind(this)}>확인</button>
+                    <Link to="/Login/YourIdPage"><button id="submitBTN">확인</button></Link>
                 </form>
             </div>
         </div>

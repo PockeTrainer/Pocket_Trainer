@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../../css/OnBoarding/BodyInfoPage.css';
 
 class BodyInfoPage extends Component {
@@ -17,10 +18,7 @@ class BodyInfoPage extends Component {
             <label htmlFor="bmi">BMI</label>
             <input type="text" name="bmi" id="bmi" readOnly='true'/>
 
-            <button id="nextBTN" onClick={function(e){
-                e.preventDefault();
-                this.props.goScanPage();
-            }.bind(this)}>다음</button>
+            <Link to="/OnBoarding/ScanPage"><button id="nextBTN">다음</button></Link>
         </div>
     </div>
     );

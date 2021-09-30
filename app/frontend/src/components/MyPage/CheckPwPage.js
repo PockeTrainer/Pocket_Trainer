@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../../css/MyPage/CheckPwPage.css';
 
 class CheckPwPage extends Component {
@@ -11,10 +12,7 @@ class CheckPwPage extends Component {
             <label htmlFor="pw">비밀번호</label>
             <input type="password" name="pw" id="pw" />
 
-            <button id="submitBTN" onClick={function(e){
-                e.preventDefault();
-                this.props.goUpdatePage();
-            }.bind(this)}>확인</button>
+            <Link to="/MyPage/UpdatePage"><button id="submitBTN">확인</button></Link>
         </div>
     </div>
     );
