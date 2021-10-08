@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 // 추가 부분 1
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -7,17 +7,10 @@ import 'react-calendar/dist/Calendar.css';
 import '../../css/History/HistoryPage.css';
 
 
-class HistoryPage extends Component {
-    // 추가 부분2
-    constructor(props) {
-        super(props);
-        this.state = {
-            date: new Date(),
-        }
-      }
-    
+function HistoryPage() {
 
-    render() {
+    let [date, changeDate] = useState(new Date());
+    
     return (
     <div className="HistoryPage">
         <div className="mainsource">
@@ -27,15 +20,13 @@ class HistoryPage extends Component {
                 {/* 추가 부분3 */}
                 <Calendar
                     onChange={
-                        function(date) {
-                            this.setState({date: date});
-                        }.bind(this)
+                        (date) => changeDate(date)
                     }
-                    value={this.state.date}
+                    value = { date }
                 />
                 <div>
                     오늘 날짜
-                    {this.state.date.toString()}
+                    { date.toString() }
                 </div>
                 
 
@@ -60,7 +51,6 @@ class HistoryPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default HistoryPage;

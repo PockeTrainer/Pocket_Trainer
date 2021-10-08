@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import humanIcon from '../../icons/human.png'
 import '../../css/OnBoarding/ResultPage.css';
 
-class ResultPage extends Component {
-    render() {
+function ResultPage() {
     return (
     <div className="ResultPage">
         <div className="GNB">나의 체형은?</div>
@@ -19,7 +18,6 @@ class ResultPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default ResultPage;

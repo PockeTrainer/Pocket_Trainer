@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/Login/SignUpPage.css';
 
-class PwSearchPage extends Component {
-    render() {
+function PwSearchPage() {
     return (
     <div className="SignUpPage">
         <div className="GNB">회원 가입</div>
@@ -44,7 +43,6 @@ class PwSearchPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default PwSearchPage;

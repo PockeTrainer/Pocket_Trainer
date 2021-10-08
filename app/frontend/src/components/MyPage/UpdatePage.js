@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/MyPage/UpdatePage.css';
 
-class UpdatePage extends Component {
-    render() {
+function UpdatePage() {
     return (
     <div className="UpdatePage">
         <div className="GNB">회원정보 수정</div>
@@ -41,7 +40,6 @@ class UpdatePage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default UpdatePage;

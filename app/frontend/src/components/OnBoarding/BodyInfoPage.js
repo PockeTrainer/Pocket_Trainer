@@ -10,7 +10,7 @@ class BodyInfoPage extends Component {
         
         <div className="mainsource">
             <label htmlFor="height">신장(cm)</label>
-            <input type="text" name="height" id="iheight" />
+            <input type="text" name="height" id="height" />
                     
             <label htmlFor="weight">체중(kg)</label>
             <input type="text" name="weight" id="weight" />

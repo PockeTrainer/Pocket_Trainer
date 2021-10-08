@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/Login/PwSearchPage.css';
 
-class PwSearchPage extends Component {
-    render() {
+function PwSearchPage() {
     return (
     <div className="PwSearchPage">
         <div className="GNB">비밀번호 찾기</div>
@@ -33,7 +32,6 @@ class PwSearchPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default PwSearchPage;

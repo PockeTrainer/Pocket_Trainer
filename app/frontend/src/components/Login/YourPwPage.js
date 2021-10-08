@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/Login/YourPwPage.css';
 
-class YourPwPage extends Component {
-    render() {
+function YourPwPage() {
     return (
     <div className="YourPwPage">
         <div className="GNB">비밀번호 변경</div>
@@ -18,7 +17,6 @@ class YourPwPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default YourPwPage;

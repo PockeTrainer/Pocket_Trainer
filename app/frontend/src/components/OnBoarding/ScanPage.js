@@ -7,8 +7,7 @@ import takePhotoImgIcon from '../../icons/takePhoto.png'
 import '../../css/OnBoarding/ScanPage.css';
 
 
-class ScanPage extends Component {
-    render() {
+function ScanPage(){
     return (
     <div className="ScanPage">
         <div className="GNB">가이드에 맞춰 서 주세요</div>
@@ -28,7 +27,6 @@ class ScanPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default ScanPage;

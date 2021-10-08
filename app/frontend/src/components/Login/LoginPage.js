@@ -1,18 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/Login/LoginPage.css';
 
-class LoginPage extends Component {
-    render() {
+function LoginPage()  {
+    const [name, setName] = useState();
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/")
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                console.log(data[0].title)
+                setName(data[0].title);
+            });
+    }, []);
+
     return (
     <div className="LoginPage">
         <div className="GNB">로그인</div>
 
         <div className="mainsource">
             <div className="form">
-                <form action="">
+                {/* <form action="" onSubmit={ (e) => {
+                    console.log(this)
+                    e.preventDefault();
+                    this.props.change(e.target.id.value);
+                }}> */}
+                <form action="" >
                     <label htmlFor="id">아이디</label>
-                    <input type="text" name="id" id="id" />
+                    <input type="text" name="id" id="id" value={ name }/>
                     
                     <label htmlFor="pw">비밀번호</label>
                     <input type="password" name="pw" id="pw" />
@@ -41,7 +58,6 @@ class LoginPage extends Component {
 
     </div>
     );
-  }
 }
 
 export default LoginPage;

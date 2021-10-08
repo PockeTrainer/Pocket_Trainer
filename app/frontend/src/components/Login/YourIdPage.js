@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/Login/YourIdPage.css';
 
-class YourIdPage extends Component {
-    render() {
+function YourIdPage() {
     return (
     <div className="YourIdPage">
         <div className="GNB">아이디 확인</div>
@@ -19,7 +18,6 @@ class YourIdPage extends Component {
         </div>
     </div>
     );
-  }
 }
 
 export default YourIdPage;
