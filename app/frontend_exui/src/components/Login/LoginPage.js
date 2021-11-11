@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 import '../../css/Login/LoginPage.css';
 
 function LoginPage()  {
-    const [name, setName] = useState();
+    // const [name, setName] = useState();
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/")
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                console.log(data[0].title)
-                setName(data[0].title);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch("http://127.0.0.1:8000/api/user/")
+    //         .then(res => {
+    //             return res.json();
+    //         })
+    //         .then(data => {
+    //             console.log(data[0].title)
+    //             setName(data[0].title);
+    //         });
+    // }, []);
 
     return (
     <div className="LoginPage">
@@ -29,7 +29,7 @@ function LoginPage()  {
                 }}> */}
                 <form action="" >
                     <label htmlFor="id">아이디</label>
-                    <input type="text" name="id" id="id" value={ name }/>
+                    <input type="text" name="id" id="id"/>
                     
                     <label htmlFor="pw">비밀번호</label>
                     <input type="password" name="pw" id="pw" />
