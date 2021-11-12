@@ -1,4 +1,5 @@
 import cv2 as cv
+from math import atan2, degrees
 
 # 손가락을 구성하는 부분을 지정해놓은 딕셔너리
 # 손가락 이름의 숫자가 높을수록 손끝 가까이에 있는 부분
@@ -7,54 +8,17 @@ BODY_PARTS = { "머리": 0, "목": 1, "오른쪽_어깨": 2, "오른쪽_팔꿈�
                 "왼쪽_어깨": 5, "왼쪽_팔꿈치": 6, "왼쪽_손목": 7, "오른쪽_엉덩이": 8, "오른쪽_무릎": 9,
                 "오른쪽_발목": 10, "왼쪽_엉덩이": 11, "왼쪽_무릎": 12, "왼쪽_발목": 13, "가슴": 14,
                 "배경": 15 }
-# BODY_PARTS = {
-#                 "손목": 0,
-#                 "엄지0": 1, "엄지1": 2, "엄지2": 3, "엄지3": 4,
-#                 "검지0": 5, "검지1": 6, "검지2": 7, "검지3": 8,
-#                 "중지0": 9, "중지1": 10, "중지2": 11, "중지3": 12,
-#                 "약지0": 13, "약지1": 14, "약지2": 15, "약지3": 16,
-#                 "소지0": 17, "소지1": 18, "소지2": 19, "소지3": 20,
-#             }
 
 # 손가락을 구성하는 부분들이 어떻게 연결되어 있는지 정의해놓은 리스트
 # 예를 들어 엄지 손가락의 경우 엄지0 - 엄지1 - 엄지2 - 엄지3 이 순서대로 연결됨
-# nPoints = 15
-# POSE_PAIRS = [[0,1], [1,2], [2,3], [3,4], [1,5], [5,6], [6,7], [1,14], [14,8], [8,9], [9,10], [14,11], [11,12], [12,13] ]
 POSE_PAIRS = [ ["머리", "목"], ["목", "오른쪽_어깨"], ["오른쪽_어깨", "오른쪽_팔꿈치"],
                 ["오른쪽_팔꿈치", "오른쪽_손목"], ["목", "왼쪽_어깨"], ["왼쪽_어깨", "왼쪽_팔꿈치"],
                 ["왼쪽_팔꿈치", "왼쪽_손목"], ["목", "가슴"], ["가슴", "오른쪽_엉덩이"], ["오른쪽_엉덩이", "오른쪽_무릎"],
                 ["오른쪽_무릎", "오른쪽_발목"], ["가슴", "왼쪽_엉덩이"], ["왼쪽_엉덩이", "왼쪽_무릎"], ["왼쪽_무릎", "왼쪽_발목"] ]
-# POSE_PAIRS = [["손목", "엄지0"], ["엄지0", "엄지1"],
-#                 ["엄지1", "엄지2"], ["엄지2", "엄지3"],
-#                 ["손목", "검지0"], ["검지0", "검지1"],
-#                 ["검지1", "검지2"], ["검지2", "검지3"],
-#                 ["손목", "중지0"], ["중지0", "중지1"],
-#                 ["중지1", "중지2"], ["중지2", "중지3"],
-#                 ["손목", "약지0"], ["약지0", "약지1"],
-#                 ["약지1", "약지2"], ["약지2", "약지3"],
-#                 ["손목", "소지0"], ["소지0", "소지1"],
-#                 ["소지1", "소지2"], ["소지2", "소지3"]]
 
-
-# BODY_PARTS = {
-#                 "Wrist": 0,
-#                 "ThumbMetacarpal": 1, "ThumbProximal": 2, "ThumbMiddle": 3, "ThumbDistal": 4,
-#                 "IndexFingerMetacarpal": 5, "IndexFingerProximal": 6, "IndexFingerMiddle": 7, "IndexFingerDistal": 8,
-#                 "MiddleFingerMetacarpal": 9, "MiddleFingerProximal": 10, "MiddleFingerMiddle": 11, "MiddleFingerDistal": 12,
-#                 "RingFingerMetacarpal": 13, "RingFingerProximal": 14, "RingFingerMiddle": 15, "RingFingerDistal": 16,
-#                 "LittleFingerMetacarpal": 17, "LittleFingerProximal": 18, "LittleFingerMiddle": 19, "LittleFingerDistal": 20,
-#             }
-
-# POSE_PAIRS = [["Wrist", "ThumbMetacarpal"], ["ThumbMetacarpal", "ThumbProximal"],
-#                ["ThumbProximal", "ThumbMiddle"], ["ThumbMiddle", "ThumbDistal"],
-#                ["Wrist", "IndexFingerMetacarpal"], ["IndexFingerMetacarpal", "IndexFingerProximal"],
-#                ["IndexFingerProximal", "IndexFingerMiddle"], ["IndexFingerMiddle", "IndexFingerDistal"],
-#                ["Wrist", "MiddleFingerMetacarpal"], ["MiddleFingerMetacarpal", "MiddleFingerProximal"],
-#                ["MiddleFingerProximal", "MiddleFingerMiddle"], ["MiddleFingerMiddle", "MiddleFingerDistal"],
-#                ["Wrist", "RingFingerMetacarpal"], ["RingFingerMetacarpal", "RingFingerProximal"],
-#                ["RingFingerProximal", "RingFingerMiddle"], ["RingFingerMiddle", "RingFingerDistal"],
-#                ["Wrist", "LittleFingerMetacarpal"], ["LittleFingerMetacarpal", "LittleFingerProximal"],
-#                ["LittleFingerProximal", "LittleFingerMiddle"], ["LittleFingerMiddle", "LittleFingerDistal"]]
+rightArmAngles = []
+leftArmAngles = []
+centerAngles = []
 
 # 손가락 특정 부분이 검출되었는지 판정하기 위해 사용하는 스레숄드
 threshold = 0.1
@@ -85,7 +49,28 @@ inputScale = 1.0/255
 
 # 아무키나 누르면 루프 중지
 # waitkey는 imshow를 붙잡아두는 역할?
-# 1 == 1ms
+
+def jointAngle(p1, p2, p3):
+    if p1 == None or p2 == None or p3 == None :
+        return None
+    else :
+        deg = 0
+        deg1 = (360 + degrees(atan2(p1[0] - p2[0], p1[1] - p2[1]))) % 360
+        deg2 = (360 + degrees(atan2(p3[0] - p2[0], p3[1] - p2[1]))) % 360
+
+        if deg1 <= deg2 :
+            deg = deg2 - deg1
+        else :
+            deg = 360 - (deg1 - deg2)
+
+        if deg > 180 :
+            deg = 360 - deg
+
+        return deg
+
+numberingStack = []
+numberOfPushup = 0
+
 while cv.waitKey(1) < 0:
     # 웹캠으로부터 영상을 하나 가져옴
     # hasFrame : 이미지가 있으면 true, 아니면 false
@@ -146,7 +131,7 @@ while cv.waitKey(1) < 0:
             # 해당 부분에 원과 숫자를 표시한 후, 해당 좌표를 리스트에 삽입
             cv.circle(frame, (x, y), 3, (0, 255, 255), thickness=-1, lineType=cv.FILLED)
             cv.putText(frame, "{}".format(i), (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 1, lineType=cv.LINE_AA)
-            points.append((x, y))
+            points.append((int(x), int(y)))
         else:
             points.append(None)
 
@@ -163,10 +148,27 @@ while cv.waitKey(1) < 0:
         if points[idFrom] and points[idTo]:
             cv.line(frame, points[idFrom], points[idTo], (0, 255, 0), 1)
 
-    # 추론하는 데 걸린 시간을 화면에 출력
-    t, _ = net.getPerfProfile()
-    freq = cv.getTickFrequency() / 1000
-    cv.putText(frame, '%.2fms' % (t / freq), (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
+    leftArmAngle = jointAngle(points[5], points[6], points[7])
+    leftArmAngles.append(leftArmAngle)
+
+    rightArmAngle = jointAngle(points[2], points[3], points[4])
+    rightArmAngles.append(rightArmAngle)
+
+    if leftArmAngle != None and rightArmAngle != None:
+        if int(leftArmAngle) < 90 and rightArmAngle < 90:
+            if not numberingStack or numberingStack[-1] != 1 :
+                numberingStack.append(1)
+                print("folding")
+
+        if int(leftArmAngle) > 170 and rightArmAngle > 170 and numberingStack :
+            numberingStack.pop()
+            print("unfolding")
+            numberOfPushup = numberOfPushup + 1
+
+    print("푸쉬업 갯수: " + str(numberOfPushup) + ", 왼팔 각도: " + str(leftArmAngle) + ", 오른팔 각도: " + str(leftArmAngle))
+    print(numberingStack)
+    # 팔굽혀펴기 횟수 화면에 출력
+    cv.putText(frame, str(numberOfPushup), (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
 
     # 손가락 검출 결과가 반영된 영상을 보여줌
     cv.imshow('OpenPose using OpenCV', frame)
