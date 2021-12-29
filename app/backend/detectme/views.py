@@ -4,6 +4,9 @@ from django.http import StreamingHttpResponse
 import cv2
 import threading
 
+# 이거 쓰거나 ai 폴더 내에 opencv_openpose.py 쓰는 것 중 고르기
+from . import pose
+
 #https://blog.miguelgrinberg.com/post/video-streaming-with-flask/page/8
 
 
@@ -18,41 +21,23 @@ class VideoCamera(object):
         self.video.release()
 
     def get_frame(self):
-        #success, image = self.video.read()
-        #success,image = self.url.read()
-        #image = self.frame
-        #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-		#_, jpeg = cv2.imencode('.jpg', gray)
-        face_detection_webcam = cv2.CascadeClassifier('D:\\python\haarcascade_frontalface_default.xml')
 
-        image = self.frame
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces_detected = face_detection_webcam.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
-        for (x, y, w, h) in faces_detected:
-            cv2.rectangle(image, pt1=(x, y), pt2=(x + w, y + h), color=(255, 0, 0), thickness=2)
+        # pose.py 에서 자세 추정을 입힌 frame을 가져옴
+        image = pose.make_pose_estimation_frame(self.frame)
+
         frame_flip = cv2.flip(image,1)
         _, jpeg = cv2.imencode('.jpg', frame_flip)
         return jpeg.tobytes()
-        # image = self.frame
-        # _, jpeg = cv2.imencode('.jpg', image)
-        # return jpeg.tobytes()
 
     def update(self):
         while True:
             (self.grabbed, self.frame) = self.video.read()
 
 
-str = "Funny Text inside the box"
-
 def gen(camera):
     while True:
-        #frame = camera.read()
         frame = camera.get_frame()
         
-        # str2 = "Testing . . ."
-        # cv2.putText(frame, str, (5, 20), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
-        # cv2.putText(frame, str2, (100, 20), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
-        # cv2.imshow('Cam', cv2.resize(frame, (1300, 800)))
         yield(b'--frame\r\n'
               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
