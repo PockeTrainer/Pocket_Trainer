@@ -46,8 +46,8 @@ class App extends React.Component{
         <BrowserRouter>
         {this.state.after_login?<SideNavBar/>:null}
           <Routes>
-            <Route path="/account/:subtitle" element={<MainContent/>}/>
             <Route path="/" element={<Dashboard/>} />
+            {/*<Route path="/account/:subtitle" element={<MainContent/>}/>*/}
             <Route path="/main/exercise_counter" element={<ExerciseCounter/>} exact/>
           </Routes>
         </BrowserRouter>

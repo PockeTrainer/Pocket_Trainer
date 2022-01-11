@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ResponsiveDatePickers from '../SameLayout/DatePicker';
 
 function SignUpPart(){
     return (
@@ -57,21 +58,22 @@ function SignUpPart(){
                         </div>
                         </div>
                         <div className="row my-4">
-                        <div className="col-12 sex">
-                            <div className="custom-control custom-control-alternative custom-checkbox sex">
-                            <input className="custom-control-input" id="man" type="checkbox" />
-                            <label className="custom-control-label seperator" htmlFor="man">
-                                <span className="text-muted">남자</span>
-                            </label>
-                            </div>
-                            <div className="custom-control custom-control-alternative custom-checkbox sex ">
-                            <input className="custom-control-input" id="woman" type="checkbox" />
-                            <label className="custom-control-label" htmlFor="woman">
-                                <span className="text-muted">여자</span>
-                            </label>
+                            <div className="col-12 sex">
+                                <div className="custom-control custom-control-alternative custom-checkbox sex">
+                                <input className="custom-control-input" id="man" type="checkbox" />
+                                <label className="custom-control-label seperator" htmlFor="man">
+                                    <span className="text-muted">남자</span>
+                                </label>
+                                </div>
+                                <div className="custom-control custom-control-alternative custom-checkbox sex ">
+                                <input className="custom-control-input" id="woman" type="checkbox" />
+                                <label className="custom-control-label" htmlFor="woman">
+                                    <span className="text-muted">여자</span>
+                                </label>
+                                </div>
                             </div>
                         </div>
-                        </div>
+                        <ResponsiveDatePickers/>
                     </form>
                     <div className="card-header bg-transparent pb-5">
                         <div className="text-muted text-center mt-2 mb-3"><small className="login_method">다른계정으로 계정생성</small></div>
