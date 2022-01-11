@@ -1,0 +1,61 @@
+.pl-4, .px-4 {
+    padding-left: 3.5rem !important;
+  }
+
+  .navbar-horizontal .navbar-brand {
+    font-size: 3.875rem;
+  }
+  .navbar-horizontal .navbar-brand img {
+    height: 4em;
+  }
+
+  .mb-7, .my-7 {
+    margin-bottom: 10rem !important;
+  }
+  .title_message{
+    position: relative;
+    top: 7.8em;
+  }
+  .card-header{
+    padding: 0.25rem 1.5rem;
+  }
+
+  .pb-5, .py-5 {
+    padding-bottom: 1rem !important;
+  }
+.bg-transparent {
+  background-color: #6a6ce4a1 !important;
+}
+
+.login_method{
+  color:white;
+}
+
+.shadow, .card-profile-image img {
+    box-shadow: 0 0 7rem 0 rgb(51 39 62 / 40%) !important;
+}
+
+.bg-secondary {
+    background-color: #fafcfde0 !important;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.sex{
+  float:left;
+}
+
+.seperator{
+  margin-right: 1em;
+}
+
+.card-header{
+  padding:0rem 0rem;
+  border-radius: 0.375rem;
+}
+
+.text-left{
+  text-align: left;
+}
