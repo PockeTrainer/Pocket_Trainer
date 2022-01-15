@@ -8,13 +8,14 @@ import SideNavBar from './Components/SameLayout/SideNavbar';
 
 import $ from "jquery"
 import MainContent from './Components/Sign/MainContent';
+import WithCamera from './Components/ExerciseCounter/WithCamera/WithCamera';
 
 class App extends React.Component{
 
   constructor(props){
     super(props);
     this.state={
-      after_login:true
+      after_login:false
     }
   }
 
@@ -46,9 +47,10 @@ class App extends React.Component{
         <BrowserRouter>
         {this.state.after_login?<SideNavBar/>:null}
           <Routes>
-            <Route path="/" element={<Dashboard/>} />
-            {/*<Route path="/account/:subtitle" element={<MainContent/>}/>*/}
-            <Route path="/main/exercise_counter" element={<ExerciseCounter/>} exact/>
+            <Route path="/" element={<Dashboard/>}/>
+            <Route path="/account/:subtitle" element={<MainContent/>}/>
+            <Route path="/main/exercise_counter" element={<ExerciseCounter/>} />
+            <Route path="/test/*" element={<WithCamera/>}/>
           </Routes>
         </BrowserRouter>
       </div>

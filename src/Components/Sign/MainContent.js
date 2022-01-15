@@ -37,19 +37,19 @@ function MainContent(){
 
     const stateNav={
         signIn:<NavBar text={signIn_message}/>,
-        signUp:<NavBar text={register_message}/>,
-        findId:<NavBar text={findId_message}/>,
-        findPw:<NavBar text={findPw_message}/>
+        signUp:<NavBar text={register_message} />,
+        findId:<NavBar text={findId_message} />,
+        findPw:<NavBar text={findPw_message} />
     };
 
     
 
 
     const stateMain={
-        signIn:<LoginPart/>,
-        signUp:<SignUpPart/>,
-        findId:<FindIdPart/>,
-        findPw:<FindPwPart/>
+        signIn:<LoginPart />,
+        signUp:<SignUpPart />,
+        findId:<FindIdPart />,
+        findPw:<FindPwPart />
     };
 
     

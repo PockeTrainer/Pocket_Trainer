@@ -20,13 +20,13 @@ function FindIdPart({popup}){
 
         <div>
         {/* Page content */}
-            <div className="container mt--8 pb-5">
+            <div className="container mt--8 pb-5_">
             {/* Table */}
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-8">
-                <div className="card bg-secondary shadow border-0">
+                <div className="card bg-secondary_ shadow_ border-0">
                     <div className="card-body px-lg-5 py-lg-5">
-                    <div className="text-center text-muted mb-4">
+                    <div className="text-center_ text-muted mb-4">
                         <small>회원정보입력</small>
                     </div>
                     <form role="form">
@@ -45,7 +45,7 @@ function FindIdPart({popup}){
                             </div>
                             <input className="form-control" placeholder="이메일" type="email" />
                         </div>
-                        <div className="text-center">
+                        <div className="text-center_">
                             <button type="button" className="btn btn-primary mt-4" onClick={()=>showPopup(true)}><i className="ni ni-send" />인증번호전송</button>
                         </div>
                         </div>
@@ -58,7 +58,7 @@ function FindIdPart({popup}){
                         </div>
                         </div>
                     </form>
-                    <div className="text-center">
+                    <div className="text-center_">
                         <button type="button" className="btn btn-primary mt-4" onClick={()=>showPopup(true)}>💪아이디 찾기</button>
                     </div>
                     </div>

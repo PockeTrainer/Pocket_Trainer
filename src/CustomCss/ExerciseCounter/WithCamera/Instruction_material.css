@@ -1,0 +1,29 @@
+.MuiStepLabel-label{
+    font-family: 'Nanum Gothic';
+    font-weight: 400;
+    font-size: 1.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    display: block;
+    -webkit-transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.MuiStepLabel-label.Mui-active>div{
+    background-color: #fc7c5f;
+    border-color: #fc7c5f;
+    font-weight: 900;
+}
+
+.MuiTypography-root{
+    font-family: 'Nanum Gothic';;
+}
+
+.MuiPaper-root{
+    background-color: #5e72e4 !important;
+    color: #f7fafc !important;
+}
+
+.MuiTypography-root{
+    font-family: 'Nanum Gothic'!important;
+}
