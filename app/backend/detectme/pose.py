@@ -74,7 +74,9 @@ numberOfSquat = 0
 numberingStack = []
 
 # kindsOfExercise = int(input('무슨 운동을 할까요? (1: 팔굽혀펴기, 2: 윗몸일으키기, 3: 스쿼트) : '))
-kindsOfExercise = 3
+
+# 이 변수가 뭐냐에 따라서 어떤 운동을 카운트할지가 결정됨.
+kindsOfExercise = 'pushup'
 
 def make_pose_estimation_frame(frame):
     global numberOfPushUp, numberOfSitUp, numberOfSquat
@@ -120,7 +122,7 @@ def make_pose_estimation_frame(frame):
             cv2.line(frame, points[id_from], points[id_to], (0, 255, 0), 1)
     
     # 팔굽혀펴기
-    if kindsOfExercise == 1:
+    if kindsOfExercise == 'pushup':
         leftArmAngle = jointAngle(points[5], points[6], points[7])
         leftArmAngles.append(leftArmAngle)
 
@@ -144,7 +146,7 @@ def make_pose_estimation_frame(frame):
         cv2.putText(frame, str(numberOfPushUp), (30, 120), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 0, 0), thickness=3)
 
     # 윗몸일으키기
-    elif kindsOfExercise == 2:
+    elif kindsOfExercise == 'situp':
         leftWaistAngle = jointAngle(points[14], points[11], points[12])
         leftWaistAngles.append(leftWaistAngle)
 
@@ -168,7 +170,7 @@ def make_pose_estimation_frame(frame):
         cv2.putText(frame, str(numberOfSitUp), (30, 120), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 0, 0), thickness=3)
 
     # 스쿼트
-    elif kindsOfExercise == 3:
+    elif kindsOfExercise == 'squat':
         leftLegAngle = jointAngle(points[11], points[12], points[13])
         leftLegAngles.append(leftLegAngle)
 
