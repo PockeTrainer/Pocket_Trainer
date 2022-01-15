@@ -1,4 +1,5 @@
 import cv2
+from math import atan2, degrees
 
 # point
 BODY_PARTS = { "머리": 0, "목": 1, "오른쪽_어깨": 2, "오른쪽_팔꿈치": 3, "오른쪽_손목": 4,
@@ -16,8 +17,8 @@ POSE_PAIRS = [ ["머리", "목"], ["목", "오른쪽_어깨"], ["오른쪽_어�
 threshold = 0.1
 
 # files for pose estimation
-protoFile = "C:\mpi\mpi.prototxt"
-weightsFile = "C:\mpi\mpi.caffemodel"
+protoFile = "..\\backend\\detectme\\mpi\\mpi.prototxt"
+weightsFile = "..\\backend\\detectme\\mpi\\mpi.caffemodel"
 
 # load network model
 net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
@@ -31,7 +32,53 @@ inputHeight = 368
 inputWidth = 368
 inputScale = 1.0/255
 
+
+def jointAngle(p1, p2, p3):
+    if p1 == None or p2 == None or p3 == None :
+        return None
+    else :
+        deg = 0
+        deg1 = (360 + degrees(atan2(p1[0] - p2[0], p1[1] - p2[1]))) % 360
+        deg2 = (360 + degrees(atan2(p3[0] - p2[0], p3[1] - p2[1]))) % 360
+
+        if deg1 <= deg2 :
+            deg = deg2 - deg1
+        else :
+            deg = 360 - (deg1 - deg2)
+
+        if deg > 180 :
+            deg = 360 - deg
+
+        return deg
+
+# 팔굽혀펴기
+leftArmAngles = []
+rightArmAngles = []
+centerAngles = []
+
+numberOfPushUp = 0
+
+# 윗몸일으키기
+leftWaistAngles = []
+rightWaistAngles = []
+
+numberOfSitUp = 0
+
+# 스쿼트
+leftLegAngles = []
+rightLegAngles = []
+
+numberOfSquat = 0
+
+# 갯수
+numberingStack = []
+
+# kindsOfExercise = int(input('무슨 운동을 할까요? (1: 팔굽혀펴기, 2: 윗몸일으키기, 3: 스쿼트) : '))
+kindsOfExercise = 3
+
 def make_pose_estimation_frame(frame):
+    global numberOfPushUp, numberOfSitUp, numberOfSquat
+
     frameHeight, frameWidth, _ = frame.shape
 
     # get blob
@@ -71,5 +118,77 @@ def make_pose_estimation_frame(frame):
         if points[id_from] and points[id_to]:
             # draw line between circles(joint points)
             cv2.line(frame, points[id_from], points[id_to], (0, 255, 0), 1)
+    
+    # 팔굽혀펴기
+    if kindsOfExercise == 1:
+        leftArmAngle = jointAngle(points[5], points[6], points[7])
+        leftArmAngles.append(leftArmAngle)
+
+        rightArmAngle = jointAngle(points[2], points[3], points[4])
+        rightArmAngles.append(rightArmAngle)
+
+        if leftArmAngle != None and rightArmAngle != None:
+            if int(leftArmAngle) < 90 and rightArmAngle < 90:
+                if not numberingStack or numberingStack[-1] != 1:
+                    numberingStack.append(1)
+                    print("folding")
+
+            if int(leftArmAngle) > 170 and rightArmAngle > 170 and numberingStack:
+                numberingStack.pop()
+                print("unfolding")
+                numberOfPushUp = numberOfPushUp + 1
+
+        print("팔굽혀펴기 갯수: " + str(numberOfPushUp) + ", 왼팔 각도: " + str(leftArmAngle) + ", 오른팔 각도: " + str(leftArmAngle))
+        print(numberingStack)
+        # 팔굽혀펴기 횟수 화면에 출력
+        cv2.putText(frame, str(numberOfPushUp), (30, 120), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 0, 0), thickness=3)
+
+    # 윗몸일으키기
+    elif kindsOfExercise == 2:
+        leftWaistAngle = jointAngle(points[14], points[11], points[12])
+        leftWaistAngles.append(leftWaistAngle)
+
+        rightWaistAngle = jointAngle(points[14], points[8], points[9])
+        rightWaistAngles.append(rightWaistAngle)
+
+        if leftWaistAngle != None and rightWaistAngle != None:
+            if leftWaistAngle < 30 and rightWaistAngle < 30:
+                if not numberingStack or numberingStack[-1] != 1:
+                    numberingStack.append(1)
+                    print("folding")
+
+            if leftWaistAngle > 90 and rightWaistAngle > 90 and numberingStack:
+                numberingStack.pop()
+                print("unfolding")
+                numberOfSitUp = numberOfSitUp + 1
+
+        print("윗몸일으키기 갯수: " + str(numberOfSitUp) + ", 왼팔 각도: " + str(leftWaistAngle) + ", 오른팔 각도: " + str(rightWaistAngle))
+        print(numberingStack)
+        # 윗몸일으키기 횟수 화면에 출력
+        cv2.putText(frame, str(numberOfSitUp), (30, 120), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 0, 0), thickness=3)
+
+    # 스쿼트
+    elif kindsOfExercise == 3:
+        leftLegAngle = jointAngle(points[11], points[12], points[13])
+        leftLegAngles.append(leftLegAngle)
+
+        rightLegAngle = jointAngle(points[8], points[9], points[10])
+        rightLegAngles.append(rightLegAngle)
+
+        if leftLegAngle != None and rightLegAngle != None:
+            if int(leftLegAngle) < 90 and rightLegAngle < 90:
+                if not numberingStack or numberingStack[-1] != 1:
+                    numberingStack.append(1)
+                    print("folding")
+
+            if int(leftLegAngle) > 170 and rightLegAngle > 170 and numberingStack:
+                numberingStack.pop()
+                print("unfolding")
+                numberOfSquat = numberOfSquat + 1
+
+        print("스쿼트 갯수: " + str(numberOfSquat) + ", 왼팔 각도: " + str(leftLegAngle) + ", 오른팔 각도: " + str(rightLegAngle))
+        print(numberingStack)
+        # 스쿼트 횟수 화면에 출력
+        cv2.putText(frame, str(numberOfSquat), (30, 120), cv2.FONT_HERSHEY_SIMPLEX, 5.0, (0, 0, 0), thickness=3)
     
     return frame
