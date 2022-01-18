@@ -52,7 +52,7 @@ function EachExerciseTip(){
     };
 
     const card_body={
-        padding:"1.15rem"
+        padding:"0.15rem"
     }
     const exercise_name=useParams();//뒤에 파람스 가져올려고
     const link_address='/test'+"/"+exercise_name.exercise_name;
@@ -85,7 +85,7 @@ function EachExerciseTip(){
         <div>
             <TitleMessage content={entire[exercise_name.exercise_name]}/>
 
-            <div className="card" style={{width:'20rem'}}>
+            <div className="card" style={{width:'19rem'}}>
                 <div className="card-body" style={card_body}>
                 <span className="badge badge-pill badge-success badge-lg" style={{fontSize:'1em'}}><i class="fas fa-thumbs-up"></i>올바른자세</span>
                 

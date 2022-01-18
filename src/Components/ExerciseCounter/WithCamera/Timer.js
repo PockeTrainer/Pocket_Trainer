@@ -1,5 +1,6 @@
 import React from "react";
 import { useState,useRef,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const Timer = ({func}) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(5);
@@ -7,6 +8,8 @@ const Timer = ({func}) => {
     const time = useRef(5);
     const count=useRef(1);
     const timerId = useRef(null);
+
+    const navigate=useNavigate();
   
     const [whichTimer,setWhichTimer]=useState("pre-step");
 
@@ -28,7 +31,9 @@ const Timer = ({func}) => {
       if (time.current < 0) {
         console.log("타임 아웃");
 
-        func(true);//상위컴포넌트의 set함수를 받아 상위 state변경->상위에게 나 운동측정시작되었음을 알림
+        if(func!=null){
+            func(true);//상위컴포넌트의 set함수를 받아 상위 state변경->상위에게 나 운동측정시작되었음을 알림
+        }
         clearInterval(timerId.current);
         if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
             setWhichTimer("main-step");
@@ -39,6 +44,7 @@ const Timer = ({func}) => {
         }
         else{
             setWhichTimer("finish-step");//타이머 다끝남을 의미 사실 이건 안쓰일듯...
+            func(false);// 타이머가 끝났으니 다시 상위컴포넌트로 끝났음을 알림
         }
         // dispatch event
       }
@@ -79,8 +85,7 @@ const Timer = ({func}) => {
 
                 <button onClick={handleStop} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}>{buttonState==1?<span><i className="ni ni-button-pause"></i>중지하기</span>:<span><i className="ni ni-button-play"></i>시작하기</span>}</button>
             </div>
-            {/*<img src="http://127.0.0.1:8000/api/test/detectme"></img>*/}
-            {/*카메라 띄우기 코드*/}
+
         </div>
         );
   };

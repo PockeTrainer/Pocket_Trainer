@@ -29,7 +29,7 @@ function SignUpPart(){
         .then(res => {
             console.log(res.data);
             //axios.defaults.headers.common['Authorization'] = `token ${res.payload.accessToken}`
-            navigate('/account/signin');
+            navigate('/account/signIn');
         })
         .catch(err => 
             console.log(err.response.data)

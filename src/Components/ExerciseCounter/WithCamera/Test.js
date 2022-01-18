@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import Timer from "./Timer";
 import TitleMessage from "./TitleMessage";
@@ -7,13 +7,16 @@ function Test({func}){
 
     const exercise_name=useParams();//뒤에 파람스 가져올려고
 
+    const count=useRef(1);
+
     const changeTestState=(tmp)=>
     {
         setTestState(tmp);
     };
 
     useEffect(()=>{
-        if(testState==false){
+        if(count==1){
+            count+=1;
             return;
         }
         func(testState,exercise_name.exercise_name);//또 상위 state를 변경

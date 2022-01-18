@@ -84,43 +84,20 @@ function InfoCard(){
   const [state,setState]=useState(1);//이 state는 위에 덮어씌워지는 이미지의 state
 
   const[checkState,setCheckState]=useState({
-    total:true,
     pushup:true,
     situp:true,
     squat:true
   });
 
-  const{total,pushup,situp,squat}=checkState;
+  const{pushup,situp,squat}=checkState;
 
-  //체크박스 관련 state
-  const checkChange=(event)=>{
-    if(event.target.name=="total"){
-      console.log("여기!");
-      console.log(event.target.checked)
-      setCheckState({
-        ...checkState,
-        ["total"]:event.target.checked,
-        ["pushup"]:event.target.checked,
-        ["situp"]:event.target.checked,
-        ["squat"]:event.target.checked,
-      });
-      console.log(checkState.total)
-    }
-    else{
-      setCheckState({
-        ...checkState,
-        [event.target.name]:event.target.checked
-      });
-    }
-    
-  };
-
+  
   
   
   //덮여 씌워지는 사진 state
   const changeState=(tmp)=>{
     console.log(tmp)
-    if(tmp>4){//state값이 증가하다가 4보다 커지면 다시면 0으로 돌려줌
+    if(tmp>3){//state값이 증가하다가 4보다 커지면 다시면 0으로 돌려줌
       setState(1);
     }
     else if(tmp<1){//state값이 감소하다가 0보다 작아지면 4로 올림
@@ -149,10 +126,9 @@ function InfoCard(){
                 <div className="col-lg-3 order-lg-2">
                   <div className="card-profile-image">
                     
-                    {state==1?<ShowAll/>:null}
-                    {state==2?<ShowPushUp/>:null}
-                    {state==3?<ShowSitUp/>:null}
-                    {state==4?<ShowSquat/>:null}
+                    {state==1?<ShowPushUp/>:null}
+                    {state==2?<ShowSitUp/>:null}
+                    {state==3?<ShowSquat/>:null}
         
                     {/* 슬라이더1넣기 */}
                     <Slider
@@ -160,21 +136,18 @@ function InfoCard(){
                         arrows={false}
                         ref={slider1}
                       >
-                        <div>
-                          <img src="../assets/img/theme/all.png" className={"rounded-circle"+" "+styles.exercise_pic}/>
-                          <h1 className={styles.body_part}><Checkbox {...label} name="total" checked={total} onChange={checkChange} color={'success'} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }}/>전체 부위</h1>
-                        </div>
+                       
                         <div>
                           <img src="../assets/img/theme/pushup.png" className={"rounded-circle"+" "+styles.exercise_pic}/>
-                          <h1 className={styles.body_part}><Checkbox {...label} name='pushup' checked={pushup} onChange={checkChange}  color={'success'} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 }} }/>상체</h1>
+                          <h1 className={styles.body_part}>상체</h1>
                         </div>
                         <div>
                           <img src="../assets/img/theme/sit-up.png" className={"rounded-circle"+" "+styles.exercise_pic}/>
-                          <h1 className={styles.body_part}><Checkbox {...label} name="situp" checked={situp} onChange={checkChange} color={'success'} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }}/>복근</h1>
+                          <h1 className={styles.body_part}>복근</h1>
                         </div>
                         <div>
                           <img src="../assets/img/theme/squat.png" className={"rounded-circle"+" "+styles.exercise_pic}/>
-                          <h1 className={styles.body_part}><Checkbox {...label} name="squat" checked={squat} onChange={checkChange} color={'success'} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }}/>하체</h1>
+                          <h1 className={styles.body_part}>하체</h1>
                         </div>
                     </Slider>
                   </div>
@@ -199,16 +172,13 @@ function InfoCard(){
                     prevArrow={<SamplePrevArrow onclick={changeState} state_v={state} slider1={slider1}/>}
                   >
                     <div>
-                      <h2>푸시업+싯업+스쿼트</h2>
+                      <span class="badge badge-primary"><h2>푸시업</h2></span>
                     </div>
                     <div>
-                      <h2>푸시업</h2>
+                      <span class="badge badge-primary"><h2>싯업</h2></span>
                     </div>
                     <div>
-                      <h2>싯업</h2>
-                    </div>
-                    <div>
-                      <h2>스쿼트</h2>
+                      <span class="badge badge-primary"><h2>스쿼트</h2></span>
                     </div>
                   </Slider>
                     
@@ -220,7 +190,7 @@ function InfoCard(){
                         </div>
                         <hr/>
                         <div class="alert alert-warning" role="alert">
-                            <span class="alert-text"><strong><i class="ni ni-like-2"></i>부위선택:</strong><br></br>상단에서 측정을 원하시는 부위를 선택하여주세요!</span>
+                            <span class="alert-text"><strong><i class="ni ni-like-2"></i>자세연습:</strong><br></br>상단에서 체력측정전 연습을 원하시는 부위는 미리 선택하여 측정전 연습해보세요!</span>
                         </div>
                         <div class="alert alert-warning" role="alert">
                             <span class="alert-text"><strong><i class="ni ni-like-2"></i>Tip!:</strong><br></br>각 평가종목의 그림을 누르면 간략한 운동설명법을 볼 수 있어요!</span>

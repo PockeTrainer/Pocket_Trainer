@@ -22,7 +22,7 @@ export default function WorkoutTimeline() {
       background: '#5e72e4 !important;'
     },
     TimelineConnector:{
-      padding: '6px 16px !important'
+      padding: '6px 21px !important'
     },
     TimelineItem:{
       position:'relative',

@@ -15,7 +15,7 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      after_login:false
+      after_login:true
     }
   }
 
