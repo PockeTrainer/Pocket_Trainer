@@ -1,0 +1,54 @@
+.UpdatePage .GNB {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.UpdatePage form {
+    display: flex;
+    flex-direction: column;
+    margin: 40px 35px 30px 35px;
+}
+
+.UpdatePage .mainsource label {
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.UpdatePage .mainsource .gender input, label {
+    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    vertical-align: top;
+}
+
+.UpdatePage .mainsource .gender label {
+    margin-top: 3px;
+    margin-right: 20px;
+}
+
+
+.UpdatePage .mainsource input {
+    border: solid 1px gray;
+    height:25px;
+    margin-bottom: 20px;
+    border-radius: 7px;
+}
+
+.UpdatePage .mainsource #myBodyBTN {
+    width:110px;
+    height:60px;
+    background-color: gray;
+    color: black;
+    border-radius: 20px;
+}
+
+.UpdatePage .mainsource #updateBTN {
+    height:40px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin-top: 30px;
+}

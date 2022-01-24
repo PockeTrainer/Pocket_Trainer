@@ -1,0 +1,32 @@
+.YourIdPage .GNB {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.YourIdPage .mainsource {
+    display: flex;
+    flex-direction: column;
+    margin: 80px 35px 30px 35px;
+}
+
+.YourIdPage .mainsource label {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.YourIdPage .mainsource input {
+    border: solid 1px gray;
+    height:25px;
+    margin-bottom: 40px;
+    border-radius: 7px;
+}
+
+.YourIdPage .mainsource button {
+    height:40px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin-top: 30px;
+}

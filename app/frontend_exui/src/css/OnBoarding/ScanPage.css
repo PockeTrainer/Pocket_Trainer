@@ -1,0 +1,45 @@
+.ScanPage {
+    text-align: center;
+}
+
+.ScanPage .GNB {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+.ScanPage .mainsource .humanIcon {
+    margin-top: 30px;
+    margin-left: -18px;
+}
+
+.ScanPage .mainsource .humanIcon img {
+    width: 380px;
+    height: 380px;
+}
+
+.ScanPage .mainsource .upLineIcon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: -10px 20px 0px 20px;
+}
+
+.ScanPage .mainsource .upLineIcon #timerIcon {
+    width: 80px;
+    height: 80px;
+}
+
+.ScanPage .mainsource .upLineIcon #switchCameraIcon {
+    width: 80px;
+    height: 80px;
+}
+
+.ScanPage .mainsource .downLineIcon {
+    margin: 0px 0px 20px 0px;
+}
+
+.ScanPage .mainsource .downLineIcon img {
+    width: 75px;
+    height: 75px;
+}

@@ -1,0 +1,52 @@
+.LoginPagea a {
+    color: black;
+}
+
+.LoginPage .GNB {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.LoginPage form {
+    display: flex;
+    flex-direction: column;
+    margin: 65px 35px 30px 35px;
+}
+
+.LoginPage form label {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.LoginPage form input {
+    border: solid 1px gray;
+    height:25px;
+    margin-bottom: 30px;
+    border-radius: 7px;
+}
+
+.LoginPage form button {
+    height:40px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.LoginPage .changePage .upLine {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0px 40px 0px 40px;
+}
+
+.LoginPage .changePage .downLine {
+    text-align: center;
+    margin: 10px 0px 20px 0px;
+}
+
+.LoginPage .buttons {
+    margin: 80px 30px 100px 30px;
+}
