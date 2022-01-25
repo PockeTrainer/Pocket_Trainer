@@ -6,19 +6,26 @@ import TitleMessage from "./TitleMessage";
 function EachTestResult(){
     const pushup_content={
         title:"푸시업 평가완료",
-        message:"회원님께서 측정하신 1분동안의 푸시업 결과개수 입니다."
+        message:"회원님께서 측정하신 1분동안의 푸시업 결과개수 입니다.",
+        next_title:"다음운동",
+        next_exam:"(복근)싯업"
     };
 
     const situp_content={
         title:"싯업 평가완료",
-        message:"회원님께서 측정하신 1분동안의 싯업 결과개수 입니다."
+        message:"회원님께서 측정하신 1분동안의 싯업 결과개수 입니다.",
+        next_title:"다음운동",
+        next_exam:"(하체)스쿼트"
     };
 
     const squat_content={
         title:"스쿼트 평가완료",
-        message:"회원님께서 측정하신 1분동안의 스쿼트 결과개수 입니다."
+        message:"회원님께서 측정하신 1분동안의 스쿼트 결과개수 입니다.",
+        next_title:"최종평가",
+        next_exam:"(종합)등급확인"
     };
 
+    
     const entire={
         pushup:pushup_content,
         situp:situp_content,
@@ -50,7 +57,7 @@ function EachTestResult(){
             </div>
             <div className="alert alert-success" role="alert">
 
-                <h3 style={{color:"white"}}><strong>측정결과:</strong>(상체)3등급</h3>
+                <h3 style={{color:"white"}}><strong>{entire[exercise_name.exercise_name].next_title+":"}</strong>{entire[exercise_name.exercise_name].next_exam}</h3>
             </div>
             <button onClick={moveToNext} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}><i className="ni ni-button-play"></i>다음평가</button>
         </div>

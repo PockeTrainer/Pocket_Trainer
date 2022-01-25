@@ -1,6 +1,7 @@
 import React from "react";
 import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { makeStyles } from '@mui/styles';
 const Timer = ({func}) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(5);
@@ -74,14 +75,21 @@ const Timer = ({func}) => {
     }
 
     const mainStepStyle={
-        top:'3em',
+        top:'5em',
         backgroundColor:"#fc7c5f26",
     }
+
+    const useStyles=makeStyles({
+        mainStepPadding:{
+            padding:"0.5rem 0.5rem !important"
+        }
+    })
+    const classes=useStyles();
         return (
         <div>
-            <div class="alert alert-warning" role="alert" style={whichTimer=="main-step"?mainStepStyle:null}>
-                <span class="alert-icon"><i class="ni ni-time-alarm"></i></span>
-                <span class="alert-text display-1">{whichTimer=="pre-step"?<strong>{sec}초</strong>:<strong>{min}분{sec}초</strong>}</span>
+            <div className={whichTimer=="main-step"?"alert alert-warning "+classes.mainStepPadding:"alert alert-warning"} role="alert" style={whichTimer=="main-step"?mainStepStyle:null}>
+                <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
+                <span className="alert-text display-1">{whichTimer=="pre-step"?<strong>{sec}초</strong>:<strong>{min}분{sec}초</strong>}</span>
 
                 <button onClick={handleStop} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}>{buttonState==1?<span><i className="ni ni-button-pause"></i>중지하기</span>:<span><i className="ni ni-button-play"></i>시작하기</span>}</button>
             </div>

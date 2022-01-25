@@ -95,7 +95,7 @@ function EachExerciseTip(){
                 </div>
             </div>
 
-            <div className="card" style={{width:'20rem'}}>
+            <div className="card" style={{width:'19rem'}}>
                 <div className="card-body" style={card_body}>
                 <span className="badge badge-pill badge-warning badge-lg" style={{fontSize:'1em'}}><i class="fas fa-thumbs-up fa-rotate-180"></i>잘못된자세</span>
                 

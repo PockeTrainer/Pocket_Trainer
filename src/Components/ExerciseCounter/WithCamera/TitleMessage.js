@@ -2,12 +2,9 @@ import React from "react";
 import styles from "../../../CustomCss/ExerciseCounter/WithCamera/Instruction.module.css"
 function TitleMessage(props){
 
-    const hiddenStyle={
-        visibility:"hidden"
-    };
     return(
     
-        <div className="container-fluid d-flex align-items-center" style={props.display==="no"?hiddenStyle:null}>
+        <div className={props.display==="no"?"container-fluid d-flex align-items-center "+styles.display_not_showing:"container-fluid d-flex align-items-center"}>
             <div className="row">
             <div className="col-lg-7 col-md-10">
                 <i class={styles.alert_mark+" "+"fas fa-exclamation-triangle fa-5x"}></i>

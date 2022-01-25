@@ -18,3 +18,7 @@
     background-color: #d1cecd;
     border-color: #d1cecd;
 }
+
+.display_not_showing{
+    display: none !important;
+}

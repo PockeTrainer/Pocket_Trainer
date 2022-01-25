@@ -1,5 +1,6 @@
 import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
+import Camera from "./Camera";
 import Timer from "./Timer";
 import TitleMessage from "./TitleMessage";
 function Test({func}){
@@ -44,9 +45,24 @@ function Test({func}){
         squat:squat_content
     };
 
+    const counting_number={
+        position:"relative",
+        color:"white",
+        float:"right",
+        zIndex:"9999",
+        fontSize:"2em",
+        backgroundColor:"#5e72e4"
+    }
+
     return(
         <div>
             <TitleMessage content={entire[exercise_name.exercise_name]} display={testState?"no":"yes"}/>
+            {testState&&
+            <div style={{height:"18em"}}>
+                <span className="badge badge-primary" style={counting_number}>5개</span>
+            </div>
+            }
+            {testState&&<Camera/>}
             <Timer func={changeTestState}/>
         </div>
     );

@@ -22,7 +22,8 @@ function LoginPart(){
             axios.defaults.headers.common['Authorization'] = `token ${res.data.Token}`
             //sessionStorage.setItem("isAuthorized", "true");
             sessionStorage.setItem("user_id", res.data.User.id);
-            navigate('/');
+            //navigate('/');
+            window.location.replace("/");//상위 app 컴포넌트에서의 useEffect가 다시 돌아가줘야 after_login이 업데이트됨
         })
         .catch(err => 
             console.log(err.response.data)

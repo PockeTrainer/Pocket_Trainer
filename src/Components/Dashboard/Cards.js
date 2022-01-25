@@ -18,9 +18,14 @@ function Cards(){
               <div className="row">
                 <div className="col">
                   <h5 className="card-title text-uppercase text-muted mb-0">나의 체력등급</h5>
-                  <span className="h2 font-weight-bold mb-0">💪[상체]-<StyledSpan color="#00cb00">1등급</StyledSpan><br></br></span>
+                  <span className="h2 font-weight-bold mb-0">💪[가슴]-<StyledSpan color="#00cb00">1등급</StyledSpan><br></br></span>
+                  <span className="h2 font-weight-bold mb-0">🏃[등]-<StyledSpan color="red">3등급</StyledSpan><br></br></span>
+                  <span className="h2 font-weight-bold mb-0">🦵[어깨]-<StyledSpan color="#b5b500">2등급</StyledSpan></span>
+                  <hr></hr>
+                  <span className="h2 font-weight-bold mb-0">💪[팔]-<StyledSpan color="#00cb00">1등급</StyledSpan><br></br></span>
                   <span className="h2 font-weight-bold mb-0">🏃[복근]-<StyledSpan color="red">3등급</StyledSpan><br></br></span>
-                  <span className="h2 font-weight-bold mb-0">🦵[하체]-<StyledSpan color="#b5b500">2등급</StyledSpan></span>
+                  <hr></hr>
+                  <span className="h2 font-weight-bold mb-0">💪[하체]-<StyledSpan color="#00cb00">1등급</StyledSpan><br></br></span>
                 </div>
                 <div className="col-auto">
                   <div className="icon icon-shape bg-success text-white rounded-circle shadow">
