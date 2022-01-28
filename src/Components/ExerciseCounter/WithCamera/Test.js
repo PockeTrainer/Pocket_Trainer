@@ -16,8 +16,8 @@ function Test({func}){
     };
 
     useEffect(()=>{
-        if(count==1){
-            count+=1;
+        if(count.current==1){
+            count.current+=1;
             return;
         }
         func(testState,exercise_name.exercise_name);//또 상위 state를 변경

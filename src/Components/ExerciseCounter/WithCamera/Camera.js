@@ -1,13 +1,15 @@
-import React, { Component, useRef } from 'react';
+import React, { Component, useRef,useEffect } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 // Register one of the TF.js backends.
 import '@tensorflow/tfjs-backend-webgl';
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "../../utilities.js";
+import { useParams } from "react-router-dom";
 
 function Camera() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const exercise_name=useParams();
 
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {

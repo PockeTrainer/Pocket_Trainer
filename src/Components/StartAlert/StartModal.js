@@ -9,9 +9,10 @@ import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
 import { color } from "@mui/system";
 import FullScreenDialog from "./FullScreenDialog";
+import { useNavigate } from "react-router-dom";
 
 
-function AlertMessage(){
+function AlertMessage({sliderRef}){
     return(
         <div>
             <div className="modal-body">
@@ -24,7 +25,7 @@ function AlertMessage(){
                     </div>
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-primary ">네 좋아요!</button>
+                <button type="button" className="btn btn-primary " onClick={()=>sliderRef.current.slickNext()}>네 좋아요!</button>
                 <button type="button" className="btn btn-primary ml-auto" data-dismiss="modal">다음에 할래요!</button>
             </div>
         </div>
@@ -54,10 +55,10 @@ function PtStep({buttonRef,handleCloseState}){
                         <h4 className="heading mt-4">피티 전 준비단계는 이와 같습니다!</h4>
                     </div>
                     <Box sx={{ width: '100%' }}>
-                            <Stepper activeStep={0} alternativeLabel>
+                            <Stepper activeStep={1} alternativeLabel>
                                 {steps.map((label) => (
                                 <Step key={label}>
-                                        <StepLabel sx={{".MuiStepLabel-label.Mui-active":{color:"#ffc107"},".MuiStepLabel-labelContainer":{color:"white"}}} StepIconProps={{sx:{"&.MuiStepIcon-root":{color:"#8898aa"},"&.Mui-active":{color:"orange"},"&.Mui-completed":{color:"#2dce89"}}}}>{label}</StepLabel>
+                                        <StepLabel sx={{".MuiStepLabel-label.Mui-active":{color:"#ffc107"},".MuiStepLabel-labelContainer":{color:"white"},".MuiStepLabel-label.Mui-completed":{color:"#2dce89"}}} StepIconProps={{sx:{"&.MuiStepIcon-root":{color:"#8898aa"},"&.Mui-active":{color:"orange"},"&.Mui-completed":{color:"#2dce89"}}}}>{label}</StepLabel>
                                 </Step>
                                 ))}
                             </Stepper>
@@ -71,11 +72,50 @@ function PtStep({buttonRef,handleCloseState}){
     );
 }
 
+function SecondAlert(){
+    const navigate=useNavigate();
+    const steps = [
+        '현재 신체 상태와 목표체중 기입',
+        '루틴추천을 위한 부위별 체력측정',
+        '추천루틴으로 피티받기',
+      ];
+
+      const gotoCheck=()=>{
+          navigate("/main/exercise_counter");
+      }
+
+    return(
+        <div>
+        <div className="modal-body">
+                <div className="py-3 text-center">
+                    <RunCircleRoundedIcon sx={{fontSize:"4em"}}/>
+                    <h4 className="heading mt-4">수고하셨습니다!이제는 체력평가를 봐볼까요?</h4>
+                </div>
+                <Box sx={{ width: '100%' }}>
+                        <Stepper activeStep={1} alternativeLabel>
+                            {steps.map((label) => (
+                            <Step key={label}>
+                                    <StepLabel sx={{".MuiStepLabel-label.Mui-active":{color:"#ffc107"},".MuiStepLabel-labelContainer":{color:"white"}}} StepIconProps={{sx:{"&.MuiStepIcon-root":{color:"#8898aa"},"&.Mui-active":{color:"orange"},"&.Mui-completed":{color:"#2dce89"}}}}>{label}</StepLabel>
+                            </Step>
+                            ))}
+                        </Stepper>
+                </Box>
+        </div>
+        <div className="modal-footer">
+            <button onClick={gotoCheck} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:"3em"}} >체력평가보기</button>
+        </div>
+        
+    </div>
+    );
+}
+
 function StartModal(){
 
     const closeRef=useRef();//닫는 버튼용 
+    const slider=useRef();//슬라이더용
 
     const [closeState,setCloseState]=useState(false);
+    const [nowState,setNowState]=useState(1);
     const handleCloseState=()=>{
         setCloseState(true);
     };
@@ -85,7 +125,8 @@ function StartModal(){
         infinite:false,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        swipe:false
       };
 
     return(
@@ -100,8 +141,8 @@ function StartModal(){
                 </button>
                 </div>
 
-                <Slider {...settings}>
-                    <AlertMessage/>
+                <Slider {...settings} ref={slider}>
+                    <AlertMessage sliderRef={slider}/>
                     <PtStep buttonRef={closeRef} handleCloseState={handleCloseState}/>
                     {closeState&&<FullScreenDialog/>}
                 </Slider>

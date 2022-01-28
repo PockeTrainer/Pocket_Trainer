@@ -25,11 +25,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function FullScreenDialog() {
   const [open, setOpen] = React.useState(false);//열기용
 
-  const [height, setHeight] = React.useState(30);//키
-  const [weight,setWeight]=React.useState(10)//현재무게
-  const [goalWeight,setGoalWeight]=React.useState(10);//목표무게
-
-  let hi="hi";
 
   const [InputState,setInputState]=React.useState({
     height:30,
@@ -46,27 +41,24 @@ export default function FullScreenDialog() {
   };
 
   const handleChange = (event,child) => {
-    console.log(child.props.id)
+    console.log(child.props.select)
     setInputState({
       ...InputState,
-      ["height"]:event.target.value
+      [child.props.select]:event.target.value
     })
   };
 
-  const rendering=()=>{
+  const rendering=(end,select_id,unit)=>{
     const result=[];
     let i=1;
-    {/* 
-    for(let i=30;i<50;i++){
-      result.push(<MenuItem key ={i} value={i}>{i+"cm"}</MenuItem>)
+    for(let i=30;i<=end;i++){
+      result.push(<MenuItem select={select_id} key ={i} value={i}>{i+unit}</MenuItem>)
     }
-    */}
-    result.push(<MenuItem value={i}>{i+"cm"}</MenuItem>)
     return result;
-  }
+  };
+
 
   React.useEffect(()=>{
-    console.log("hihi");
     handleClickOpen();
   },[])
   return (
@@ -111,14 +103,12 @@ export default function FullScreenDialog() {
                   <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value={height}
+                    value={InputState.height}
                     onChange={handleChange}
                     autoWidth
                     label="Height"
                   >
-                    <MenuItem  value={30}>Twenty</MenuItem>
-                    <MenuItem id="hi" value={31}>Twenty one</MenuItem>
-                    <MenuItem id={3} value={32}>Twenty one and a half</MenuItem>
+                   {rendering(200,"height","cm")}
                   </Select>
                   <FormHelperText>회원님의 신장을 입력해주세요</FormHelperText>
                 </FormControl>
@@ -133,17 +123,15 @@ export default function FullScreenDialog() {
                   <Select
                     labelId="demo-simple-select-autowidth-label_1"
                     id="demo-simple-select-autowidth_1"
-                    value={weight}
+                    value={InputState.weight}
                     onChange={handleChange}
                     autoWidth
                     label="weight"
                   >
 
-                    <MenuItem value={10}>Twenty</MenuItem>
-                    <MenuItem value={21}>Twenty one</MenuItem>
-                    <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    {rendering(150,"weight","kg")}
                   </Select>
-                  <FormHelperText>With label + helper text</FormHelperText>
+                  <FormHelperText>회원님의 현재체중을 입력해주세요</FormHelperText>
                 </FormControl>
 
                 <hr></hr>
@@ -154,17 +142,15 @@ export default function FullScreenDialog() {
                   <Select
                     labelId="demo-simple-select-autowidth-label_2"
                     id="demo-simple-select-autowidth_2"
-                    value={goalWeight}
+                    value={InputState.goalWeight}
                     onChange={handleChange}
                     autoWidth
                     label="goalWeight"
                   >
 
-                    <MenuItem value={10}>Twenty</MenuItem>
-                    <MenuItem value={21}>Twenty one</MenuItem>
-                    <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    {rendering(150,"goalWeight","kg")}
                   </Select>
-                  <FormHelperText>With label + helper text</FormHelperText>
+                  <FormHelperText>회원님의 목표체중을 골라주세요</FormHelperText>
                 </FormControl>
 
             </div>
