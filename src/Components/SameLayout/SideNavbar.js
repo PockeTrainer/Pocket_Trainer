@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../../CustomCss/SideNavbar.css';
 import {Link} from 'react-router-dom';
 
@@ -8,17 +8,22 @@ function SideNavBar(){
   ); //사이드메뉴가 눌렸는지 안 눌렸는지여부를 웹 스토리지를 사용하여 새로고침을 해도 눌린 값은 유지하도록 함
 
   useEffect(()=>{
-    window.localStorage.setItem("clickedId",JSON.stringify(clickedId),[clickedId])
-  });
+    window.localStorage.setItem("clickedId",JSON.stringify(clickedId))
+    closebutton.current.click()
+  },[clickedId]);
 
   const showGetId=(id)=>{
     setClickedId(id);
+    
+    
     if(id=="list1"){
       window.location.replace("/");
       return;
     }
-    window.location.reload();//다른 링크로 이동시 외부 스크립트으 재호출을 위해 다시 새로고침 시켜줌
+  
+    //window.location.reload();//다른 링크로 이동시 외부 스크립트으 재호출을 위해 다시 새로고침 시켜줌
   };
+  const closebutton=useRef();
 
         return(
             <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main" data-component="SideNavbar">
@@ -89,7 +94,7 @@ function SideNavBar(){
                   </a>
                 </div>
                 <div className="col-6 collapse-close">
-                  <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
+                  <button ref={closebutton} type="button" className="navbar-toggler" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
                     <span />
                     <span />
                   </button>

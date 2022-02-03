@@ -38,9 +38,9 @@ const Timer = ({func}) => {
         clearInterval(timerId.current);
         if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
             setWhichTimer("main-step");
-            setMin(1);
-            setSec(0);
-            time.current=60;
+            setMin(0);
+            setSec(5);
+            time.current=5;
             start();
         }
         else{

@@ -12,15 +12,20 @@ import StartModal from './Components/StartAlert/StartModal';
 import FullScreenDialog from './Components/StartAlert/FullScreenDialog';
 import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
+import TodayRoutine from "./Components/TodayRoutine/TodayRoutine"
+import { useDispatch,useSelector } from 'react-redux';
+import { modalref } from './modules/action';
 
 function App(){
 
   const [after_login,setAfter_Login]=useState(false);
-  const [first_login,setFirst_Login]=useState(true);
   const button1=useRef(null);
-  
+
+  const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
+  const dispatch=useDispatch();
 
   let isAuthorized=sessionStorage.getItem("isAuthorized");
+
 
   useEffect(()=>{
     //An array of assets
@@ -45,8 +50,9 @@ function App(){
     setAfter_Login(false)
   }
   else{
-    setAfter_Login(true)
-    setTimeout(showModal,500);//지금 사용하는 일시 시간지연으로 하는 코드
+    setAfter_Login(true);
+    dispatch(modalref(button1))//모달창 버튼 ref를 스토어에서 올려서 하위 모달창들에서 쓸수 있게 만듦
+    setTimeout(showModal,1000);//지금 사용하는 일시 시간지연으로 하는 코드
     //showModal();
   }  
   console.log("나여기!")
@@ -59,9 +65,7 @@ function App(){
       button1.current.click();
     }
   }
-  const handleTest=()=>{
-    setFirst_Login(false)
-  }
+
 
     return (
       <div className="App">
@@ -74,6 +78,7 @@ function App(){
               <Route path="/" element={<Dashboard/>}/>
               <Route path="/main/exercise_counter" element={<ExerciseCounter/>} />
               <Route path="/test/*" element={<WithCamera/>}/>
+              <Route path="/main/routine" element={<TodayRoutine/>}/>
             </Route>
 
           </Routes>

@@ -1,24 +1,28 @@
 import React,{useRef,useState} from "react";
 import Slider from "react-slick";
 import RunCircleRoundedIcon from '@mui/icons-material/RunCircleRounded';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import ParaglidingIcon from '@mui/icons-material/Paragliding';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import { createTheme } from "@mui/material";
-import { ThemeProvider } from "@mui/styles";
-import { color } from "@mui/system";
+
 import FullScreenDialog from "./FullScreenDialog";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import pageMove, { gotoweight } from "../../modules/action";
 
 
 function AlertMessage({sliderRef}){
+    const user_name=sessionStorage.getItem("user_name");//현재 로그인 되어있는 유저의 이름값을 가져와준다
     return(
         <div>
             <div className="modal-body">
                     <div className="py-3 text-center">
                         <i className="ni ni-bell-55 ni-3x" />
-                        <h4 className="heading mt-4">안녕하세요 티맥스님!</h4>
+                        <h4 className="heading mt-4">안녕하세요 {user_name}님!</h4>
                         <p>저희 포켓트레이너에 오신 것을 환영합니다!저희 서비스를 이용받기 위해서는 사전절차가 좀 더 필요합니다!</p>
                         <hr></hr>
                         <p>지금 상담을 받아보시겠습니까?</p>
@@ -32,30 +36,75 @@ function AlertMessage({sliderRef}){
     );
 }
 
-function PtStep({buttonRef,handleCloseState}){
+function PtStep({buttonRef,page}){
     const steps = [
         '현재 신체 상태와 목표체중 기입',
         '루틴추천을 위한 부위별 체력측정',
         '추천루틴으로 피티받기',
       ];
 
+    const icons={
+        start_step:<RunCircleRoundedIcon sx={{fontSize:"4em"}}/>,
+        first_clear_step:<FitnessCenterIcon sx={{fontSize:"4em"}}/>,
+        second_clear_step:<ParaglidingIcon sx={{fontSize:"4em"}}/>,
+        last_clear_step:<AssignmentTurnedInIcon sx={{fontSize:"4em"}} />
+    }
+    let alertMessage;
+    let button_name;
+
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+    let active_step=0;
+    if(page=="first_clear_step"){
+        active_step=1;
+        alertMessage="수고하셨습니다!이제는 체력측정을 받으러 가보러 갈까요?";
+        button_name="체력측정받기";
+    }
+    else if(page=="second_clear_step"){
+        active_step=2;
+        alertMessage="체력측정 하니라 수고하셨습니다!최종결과를 확인하고 루틴을 추천받으러 갈까요?";
+        button_name="최종결과확인";
+    }
+    else{
+        active_step=0;
+        alertMessage="피티 전 준비단계는 이와 같습니다!";
+        button_name="신체정보기입하기"
+    }
 
     const handleClose=()=>{//해당 모달창을 닫게해야 다음 뜨는 신체입력창에 스택오버플로우가 안남
         setTimeout(close,500);
-        handleCloseState();
+        dispatch(gotoweight());//체중체크페이지로 이동할 것을 알려줌
+    }
+    const moveToCheck=()=>{//체력측정페이지로 이동
+        navigate("/main/exercise_counter");
+        setTimeout(close,500);
+    }
+    const moveToFinalResult=()=>{
+        navigate("/test/finalResult");
+        setTimeout(close,500);
+    }
+    const moveToEnd=()=>{
+        //여기 채워주세요
     }
     const close=()=>{
         buttonRef.current.click();
+    }
+
+    const func={
+        start_step:handleClose,
+        first_clear_step:moveToCheck,
+        second_clear_step:moveToFinalResult,
+        last_clear_step:moveToEnd
     }
     return(
         <div>
             <div className="modal-body">
                     <div className="py-3 text-center">
-                        <RunCircleRoundedIcon sx={{fontSize:"4em"}}/>
-                        <h4 className="heading mt-4">피티 전 준비단계는 이와 같습니다!</h4>
+                        {icons[page]}
+                        <h4 className="heading mt-4">{alertMessage}</h4>
                     </div>
                     <Box sx={{ width: '100%' }}>
-                            <Stepper activeStep={1} alternativeLabel>
+                            <Stepper activeStep={active_step} alternativeLabel>
                                 {steps.map((label) => (
                                 <Step key={label}>
                                         <StepLabel sx={{".MuiStepLabel-label.Mui-active":{color:"#ffc107"},".MuiStepLabel-labelContainer":{color:"white"},".MuiStepLabel-label.Mui-completed":{color:"#2dce89"}}} StepIconProps={{sx:{"&.MuiStepIcon-root":{color:"#8898aa"},"&.Mui-active":{color:"orange"},"&.Mui-completed":{color:"#2dce89"}}}}>{label}</StepLabel>
@@ -65,60 +114,23 @@ function PtStep({buttonRef,handleCloseState}){
                     </Box>
             </div>
             <div className="modal-footer">
-                <button onClick={handleClose} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:"3em"}} >신체정보기입하기</button>
+                <button onClick={func[page]} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:"3em"}} ><i className="ni ni-button-play"></i>{button_name}</button>
             </div>
             
         </div>
     );
 }
 
-function SecondAlert(){
-    const navigate=useNavigate();
-    const steps = [
-        '현재 신체 상태와 목표체중 기입',
-        '루틴추천을 위한 부위별 체력측정',
-        '추천루틴으로 피티받기',
-      ];
 
-      const gotoCheck=()=>{
-          navigate("/main/exercise_counter");
-      }
 
-    return(
-        <div>
-        <div className="modal-body">
-                <div className="py-3 text-center">
-                    <RunCircleRoundedIcon sx={{fontSize:"4em"}}/>
-                    <h4 className="heading mt-4">수고하셨습니다!이제는 체력평가를 봐볼까요?</h4>
-                </div>
-                <Box sx={{ width: '100%' }}>
-                        <Stepper activeStep={1} alternativeLabel>
-                            {steps.map((label) => (
-                            <Step key={label}>
-                                    <StepLabel sx={{".MuiStepLabel-label.Mui-active":{color:"#ffc107"},".MuiStepLabel-labelContainer":{color:"white"}}} StepIconProps={{sx:{"&.MuiStepIcon-root":{color:"#8898aa"},"&.Mui-active":{color:"orange"},"&.Mui-completed":{color:"#2dce89"}}}}>{label}</StepLabel>
-                            </Step>
-                            ))}
-                        </Stepper>
-                </Box>
-        </div>
-        <div className="modal-footer">
-            <button onClick={gotoCheck} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:"3em"}} >체력평가보기</button>
-        </div>
-        
-    </div>
-    );
-}
-
-function StartModal(){
+function StartModal({buttonRef}){
 
     const closeRef=useRef();//닫는 버튼용 
     const slider=useRef();//슬라이더용
 
-    const [closeState,setCloseState]=useState(false);
-    const [nowState,setNowState]=useState(1);
-    const handleCloseState=()=>{
-        setCloseState(true);
-    };
+
+    const page=useSelector(state=>state.pageMove.page);//스토어를 통해 현재페이지 정보를 가져와줌
+
     const settings = {
         arrows:false,
         dots: true,
@@ -143,8 +155,8 @@ function StartModal(){
 
                 <Slider {...settings} ref={slider}>
                     <AlertMessage sliderRef={slider}/>
-                    <PtStep buttonRef={closeRef} handleCloseState={handleCloseState}/>
-                    {closeState&&<FullScreenDialog/>}
+                    <PtStep buttonRef={closeRef} page={page}/>
+                    {page=="weight_page"&&<FullScreenDialog/>}
                 </Slider>
                 
 

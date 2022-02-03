@@ -38,7 +38,7 @@ function Camera() {
             webcamRef.current.video.height = videoHeight;
 
             const poses = await detector.estimatePoses(video);
-            console.log(poses)
+            //console.log(poses)
             if (poses.length > 0) { 
                 drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
             }

@@ -15,6 +15,9 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { First_clear_page } from '../../modules/action';
+
 
 
 
@@ -25,6 +28,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function FullScreenDialog() {
   const [open, setOpen] = React.useState(false);//열기용
 
+  const dispatch=useDispatch();
+  const ref_v=useSelector(state=>state.Appref.ref);//맨 위에 App.js의 있는 모달버튼에 접근해서 가져옴
 
   const [InputState,setInputState]=React.useState({
     height:30,
@@ -37,7 +42,9 @@ export default function FullScreenDialog() {
   };
 
   const handleClose = () => {
+    dispatch(First_clear_page());//닫기나 저장하기 버튼을 누르면 다음스텝으로 이동함을 알려준다
     setOpen(false);
+    ref_v.current.click()//모달버튼 ref를 스토어에서 가져와 클릭 해줘서 다시 보여줌
   };
 
   const handleChange = (event,child) => {
@@ -48,7 +55,7 @@ export default function FullScreenDialog() {
     })
   };
 
-  const rendering=(end,select_id,unit)=>{
+  const rendering=(end,select_id,unit)=>{//몸무게와 체중을 쭈욱 랜더링해줌
     const result=[];
     let i=1;
     for(let i=30;i<=end;i++){

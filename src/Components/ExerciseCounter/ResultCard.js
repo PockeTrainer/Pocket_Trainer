@@ -107,7 +107,7 @@ function LowerBody({lower_idx}){
 function Total({total_idx}){
     return(
         <div>
-        <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+            <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >최종평가</h2>
             <hr></hr>
 

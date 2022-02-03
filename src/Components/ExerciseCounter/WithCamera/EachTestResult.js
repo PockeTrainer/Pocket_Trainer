@@ -1,7 +1,8 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TitleMessage from "./TitleMessage";
-
+import { Second_clear_page } from "../../../modules/action";
 
 function EachTestResult(){
     const pushup_content={
@@ -34,6 +35,9 @@ function EachTestResult(){
 
     const exercise_name=useParams("");
     const navigate=useNavigate();
+    const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 값 가져오기 첫 로그인인지
+    const appRef=useSelector(state=>state.Appref.ref);
+    const dispatch=useDispatch();
 
     const moveToNext=()=>{
         if(exercise_name.exercise_name=="pushup"){//싯업 평가전 페이지로 이동
@@ -43,7 +47,14 @@ function EachTestResult(){
             navigate("/test/howto/squat");
         }
         else{//최종결과페이지로 이동
-            navigate("/test/finalResult")
+            if(first_login){
+                //마지막 페이지로 디스패치 해줄 것
+                dispatch(Second_clear_page());
+                appRef.current.click();
+            }
+            else{
+                navigate("/test/finalResult")
+            }
         }
     }
     return(
