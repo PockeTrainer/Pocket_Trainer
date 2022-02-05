@@ -12,6 +12,7 @@
     "@mui/lab": "^5.0.0-alpha.64",
     "@mui/material": "^5.2.8",
     "@mui/styles": "^5.2.3",
+    "@teachablemachine/pose": "^0.8.6",
     "@tensorflow-models/pose-detection": "^0.0.6",
     "@tensorflow-models/posenet": "^2.2.2",
     "@tensorflow/tfjs": "^3.13.0",

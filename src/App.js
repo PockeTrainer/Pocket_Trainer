@@ -24,8 +24,8 @@ function App(){
   const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
   const dispatch=useDispatch();
 
-  let isAuthorized=sessionStorage.getItem("isAuthorized");
-
+  //let isAuthorized=sessionStorage.getItem("isAuthorized");
+  let isAuthorized=true
 
   useEffect(()=>{
     //An array of assets

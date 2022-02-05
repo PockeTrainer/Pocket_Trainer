@@ -5,11 +5,50 @@ import '@tensorflow/tfjs-backend-webgl';
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "../../utilities.js";
 import { useParams } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { pushup_count } from '../../../modules/action.js';
+import { situp_count } from '../../../modules/action.js';
+import { squat_count } from '../../../modules/action.js';
+
+
+//세 점 사이의 각도 구하기
+function jointAngle(p1x, p1y, p2x, p2y, p3x, p3y) {
+    if(p1x == undefined || p1y == undefined || p2x == undefined || p2y == undefined || p3x == undefined || p3y == undefined) {
+        return undefined;
+    }
+
+    else {
+        var deg = 0;
+        
+        var rad1 = Math.atan2(p1y - p2y, p1x - p2x);
+        var deg1 = (360 + (rad1 * 180) / Math.PI) % 360;
+
+        var rad2 = Math.atan2(p3y - p2y, p3x - p2x);
+        var deg2 = (360 + (rad2 * 180) / Math.PI) % 360;
+
+        if(deg1 <= deg2) {
+            deg = deg2 - deg1;
+        }
+        else {
+            deg = 360 - (deg1 - deg2);
+        }
+
+        if(deg > 180) {
+            deg = 360 - deg;
+        }
+
+        return deg;
+    }
+}
 
 function Camera() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const exercise_name=useParams();
+
+    const dispatch=useDispatch();
+
+    var fordingState = "unfolding";
 
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
@@ -38,7 +77,7 @@ function Camera() {
             webcamRef.current.video.height = videoHeight;
 
             const poses = await detector.estimatePoses(video);
-            //console.log(poses)
+            console.log(poses)
             if (poses.length > 0) { 
                 drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
             }
@@ -54,17 +93,72 @@ function Camera() {
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
 
-        //console.log(pose["keypoints"])
+        if(exercise_name.exercise_name == "pushup") {
+            var leftArmAngle = jointAngle(pose["keypoints"][5].x, pose["keypoints"][5].y, pose["keypoints"][7].x, pose["keypoints"][7].y, pose["keypoints"][9].x, pose["keypoints"][9].y);
+            var rightArmAngle = jointAngle(pose["keypoints"][6].x, pose["keypoints"][6].y, pose["keypoints"][8].x, pose["keypoints"][8].y, pose["keypoints"][10].x, pose["keypoints"][10].y);
 
-        /* 각도 재서 카운트 하는거만 js
-            js 잘못됬다는 것만
-        */
+            if(pose["keypoints"].length != 0) {
+                if(leftArmAngle < 90 && rightArmAngle < 90) {
+                    if(fordingState == "unfolding") {
+                        fordingState = "folding"
+                    }
+                }
+            }
+            if(leftArmAngle > 170 && rightArmAngle > 170 && fordingState == "folding") {
+                fordingState = "unfolding";;
+                dispatch(pushup_count());//리덕스에 값을 업데이트 디스패치 시킴
+            }
+
+            
+        }
+
+        else if(exercise_name.exercise_name == "situp") {
+            var leftHipAngle = jointAngle(pose["keypoints"][5].x, pose["keypoints"][5].y, pose["keypoints"][11].x, pose["keypoints"][11].y, pose["keypoints"][13].x, pose["keypoints"][13].y);
+            var rightHipAngle = jointAngle(pose["keypoints"][6].x, pose["keypoints"][6].y, pose["keypoints"][12].x, pose["keypoints"][12].y, pose["keypoints"][14].x, pose["keypoints"][14].y);
+            
+            if(pose["keypoints"].length != 0) {
+                if(leftHipAngle < 50 && rightHipAngle < 50) {
+                    if(fordingState == "unfolding") {
+                        fordingState = "folding"
+                    }
+                }
+            }
+            if(leftArmAngle > 120 && rightArmAngle > 120 && fordingState == "folding") {
+                fordingState = "unfolding";
+                dispatch(situp_count());//리덕스에 값을 업데이트 디스패치 시킴
+
+            }
+
+
+        }
+
+        else if(exercise_name.exercise_name == "squat") {
+            var leftLegAngle = jointAngle(pose["keypoints"][11].x, pose["keypoints"][11].y, pose["keypoints"][13].x, pose["keypoints"][13].y, pose["keypoints"][15].x, pose["keypoints"][15].y);
+            var rightLegAngle = jointAngle(pose["keypoints"][12].x, pose["keypoints"][12].y, pose["keypoints"][14].x, pose["keypoints"][14].y, pose["keypoints"][16].x, pose["keypoints"][16].y);
+        
+            if(pose["keypoints"].length != 0) {
+                if(leftLegAngle < 90 && rightLegAngle < 90) {
+                    if(fordingState == "unfolding") {
+                        fordingState = "folding"
+                    }
+                }
+            }
+            if(leftArmAngle > 170 && rightArmAngle > 170 && fordingState == "folding") {
+                fordingState = "unfolding";
+                dispatch(squat_count());//리덕스에 값을 업데이트 디스패치 시킴
+            }
+
+
+        }
 
         drawKeypoints(pose["keypoints"], 0.6, ctx);
         drawSkeleton(pose["keypoints"], 0.7, ctx);
       };
 
-    runMovenet();
+
+    useEffect(()=>{
+        runMovenet();//디스패치를 시키면 상태변화때문에 부모 컴포넌트에서 리랜더링되면 카메라도 리랜더링 될것이라서 그때마다 setInterval시키면 계속쌓임 따라서 한번만 실행
+    },[])
 
     //detect();
     return (

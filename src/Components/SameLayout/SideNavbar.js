@@ -9,7 +9,7 @@ function SideNavBar(){
 
   useEffect(()=>{
     window.localStorage.setItem("clickedId",JSON.stringify(clickedId))
-    closebutton.current.click()
+    closebutton.current.click()//메뉴 닫아줘
   },[clickedId]);
 
   const showGetId=(id)=>{

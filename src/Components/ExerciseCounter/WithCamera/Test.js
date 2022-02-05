@@ -1,4 +1,5 @@
 import React, { useEffect, useState,useRef } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Camera from "./Camera";
 import Timer from "./Timer";
@@ -54,12 +55,23 @@ function Test({func}){
         backgroundColor:"#5e72e4"
     }
 
+    let result=useSelector(state=>state.pushup_count_reducer);
+    if(exercise_name.exercise_name==="pushup"){
+        result=result.pushup
+    }
+    else if(exercise_name.exercise_name==="situp"){
+        result=result.situp
+    }
+    else{
+        result=result.squat
+    }
+
     return(
         <div>
             <TitleMessage content={entire[exercise_name.exercise_name]} display={testState?"no":"yes"}/>
             {testState&&
             <div style={{height:"18em"}}>
-                <span className="badge badge-primary" style={counting_number}>5개</span>
+                <span className="badge badge-primary" style={counting_number}>{result}개</span>
             </div>
             }
             {testState&&<Camera/>}

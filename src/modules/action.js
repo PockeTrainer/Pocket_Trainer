@@ -5,6 +5,9 @@ const GOTOWEIGHT="gotoweight";
 const MODALREF="modalref"
 const FIRST_LOGIN="first_login";
 const SECOND_LOGIN="second_login";
+const PUSHUP_COUNT="pushup_count";
+const SITUP_COUNT="situp_count ";
+const SQUAT_COUNT="squat_count";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -35,6 +38,18 @@ export const first_Login=()=>({
 export const second_Login=()=>({
     type:SECOND_LOGIN
 })
+
+export const pushup_count=()=>({
+    type:PUSHUP_COUNT
+})
+
+export const situp_count=()=>({
+    type:SITUP_COUNT
+})
+
+export const squat_count=()=>({
+    type:SQUAT_COUNT
+})
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -47,6 +62,12 @@ const initialRef={//맨 위 모달창 켜는 버튼을 의미
 
 const initialFirstId={
     first_login:true
+}
+
+const initialExercise={
+    pushup:0,
+    situp:0,
+    squat:0
 }
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
@@ -93,6 +114,28 @@ export function first_login_check(state=initialFirstId,action){
             return{
                 first_login:false
             }
+        default:
+            return state;
+    }
+}
+
+export function pushup_count_reducer(state=initialExercise,action){
+    switch (action.type) {
+        case PUSHUP_COUNT:
+            return {
+                ...state,
+                pushup:state.pushup+1,
+            }
+        case SITUP_COUNT:
+            return{
+                ...state,
+                situp:state.situp+1
+            }    
+        case SQUAT_COUNT:
+            return{
+                ...state,
+                squat:state.squat+1
+            }   
         default:
             return state;
     }

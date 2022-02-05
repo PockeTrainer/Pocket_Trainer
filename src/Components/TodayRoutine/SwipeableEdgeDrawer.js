@@ -154,7 +154,7 @@ function SwipeableEdgeDrawer(props) {
                   <CardActionArea onClick={handleClick}>
                     <CardMedia
                       component="img"
-                      height="140"
+                      height="200"
                       image="../assets/img/theme/benchPress.gif"
                       alt="벤치프레스"
                     />
