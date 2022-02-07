@@ -1,10 +1,20 @@
+//로그인 시작 모달
 const FIRST_CLEARPAGE="first_clear";
 const SECOND_CLEARPAGE="second_clear";
 const LAST_CLEARPAGE="last_clear";
 const GOTOWEIGHT="gotoweight";
+
+//app.js에서 사용되는 액션타입
 const MODALREF="modalref"
 const FIRST_LOGIN="first_login";
 const SECOND_LOGIN="second_login";
+
+//체력측정이 시작되었는지 여부 액션타입
+const TESTSTATE="testState";
+const NONE_TESTSTATE="none_test";
+const SETTING_COMPLETED="setting_completed";
+const PRE_TIMER="pre_timer";
+//체력측정에서 사용되는 액션타입
 const PUSHUP_COUNT="pushup_count";
 const SITUP_COUNT="situp_count ";
 const SQUAT_COUNT="squat_count";
@@ -39,6 +49,22 @@ export const second_Login=()=>({
     type:SECOND_LOGIN
 })
 
+export const testState=(page)=>({
+    type:TESTSTATE,
+    page
+});
+
+export const none_testState=(page)=>({
+    type:NONE_TESTSTATE,
+    page
+})
+
+export const setting_completed=()=>({
+    type:SETTING_COMPLETED
+});
+export const pre_timer=()=>({
+    type:PRE_TIMER
+});
 export const pushup_count=()=>({
     type:PUSHUP_COUNT
 })
@@ -61,9 +87,13 @@ const initialRef={//맨 위 모달창 켜는 버튼을 의미
 };
 
 const initialFirstId={
-    first_login:true
+    first_login:false
 }
 
+const initialTestState={
+    testState:"false",
+    urlState:""
+}
 const initialExercise={
     pushup:0,
     situp:0,
@@ -119,7 +149,37 @@ export function first_login_check(state=initialFirstId,action){
     }
 }
 
-export function pushup_count_reducer(state=initialExercise,action){
+export function testState_reducer(state=initialTestState,action){
+    switch (action.type) {
+        case TESTSTATE:
+            return{
+                testState:"true",
+                urlState:action.page
+            }
+    
+        case NONE_TESTSTATE:{
+            return{
+                testState:"false",
+                urlState:action.page
+            }
+        } 
+        case SETTING_COMPLETED:
+            return{
+                testState:"completed",
+                urlState:""
+            }
+
+        case PRE_TIMER:
+            return{
+                testState:"preTimer",
+                urlState:""
+            }    
+        default:
+            return state
+    }
+}
+
+export function exercise_count_reducer(state=initialExercise,action){
     switch (action.type) {
         case PUSHUP_COUNT:
             return {

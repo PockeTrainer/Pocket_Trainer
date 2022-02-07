@@ -9,6 +9,13 @@ import { useDispatch } from 'react-redux';
 import { pushup_count } from '../../../modules/action.js';
 import { situp_count } from '../../../modules/action.js';
 import { squat_count } from '../../../modules/action.js';
+import { testState } from '../../../modules/action.js';
+import {none_testState} from '../../../modules/action.js';
+import {setting_completed} from '../../../modules/action.js';
+
+import * as tmPose from '@teachablemachine/pose';
+
+
 
 
 //세 점 사이의 각도 구하기
@@ -41,12 +48,15 @@ function jointAngle(p1x, p1y, p2x, p2y, p3x, p3y) {
     }
 }
 
-function Camera() {
+function Camera({display,page}) {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const exercise_name=useParams();
 
+    const count=useRef(0);//딱 처음에만 테스트 들어간 상황을 디스패치해주기위해서
+
     const dispatch=useDispatch();
+
 
     var fordingState = "unfolding";
 
@@ -77,9 +87,16 @@ function Camera() {
             webcamRef.current.video.height = videoHeight;
 
             const poses = await detector.estimatePoses(video);
-            console.log(poses)
+            //console.log(poses)
+            //카메라가 가동되기 시작함-이때부터 점도 찍을수 있게 됨
             if (poses.length > 0) { 
                 drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
+                console.log("디텍트 중");
+                if(count.current==0){
+                    count.current+=1;
+                    dispatch(setting_completed());//카메라 완료상태를 의미
+                }
+
             }
         }
     }
@@ -158,6 +175,7 @@ function Camera() {
 
     useEffect(()=>{
         runMovenet();//디스패치를 시키면 상태변화때문에 부모 컴포넌트에서 리랜더링되면 카메라도 리랜더링 될것이라서 그때마다 setInterval시키면 계속쌓임 따라서 한번만 실행
+        //dispatch(testState(page));
     },[])
 
     //detect();
@@ -177,7 +195,8 @@ function Camera() {
                         width: "100%",
                         height: "33em",
                         top:"0em",
-                        objectFit:"fill"
+                        objectFit:"fill",
+                        visibility:display==="no"?"hidden":"visible",
                     }}
                 />
   
@@ -194,7 +213,9 @@ function Camera() {
               width: "100%",
               height: "33em",
               top:"0em",
-              objectFit:"fill"
+              objectFit:"fill",
+              //display:display==="no"?"none":"flex"
+              visibility:display==="no"?"hidden":"visible",
             }}
           />
       </div>

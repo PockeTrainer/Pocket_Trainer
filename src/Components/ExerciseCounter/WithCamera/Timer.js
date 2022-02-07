@@ -2,7 +2,11 @@ import React from "react";
 import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
-const Timer = ({func}) => {
+import { useDispatch } from "react-redux";
+import { none_testState, testState } from "../../../modules/action";
+
+
+const Timer = ({page}) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(5);
     const [buttonState,setButtonState]=useState(1);
@@ -11,6 +15,7 @@ const Timer = ({func}) => {
     const timerId = useRef(null);
 
     const navigate=useNavigate();
+    const dispatch=useDispatch();
   
     const [whichTimer,setWhichTimer]=useState("pre-step");
 
@@ -32,22 +37,22 @@ const Timer = ({func}) => {
       if (time.current < 0) {
         console.log("타임 아웃");
 
-        if(func!=null){
-            func(true);//상위컴포넌트의 set함수를 받아 상위 state변경->상위에게 나 운동측정시작되었음을 알림
-        }
+        // if(func!=null){
+        //     func(true);//상위컴포넌트의 set함수를 받아 상위 state변경->상위에게 나 운동측정시작되었음을 알림
+        // }
         clearInterval(timerId.current);
         if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
+            dispatch(testState(page));//준비시간  타이머 끝남을 알림
             setWhichTimer("main-step");
-            setMin(0);
-            setSec(5);
-            time.current=5;
+            setMin(1);
+            setSec(0);
+            time.current=60;
             start();
         }
         else{
             setWhichTimer("finish-step");//타이머 다끝남을 의미 사실 이건 안쓰일듯...
-            func(false);// 타이머가 끝났으니 다시 상위컴포넌트로 끝났음을 알림
+            dispatch(none_testState(page));//타이머가 끝나면 끝남을 반영시킴
         }
-        // dispatch event
       }
     }, [sec]);
   
@@ -87,7 +92,7 @@ const Timer = ({func}) => {
     const classes=useStyles();
         return (
         <div>
-            <div className={whichTimer=="main-step"?"alert alert-warning "+classes.mainStepPadding:"alert alert-warning"} role="alert" style={whichTimer=="main-step"?mainStepStyle:null}>
+            <div className={"alert alert-warning "+classes.mainStepPadding} role="alert" style={mainStepStyle}>
                 <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
                 <span className="alert-text display-1">{whichTimer=="pre-step"?<strong>{sec}초</strong>:<strong>{min}분{sec}초</strong>}</span>
 
