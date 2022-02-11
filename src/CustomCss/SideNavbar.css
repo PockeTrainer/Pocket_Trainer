@@ -5,11 +5,11 @@
 
 .navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
     max-width: 108%;
-    max-height: 5.5rem;
-    width:110%;
+    max-height: 5.0rem;
+    width:120%;
 }
 .navbar{
-    padding: 0rem 1rem;
+    padding: 0rem 0rem;
 }
 
 @media (max-width: 767.98px){

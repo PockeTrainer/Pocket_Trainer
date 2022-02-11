@@ -18,6 +18,12 @@ const PRE_TIMER="pre_timer";
 const PUSHUP_COUNT="pushup_count";
 const SITUP_COUNT="situp_count ";
 const SQUAT_COUNT="squat_count";
+//운동추천 루틴페이지에서 눌린 버튼변경 액션
+const CHANGE_CLICKED_BUTTON="change_clicked_button";
+//루틴페이지에서 어디에있는지를 알려주는 액션
+const TODAY_ROUTINE="today_routine";
+const EXERCISE_INFO="exercise_info";
+const EXTRA_ROUTINE="extra_routine";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -76,6 +82,24 @@ export const situp_count=()=>({
 export const squat_count=()=>({
     type:SQUAT_COUNT
 })
+
+export const change_clicked_button=(button_name)=>({
+    type:CHANGE_CLICKED_BUTTON,
+    button_name
+});
+
+export const today_routine=()=>({
+    type:TODAY_ROUTINE
+});
+
+export const exercise_info=()=>({
+    type:EXERCISE_INFO
+});
+
+export const extra_routine=()=>({
+    type:EXTRA_ROUTINE
+});
+
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -87,17 +111,24 @@ const initialRef={//맨 위 모달창 켜는 버튼을 의미
 };
 
 const initialFirstId={
-    first_login:false
+    first_login:false//지금 개발의 편의를 위해 꺼놓음 실제 할때에는 true로 바꾸기
 }
 
-const initialTestState={
+const initialTestState={//체력측정 들어갔는지 안 들어갔는지
     testState:"false",
     urlState:""
 }
-const initialExercise={
+const initialExercise={//체력측정시 각 개수를 의미
     pushup:0,
     situp:0,
     squat:0
+}
+const initialClickedButton={//루틴 추천시 어떤 부위가 눌렸는지
+    clickedButton:"total"
+}
+
+const initialPage={
+    page:"today_routine"
 }
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
@@ -198,5 +229,36 @@ export function exercise_count_reducer(state=initialExercise,action){
             }   
         default:
             return state;
+    }
+}
+
+export function change_clicked_button_reducer(state=initialClickedButton,action){
+    switch (action.type) {
+        case CHANGE_CLICKED_BUTTON:
+            return{
+                clickedButton:action.button_name
+            }
+    
+        default:
+            return state
+    }
+}
+
+export function change_routine_page_reducer(state=initialPage,action){
+    switch (action.type) {
+        case TODAY_ROUTINE:
+            return{
+                page:"today_routine"
+            }
+        case EXERCISE_INFO:
+            return{
+                page:"exercise_info"
+            }
+        case EXTRA_ROUTINE:
+            return{
+                page:"extra_routine"
+            }
+        default:
+            return state
     }
 }

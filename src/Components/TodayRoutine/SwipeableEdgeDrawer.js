@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React,{useEffect,useRef,useState} from 'react';
 import PropTypes from 'prop-types';
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
@@ -6,24 +6,43 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Stack from '@mui/material/Stack';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import {CardActionArea, CardActions } from '@mui/material';
 
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import Slider from "react-slick";
+import CardMedia from '@mui/material/CardMedia';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { CardActionArea } from '@mui/material';
+import EachExerciseInstruction from './EachExerciseInstruction';
 
+
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+
+import { change_clicked_button } from '../../modules/action';
+
+
+import { BenchPress,InclinedBenchPress,DumbbelFly,Crunch,CablePushDown } from '../../ExercisesInfo/ExerciseInfo';
+import { useDispatch } from 'react-redux';
+
+//한글 바이트 별로 잘라는 함수
+String.prototype.cut = function(len) {
+
+  var str = this;
+  var s = 0;
+  for (var i=0; i<str.length; i++) {
+  s += (str.charCodeAt(i) > 128) ? 2 : 1;
+  if (s > len) return str.substring(0,i);
+  }
+  return str;
+
+}
 //SnackBar용
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -32,7 +51,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 
 //Drawer용 
-const drawerBleeding = 56;
+const drawerBleeding = 40;
 
 const Root = styled('div')(({ theme }) => ({
   height: '100%',
@@ -56,9 +75,59 @@ const Puller = styled(Box)(({ theme }) => ({
 
 function SwipeableEdgeDrawer(props) {
   const { window } = props;
-  const [open, setOpen] = React.useState(false);
-  const count=React.useRef(1);//랜더링 카운트용
-  const ref=React.useRef("");//drawer여는 버튼용
+  const [open, setOpen] = useState(false);
+  const count=useRef(1);//랜더링 카운트용
+  const ref=useRef("");//drawer여는 버튼용
+  const slider=useRef("");//Slider용
+  const dispatch=useDispatch();//디스패치용
+
+   //아바타버튼 디자인
+
+
+   const AvatarStyle=styled(Avatar)((props)=>({
+    width:"60px",
+    height:"60px",
+    fontFamily:"Nanum Gothic",
+    fontWeight:"700",
+    backgroundColor:props.color,
+    margin:"auto"
+  }));
+
+  const todayRoutine=[BenchPress,InclinedBenchPress,DumbbelFly];//오늘 운동 전체 종류
+  const todayPart1=[BenchPress,InclinedBenchPress,DumbbelFly];//오늘 할 운동 부위1
+  const todayPart2=[CablePushDown];//오늘 할 운동 부위2
+  const todayPart3=[Crunch];//오늘 할 운동 부위3
+
+  const todayRoutineListImage=todayRoutine.map((exercise,index)=>(
+    <Card key={index} sx={{ maxWidth: 345 ,marginTop:"1em"}}>
+      <CardActionArea onClick={()=>dispatch(change_clicked_button("button1"))} >
+              <CardMedia
+                          component="img"
+                          height="250"
+                          image={exercise.image_url}
+                          alt={exercise.name}
+                        />
+                        <CardContent sx={{"&.MuiCardContent-root":{padding:"6px",paddingBottom:"0px"}}}>
+                          <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic",fontWeight:"600"}}>
+                          {exercise.name}(5set)
+                        </Typography>
+                        </CardContent>
+        </CardActionArea>
+    </Card>
+  ))
+
+  const todayRoutineListButton=(part,color)=>{
+    let list=part.map((exercise,index)=>(
+    <Button key={index} sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(index,false)}>
+              <Stack direction="column">
+                <AvatarStyle color={color} >{(exercise.name).cut(2)}</AvatarStyle>
+                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{exercise.name}</Typography>
+              </Stack>
+            </Button>
+            
+  ))
+  return list;
+}
 
 
   //Drawer용
@@ -69,10 +138,8 @@ function SwipeableEdgeDrawer(props) {
   // This is used only for the example
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  if(props.select_button=="total"){
 
-  }
-  React.useEffect(()=>{
+  useEffect(()=>{
       if(count.current==1||count.current==2){//위에 setAfterLogin의 변화로 다시 리랜더링이 이미 두번은 먹고 들어가서 그렇다.
           console.log("첫번째 컴");
           count.current+=1;
@@ -87,7 +154,7 @@ function SwipeableEdgeDrawer(props) {
       alert("hi");
   }
 
-  const [openSnackbar, setOpenSnackBar] = React.useState(false);
+  const [openSnackbar, setOpenSnackBar] = useState(false);
 
   const handleClick = () => {
     setOpenSnackBar(true);
@@ -100,7 +167,34 @@ function SwipeableEdgeDrawer(props) {
 
     setOpenSnackBar(false);
   };
-//
+//슬라이더용
+
+  const settings_for_total={
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
+
+  const settings_for_exercises = {
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+
+
+
+
+  const sub_title={
+    total:"오늘의 전체루틴",
+    button1:"오늘의 가슴루틴",
+    button2:"오늘의 삼두루틴",
+    button3:"오늘의 복근루틴"
+  }
+
+  
   return (
     <Root>
       <CssBaseline />
@@ -140,8 +234,9 @@ function SwipeableEdgeDrawer(props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>{props.select_button}</Typography>
+          <Typography sx={{ p: 1, color: 'text.secondary' }}>{sub_title[props.select_button]}</Typography>
         </StyledBox>
+
         <StyledBox
           sx={{
             px: 2,
@@ -150,82 +245,67 @@ function SwipeableEdgeDrawer(props) {
             overflow: 'auto',
           }}
         >
-          <Card sx={{ maxWidth: 345 }}>
-                  <CardActionArea onClick={handleClick}>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image="../assets/img/theme/benchPress.gif"
-                      alt="벤치프레스"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic"}}>
-                        벤치프레스(5set)
-                      </Typography>
-                      <Typography variant="body2" color="white">
-                        벤치프레스는 대표적인 3대운동으로서 대흉근을 키워준다(불라불라부라)
-                      </Typography>
-                      
-                      <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginTop:"2em",marginBottom:"0em"}}>
-                                <i class="ni ni-like-2"></i>
-                                <h2><strong>벤치프레스 레코드</strong></h2>
-                                <Stack direction="column" spacing={2}>
-                                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white"}}>세트당 개수:12개</span> 
-                                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2"}}>세트당 휴식시간:1분40초</span> 
-                                <Stack direction="row" spacing={1}>
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white",margin:"auto"}}>마지막중량:50kg</span> 
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2",margin:"auto"}}>추천중량:60kg</span> 
-                                </Stack>
-                                </Stack>
-                        </div>
-                        
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox defaultChecked sx={{color:"white",'&.Mui-checked':{color:"#fc7c5f"}}} />} label="해당 운동을 숙지하였습니다" />
-                    </FormGroup>
-                  </CardActions>
-              </Card>
+
+          {
+          props.select_button=="total"&&
+           <>
+           
+            <Slider {...settings_for_total} ref={slider}>
+              {todayRoutineListImage}
+            </Slider>
+            <h2 className="text-gray-dark display-4" style={{textAlign:"center"}} >가슴</h2>
+            <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+              {todayRoutineListButton(todayPart1,"#fc7c5f")}
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+              <h2 className="text-gray-dark display-4">삼두</h2>
+              <h2 className="text-gray-dark display-4" >복근</h2>
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+              {todayRoutineListButton(todayPart2,"#2dce89")}
+              {todayRoutineListButton(todayPart3,"#ffc107")}
+            </Stack>
+            
+            
+
+           </>
+          }
+          {
+          props.select_button=="button1"&&
+          <>
+          <Slider {...settings_for_exercises} ref={slider}>
+            <EachExerciseInstruction exercise={BenchPress} />
+            <EachExerciseInstruction exercise={InclinedBenchPress} />
+            <EachExerciseInstruction exercise={DumbbelFly}/>
+          </Slider>
+
+     <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(0,false)}>
+         <Stack direction="column">
+           <AvatarStyle color="#fc7c5f">벤</AvatarStyle>
+           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>벤치프레스</Typography>
+         </Stack>
+       </Button>
+
+       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(1,false)}>
+         <Stack direction="column">
+            <AvatarStyle color="#fc7c5f">인</AvatarStyle>
+           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>인클라인프레스</Typography>
+         </Stack>
+       </Button>
+
+       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(2,false)}>
+         <Stack direction="column">
+            <AvatarStyle color="#fc7c5f">플</AvatarStyle>
+           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500"}}>덤벨플라이</Typography>
+         </Stack>
+       </Button>
+       
+     </Stack>
+     </>}
+          
 
 
-              <Card sx={{ maxWidth: 345,marginTop:"1em"}}>
-                  <CardActionArea onClick={handleClick}>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image="../assets/img/theme/InclinedPress.gif"
-                      alt="인클라인프레스"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic"}}>
-                        인클라인프레스(5set)
-                      </Typography>
-                      <Typography variant="body2" color="white">
-                        플랫벤치가 아닌 45정도 세워진 벤치에서 실시하여 가슴 상부 근육을 좀 더 집중적으로 발달시키는 운동입니다.
-                      </Typography>
-                      
-                      <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginTop:"2em",marginBottom:"0em"}}>
-                                <i class="ni ni-like-2"></i>
-                                <h2><strong>인클라인프레스 레코드</strong></h2>
-                                <Stack direction="column" spacing={2}>
-                                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white"}}>세트당 개수:12개</span> 
-                                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2"}}>세트당 휴식시간:1분40초</span> 
-                                <Stack direction="row" spacing={1}>
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white",margin:"auto"}}>마지막중량:50kg</span> 
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2",margin:"auto"}}>추천중량:60kg</span> 
-                                </Stack>
-                                </Stack>
-                        </div>
-                        
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox defaultChecked sx={{color:"white",'&.Mui-checked':{color:"#fc7c5f"}}} />} label="해당 운동을 숙지하였습니다" />
-                    </FormGroup>
-                  </CardActions>
-              </Card>
               <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="warning" sx={{ width: '100%',"&.MuiAlert-root":{backgroundColor:"#ed6c02 !important",fontFamily:"Nanum Gothic"} }}>
                     대흉근+삼각근+상완삼두근

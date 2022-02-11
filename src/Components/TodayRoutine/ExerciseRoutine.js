@@ -6,7 +6,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import SwipeableEdgeDrawer from "./SwipeableEdgeDrawer";
 
 
 
@@ -17,12 +16,12 @@ function ExerciseRoutine(){
       backgroundColor:"#2dce89"
     },
     "&.MuiButton-root":{
-      padding:"25px 70px",
+      padding:"25px 55px",
       backgroundColor:"#5e72e4",
       display:"inline"
     }
   }
-  
+
   const handleClick=(select)=>{
     setClickedButton(select);
   }
@@ -50,10 +49,7 @@ function ExerciseRoutine(){
           >
             {buttons}
           </ButtonGroup>    
-            
-
-
-          <SwipeableEdgeDrawer select_button={clickedButton}/>
+          
 
 
              

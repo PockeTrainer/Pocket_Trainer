@@ -6,6 +6,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import { useDispatch } from "react-redux";
 
 
 
@@ -19,15 +20,16 @@ function InfoTab(){
         setValue(newValue);
     };
   
+    const dispatch=useDispatch();
+
     return(
         <div className="col-xl-4 order-xl-2 mb-3 mb-xl-0" data-component="ProfileCard">
-            <div className={"card-profile"+" "+styles.bgcard+" "+"shadow"+" "+"card"}>
+            <div className={"card-profile"+" "+"shadow"+" "+"card"}>
               
               
               <div className="card-body pt-0 pt-md-4" style={{padding:"0rem"}}>
                 <div className="row">
-                  <div className="col">
-                  <h4 style={{color:"white"}}>메뉴</h4>
+                  <div className="col" style={{paddingLeft:"5px",paddingRight:"5px"}}>
                     <BottomNavigation sx={{ width: 500,display:"table-cell" }} value={value} onChange={handleChange}>
                         <BottomNavigationAction
                             sx={{".MuiBottomNavigationAction-label":{fontFamily:"Nanum Gothic"}}}
@@ -37,7 +39,7 @@ function InfoTab(){
                         />
                         <BottomNavigationAction
                             sx={{".MuiBottomNavigationAction-label":{fontFamily:"Nanum Gothic"}}}
-                            label="오늘의운동설명"
+                            label="운동정보"
                             value="favorites"
                             icon={<AssignmentLateIcon sx={{}} />}
                         />

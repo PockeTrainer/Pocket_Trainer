@@ -1,11 +1,11 @@
 export class Exercise{
     constructor(last_record,recommend,Exercise_Info){//여기서는 api값들로 받은 것들을 넣어주자+상수값
         this.name=Exercise_Info.name;
-        this.last_record=last_record,
-        this.recommend=recommend,
+        this.last_record=last_record;
+        this.recommend=recommend;
         this.instruction=Exercise_Info.instruction;
         this.image_url=Exercise_Info.image_url;
-        this.musclePart=Exercise_Info.musclePart
+        this.musclePart=Exercise_Info.musclePart;
     }
 
     get name(){
@@ -42,17 +42,65 @@ export const InclinedBenchPress={
     musclePart:"가슴상부근+상부대흉근"
 }
 
-export const Dips={
-    name:"딥스",
-    image_url="../assets/img/theme/Dips.gif",
-    instruction:"딥스는 평행봉 체조에서 가져온 운동으로 평행봉 사이에서 상체 근육을 이용하여 몸을 위아래로 움직이는 운동입니다",
-    musclePart:"가슴하부근+삼두근+전면삼각근"
+export const DumbbelFly={
+    name:"덤벨플라이",
+    image_url:"../assets/img/theme/DumbbelFly.gif",
+    instruction:"덤벨플라이는 왼쪽과 오른쪽 가슴이 만나느 중앙부분을 발달시키는 운동으로서 가슴중앙의 근육분리와 함께 벌어진 가슴을 모아주는 운동입니다.",
+    musclePart:"대흉근"
 }
 
 //등
 export const LatPullDown={
     name:"렛풀다운",
-    image_url="../assets/img/theme/LatPullDown.gif",
+    image_url:"../assets/img/theme/LatPullDown.gif",
     instruction:"턱걸이와 유사한 기능을 가진 수직 당기기 머신 운동으로 등의 광배근을 길러주는 운동입니다",
     musclePart:"광배근+전완근+이두근"
 }
+
+//어깨
+
+//삼두
+export const CablePushDown={
+    name:"케이블푸시다운",
+    image_url:"../assets/img/theme/CablePushDown.gif",
+    instruction:"",
+    musclePart:"",
+}
+
+export const LyingTricepsExtension={
+    name:"라잉트라이셉스익스텐션",
+    image_url:"",
+    instruction:"",
+    musclePart:"",
+}
+
+export const DumbbellKickBack={
+    name:"덤벨킥백",
+    image_url:"",
+    instruction:"",
+    musclePart:"",
+}
+//이두
+
+//복근
+export const Crunch={
+    name:"크런치",
+    image_url:"",
+    instruction:"",
+    musclePart:"",
+}
+
+export const SeatedKneeUp={
+    name:"싯티드니업",
+    image_url:"",
+    instruction:"",
+    musclePart:"",
+}
+
+export const Planke={
+    name:"플랭크",
+    image_url:"",
+    instruction:"",
+    musclePart:"",
+}
+//하체
