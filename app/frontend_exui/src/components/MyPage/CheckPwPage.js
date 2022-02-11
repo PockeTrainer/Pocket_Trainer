@@ -4,17 +4,38 @@ import '../../css/MyPage/CheckPwPage.css';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 // Register one of the TF.js backends.
+import ml5 from "ml5";
 import '@tensorflow/tfjs-backend-webgl';
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 // import '@tensorflow/tfjs-backend-wasm';
 
 function CheckPwPage() {
-    const webcamRef = useRef(null);
-    const canvasRef = useRef(null);
+     const webcamRef = useRef(null);
+     const canvasRef = useRef(null);
+
+    const brain = ''
+
+    function brainLoaded() {
+        console.log('Loaded')
+    }
 
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
+        const options = {
+            inputs: 34,
+            outputs: 2,
+            task: 'classification',
+            debug: true
+        };
+        brain = ml5.neuralNetwork(options);  //ml5 neuralNetwork 시작
+        const modelInfo = {
+            model:"https://smlistener.s3.ap-northeast-2.amazonaws.com/model_0307/lr_0.02_epoch50_2/model.json",
+            metadata : "https://smlistener.s3.ap-northeast-2.amazonaws.com/model_0307/lr_0.02_epoch50_2/model_meta.json",
+            weights: "https://smlistener.s3.ap-northeast-2.amazonaws.com/model_0307/lr_0.02_epoch50_2/model.weights.bin"
+          };  //model load
+        brain.load(modelInfo, brainLoaded);
+
         const detector = await poseDetection.createDetector(
             poseDetection.SupportedModels.MoveNet, 
             // detectorConfig,
@@ -22,6 +43,10 @@ function CheckPwPage() {
         setInterval(() => {
             detect(detector);
           }, 100);
+    }
+
+    function gotResult(error, results) {
+        console.log(results)
     }
 
     const detect = async (detector) => {
@@ -40,15 +65,26 @@ function CheckPwPage() {
             webcamRef.current.video.height = videoHeight;
 
             const poses = await detector.estimatePoses(video);
-            //console.log(poses)
-            drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef);
+            //const poses = await model.estimatePoses(video);
+
+            brain.classify(poses[0], gotResult);
+            // Start image classification
+
+            if (poses.length > 0) { 
+                drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
+            }
         }
     }
 
     const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
-        const ctx = canvas.current.getContext("2d");
-        canvas.current.width = videoWidth;
-        canvas.current.height = videoHeight;
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = videoWidth;
+        canvas.height = videoHeight;
+
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+
         console.log(pose["keypoints"])
 
         /* 각도 재서 카운트 하는거만 js
@@ -59,13 +95,14 @@ function CheckPwPage() {
         drawSkeleton(pose["keypoints"], 0.7, ctx);
       };
 
-    runMovenet();
+    //runMovenet();
     //detect();
     return (
         <div className="App">
             <header className="App-header">
                 <Webcam
                     ref={webcamRef}
+                    mirrored
                     style={{
                         position: "absolute",
                         marginLeft: "auto",

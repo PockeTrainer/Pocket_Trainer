@@ -5,14 +5,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from .models import User, DayHistoryUserInfo
-from .serializers import UserSerializer, testResultSerializer
+from .serializers import UserSerializer
 
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # Create your views here.
-
-import math
 
 class SignUpView(APIView):
     permission_classes = [AllowAny]

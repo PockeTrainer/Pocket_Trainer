@@ -1,94 +1,30 @@
-import React, { Component, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/OnBoarding/BodyInfoPage.css';
-import * as tf from "@tensorflow/tfjs";
-import * as posenet from "@tensorflow-models/posenet";
-import Webcam from "react-webcam";
-import { drawKeypoints, drawSkeleton } from "./utilities";
+import axios from "axios";
 
 function BodyInfoPage() {
-    const webcamRef = useRef(null);
-    const canvasRef = useRef(null);
   
-    //  Load posenet
-    const runPosenet = async () => {
-      const net = await posenet.load({
-        inputResolution: { width: 640, height: 480 },
-        scale: 0.8,
-      });
-      //
-      setInterval(() => {
-        detect(net);
-      }, 100);
-    };
-  
-    const detect = async (net) => {
-      if (
-        typeof webcamRef.current !== "undefined" &&
-        webcamRef.current !== null &&
-        webcamRef.current.video.readyState === 4
-      ) {
-        // Get Video Properties
-        const video = webcamRef.current.video;
-        const videoWidth = webcamRef.current.video.videoWidth;
-        const videoHeight = webcamRef.current.video.videoHeight;
-  
-        // Set video width
-        webcamRef.current.video.width = videoWidth;
-        webcamRef.current.video.height = videoHeight;
-  
-        // Make Detections
-        const pose = await net.estimateSinglePose(video);
-        console.log(pose);
-  
-        drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
-      }
-    };
-  
-    const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
-      const ctx = canvas.current.getContext("2d");
-      canvas.current.width = videoWidth;
-      canvas.current.height = videoHeight;
-  
-      drawKeypoints(pose["keypoints"], 0.6, ctx);
-      //drawSkeleton(pose["keypoints"], 0.7, ctx);
-    };
-  
-    runPosenet();
+    let id = sessionStorage.getItem("user_id");
+
+    useEffect(async() => {
+        // 오늘의 루틴 호출
+        await axios.get(`http://127.0.0.1:8000/api/workout/todayRoutine/${id}`)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                // if (err.response.data.error === '오늘의 운동 루틴 생성 실패, 체력평가 결과 필요') {
+                //     console.log("체력 평가 유도")
+                // } else if (err.response.data.error === '오늘의 운동 계획이 이미 생성되었습니다') {
+                //     console.log("skip")
+                // }
+            })
+      })
   
     return (
       <div className="App">
-        <header className="App-header">
-          <Webcam
-            ref={webcamRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
-  
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
-        </header>
       </div>
     );
 }

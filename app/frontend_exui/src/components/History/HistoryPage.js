@@ -21,44 +21,32 @@ function HistoryPage() {
     const newToday = `${year}-${month}-${day}`
 
     let [date, changeDate] = useState(newToday);
-
+    let id = sessionStorage.getItem("user_id");
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/workout/history/2/${date}`)
-        .then(res => {
+        axios.get(`http://127.0.0.1:8000/api/history/${date}/${id}`)
+            .then(res => {
 
-            console.log(res);
-            const workoutLen = res.data.length;
+                console.log(res.data);
+                
+                var woList = new Array();
+                for (var i in res.data.day_history_workout) {
+                    woList.push([`${res.data.day_history_workout[i].workout_name} :  ${res.data.day_history_workout[i].is_clear}`])
+                }
+                changeWorkoutList(woList)
+                
+                if (res.data.day_weight != -1) {
+                    changeWeight(res.data.day_weight);
+                } else {
+                    changeWeight("몸무게 기록이 없습니다.")
+                }
 
-            var woList = new Array();
-            for (var i in res.data) {
-                woList.push([`${res.data[i].workout_id.workout_name} :  ${res.data[i].total_time}`])
-            }
-            changeWorkoutList(woList)
-            
-            if (workoutLen > 0) {
-                if (res.data[workoutLen-1].bmi) {
-                    changeBMI(res.data[workoutLen-1].bmi);
+                if (res.data.day_bmi != -1) {
+                    changeBMI(res.data.day_bmi);
+                } else {
+                    changeBMI("bmi 기록이 없습니다.")
                 }
-                else {
-                    changeBMI("운동 기록이 없습니다.")
-                }
-            } else {
-                changeBMI("운동 기록이 없습니다.")
-            }
-            
-            //`${res.data[workoutLen-1].weight}kg
-            if (workoutLen > 0) {
-                if (res.data[workoutLen-1].weight) {
-                    changeWeight(`${res.data[workoutLen-1].weight} kg`);
-                }
-                else {
-                    changeWeight("몸무게를 입력하세요.")
-                }
-            } else {
-                changeWeight("몸무게를 입력하세요.")
-            }
-        })
-        .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
     }, [date]);
 
     // let id = sessionStorage.getItem("user_id");

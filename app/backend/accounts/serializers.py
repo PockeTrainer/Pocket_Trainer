@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = User
 
-class testResultSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = User
+# class testResultSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         fields = '__all__'
+#         model = User

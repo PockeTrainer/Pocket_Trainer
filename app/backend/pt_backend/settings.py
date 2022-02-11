@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workout',
-    'detectme',
     'accounts',
     'history',
     'rest_framework',

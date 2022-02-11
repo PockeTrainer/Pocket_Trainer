@@ -20,6 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('accounts.urls')),
     path('api/workout/', include('workout.urls')),
-    path('api/detectme/', include('detectme.urls')),
     path('api/history/', include('history.urls')),
 ]

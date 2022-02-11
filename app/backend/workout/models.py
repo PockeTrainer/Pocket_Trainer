@@ -20,10 +20,12 @@ class DayHistoryWorkout(models.Model):
                                 on_delete=models.CASCADE,                            
                                 related_name='day_history_workout_workout')
     target_kg = models.IntegerField(null=True, blank=True)
-    target_set = models.IntegerField(null=True, blank=True)
     target_cnt = models.IntegerField(null=True, blank=True)
+    target_time = models.TimeField(null=True, blank=True)
+    #target_set = models.IntegerField(null=True, blank=True)
+    #target_cnt = models.IntegerField(null=True, blank=True)
     workout_set = models.IntegerField(null=True, blank=True)
-    workout_cnt = models.IntegerField(null=True, blank=True)
+    #workout_cnt = models.IntegerField(null=True, blank=True)
     workout_time = models.TimeField(null=True, blank=True)
     is_clear = models.BooleanField(default=False)
 

@@ -15,25 +15,33 @@ class User(AbstractUser):
     def __str__(self):
         return self.username;
 
-
 #체력 평가 이후 생성 : 이미 있다면 routine 제외하고, 없다면 모두 update
-#사용자의 운동 루틴 순서와 각 부위별 레벨 정보를 관리
-class UserWorkoutInfo(models.Model):
+#사용자의 운동 루틴 순서 관리
+class UserWorkoutRoutine(models.Model):
     user_id = models.ForeignKey(User, 
                         on_delete=models.CASCADE,
-                        related_name='user_workout_info')
-    workout_routine  = models.IntegerField(null=True, blank=True)
-    chest_level = models.FloatField(null=True, blank=True)
-    triceps_level = models.FloatField(null=True, blank=True)
-    shoulder_level = models.FloatField(null=True, blank=True)
-    lowerbody_level = models.FloatField(null=True, blank=True)
-    back_level = models.FloatField(null=True, blank=True)
-    biceps_level = models.FloatField(null=True, blank=True)
-    stomach_level = models.FloatField(null=True, blank=True)
+                        related_name='user_workout_routine')
+    workout_routine = models.IntegerField(null=True, blank=True)
+    triceps_seq = models.IntegerField(null=True, blank=True)
+    biceps_seq = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return str(self.user_id);
 
+# 사용자의 운동별 무게, 피드백 정보를 관리
+class UserWorkoutInfo(models.Model):
+    user_id = models.ForeignKey(User, 
+                        on_delete=models.CASCADE,
+                        related_name='user_workout_info_user')
+    workout_name = models.ForeignKey('workout.WorkoutInfo', 
+                            on_delete=models.CASCADE,                            
+                            related_name='user_workout_info_workoutname')                   
+    target_kg = models.IntegerField(null=True, blank=True)
+    target_cnt = models.IntegerField(null=True, blank=True)
+    target_time = models.TimeField(null=True, blank=True)
+    workout_feedback  = models.IntegerField(null=True, blank=True)
+    def __str__(self):
+        return str(f'{self.user_id}_{self.workout_name}');
 
 #체력 평가 결과를 기록
 class UserTestResult(models.Model):
