@@ -14,7 +14,11 @@ import {none_testState} from '../../../modules/action.js';
 import {setting_completed} from '../../../modules/action.js';
 
 import * as tmPose from '@teachablemachine/pose';
+import ml5 from "ml5";
 
+import model_meta from './model/model_meta.json'
+import model from './model/model.json'
+import model_weights from './model/model.weights.bin'
 
 
 
@@ -60,6 +64,9 @@ function Camera({display,page}) {
 
     var fordingState = "unfolding";
 
+    let classifiedPose;
+    let ml5Poses;
+
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
         const detector = await poseDetection.createDetector(
@@ -69,7 +76,67 @@ function Camera({display,page}) {
         setInterval(() => {
             detect(detector);
           }, 100);
+
+        console.log('ml5 head');
+
+
+        const poses = await detector.estimatePoses(webcamRef.current.video);
+        ml5Poses = poses[0]
+        console.log('ml5Poses');
+        console.log(ml5Poses);
     }
+
+    // ml5를 이용한 classification
+    let options = {
+        inputs: 34,
+        outputs: 4,
+        task: 'classification',
+        debug: true
+    };
+    let brain = ml5.neuralNetwork(options);
+
+    // 경로를 어떻게 잡죠...
+    const modelInfo = {
+        model: './model/model.json',
+        metadata: './model/model_meta.json',
+        weights: './model/model.weights.bin',
+    };
+
+    brain.load(modelInfo, brainLoaded);
+
+    function brainLoaded() {
+        console.log('자세 분류 준비 완료');
+        if (ml5Poses.length > 0) {
+            classifyPose(ml5Poses[0]);
+        }
+    }
+
+    function classifyPose(pose) {
+        console.log('classify pose start');
+        if (pose) {
+            let inputs = [];
+
+            for (let i = 0; i < pose['keypoints'].length; i++) {
+                let x = pose['keypoints'][i].x;
+                let y = pose['keypoints'][i].y;
+                inputs.push(x);
+                inputs.push(y);
+            }
+
+            brain.classify(inputs, gotResult);
+        } else {
+            setTimeout(classifyPose, 100);
+        }
+    }
+
+    function gotResult(error, results) {
+        console.log('gotResult start');
+        if (results[0].confidence > 0.75) {
+            classifiedPose = results[0].label;
+        }
+        classifyPose();
+    }
+
 
     const detect = async (detector) => {
         if (
@@ -91,7 +158,7 @@ function Camera({display,page}) {
             //카메라가 가동되기 시작함-이때부터 점도 찍을수 있게 됨
             if (poses.length > 0) { 
                 drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
-                console.log("디텍트 중");
+                // console.log("디텍트 중");
                 if(count.current==0){
                     count.current+=1;
                     dispatch(setting_completed());//카메라 완료상태를 의미
@@ -106,6 +173,10 @@ function Camera({display,page}) {
 
         canvas.width = videoWidth;
         canvas.height = videoHeight;
+
+        var printText;
+
+        ctx.save();
 
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
@@ -166,10 +237,35 @@ function Camera({display,page}) {
             }
 
 
+            // ml5 classification
+            switch (classifiedPose) {
+                case 'standUp':
+                    printText = '서있는 자세';
+                    break;
+                case 'perfect':
+                    printText = '완벽합니다!';
+                    break;
+                case 'waistDown':
+                    printText = '허리를 세워주세요';
+                    break;
+                case 'legUp':
+                    printText = '더 앉아주세요';
+                    break;
+                default:
+                    printText = '알 수 없는 자세';
+                    break;
+            }
         }
 
         drawKeypoints(pose["keypoints"], 0.6, ctx);
         drawSkeleton(pose["keypoints"], 0.7, ctx);
+
+        ctx.restore();
+
+        ctx.font = '1024px';
+        // console.log(printText);
+        ctx.fillStyle="blue";
+        ctx.fillText(printText, videoWidth / 2, videoHeight / 4);
       };
 
 
