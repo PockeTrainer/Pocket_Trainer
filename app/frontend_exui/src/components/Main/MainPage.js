@@ -9,7 +9,6 @@ import Webcam from "react-webcam"
 import axios from "axios";
 
 
-
 function MainPage() {
 
     const webcamRef = useRef(null);
@@ -60,8 +59,11 @@ function MainPage() {
             .catch((err) => {
                 console.log(err.response.data)
             })
+        }
 
-        //체력 평가 결과 리턴
+
+    }, []);
+         //체력 평가 결과 리턴
         axios.get(`http://127.0.0.1:8000/api/workout/lastTestResult/${id}`)
             .then(res => {
                 console.log(res.data);
@@ -104,8 +106,6 @@ function MainPage() {
                 }
             })
             .catch(err => console.log(err))
-    }, []);
- 
     const onClick = () => {
         axios.post(`http://127.0.0.1:8000/api/workout/testResult/${id}`, {
             pushUp : pushUp,

@@ -14,7 +14,6 @@ export default function ResponsiveDatePickers() {
           value={value}
           onChange={(newValue) => {
             setValue(newValue);
-            //changeBirth(e.target.value.toString());
           }}
           renderInput={(params) => <TextField {...params} />}
         />

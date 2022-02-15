@@ -1,61 +1,61 @@
-.pl-4, .px-4 {
+.pl-4, .px-4_ {
     padding-left: 3.5rem !important;
   }
 
-  .navbar-horizontal .navbar-brand {
+  .navbar-horizontal .navbar-brand_ {
     font-size: 3.875rem;
   }
-  .navbar-horizontal .navbar-brand img {
+  .navbar-horizontal .navbar-brand_ img {
     height: 4em;
   }
 
-  .mb-7, .my-7 {
+  .mb-7_, .my-7 {
     margin-bottom: 10rem !important;
   }
-  .title_message{
+  .title_message_{
     position: relative;
     top: 7.8em;
   }
-  .card-header{
+  .card-header_{
     padding: 0.25rem 1.5rem;
   }
 
-  .pb-5, .py-5 {
+  .pb-5_, .py-5_ {
     padding-bottom: 1rem !important;
   }
-.bg-transparent {
+.bg-transparent_ {
   background-color: #6a6ce4a1 !important;
 }
 
-.login_method{
+.login_method_{
   color:white;
 }
 
-.shadow, .card-profile-image img {
+.shadow_, .card-profile-image_ img {
     box-shadow: 0 0 7rem 0 rgb(51 39 62 / 40%) !important;
 }
 
-.bg-secondary {
+.bg-secondary_ {
     background-color: #fafcfde0 !important;
 }
 
-.text-center{
+.text-center_{
   text-align: center;
 }
 
-.sex{
+.sex_{
   float:left;
 }
 
-.seperator{
+.seperator_{
   margin-right: 1em;
 }
 
-.card-header{
+.card-header_{
   padding:0rem 0rem;
   border-radius: 0.375rem;
 }
 
-.text-left{
+.text-left_{
   text-align: left;
 }

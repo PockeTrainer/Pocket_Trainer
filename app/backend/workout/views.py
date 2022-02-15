@@ -246,198 +246,373 @@ class SaveTestResultView(APIView):
         
         # 남자 pushUp 등급
         if ("man" in user.gender) :
-            if (age <= 25) :
-                if (int(request.data.get('pushUp')) >= 72) :
+            if (age <= 19) :
+                if (int(request.data.get('pushUp')) >= 30) :
                     User_TestResult.upperbody_strength = 1
-                elif (64 <= int(request.data.get('pushUp')) <= 71) :
+                elif (22 <= int(request.data.get('pushUp')) < 30) :
                     User_TestResult.upperbody_strength = 2
-                elif (56 <= int(request.data.get('pushUp')) <= 63) :
+                elif (14 <= int(request.data.get('pushUp')) < 22) :
                     User_TestResult.upperbody_strength = 3
-                elif (48 <= int(request.data.get('pushUp')) <= 55) :
+                elif (6 <= int(request.data.get('pushUp')) < 14) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
                 
-            elif (26 <= age <= 30) :
-                if (int(request.data.get('pushUp')) >= 70) :
+            elif (20 <= age <= 35) :
+                if (int(request.data.get('pushUp')) >= 32) :
                     User_TestResult.upperbody_strength = 1
-                elif (62 <= int(request.data.get('pushUp')) <= 69) :
+                elif (24 <= int(request.data.get('pushUp')) < 32) :
                     User_TestResult.upperbody_strength = 2
-                elif (54 <= int(request.data.get('pushUp')) <= 61) :
+                elif (16 <= int(request.data.get('pushUp')) < 24) :
                     User_TestResult.upperbody_strength = 3
-                elif (46 <= int(request.data.get('pushUp')) <= 53) :
+                elif (8 <= int(request.data.get('pushUp')) < 16) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
 
-            elif (31 <= age <= 35) :
-                if (int(request.data.get('pushUp')) >= 68) :
+            elif (36 <= age <= 49) :
+                if (int(request.data.get('pushUp')) >= 30) :
                     User_TestResult.upperbody_strength = 1
-                elif (60 <= int(request.data.get('pushUp')) <= 67) :
+                elif (22 <= int(request.data.get('pushUp')) < 30) :
                     User_TestResult.upperbody_strength = 2
-                elif (52 <= int(request.data.get('pushUp')) <= 59) :
+                elif (14 <= int(request.data.get('pushUp')) < 22) :
                     User_TestResult.upperbody_strength = 3
-                elif (44 <= int(request.data.get('pushUp')) <= 51) :
-                    User_TestResult.upperbody_strengthh = 4
-                else :
-                    User_TestResult.upperbody_strength = 5
-            
-            elif (36 <= age <= 40) :
-                if (int(request.data.get('pushUp')) >= 65) :
-                    User_TestResult.upperbody_strength = 1
-                elif (57 <= int(request.data.get('pushUp')) <= 64) :
-                    User_TestResult.upperbody_strength = 2
-                elif (49 <= int(request.data.get('pushUp')) <= 56) :
-                    User_TestResult.upperbody_strength = 3
-                elif (41 <= int(request.data.get('pushUp')) <= 48) :
-                    User_TestResult.upperbody_strength = 4
-                else :
-                    User_TestResult.upperbody_strength = 5
-
-            elif (41 <= age <= 43) :
-                if (int(request.data.get('pushUp')) >= 61) :
-                    User_TestResult.upperbody_strength = 1
-                elif (53 <= int(request.data.get('pushUp')) <= 60) :
-                    User_TestResult.upperbody_strength = 2
-                elif (45 <= int(request.data.get('pushUp')) <= 52) :
-                    User_TestResult.upperbody_strength = 3
-                elif (37 <= int(request.data.get('pushUp')) <= 44) :
+                elif (6 <= int(request.data.get('pushUp')) < 14) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
             
-            elif (44 <= age <= 46) :
-                if (int(request.data.get('pushUp')) >= 57) :
+            elif (50 <= age <= 65) :
+                if (int(request.data.get('pushUp')) >= 28) :
                     User_TestResult.upperbody_strength = 1
-                elif (49 <= int(request.data.get('pushUp')) <= 56) :
+                elif (20 <= int(request.data.get('pushUp')) < 28) :
                     User_TestResult.upperbody_strength = 2
-                elif (41 <= int(request.data.get('pushUp')) <= 48) :
+                elif (12 <= int(request.data.get('pushUp')) < 20) :
                     User_TestResult.upperbody_strength = 3
-                elif (33 <= int(request.data.get('pushUp')) <= 40) :
+                elif (4 <= int(request.data.get('pushUp')) < 12) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
 
-            elif (47 <= age <= 49) :
-                if (int(request.data.get('pushUp')) >= 54) :
+            elif (66 <= age ) :
+                if (int(request.data.get('pushUp')) >= 26) :
                     User_TestResult.upperbody_strength = 1
-                elif (46 <= int(request.data.get('pushUp')) <= 53) :
+                elif (18 <= int(request.data.get('pushUp')) < 26) :
                     User_TestResult.upperbody_strength = 2
-                elif (38 <= int(request.data.get('pushUp')) <= 45) :
+                elif (10 <= int(request.data.get('pushUp')) < 18) :
                     User_TestResult.upperbody_strength = 3
-                elif (30 <= int(request.data.get('pushUp')) <= 37) :
+                elif (4 <= int(request.data.get('pushUp')) < 10) :
+                    User_TestResult.upperbody_strength = 4
+                else :
+                    User_TestResult.upperbody_strength = 5
+        # 여자 pushUp 등급
+        elif ("woman" in user.gender) :
+            if (age <= 19) :
+                if (int(request.data.get('pushUp')) >= 16) :
+                    User_TestResult.upperbody_strength = 1
+                elif (12 <= int(request.data.get('pushUp')) < 16) :
+                    User_TestResult.upperbody_strength = 2
+                elif (8 <= int(request.data.get('pushUp')) < 12) :
+                    User_TestResult.upperbody_strength = 3
+                elif (4 <= int(request.data.get('pushUp')) < 8) :
+                    User_TestResult.upperbody_strength = 4
+                else :
+                    User_TestResult.upperbody_strength = 5
+                
+            elif (20 <= age <= 35) :
+                if (int(request.data.get('pushUp')) >= 20) :
+                    User_TestResult.upperbody_strength = 1
+                elif (16 <= int(request.data.get('pushUp')) < 20) :
+                    User_TestResult.upperbody_strength = 2
+                elif (12 <= int(request.data.get('pushUp')) < 16) :
+                    User_TestResult.upperbody_strength = 3
+                elif (8 <= int(request.data.get('pushUp')) < 12) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
 
-            elif (50 <= age <= 51) :
-                if (int(request.data.get('pushUp')) >= 51) :
+            elif (36 <= age <= 49) :
+                if (int(request.data.get('pushUp')) >= 18) :
                     User_TestResult.upperbody_strength = 1
-                elif (43 <= int(request.data.get('pushUp')) <= 50) :
+                elif (14 <= int(request.data.get('pushUp')) < 18) :
                     User_TestResult.upperbody_strength = 2
-                elif (35 <= int(request.data.get('pushUp')) <= 42) :
+                elif (10 <= int(request.data.get('pushUp')) < 14) :
                     User_TestResult.upperbody_strength = 3
-                elif (27 <= int(request.data.get('pushUp')) <= 34) :
+                elif (4 <= int(request.data.get('pushUp')) < 10) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
             
-            elif (52 <= age <= 53) :
-                if (int(request.data.get('pushUp')) >= 49) :
+            elif (50 <= age <= 65) :
+                if (int(request.data.get('pushUp')) >= 18) :
                     User_TestResult.upperbody_strength = 1
-                elif (41 <= int(request.data.get('pushUp')) <= 48) :
+                elif (14 <= int(request.data.get('pushUp')) < 18) :
                     User_TestResult.upperbody_strength = 2
-                elif (33 <= int(request.data.get('pushUp')) <= 40) :
+                elif (10 <= int(request.data.get('pushUp')) < 14) :
                     User_TestResult.upperbody_strength = 3
-                elif (25 <= int(request.data.get('pushUp')) <= 32) :
+                elif (4 <= int(request.data.get('pushUp')) < 10) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
 
-            elif (54 <= age) :
-                if (int(request.data.get('pushUp')) >= 47) :
+            elif (66 <= age ) :
+                if (int(request.data.get('pushUp')) >= 16) :
                     User_TestResult.upperbody_strength = 1
-                elif (39 <= int(request.data.get('pushUp')) <= 46) :
+                elif (12 <= int(request.data.get('pushUp')) < 16) :
                     User_TestResult.upperbody_strength = 2
-                elif (31 <= int(request.data.get('pushUp')) <= 38) :
+                elif (8 <= int(request.data.get('pushUp')) < 12) :
                     User_TestResult.upperbody_strength = 3
-                elif (23 <= int(request.data.get('pushUp')) <= 30) :
+                elif (4 <= int(request.data.get('pushUp')) < 8) :
                     User_TestResult.upperbody_strength = 4
                 else :
                     User_TestResult.upperbody_strength = 5
+
         
         # 남자 윗몸 등급
         if ("man" in user.gender) :
-            if (25 >= age) :
-                if (int(request.data.get('sitUp')) >= 82) :
+            if (19 >= age) :
+                if (int(request.data.get('sitUp')) >= 35) :
                     User_TestResult.stomach_strength = 1
-                elif (74 <= int(request.data.get('sitUp')) <= 81) :
+                elif (27 <= int(request.data.get('sitUp')) < 35) :
                     User_TestResult.stomach_strength = 2
-                elif (66 <= int(request.data.get('sitUp')) <= 73) :
+                elif (19 <= int(request.data.get('sitUp')) < 27) :
                     User_TestResult.stomach_strength = 3
-                elif (58 <= int(request.data.get('sitUp')) <= 65) :
+                elif (11 <= int(request.data.get('sitUp')) < 19) :
                     User_TestResult.stomach_strength = 4
                 else :
                     User_TestResult.stomach_strength = 5
 
-            if (26 <= age <= 40) :
-                if (int(request.data.get('sitUp')) >= 72) :
+            if (20 <= age <= 35) :
+                if (int(request.data.get('sitUp')) >= 37) :
                     User_TestResult.stomach_strength = 1
-                elif (64 <= int(request.data.get('sitUp')) <= 71) :
+                elif (29 <= int(request.data.get('sitUp')) < 37) :
                     User_TestResult.stomach_strength = 2
-                elif (56 <= int(request.data.get('sitUp')) <= 63) :
+                elif (21 <= int(request.data.get('sitUp')) < 29) :
                     User_TestResult.stomach_strength = 3
-                elif (48 <= int(request.data.get('sitUp')) <= 55) :
+                elif (13 <= int(request.data.get('sitUp')) < 21) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+                    
+            if (36 <= age <= 49) :
+                if (int(request.data.get('sitUp')) >= 35) :
+                    User_TestResult.stomach_strength = 1
+                elif (27 <= int(request.data.get('sitUp')) < 35) :
+                    User_TestResult.stomach_strength = 2
+                elif (19 <= int(request.data.get('sitUp')) < 27) :
+                    User_TestResult.stomach_strength = 3
+                elif (11 <= int(request.data.get('sitUp')) < 19) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+
+                    
+            if (50 <= age <= 65) :
+                if (int(request.data.get('sitUp')) >= 33) :
+                    User_TestResult.stomach_strength = 1
+                elif (25 <= int(request.data.get('sitUp')) < 33) :
+                    User_TestResult.stomach_strength = 2
+                elif (17 <= int(request.data.get('sitUp')) < 25) :
+                    User_TestResult.stomach_strength = 3
+                elif (9 <= int(request.data.get('sitUp')) < 17) :
                     User_TestResult.stomach_strength = 4
                 else :
                     User_TestResult.stomach_strength = 5
             
-            if (41 <= age) :
-                if (int(request.data.get('sitUp')) >= 54) :
+            if (66 <= age) :
+                if (int(request.data.get('sitUp')) >= 31) :
                     User_TestResult.stomach_strength = 1
-                elif (46 <= int(request.data.get('sitUp')) <= 53) :
+                elif (23 <= int(request.data.get('sitUp')) < 31) :
                     User_TestResult.stomach_strength = 2
-                elif (38 <= int(request.data.get('sitUp')) <= 45) :
+                elif (15 <= int(request.data.get('sitUp')) < 23) :
                     User_TestResult.stomach_strength = 3
-                elif (30 <= int(request.data.get('sitUp')) <= 37) :
+                elif (7 <= int(request.data.get('sitUp')) < 15) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+        # 여자 윗몸 등급
+        elif ("woman" in user.gender) :
+            if (19 >= age) :
+                if (int(request.data.get('sitUp')) >= 31) :
+                    User_TestResult.stomach_strength = 1
+                elif (23 <= int(request.data.get('sitUp')) < 31) :
+                    User_TestResult.stomach_strength = 2
+                elif (15 <= int(request.data.get('sitUp')) < 23) :
+                    User_TestResult.stomach_strength = 3
+                elif (7 <= int(request.data.get('sitUp')) < 15) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+
+            if (20 <= age <= 35) :
+                if (int(request.data.get('sitUp')) >= 29) :
+                    User_TestResult.stomach_strength = 1
+                elif (21 <= int(request.data.get('sitUp')) < 29) :
+                    User_TestResult.stomach_strength = 2
+                elif (13 <= int(request.data.get('sitUp')) < 21) :
+                    User_TestResult.stomach_strength = 3
+                elif (5 <= int(request.data.get('sitUp')) < 13) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+                    
+            if (36 <= age <= 49) :
+                if (int(request.data.get('sitUp')) >= 29) :
+                    User_TestResult.stomach_strength = 1
+                elif (21 <= int(request.data.get('sitUp')) < 29) :
+                    User_TestResult.stomach_strength = 2
+                elif (13 <= int(request.data.get('sitUp')) < 21) :
+                    User_TestResult.stomach_strength = 3
+                elif (5 <= int(request.data.get('sitUp')) < 13) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+
+                    
+            if (50 <= age <= 65) :
+                if (int(request.data.get('sitUp')) >= 27) :
+                    User_TestResult.stomach_strength = 1
+                elif (19 <= int(request.data.get('sitUp')) < 27) :
+                    User_TestResult.stomach_strength = 2
+                elif (11 <= int(request.data.get('sitUp')) < 19) :
+                    User_TestResult.stomach_strength = 3
+                elif (4 <= int(request.data.get('sitUp')) < 11) :
+                    User_TestResult.stomach_strength = 4
+                else :
+                    User_TestResult.stomach_strength = 5
+            
+            if (66 <= age) :
+                if (int(request.data.get('sitUp')) >= 27) :
+                    User_TestResult.stomach_strength = 1
+                elif (19 <= int(request.data.get('sitUp')) < 27) :
+                    User_TestResult.stomach_strength = 2
+                elif (11 <= int(request.data.get('sitUp')) < 19) :
+                    User_TestResult.stomach_strength = 3
+                elif (4 <= int(request.data.get('sitUp')) < 11) :
                     User_TestResult.stomach_strength = 4
                 else :
                     User_TestResult.stomach_strength = 5
 
         # 남자 스쿼트 등급
         if ("man" in user.gender) :
-            if (25 >= age) :
-                if (int(request.data.get('squat')) >= 82) :
+            if (19 >= age) :
+                if (int(request.data.get('squat')) >= 40) :
                     User_TestResult.lowerbody_strength = 1
-                elif (74 <= int(request.data.get('squat')) <= 81) :
+                elif (30 <= int(request.data.get('squat')) < 40) :
                     User_TestResult.lowerbody_strength = 2
-                elif (66 <= int(request.data.get('squat')) <= 73) :
+                elif (20 <= int(request.data.get('squat')) < 30) :
                     User_TestResult.lowerbody_strength = 3
-                elif (58 <= int(request.data.get('squat')) <= 65) :
+                elif (10 <= int(request.data.get('squat')) < 20) :
                     User_TestResult.lowerbody_strength = 4
                 else :
                     User_TestResult.lowerbody_strength = 5
 
-            if (26 <= age <= 40) :
-                if (int(request.data.get('squat')) >= 72) :
+            if (20 <= age <= 35) :
+                if (int(request.data.get('squat')) >= 45) :
                     User_TestResult.lowerbody_strength = 1
-                elif (64 <= int(request.data.get('squat')) <= 71) :
+                elif (35 <= int(request.data.get('squat')) < 45) :
                     User_TestResult.lowerbody_strength = 2
-                elif (56 <= int(request.data.get('squat')) <= 63) :
+                elif (25 <= int(request.data.get('squat')) < 35) :
                     User_TestResult.lowerbody_strength = 3
-                elif (48 <= int(request.data.get('squat')) <= 55) :
+                elif (15 <= int(request.data.get('squat')) < 25) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+            if (36 <= age <= 49) :
+                if (int(request.data.get('squat')) >= 45) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (35 <= int(request.data.get('squat')) < 45) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (25 <= int(request.data.get('squat')) < 35) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (15 <= int(request.data.get('squat')) < 25) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+            if (50 <= age <= 65) :
+                if (int(request.data.get('squat')) >= 40) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (30 <= int(request.data.get('squat')) < 40) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (20 <= int(request.data.get('squat')) < 30) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (10 <= int(request.data.get('squat')) < 20) :
                     User_TestResult.lowerbody_strength = 4
                 else :
                     User_TestResult.lowerbody_strength = 5
             
-            if (41 <= age) :
-                if (int(request.data.get('squat')) >= 54) :
+            if (66 <= age) :
+                if (int(request.data.get('squat')) >= 35) :
                     User_TestResult.lowerbody_strength = 1
-                elif (46 <= int(request.data.get('squat')) <= 53) :
+                elif (25 <= int(request.data.get('squat')) < 35) :
                     User_TestResult.lowerbody_strength = 2
-                elif (38 <= int(request.data.get('squat')) <= 45) :
+                elif (15 <= int(request.data.get('squat')) < 25) :
                     User_TestResult.lowerbody_strength = 3
-                elif (30 <= int(request.data.get('squat')) <= 37) :
+                elif (6 <= int(request.data.get('squat')) < 15) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+        # 여자 스쿼트 등급
+        if ("woman" in user.gender) :
+            if (19 >= age) :
+                if (int(request.data.get('squat')) >= 40) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (30 <= int(request.data.get('squat')) < 40) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (20 <= int(request.data.get('squat')) < 30) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (10 <= int(request.data.get('squat')) < 20) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+            if (20 <= age <= 35) :
+                if (int(request.data.get('squat')) >= 40) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (30 <= int(request.data.get('squat')) < 40) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (20 <= int(request.data.get('squat')) < 30) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (10 <= int(request.data.get('squat')) < 20) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+            if (36 <= age <= 49) :
+                if (int(request.data.get('squat')) >= 40) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (30 <= int(request.data.get('squat')) < 40) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (20 <= int(request.data.get('squat')) < 30) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (10 <= int(request.data.get('squat')) < 20) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+
+            if (50 <= age <= 65) :
+                if (int(request.data.get('squat')) >= 35) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (25 <= int(request.data.get('squat')) < 35) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (15 <= int(request.data.get('squat')) < 25) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (6 <= int(request.data.get('squat')) < 15) :
+                    User_TestResult.lowerbody_strength = 4
+                else :
+                    User_TestResult.lowerbody_strength = 5
+            
+            if (66 <= age) :
+                if (int(request.data.get('squat')) >= 35) :
+                    User_TestResult.lowerbody_strength = 1
+                elif (25 <= int(request.data.get('squat')) < 35) :
+                    User_TestResult.lowerbody_strength = 2
+                elif (15 <= int(request.data.get('squat')) < 25) :
+                    User_TestResult.lowerbody_strength = 3
+                elif (6 <= int(request.data.get('squat')) < 15) :
                     User_TestResult.lowerbody_strength = 4
                 else :
                     User_TestResult.lowerbody_strength = 5

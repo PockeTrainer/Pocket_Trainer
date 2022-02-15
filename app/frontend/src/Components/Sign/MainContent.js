@@ -36,20 +36,20 @@ function MainContent(){
     };
 
     const stateNav={
-        signin:<NavBar text={signIn_message}/>,
-        signup:<NavBar text={register_message}/>,
-        findid:<NavBar text={findId_message}/>,
-        findpw:<NavBar text={findPw_message}/>
+        signIn:<NavBar text={signIn_message}/>,
+        signUp:<NavBar text={register_message} />,
+        findId:<NavBar text={findId_message} />,
+        findPw:<NavBar text={findPw_message} />
     };
 
     
 
 
     const stateMain={
-        signin:<LoginPart/>,
-        signup:<SignUpPart/>,
-        findid:<FindIdPart/>,
-        findpw:<FindPwPart/>
+        signIn:<LoginPart />,
+        signUp:<SignUpPart />,
+        findId:<FindIdPart />,
+        findPw:<FindPwPart />
     };
 
     

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../SameLayout/Modal';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function LoginPart(){
@@ -20,9 +20,11 @@ function LoginPart(){
             console.log(res.data);
             console.log(res.data.Token);
             axios.defaults.headers.common['Authorization'] = `token ${res.data.Token}`
-            //sessionStorage.setItem("isAuthorized", "true");
+            sessionStorage.setItem("isAuthorized", "true");
             sessionStorage.setItem("user_id", res.data.User.id);
-            navigate('/');
+            sessionStorage.setItem("user_name",res.data.User.name);
+            //navigate('/');
+            window.location.replace("/");//상위 app 컴포넌트에서의 useEffect가 다시 돌아가줘야 after_login이 업데이트됨
         })
         .catch(err => 
             console.log(err.response.data)
@@ -31,12 +33,12 @@ function LoginPart(){
     return (
         <div>
           {/* Page content */}
-          <div className="container mt--8 pb-5">
+          <div className="container mt--8 pb-5_">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-7">
-                <div className="card bg-secondary shadow border-0">
+                <div className="card bg-secondary_ shadow_ border-0">
                   <div className="card-body px-lg-5 py-lg-5">
-                    <div className="text-center text-muted mb-4">
+                    <div className="text-center_ text-muted mb-4">
                       <small>로그인하기</small>
                     </div>
                     <form role="form">
@@ -71,8 +73,8 @@ function LoginPart(){
                       </div>
                     </form>
                   </div>
-                  <div className="card-header bg-transparent pb-5">
-                    <div className="text-muted text-center mt-2 mb-3"><small className="login_method">다른계정으로 로그인</small></div>
+                  <div className="card-header_ bg-transparent_ pb-5_">
+                    <div className="text-muted text-center mt-2 mb-3"><small className="login_method_">다른계정으로 로그인</small></div>
                     <div className="btn-wrapper text-center">
                       <a href="#" className="btn btn-neutral btn-icon">
                         <span className="btn-inner--icon"><img src="../assets/img/brand/카카오톡로고.png" /></span>
@@ -86,18 +88,18 @@ function LoginPart(){
                   </div>
                 </div>
                 <div className="row mt-3">
-                  <div className="col-6 text-left">
-                    <a href="./findId.html" className="text-light" ><p>아이디 찾기</p><i className="fas fa-arrow-circle-left" /></a>
+                  <div className="col-6 text-left_">
+                    <Link to="/account/findId" className="text-light" ><p>아이디 찾기</p><i className="fas fa-arrow-circle-left" /></Link>
                   </div>
                   <div className="col-6 text-right">
-                    <a href="./findPassword.html" className="text-light"><p>비밀번호 찾기</p><i className="fas fa-arrow-circle-right" /></a>
+                    <Link to="/account/findPw" className="text-light"><p>비밀번호 찾기</p><i className="fas fa-arrow-circle-right" /></Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="text-center">
-            <a href="./register.html" className="text-light"><p>회원가입</p><i className="ni ni-single-02" /></a>
+            <Link to="/account/signUp" className="text-light"><p>회원가입</p><i className="ni ni-single-02" /></Link>
           </div>
 
         </div>
