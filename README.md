@@ -23,6 +23,8 @@
 
 #주의사항
 
+-지금 서버부분 중 MainPageInfo부분이 변경되어서 오류발생할 수 있음
+
 -nodemodules에서 argon-dashboard.css 부분이 main/exercise_counter 일부 변경이 되어있는데 이상한점 파악되면 알려주세요
 
 
