@@ -65,6 +65,11 @@ function PtStep({buttonRef,page}){
         alertMessage="체력측정 하니라 수고하셨습니다!최종결과를 확인하고 루틴을 추천받으러 갈까요?";
         button_name="최종결과확인";
     }
+    else if(page==="last_clear_step"){
+        active_step=3;
+        alertMessage="이제 오늘의 루틴을 확인해볼까요?";
+        button_name="오늘의루틴보기"
+    }
     else{
         active_step=0;
         alertMessage="피티 전 준비단계는 이와 같습니다!";
@@ -84,7 +89,7 @@ function PtStep({buttonRef,page}){
         setTimeout(close,500);
     }
     const moveToEnd=()=>{
-        //여기 채워주세요
+        setTimeout(close,500);
     }
     const close=()=>{
         buttonRef.current.click();

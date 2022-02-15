@@ -13,7 +13,7 @@ import { testState } from '../../../modules/action.js';
 import {none_testState} from '../../../modules/action.js';
 import {setting_completed} from '../../../modules/action.js';
 
-import * as tmPose from '@teachablemachine/pose';
+
 
 
 

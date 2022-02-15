@@ -25,6 +25,27 @@ export class Exercise{
     }
 }
 
+
+//여기는 체력측정부분의 운동들을 상수로 담아놓음
+export const pushup={
+    name:"푸시업",
+    image_url:"../assets/img/theme/pushup_animated.gif",
+    instruction:"푸시업은 상체부분에 대표적인 근력운동으로서 상체근육의 근발달정도를 가늠할 때 사용합니다"
+}
+
+export const situp={
+    name:"싯업",
+    image_url:"../assets/img/theme/Situp_animated.gif",
+    instruction:"싯업은 대표적인 복부운동으로서 복부근육의 근발달정도를 가늠할 때 사용합니다"
+}
+
+export const squat={
+    name:"스쿼트",
+    image_url:"../assets/img/theme/squat_animated.gif",
+    instruction:"스쿼트는 하체부분에 대표적인 근력운동으로서 하체근육의 근발달정도를 가늠할 때 사용합니다"
+}
+
+
 //각 운동별 설명 및 이미지url 상수로 모아둠
 //여기는 그냥 정해져있는 값들이라 상수로 만들어둠
 //가슴

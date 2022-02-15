@@ -24,53 +24,11 @@ import NavigationIcon from '@mui/icons-material/Navigation';
 import { useDispatch, useSelector } from "react-redux";
 import { change_clicked_button_reducer } from "../../modules/action";
 import { change_clicked_button } from "../../modules/action";
+import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 
 
-function ScrollTop(props) {
-    const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-      target: window ? window() : undefined,
-      disableHysteresis: true,
-      threshold: 50,
-    });
-  
-    const handleClick = (event) => {
-      const anchor = (event.target.ownerDocument || document).querySelector(
-        '#back-to-top-anchor',
-      );
-  
-      if (anchor) {
-        anchor.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
-      }
-    };
 
-    return (
-        <Zoom in={trigger}>
-          <Box
-            onClick={handleClick}
-            role="presentation"
-            sx={{ position: 'fixed', bottom: "4em", right: "7.5em" }}
-          >
-            {children}
-          </Box>
-        </Zoom>
-      );
-    }
 
-const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  });
 function TodaySummary(){
 
     const clickedButton=useSelector(state=>state.change_clicked_button_reducer.clickedButton);
@@ -155,12 +113,7 @@ function TodaySummary(){
         </div>
         <SwipeableEdgeDrawer select_button={clickedButton} />
 
-        <ScrollTop>
-            <button type="button"
-             className="btn btn-primary btn-lg btn-block"
-             style={{padding:"0.475rem 0.7rem",borderRadius:"1.4375rem",boxShadow:"0 15px 6px #21252975, 0 5px 3px #5e72e4"
-}}><h2><i className="ni ni-button-play"></i>운동시작</h2></button>
-      </ScrollTop>
+        <ScrollTriggerButton content={"운동시작"}/>
        
     </div>
     );

@@ -10,11 +10,13 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import ExerciseRoutine from "./ExerciseRoutine";
 
-import Zoom from '@mui/material/Zoom';
 import Grow from '@mui/material/Grow';
-
+import { useSelector } from "react-redux";
+import { change_routine_page_reducer } from "../../modules/action";
+import ExtraExercise from "./ExtraExercise";
 
 function CardLayout(props){
+    const page=useSelector(state=>state.change_routine_page_reducer.page);//어떤 페이지인지 정보 가지고 있는다
     const [checked, setChecked] = useState(false);
 
 
@@ -50,7 +52,7 @@ function CardLayout(props){
         <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
               <div className="container-fluid">
                 <div className="header-body">
-                    <div class={"container-fluid" }>
+                    <div class="container-fluid" >
                         <div className="row" data-component="ProfileCardLayout">
                             <CssBaseline />
                             <List sx={{ mb: 2 ,marginTop:"-3.85em",paddingTop:"14px"}}>
@@ -62,7 +64,11 @@ function CardLayout(props){
                                     <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
                                         {...(checked ? { timeout: 1000 } : {})}>
                                         <div>
-                                            <TodaySummary style={{ transitionDelay: checked ? '1500ms' : '0ms' }}/>
+                                            {page=="today_routine"&&<TodaySummary/>}
+                                            
+                                            {page=="exercise_info"&&<ExerciseRoutine/>}
+
+                                            {page=="extra_routine"&&<ExtraExercise/>}
                                         </div>
                                         
                                     </Grow>

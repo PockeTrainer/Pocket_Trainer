@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TitleMessage from "./TitleMessage";
 import { Second_clear_page } from "../../../modules/action";
+import { exercise_count_reducer } from "../../../modules/action";
+import axios from "axios";
 
 function EachTestResult(){
     const pushup_content={
@@ -37,7 +39,21 @@ function EachTestResult(){
     const navigate=useNavigate();
     const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 값 가져오기 첫 로그인인지
     const appRef=useSelector(state=>state.Appref.ref);
+    const exercise_count=useSelector(state=>state.exercise_count_reducer);//운동정보가져오기
     const dispatch=useDispatch();
+
+    let result;//운동개수를 담는다
+    let id=sessionStorage.getItem("user_id");//세션에서 아이디 가져오기
+
+    if(exercise_name.exercise_name==="pushup"){
+        result=exercise_count.pushup
+    }
+    else if(exercise_name.exercise_name==="situp"){
+        result=exercise_count.situp
+    }
+    else{
+        result=exercise_count.squat
+    }
 
     const moveToNext=()=>{
         if(exercise_name.exercise_name=="pushup"){//싯업 평가전 페이지로 이동
@@ -47,15 +63,28 @@ function EachTestResult(){
             navigate("/test/howto/squat");
         }
         else{//최종결과페이지로 이동
-            if(first_login){
-                //마지막 페이지로 디스패치 해줄 것
-                dispatch(Second_clear_page());
-                appRef.current.click();
-            }
-            else{
-                navigate("/test/finalResult")
-            }
+
+            // //마지막 페이지로 디스패치 해줄 것
+            // dispatch(Second_clear_page());//체력측정이 완료 되었음을 알려주는 것
+            // appRef.current.click();//루틴생성 데이터가 없을때는 모달창을 띄워주는 것
+
+            //서버로 모든 운동 정보를 전송
+            axios.post(`http://127.0.0.1:8000/api/workout/testResult/${id}`, {
+                pushUp : exercise_count.pushup,
+                sitUp : exercise_count.situp,
+                squat:exercise_count.squat
+            })
+            .then(res => {
+                console.log(res.data);                  
+            })
+            .catch(err => 
+                console.log(err.response.data)
+            )
+            navigate("/test/finalResult");
         }
+        
+            
+        
     }
     return(
         <div>
@@ -63,7 +92,7 @@ function EachTestResult(){
             <div className="alert alert-success" role="alert" >
                 <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
                 <span className="alert-text display-4" style={{display:"block"}}>1분동안</span>
-                <span className="alert-text display-1">50개</span>
+                <span className="alert-text display-1">{result}개</span>
 
             </div>
             <div className="alert alert-success" role="alert">

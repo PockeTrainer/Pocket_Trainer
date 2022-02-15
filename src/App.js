@@ -15,18 +15,34 @@ import PrivateRoute from './Components/PrivateRoute';
 import TodayRoutine from "./Components/TodayRoutine/TodayRoutine"
 import { useDispatch,useSelector } from 'react-redux';
 import { modalref } from './modules/action';
+import { first_Login } from './modules/action';
+import { second_Login } from './modules/action';
+
+import axios from 'axios';
+
+
+
 
 function App(){
 
   const [after_login,setAfter_Login]=useState(false);
   const button1=useRef(null);
-
-  const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
+  const syncState=useRef("first");
   const dispatch=useDispatch();
+  const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
+  let isAuthorized=sessionStorage.getItem("isAuthorized");
+  let id=sessionStorage.getItem("user_id");
+  //let isAuthorized=true
 
-  //let isAuthorized=sessionStorage.getItem("isAuthorized");
-  let isAuthorized=true
 
+  function dispatch_and_open(action){
+    return new Promise(function(resolve,reject){
+      dispatch(action);
+      resolve();
+    })
+  }
+
+  
   useEffect(()=>{
     //An array of assets
     let scripts = [
@@ -52,18 +68,53 @@ function App(){
   else{
     setAfter_Login(true);
     dispatch(modalref(button1))//모달창 버튼 ref를 스토어에서 올려서 하위 모달창들에서 쓸수 있게 만듦
-    setTimeout(showModal,1000);//지금 사용하는 일시 시간지연으로 하는 코드
-    //showModal();
+    //setTimeout(showModal,1000);//지금 사용하는 일시 시간지연으로 하는 코드
   }  
   console.log("나여기!")
   },[]);
 
+  useEffect(async() => {
+    // 해당일 처음 로그인 한 사용자 루틴 생성
+    await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+            if (err.response.data.error === '오늘의 운동 루틴 생성 실패, 체력평가 결과 필요') {
+                console.log("체력 평가 유도");
+                
+                
+
+
+            } else if (err.response.data.error === '오늘의 운동 계획이 이미 생성되었습니다') {
+                console.log("skip");
+                dispatch(second_Login());
+                syncState.current="second";//실제로 dispatch를 비동기적으로 처리하기에 밑에서 바로 체크해버리기에 추가함
+            }
+        })
+    
+    // 메인 페이지 정보 호출
+    await axios.get(`http://127.0.0.1:8000/api/history/mainpageInfo/${id}`)
+        .then((res) => {
+            console.log(res.data);
+            //유저정보(체중, 키), 체력평가 여부 확인
+            
+            if(syncState=="first"){
+              setTimeout(showModal,1000);
+            }
+
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })
+
+
+
+}, []);
     
   const showModal=()=>{
-    if(first_login){
-      console.log(button1.current.type)
       button1.current.click();
-    }
   }
 
 

@@ -15,7 +15,7 @@ function TitleMessage(props){
                     </>
                 ))}</h2>
                 <hr></hr>
-                <p className="text-gray-dark mt-0 mb-5">{props.content.message}</p>
+                <p className="text-gray-dark mt-0 mb-4">{props.content.message}</p>
                 
                 
             </div>

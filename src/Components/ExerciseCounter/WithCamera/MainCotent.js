@@ -119,7 +119,7 @@ function MainContent(){
         <div>
             <div className="card bg-secondary shadow" data-component="AccountInformationCard" ref={div}>
             
-                <div className="card-body">
+                <div className="card-body" style={{padding:"0.5rem"}}>
                     <Routes>
                         <Route path="caution" element={<Instruction/>}/>
                         <Route path="instruction" element={<Series/>}/>

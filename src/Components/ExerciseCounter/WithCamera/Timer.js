@@ -44,9 +44,9 @@ const Timer = ({page}) => {
         if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
             dispatch(testState(page));//준비시간  타이머 끝남을 알림
             setWhichTimer("main-step");
-            setMin(1);
-            setSec(0);
-            time.current=60;
+            setMin(0);
+            setSec(30);
+            time.current=30;
             start();
         }
         else{

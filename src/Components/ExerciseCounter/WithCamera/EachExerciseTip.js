@@ -85,7 +85,7 @@ function EachExerciseTip(){
         <div>
             <TitleMessage content={entire[exercise_name.exercise_name]}/>
 
-            <div className="card" style={{width:'19rem'}}>
+            <div className="card" >
                 <div className="card-body" style={card_body}>
                 <span className="badge badge-pill badge-success badge-lg" style={{fontSize:'1em'}}><i class="fas fa-thumbs-up"></i>올바른자세</span>
                 
@@ -95,7 +95,7 @@ function EachExerciseTip(){
                 </div>
             </div>
 
-            <div className="card" style={{width:'19rem'}}>
+            <div className="card" >
                 <div className="card-body" style={card_body}>
                 <span className="badge badge-pill badge-warning badge-lg" style={{fontSize:'1em'}}><i class="fas fa-thumbs-up fa-rotate-180"></i>잘못된자세</span>
                 

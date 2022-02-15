@@ -12,7 +12,7 @@ import { squat_count } from '../../../modules/action.js';
 import { testState } from '../../../modules/action.js';
 import {none_testState} from '../../../modules/action.js';
 
-import * as tmPose from '@teachablemachine/pose';
+// import * as tmPose from '@teachablemachine/pose';
 
 
 
