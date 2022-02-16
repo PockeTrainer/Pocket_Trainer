@@ -12,7 +12,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 
 export default function ExerciseCard({exercise}) {
   return (
-    <Card sx={{ maxWidth: 345 ,marginBottom:"1em"}}>
+    <Card sx={{ maxWidth: 345 ,marginBottom:"1em",marginRight:"1em"}}>
       <CardActionArea>
         <CardMedia
           component="img"

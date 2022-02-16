@@ -111,7 +111,7 @@ const initialRef={//맨 위 모달창 켜는 버튼을 의미
 };
 
 const initialFirstId={
-    first_login:true//지금 개발의 편의를 위해 꺼놓음 실제 할때에는 true로 바꾸기
+    first_login:""//지금 개발의 편의를 위해 꺼놓음 실제 할때에는 true로 바꾸기
 }
 
 const initialTestState={//체력측정 들어갔는지 안 들어갔는지

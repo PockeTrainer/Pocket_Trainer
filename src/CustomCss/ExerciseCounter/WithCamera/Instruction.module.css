@@ -11,10 +11,12 @@
 .alert_message{
     text-align: center;
     font-size: 1.25em;
+    font-weight: 600;
 }
 
 .alert-warning {
     color: #fff;
+    padding:1rem 0.5rem;
     background-color: #d1cecd;
     border-color: #d1cecd;
 }

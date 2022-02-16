@@ -21,7 +21,7 @@ import { second_Login } from './modules/action';
 import axios from 'axios';
 
 
-
+import CameraTodayRoutine from './Components/CameraTodayRoutine/CameraTodayRoutine';
 
 function App(){
 
@@ -78,13 +78,15 @@ function App(){
     await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
         .then((res) => {
             console.log(res.data);
+            dispatch(first_Login());
+            syncState="first";
         })
         .catch((err) => {
             console.log(err.response.data)
             if (err.response.data.error === '오늘의 운동 루틴 생성 실패, 체력평가 결과 필요') {
                 console.log("체력 평가 유도");
-                
-                
+                dispatch(first_Login());
+                syncState="first";
 
 
             } else if (err.response.data.error === '오늘의 운동 계획이 이미 생성되었습니다') {
@@ -130,6 +132,7 @@ function App(){
               <Route path="/main/exercise_counter" element={<ExerciseCounter/>} />
               <Route path="/test/*" element={<WithCamera/>}/>
               <Route path="/main/routine" element={<TodayRoutine/>}/>
+              <Route path='/routine/*' element={<CameraTodayRoutine/>}/>
             </Route>
 
           </Routes>

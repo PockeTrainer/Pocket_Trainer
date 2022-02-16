@@ -4,6 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
+import StepConnector from '@mui/material/StepConnector';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -52,7 +53,7 @@ export default function VerticalStepper() {
 
   return (
     <Box sx={{ maxWidth: 400 }}>
-      <Stepper activeStep={activeStep} orientation="vertical">
+      <Stepper activeStep={activeStep} orientation="vertical" connector={<StepConnector sx={{".MuiStepConnector-line":{minHeight:"0px"}}}/>} >
         {steps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel
@@ -61,14 +62,16 @@ export default function VerticalStepper() {
                   <Typography variant="caption">마지막단계</Typography>
                 ) : null
               }
+
+              sx={{".MuiStepIcon-root.Mui-active":{color:"#5e72e4"},".MuiStepIcon-root.Mui-completed":{color:"#2dce89"}}}
             >
               <div className={"alert"+" "+styles[`alert-warning`]} role="alert">
                 <span className={"alert-text"+" "+styles.alert_message}><strong><i class="ni ni-like-2"></i>주의:</strong><br></br>{step.label}</span>
               </div>
             </StepLabel>
-            <StepContent>
+            <StepContent sx={{paddingLeft:"15px",paddingRight:"15px",borderLeft:"4px solid #5e72e4"}}>
               <Typography>{step.description}</Typography>
-              <Box sx={{ mb: 2 }}>
+              <Box>
                 <div>
                   
                   {index === steps.length - 1 ? <button type="button" onClick={handleNext} className="btn btn-primary btn-lg btn-block"><i className="ni ni-check-bold"></i>체크완료</button> : <IconButton color="success" aria-label="ok" onClick={handleNext} size='large'>
@@ -91,7 +94,7 @@ export default function VerticalStepper() {
         <Paper  elevation={0} sx={{ p: 3 }}>
           <Typography>이제 진짜 모든 준비가 완료되었군요?부위별 평가방법을 알아볼까요?</Typography>
           <Link to='/test/instruction'>
-            <button type="button" onClick={handleReset} className="btn btn-primary btn-lg btn-block"><i className="ni ni-bullet-list-67"></i>평가순서</button>
+            <button type="button"  className="btn btn-primary btn-lg btn-block"><i className="ni ni-bullet-list-67"></i>평가순서</button>
           </Link>
             
         </Paper>

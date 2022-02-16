@@ -1,29 +1,37 @@
 import React,{useState,useEffect} from 'react';
-import Footer from '../SameLayout/Footer';
-import InfoCard from './InfoCard';
-import ResultCard from './ResultCard';
 import Grow from '@mui/material/Grow';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 
-import Card from "./Card";
-import Slider from 'react-slick';
+import Instruction from './Instruction';
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
-import { pushup,situp,squat } from '../../ExercisesInfo/ExerciseInfo';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import BodySequence from './BodySequence';
+
+
+
 
 function CardLayout(){
+
+    const backArrowStyle={
+        float: "left",
+        fontSize: "2em",
+        marginTop:"5px",
+        color: "white"
+    }
+
     const subListHeader={
-        bgcolor:"background.paper",
         paddingLeft:"5px",
         paddingRight:"5px",
-        marginLeft:"-12px",
+        marginLeft:"-19px",
         marginRight:"-12px",
         borderRadius:"5px",
-        marginTop:"4px",
+        marginTop:"0px",
         lineHeight:"10px",
-        backgroundColor:"#fff0"
+        backgroundColor:"#f7fafc52"
     };
 
     const settings = {
@@ -70,19 +78,18 @@ function CardLayout(){
                                 <div className="col-xl-4 order-xl-2 mb-3 mb-xl-0" data-component="ProfileCard">
                                                 <div className={"card-profile"+"card"} style={{border:"0px"}}>
                                                 
-                                                
                                                 <div className="card-body pt-0 pt-md-4" style={{padding:"0rem"}}>
                                                     <div className="row">
                                                     <div className="col" style={{paddingLeft:"5px",paddingRight:"5px"}}>
-                                                        {/* 여기 위까지는 고정틀 */}
-
+                                                        
+                                                        <ArrowCircleLeftIcon sx={backArrowStyle}/>
                                                             
                                                         <span class="badge badge-secondary" style={{
                                                             fontSize:"2.1em",
                                                             color:"#5e72e4",
                                                             backgroundColor:"#f8f9fa",
                                                             borderRadius:"1.375rem"
-                                                        }}>체력측정</span>
+                                                        }}>체크사항</span>
                                                     </div>
                                                     </div>
                                                     
@@ -94,23 +101,16 @@ function CardLayout(){
                                         </div>
                                 </Grow>
                                 </ListSubheader>
-                                {/* 여기다가 카드 */}
-                                <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
-                                        {...(checked ? { timeout: 1000 } : {})}>
-                                    <div>
-                                        <Slider {...settings}>
-                                            <Card exercise={pushup}/>
-                                            <Card exercise={situp}/>
-                                            <Card exercise={squat}/>
-                                        </Slider>
-                                    </div>
-                                </Grow>
                                 
                                 <div className="col-xl-8 order-xl-1" style={{paddingLeft:"1px",paddingRight:"1px"}} >
                                     <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
                                         {...(checked ? { timeout: 1000 } : {})}>
                                         <div>
-                                            <InfoCard/>
+                                            <Routes>
+                                                <Route path="caution" element={<Instruction/>}/>
+                                                <Route path="series" element={<BodySequence/>}/>
+                                            </Routes>
+                                            
                                         </div>
                                         
                                     </Grow>

@@ -10,14 +10,11 @@
 }
 
 .MuiStepLabel-label.Mui-active>div{
-    background-color: #fc7c5f;
-    border-color: #fc7c5f;
+    background-color:#5e72e4 ;
+    border-color: #5e72e4;
     font-weight: 900;
 }
 
-.MuiTypography-root{
-    font-family: 'Nanum Gothic';;
-}
 
 .MuiPaper-root{
     background-color: #5e72e4 !important;
@@ -25,5 +22,5 @@
 }
 
 .MuiTypography-root{
-    font-family: 'Nanum Gothic'!important;
+    font-family: 'Noto Sans KR'!important;
 }
