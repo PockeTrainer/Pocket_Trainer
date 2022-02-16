@@ -1,12 +1,7 @@
 import React,{useState,useRef,useEffect} from "react";
-import RunCircleRoundedIcon from '@mui/icons-material/RunCircleRounded';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import ParaglidingIcon from '@mui/icons-material/Paragliding';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+
 
 import styles from'../../CustomCss/ExerciseCounter/InfoCard.module.css';
 import { styled } from '@mui/material/styles';
@@ -22,8 +17,13 @@ import { green } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
+import Grow from '@mui/material/Grow';
+import { useNavigate, useParams } from "react-router-dom";
+
+function sleep(ms){
+  return new Promise((r)=>setTimeout(r,ms));
+}
 
 function BodySequence(){
 
@@ -31,11 +31,7 @@ function BodySequence(){
     const [success, setSuccess] =useState(false);
     const timer = useRef();
 
-    const steps = [
-        '현재 신체 상태와 목표체중 기입',
-        '루틴추천을 위한 부위별 체력측정',
-        '추천루틴으로 피티받기',
-      ];
+    const navigate=useNavigate();
 
       const AvatarStyle=styled(Avatar)((props)=>({
         width:"60px",
@@ -60,23 +56,46 @@ function BodySequence(){
       };
 
       useEffect(() => {
-        return () => {
-          clearTimeout(timer.current);
-        };
-      }, []);
-
-      const handleButtonClick = () => {
-        if (!loading) {
-          setSuccess(false);
-          setLoading(true);
+        if(loading){
           timer.current = window.setTimeout(() => {
             setSuccess(true);
             setLoading(false);
           }, 2000);
         }
+        else if(success){
+          setTimeout(() => {
+            navigate("/routine/series/benchpress")
+          }, 2000);
+        }
+        return () => {
+          clearTimeout(timer.current);
+        };
+      }, [success,loading]);
+
+      const handleButtonClick = () => {
+        if (!loading) {
+          setLoading(true);
+
+        }
       };
 
+
+      const [checked, setChecked] = useState(false);
+
+
+      const handleChange = () => {
+          setChecked((prev) => !prev);
+      };
+  
+      useEffect(()=>{
+          handleChange();
+      },[])
+  
+      //Transition용
     return(
+      <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+                                        {...(checked ? { timeout: 1000 } : {})}>
+                                            <div>
         <div className="col-xl-4 order-xl-2 mb-5 mb-xl-0" data-component="ProfileCard" style={{paddingLeft:"1px",paddingRight:"1px"}}>
         <div className={"card-profile"+" "+"shadow"+" "+"card"}>
           
@@ -96,11 +115,11 @@ function BodySequence(){
                             </Stack>
                             <Stack direction="column">
                                 <AvatarStyle color="#2dce89" >삼두</AvatarStyle>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>가슴운동</Typography>
+                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>삼두운동</Typography>
                             </Stack>
                             <Stack direction="column">
                                 <AvatarStyle color="#ffc107" >복근</AvatarStyle>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>가슴운동</Typography>
+                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>복근운동</Typography>
                             </Stack>
                     </Stack>
                     <Typography variant="h6" gutterBottom sx={{marginTop:"1em",fontWeight:"600",fontSize:"1.35rem"}}>대근육에서 소근육 순서로 진행</Typography>
@@ -136,6 +155,8 @@ function BodySequence(){
           </div>
         </div>
       </div>
+      </div>
+      </Grow>
     );
 }
 export default BodySequence

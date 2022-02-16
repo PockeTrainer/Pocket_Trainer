@@ -10,12 +10,22 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import BodySequence from './BodySequence';
+import SpecificBody from './SpecificBody';
+import CardSlider from './CardSlider';
+import { Typography } from '@mui/material';
 
 
 
 
 function CardLayout(){
 
+    const skipButton={
+        float:"right",
+        marginTop:"5px",
+        marginBottom:"5px",
+        color:"white",
+        fontSize:"1.2em"
+    }
     const backArrowStyle={
         float: "left",
         fontSize: "2em",
@@ -47,19 +57,19 @@ function CardLayout(){
         slidesToScroll: 1
       };
     //슬라이더용
+  
+
     const [checked, setChecked] = useState(false);
 
 
     const handleChange = () => {
         setChecked((prev) => !prev);
     };
-
+  
     useEffect(()=>{
         handleChange();
     },[])
-
-    //Transition용
-
+//transition용  
         return(
             <div>
                  <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
@@ -71,49 +81,51 @@ function CardLayout(){
                             <CssBaseline />
                             <List sx={{ mb: 2 ,marginTop:"-3.85em",paddingTop:"14px"}}>
 
+                           
                                 <ListSubheader sx={subListHeader}>
                                 <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
                                         {...(checked ? { timeout: 1000 } : {})}>
                                             <div>
-                                <div className="col-xl-4 order-xl-2 mb-3 mb-xl-0" data-component="ProfileCard">
-                                                <div className={"card-profile"+"card"} style={{border:"0px"}}>
-                                                
-                                                <div className="card-body pt-0 pt-md-4" style={{padding:"0rem"}}>
-                                                    <div className="row">
-                                                    <div className="col" style={{paddingLeft:"5px",paddingRight:"5px"}}>
-                                                        
-                                                        <ArrowCircleLeftIcon sx={backArrowStyle}/>
-                                                            
-                                                        <span class="badge badge-secondary" style={{
-                                                            fontSize:"2.1em",
-                                                            color:"#5e72e4",
-                                                            backgroundColor:"#f8f9fa",
-                                                            borderRadius:"1.375rem"
-                                                        }}>체크사항</span>
-                                                    </div>
-                                                    </div>
+                                    <div className="col-xl-4 order-xl-2 mb-3 mb-xl-0" data-component="ProfileCard">
+                                            <div className={"card-profile"+"card"} style={{border:"0px"}}>
+                                            
+                                            <div className="card-body pt-0 pt-md-4" style={{padding:"0rem"}}>
+                                                <div className="row">
+                                                <div className="col" style={{paddingLeft:"5px",paddingRight:"5px"}}>
                                                     
-                                                </div>
+                                                    <ArrowCircleLeftIcon sx={backArrowStyle}/>
+                                                        
+                                                    <span class="badge badge-secondary" style={{
+                                                        fontSize:"2.1em",
+                                                        color:"#5e72e4",
+                                                        backgroundColor:"#f8f9fa",
+                                                        borderRadius:"1.375rem"
+                                                    }}>체크사항</span>
+                                                    <span class="badge badge-default" style={skipButton}>건너뛰기</span>
 
-                                                
                                                 </div>
-                                        </div>
-                                        </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            
+                                            </div>
+                                    </div>
+                                    </div>
                                 </Grow>
                                 </ListSubheader>
+                                 
+                                
                                 
                                 <div className="col-xl-8 order-xl-1" style={{paddingLeft:"1px",paddingRight:"1px"}} >
-                                    <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
-                                        {...(checked ? { timeout: 1000 } : {})}>
-                                        <div>
+                                   
                                             <Routes>
                                                 <Route path="caution" element={<Instruction/>}/>
                                                 <Route path="series" element={<BodySequence/>}/>
+                                                <Route path="series/:bodypart" element={<CardSlider/>}/>
                                             </Routes>
                                             
-                                        </div>
-                                        
-                                    </Grow>
+
                                 </div>
                             </List>
                         </div>

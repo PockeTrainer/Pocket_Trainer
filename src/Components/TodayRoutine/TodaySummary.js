@@ -113,7 +113,7 @@ function TodaySummary(){
         </div>
         <SwipeableEdgeDrawer select_button={clickedButton} />
 
-        <ScrollTriggerButton content={"운동시작"}/>
+        <ScrollTriggerButton content={"운동준비"}/>
        
     </div>
     );

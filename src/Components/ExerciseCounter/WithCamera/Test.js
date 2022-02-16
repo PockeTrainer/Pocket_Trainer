@@ -8,14 +8,11 @@ import TitleMessage from "./TitleMessage";
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 import Zoom from '@mui/material/Zoom';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { pre_timer  } from "../../../modules/action";
 

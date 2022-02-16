@@ -21,9 +21,11 @@ function ScrollButton(props) {
       if(content==="평가준비"){
         navigate("/test/caution");//테스트평가사항페이지로 이동
       }
-      else{
-        //여기 navigate채워주기
-
+      else if(content=="운동준비"){
+        navigate("/routine/caution");
+      }
+      else if(content=="벤치시작"){
+          //여기 navigate채워주기
       }
     };
   

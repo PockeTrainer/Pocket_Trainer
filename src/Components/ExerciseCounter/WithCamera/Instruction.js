@@ -12,7 +12,7 @@ function Instruction(){
     return(
         <div>
             <TitleMessage content={content}/>
-            <VerticalStepper/>
+            <VerticalStepper link="/test/series"/>
       </div>
     );
 }

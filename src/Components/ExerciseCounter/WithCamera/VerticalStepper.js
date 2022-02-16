@@ -34,7 +34,7 @@ const steps = [
   },
 ];
 
-export default function VerticalStepper() {
+export default function VerticalStepper({link}) {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -93,7 +93,7 @@ export default function VerticalStepper() {
       {activeStep === steps.length && (
         <Paper  elevation={0} sx={{ p: 3 }}>
           <Typography>이제 진짜 모든 준비가 완료되었군요?부위별 평가방법을 알아볼까요?</Typography>
-          <Link to='/test/instruction'>
+          <Link to={link}>
             <button type="button"  className="btn btn-primary btn-lg btn-block"><i className="ni ni-bullet-list-67"></i>평가순서</button>
           </Link>
             
