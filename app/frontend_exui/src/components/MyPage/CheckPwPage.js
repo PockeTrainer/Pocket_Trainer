@@ -1,16 +1,19 @@
 import React, { Component, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/MyPage/CheckPwPage.css';
+//import * as tf from '@tensorflow/tfjs-core';
 import * as poseDetection from '@tensorflow-models/pose-detection';
-import * as tf from '@tensorflow/tfjs-core';
-// Register one of the TF.js backends.
-import ml5 from "ml5";
+import * as tf from '@tensorflow/tfjs'
 import '@tensorflow/tfjs-backend-webgl';
+// Register one of the TF.js backends.
+import * as ml5 from "ml5";
+//import '@tensorflow/tfjs-backend-webgl';
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 // import '@tensorflow/tfjs-backend-wasm';
 
 function CheckPwPage() {
+
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -21,8 +24,6 @@ function CheckPwPage() {
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
         const options = {
-            inputs: 34,
-            outputs: 4,
             task: 'classification',
             debug: true
         };
@@ -32,13 +33,7 @@ function CheckPwPage() {
             metadata: "https://pocket-trainer.s3.ap-northeast-2.amazonaws.com/model/model_meta.json",
             weights: "https://pocket-trainer.s3.ap-northeast-2.amazonaws.com/model/model.weights.bin",
         };
-
-        // const modelInfo = {
-        //     model: '',
-        //     metadata: '',
-        //     weights: '',
-        // }
-
+        console.log(brain)
         brain.load(modelInfo, brainLoaded);
         console.log(brain);
     }
@@ -87,30 +82,35 @@ function CheckPwPage() {
         //}
     }
 
-    function classifyPose(pose) {
-        //console.log(pose);
+    const classifyPose = (pose) => {
         if (pose) {
             let inputs = [];
 
-            for (let i = 0; i < pose['keypoints'].length; i++) {
+            for (let i = 0; i < 11; i++) {
                 let x = pose['keypoints'][i].x;
                 let y = pose['keypoints'][i].y;
                 inputs.push(x);
                 inputs.push(y);
             }
             //console.log(inputs)
+            console.log(brain)
             brain.classify(inputs, gotResult);
         }
     }
 
-    function gotResult(error, results) {
-        console.log('gotResult start');
-        console.log('result : ', results)
+    const gotResult = (error, results) => {
+        if (error) {
+            console.log('error', error)
+        } else {
+            console.log('gotResult start');
+            console.log('result : ', results);
+        }     
+        //console.log('result : ', results)
         // if (results[0].confidence > 0.75) {
         //     classifiedPose = results[0].label;
         //     console.log(results)
         // }
-        classifyPose();
+        //classifyPose(pose);
     }
     
     const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {

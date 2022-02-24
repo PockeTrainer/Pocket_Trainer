@@ -12,30 +12,26 @@ function ResultPage() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
-    let [result, changeResult] = useState();
+    let [result, changeResult] = useState(false);
 
-    const URL = "https://teachablemachine.withgoogle.com/models/0jKMa6UG7/";
+    const URL = "https://teachablemachine.withgoogle.com/models/BkXwXG3R4/";
     let model, webcam, ctx, labelContainer, maxPredictions;
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-    //const modelURL = "https://smlistener.s3.ap-northeast-2.amazonaws.com/model_0307/lr_0.02_epoch50_2/model.json";
-    //const metadataURL = "https://smlistener.s3.ap-northeast-2.amazonaws.com/model_0307/lr_0.02_epoch50_2/model_meta.json";
+    //const modelURL = URL + "model.json";
+    //const metadataURL = URL + "metadata.json";
+    const modelURL = "https://pocket-trainer.s3.ap-northeast-2.amazonaws.com/tm/model.json";
+    const metadataURL = "https://pocket-trainer.s3.ap-northeast-2.amazonaws.com/tm/metadata.json";
    // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
         model = await tmPose.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
 
-        const detector = await poseDetection.createDetector(
-            poseDetection.SupportedModels.MoveNet, 
-            // detectorConfig,
-        )
         setInterval(() => {
-            detect(detector);
-            }, 100);
+            detect();
+        }, 100);
     }
 
 
-   const detect = async (detector) => {
+   const detect = async () => {
         if (
             typeof webcamRef.current !== "undefined" &&
             webcamRef.current !== null &&
@@ -52,14 +48,17 @@ function ResultPage() {
 
             //const poses = await detector.estimatePoses(video);
             const { pose, posenetOutput } = await model.estimatePose(video);
-            if (pose != 0) {          
+            if (pose != null) {          
                 const prediction = await model.predict(posenetOutput);
                 //console.log(prediction)
                 for (let i = 0; i < maxPredictions; i++) {
                     const classPrediction =
                         prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                    //console.log(classPrediction)
-                    changeResult(classPrediction)
+                    if(prediction[i].probability.toFixed(2) > 0.75) {
+                        //changeResult(classPrediction)
+                        console.log(classPrediction)
+                    }
+                    //changeResult(classPrediction)
                     //drawCanvas(pose, video, videoWidth, videoHeight, canvasRef.current);
                 }
                 drawCanvas(pose, video, videoWidth, videoHeight, canvasRef.current);
