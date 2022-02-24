@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import { useParams } from "react-router-dom";
 
 import AlertModal from "../SameLayout/AlertModal";
+import {timeToModal} from "../../modules/action"
 
 function MainStep(){
     const testState=useSelector(state=>state.testState_reducer.testState);//카메라가 성공적으로 불러와졌는지 여부
@@ -18,12 +19,16 @@ function MainStep(){
     const [checked, setChecked] = useState(false);//전체 카메라화면 transition
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
     
+    
 
     const exercise_name=useParams();//url에서 운동명 가져오기
+
+    const dispatch=useDispatch();
 
     const current_weight=useSelector(state=>state.change_current_weight_reducer.current_weight);//연습스텝에서 설정한 무게를 보여준다
     const count_result=useSelector(state=>state.exercise_count_reducer.pushup);//여기는 나중에 각 운동에 대한 모델에 의존한 개수 결과를 보여줘야한다..지금은 푸시업으로 예시
     const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//진행세트 수
+    const modalTime=useSelector(state=>state.change_timeToModal_reducer.modalTime)//모딜창을 열지 말지..
 
     const[sec,setSec]=useState(0);//스탑워치 만들려고..
     const[min,setMin]=useState(0);
@@ -63,7 +68,7 @@ function MainStep(){
         }
 
         if(count_result===1){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
-            setTimeout(openModal,1000);
+            dispatch(timeToModal())//모달창을 이제 쓰겠다 그러니 타이머를 돌려라 이런뜻..
             return;
         }
 
@@ -73,7 +78,14 @@ function MainStep(){
         }
     },[testState,count_result])
 
-
+    useEffect(()=>{
+        if(count.current==1){
+            return;
+        }
+        if(modalTime){
+            setTimeout(openModal,1000);//모달창 열어주기 
+        }
+    },[modalTime])
   
 
     const subtitle={
@@ -208,7 +220,7 @@ function MainStep(){
             
        
         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>
-        <AlertModal where="breakTime" />
+        <AlertModal where="breakTime"  />
 
         </div>
         </>

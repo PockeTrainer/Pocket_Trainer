@@ -13,6 +13,7 @@ const Pstyle={
 function AlertModal({where}){
     const closeRef=useRef();//모달창 닫는 버튼용도
     const howmanySet=useSelector(state=>state.change_set_reducer.current_set);//현재까지 진행된 세트 수를 가져와준다.
+    const timeToModal=useSelector(state=>state.change_timeToModal_reducer.modalTime)//모딜창을 열지 말지..
     const count=useRef(1);
 
     const handleClose=()=>{
@@ -62,7 +63,7 @@ function AlertModal({where}){
                     <div className="modal-content">
                         <div className="modal-header">
                             <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
-                            <button style={{display:"none"}} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button ref={closeRef} style={{display:"none"}} type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -74,8 +75,14 @@ function AlertModal({where}){
                                 <PartStepper where="set_progress"/>
 
                                 <span className="badge badge-success" style={{fontSize:"1em",marginTop:"3em"}}>휴식시간</span>
-                                <Timer where="Press_and_3major"/>
-                                <LinearWithValueLabel where="Press_and_3major"/>
+
+                                {
+                                timeToModal&&
+                                <>
+                                    <Timer where="Press_and_3major"/>
+                                    <LinearWithValueLabel where="Press_and_3major"/>
+                                </>}
+                                
     
                         </div>
                         

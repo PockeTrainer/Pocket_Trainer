@@ -27,7 +27,7 @@ LinearProgressWithLabel.propTypes = {
 };
 
 export default function LinearWithValueLabel({where}) {
-  const [progress, setProgress] = React.useState(10);
+  const [progress, setProgress] = React.useState(0);
   const timer=React.useRef();
 
 //   이건 각 프로그레스바를 채워줄 1초동안 단위변화량이라 볼수있다

@@ -8,6 +8,8 @@ import { change_clicked_button_reducer } from './action';
 import { change_routine_page_reducer } from './action';
 import {change_current_weight_reducer} from "./action"
 import {change_set_reducer} from "./action";
+import {change_timeToModal_reducer} from "./action";
+
 const rootReducer=combineReducers({
     pageMove,
     Appref,
@@ -17,7 +19,8 @@ const rootReducer=combineReducers({
     change_clicked_button_reducer,
     change_routine_page_reducer,
     change_current_weight_reducer,
-    change_set_reducer
+    change_set_reducer,
+    change_timeToModal_reducer
 });
 
 export default rootReducer;

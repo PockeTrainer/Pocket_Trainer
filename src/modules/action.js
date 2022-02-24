@@ -36,6 +36,9 @@ const ERROR="error";
 //운동 세트수 변경 액션
 const RESET_SET="reset_set";
 const INCREASE_SET="increase_set"
+//휴식세트를 보여줄지 말지에 대한 액션
+const TIMETOMODAL="timeToModal";
+const NOT_TIMETOMODAL="not_timeToModal";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -157,6 +160,14 @@ export const increase_set=()=>({
     type:INCREASE_SET
 })
 
+export const timeToModal=()=>({
+    type:TIMETOMODAL
+})
+
+export const not_timeToModal=()=>({
+    type:NOT_TIMETOMODAL
+})
+
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -184,18 +195,22 @@ const initialClickedButton={//루틴 추천시 어떤 부위가 눌렸는지
     clickedButton:"total"
 }
 
-const initialPage={
+const initialPage={//기본적으로 오늘 하루전체 루틴을 다 보여줌
     page:"today_routine"
 }
 
-const initialWeightChange={
+const initialWeightChange={//중량체크에서 쓰이는,,
     current_weight:0,
     clicked_button:"",
     clicked_count:0
 }
 
-const initialSet={
+const initialSet={//메인운동에서 세트수 진행 
     current_set:1
+}
+
+const initialTimeToModal={//휴식세트 창을 보여줄지 말지
+    modalTime:false
 }
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
@@ -398,6 +413,21 @@ export function change_set_reducer(state=initialSet,action){
         case INCREASE_SET:
             return{
                 current_set:state.current_set+1
+            }   
+        default:
+            return state     
+    }
+}
+
+export function change_timeToModal_reducer(state=initialSet,action){
+    switch(action.type){
+        case TIMETOMODAL:
+            return{
+                modalTime:true
+            }
+        case NOT_TIMETOMODAL:
+            return{
+                modalTime:false
             }   
         default:
             return state     

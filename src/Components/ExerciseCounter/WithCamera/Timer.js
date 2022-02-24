@@ -3,7 +3,7 @@ import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from "react-redux";
-import { none_testState, testState,increase_set} from "../../../modules/action";
+import { none_testState, testState,increase_set,not_timeToModal} from "../../../modules/action";
 
 const setting={
     physical_test_ready:5,
@@ -62,6 +62,7 @@ const Timer = ({exercise,where}) => {
         }
         else{
             dispatch(increase_set());//운동 세트 수 증가 시켜주기
+            dispatch(not_timeToModal());//휴식세트 창을 다시 닫아주면서 다시 state 변경
         }
        
       }
