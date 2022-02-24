@@ -1,12 +1,14 @@
 import React,{useState,useEffect} from "react";
 
 import Grow from '@mui/material/Grow';
-import PartStepper from "./Stepper";
+
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
-function StepperWrapper(){
+
+
+function CardWrapper({time,children}){
 
   const [checked, setChecked] = useState(false);
 
@@ -16,7 +18,7 @@ function StepperWrapper(){
   };
 
   useEffect(()=>{
-      sleep(3000).then(()=>handleChange());
+      sleep(time).then(()=>handleChange());
   },[])
 
   //Transition용
@@ -32,7 +34,7 @@ function StepperWrapper(){
             <div className="card-body pt-2 pt-md-4" style={{padding:"0.5rem"}} >
               <div className="row">
                 <div className="col">
-                      <PartStepper/>
+                      {children}
                 </div>
               </div>
               
@@ -43,4 +45,4 @@ function StepperWrapper(){
       </Grow>
     );
 }
-export default StepperWrapper
+export default CardWrapper

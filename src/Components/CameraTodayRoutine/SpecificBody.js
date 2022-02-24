@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import PartStepper from "./Stepper";
+import PartStepper from "./PartStepper";
 
 
 function sleep(ms){

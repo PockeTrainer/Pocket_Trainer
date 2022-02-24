@@ -25,7 +25,10 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          //여기 navigate채워주기
+          navigate("/routine/weightcheck/benchPress");
+      }
+      else if(content=="연습세트"){
+          navigate("/routine/weightcheck/practice/benchpress");
       }
     };
   

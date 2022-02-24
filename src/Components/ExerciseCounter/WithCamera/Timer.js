@@ -3,14 +3,21 @@ import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from "react-redux";
-import { none_testState, testState } from "../../../modules/action";
+import { none_testState, testState,increase_set} from "../../../modules/action";
 
+const setting={
+    physical_test_ready:5,
+    Press_and_3major:100,
+    etc:90,
+    shoulder_and_arm:40
+}
+// 각 운동부위마다 필요한 브레이크타임이나 테스트시 사용되는 준비시간이 다름
 
-const Timer = ({page}) => {
-    const [min, setMin] = useState(0);
-    const [sec, setSec] = useState(5);
+const Timer = ({exercise,where}) => {
+    const [min, setMin] = useState(parseInt(setting[where]/60));//parseInt를 하는 이유는 나눈 몫이 소수점까지 나옴
+    const [sec, setSec] = useState(setting[where]%60);//각 부위별로 운동휴식시간 및 준비시간이 다름
     const [buttonState,setButtonState]=useState(1);
-    const time = useRef(5);
+    const time = useRef(setting[where]);//각 부위별로 운동휴식시간 및 준비시간이 다름
     const count=useRef(1);
     const timerId = useRef(null);
 
@@ -28,31 +35,35 @@ const Timer = ({page}) => {
     };
 
     useEffect(() => {
-      start();
+     start();
       return () => clearInterval(timerId.current);
     }, []);
   
     useEffect(() => {
       // 만약 타임 아웃이 발생했을 경우
-      if (time.current < 0) {
+      if (time.current <= 0) {
         console.log("타임 아웃");
 
-        // if(func!=null){
-        //     func(true);//상위컴포넌트의 set함수를 받아 상위 state변경->상위에게 나 운동측정시작되었음을 알림
-        // }
         clearInterval(timerId.current);
-        if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
-            dispatch(testState(page));//준비시간  타이머 끝남을 알림
-            setWhichTimer("main-step");
-            setMin(0);
-            setSec(30);
-            time.current=30;
-            start();
+
+        if(where==="physical_test_ready"){
+            if(whichTimer==="pre-step"){//이전 step이 끝났음을 의미하니 본 스텝 운동타이머를 보여줌 
+                dispatch(testState(exercise));//준비시간  타이머 끝남을 알림
+                setWhichTimer("main-step");
+                setMin(1);
+                setSec(0);
+                time.current=60;
+                start();
+            }
+            else{
+                setWhichTimer("finish-step");//타이머 다끝남을 의미 사실 이건 안쓰일듯...
+                dispatch(none_testState(exercise));//타이머가 끝나면 끝남을 반영시킴
+            }
         }
         else{
-            setWhichTimer("finish-step");//타이머 다끝남을 의미 사실 이건 안쓰일듯...
-            dispatch(none_testState(page));//타이머가 끝나면 끝남을 반영시킴
+            dispatch(increase_set());//운동 세트 수 증가 시켜주기
         }
+       
       }
     }, [sec]);
   
@@ -62,6 +73,7 @@ const Timer = ({page}) => {
         }
         if(buttonState===0){
             if(timerId.current==null){
+                // 혹시나 start함수가 안돌아가있는 상태일때를 대비해서..사실 그럴일은 별로없을듯,,
                 return;
             }
             else{
@@ -90,16 +102,32 @@ const Timer = ({page}) => {
         }
     })
     const classes=useStyles();
+
+    if(where==="physical_test_ready"){
         return (
-        <div>
-            <div className={"alert alert-warning "+classes.mainStepPadding} role="alert" style={mainStepStyle}>
-                <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
-                <span className="alert-text display-1">{whichTimer=="pre-step"?<strong>{sec}초</strong>:<strong>{min}분{sec}초</strong>}</span>
-
-                <button onClick={handleStop} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}>{buttonState==1?<span><i className="ni ni-button-pause"></i>중지하기</span>:<span><i className="ni ni-button-play"></i>시작하기</span>}</button>
+            <div>
+                <div className={"alert alert-warning "+classes.mainStepPadding} role="alert" style={mainStepStyle}>
+                    <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
+                    <span className="alert-text display-1">{time.current<60?<strong>{time.current}초</strong>:<strong>{min}분{sec}초</strong>}</span>
+    
+                    <button onClick={handleStop} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}>{buttonState==1?<span><i className="ni ni-button-pause"></i>중지하기</span>:<span><i className="ni ni-button-play"></i>시작하기</span>}</button>
+                </div>
+    
             </div>
+            );
+    }
 
-        </div>
+    else{
+        return(
+            <>
+                 <div className={"alert alert-secondary "+classes.mainStepPadding} role="alert" >
+                    <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
+                    <span className="alert-text display-4">{time.current<60?<strong>{time.current}초</strong>:<strong>{min}분{sec}초</strong>}</span>
+    
+                </div>
+            </>
         );
+    }
+       
   };
 export default Timer

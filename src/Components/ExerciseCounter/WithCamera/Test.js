@@ -22,7 +22,7 @@ function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
-function Test({func}){
+function Test(){
 
     const testState=useSelector(state=>state.testState_reducer.testState);
     const dispatch=useDispatch();
@@ -49,9 +49,7 @@ function Test({func}){
             count.current+=1;
             return;
         }
-        if(testState==="true"){//시작을 띄워줘야 함 따라서 handleChange를 한 번하면 이미 있던게 사라지기에 두번 더 해야 다시 보여주고 사라짐
-            handleChange();
-            handleChange();
+        if(testState==="true"){//시작을 띄워줘야 함 
             setTimeout(handleChange,1000)
         }
         if(success&&testState==="completed"){
@@ -179,7 +177,7 @@ function Test({func}){
                         </div>
             }
 
-            <Camera page={exercise_name.exercise_name} display={testState=="true"||testState=="preTimer"?"yes":"no"}/>
+            <Camera  display={testState=="true"||testState=="preTimer"?"yes":"no"}/>
 
             {/* 로딩바 */}
             {
@@ -208,7 +206,7 @@ function Test({func}){
             </Box>
           </Box>:null}
 
-            {testState=="true"||testState=="preTimer"?<Timer page={exercise_name.exercise_name}/>:null}
+            {testState=="true"||testState=="preTimer"?<Timer where="physical_test_ready" exercise={exercise_name.exercise_name}/>:null}
             
         </div>
     );

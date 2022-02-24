@@ -122,7 +122,7 @@ function MainContent(){
                 <div className="card-body" style={{padding:"0.5rem"}}>
                     <Routes>
                         <Route path="caution" element={<Instruction/>}/>
-                        <Route path="instruction" element={<Series/>}/>
+                        <Route path="series" element={<Series/>}/>
                         <Route path="howto/:exercise_name" element={<EachExerciseTip/>}/>
                         <Route path=":exercise_name" element={<Test />} />
                         <Route path="result/:exercise_name" element={<EachTestResult/>}/>

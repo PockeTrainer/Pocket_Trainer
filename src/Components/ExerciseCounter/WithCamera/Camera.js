@@ -48,7 +48,7 @@ function jointAngle(p1x, p1y, p2x, p2y, p3x, p3y) {
     }
 }
 
-function Camera({display,page}) {
+function Camera({display}) {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const exercise_name=useParams();
@@ -175,7 +175,6 @@ function Camera({display,page}) {
 
     useEffect(()=>{
         runMovenet();//디스패치를 시키면 상태변화때문에 부모 컴포넌트에서 리랜더링되면 카메라도 리랜더링 될것이라서 그때마다 setInterval시키면 계속쌓임 따라서 한번만 실행
-        //dispatch(testState(page));
     },[])
 
     //detect();
@@ -185,7 +184,7 @@ function Camera({display,page}) {
                     mirrored={true}
                     ref={webcamRef}
                     style={{
-                        position: "absolute",
+                        position:"absolute",
                         marginLeft: "auto",
                         marginRight: "auto",
                         left: 0,
@@ -193,13 +192,14 @@ function Camera({display,page}) {
                         textAlign: "center",
                         zindex: 9,
                         width: "100%",
-                        height: "33em",
+                        height: "80vh",
                         top:"0em",
                         objectFit:"fill",
                         visibility:display==="no"?"hidden":"visible",
                     }}
                 />
   
+                    {/* 테스트 상황과 루틴페이지에서의 상황이 상이하여 포지션을 나눔 */}
           <canvas
             ref={canvasRef}
             style={{
@@ -211,10 +211,9 @@ function Camera({display,page}) {
               textAlign: "center",
               zindex: 9,
               width: "100%",
-              height: "33em",
+              height: "80vh",
               top:"0em",
               objectFit:"fill",
-              //display:display==="no"?"none":"flex"
               visibility:display==="no"?"hidden":"visible",
             }}
           />

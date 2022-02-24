@@ -7,18 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 
 import SwipeableEdgeDrawer from "./SwipeableEdgeDrawer";
-import Popover from '@mui/material/Popover';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Zoom from '@mui/material/Zoom';
 
 import NavigationIcon from '@mui/icons-material/Navigation';
 import { useDispatch, useSelector } from "react-redux";

@@ -5,10 +5,10 @@ import Zoom from '@mui/material/Zoom';
 import Slide from '@mui/material/Slide';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
-import PartStepper from "./Stepper";
-import StepperWrapper from "./StepperWrapper";
-
+import PartStepper from "./PartStepper";
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
+import CardWrapper from "./CardWrapper"
+
 function CardSlider(){
     const [checked, setChecked] = useState(false);
 
@@ -73,7 +73,9 @@ function CardSlider(){
             </span>
        </Slide>
 
-       <StepperWrapper/>
+       <CardWrapper time={3000}>
+           <PartStepper where="BodyPart"/>
+       </CardWrapper>
        <ScrollTriggerButton content={"벤치시작"}/>
         </>
     );
