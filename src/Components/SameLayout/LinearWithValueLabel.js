@@ -52,7 +52,7 @@ export default function LinearWithValueLabel({where}) {
     console.log(progress)
     // 게이지 꽉 차면 빼주자
     if(progress>=100){
-        clearInterval(timer.current);
+        clearInterval(timer);
     }
 
     return () => {

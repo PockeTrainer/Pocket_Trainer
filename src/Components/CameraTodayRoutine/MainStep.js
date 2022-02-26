@@ -69,7 +69,6 @@ function MainStep(){
     }
     useEffect(()=>{
         if(count.current===1){
-            count.current+=1;
             handleChange();// 전체화면트랜지션
             
             start();//스탑워치 시작
@@ -90,19 +89,25 @@ function MainStep(){
     },[testState,count_result])
 
     useEffect(()=>{
-        if(count.current==1){
+
+        if(count.current===1){
+            count.current+=1;
             return;
         }
         if(modalTime){
+            clearInterval(timeId.current);//스탑워치를 잠시 멈추주기 위해 interval함수 초기화
+            timeId.current=null;
+
             setTimeout(openModal,1000);//모달창 열어주기 
+        }
+        else{
+            console.log("여기 몇번 들어와?")
+            start();//다시 스탑워치 시작
         }
     },[modalTime])
 
     useEffect(()=>{
-        if(count.current===1){
-            return;
-        }
-        handleShowSetChange();
+        handleShowSetChange();//각 몇 세트인지 알려주는 transition
         setTimeout(handleShowSetChange,1500);
     },[howmanySet])
   
@@ -110,9 +115,9 @@ function MainStep(){
     const setName={
         position:"absolute",
         color:"white",
-        zIndex:"9999",
+        zIndex:"1",
         fontSize:"3em",
-        top:"1em",
+        top:"5em",
         left:"0",
         right:"0",
         backgroundColor:"#2dce8996"
@@ -234,7 +239,13 @@ function MainStep(){
                     <div className="alert alert-warning" role="alert" style={SpanStyle} >
                         <Stack direction="column">
                             <span className="badge badge-primary btn-lg" style={badgeStyle}>운동시간</span> 
-                            <span className="alert-text" >{time.current>=60?<strong>{min}분{sec}초</strong>:<strong>{sec}초</strong>}</span>
+                            {
+                            modalTime
+                                ?
+                                <span className="alert-text" ><strong>휴식세트</strong></span>
+                                :
+                                <span className="alert-text" >{time.current>=60?<strong>{min}분{sec}초</strong>:<strong>{sec}초</strong>}</span>
+                              }
                         </Stack>
                     </div>
                 </div>

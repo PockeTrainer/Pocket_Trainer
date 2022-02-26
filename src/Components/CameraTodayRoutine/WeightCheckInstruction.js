@@ -5,19 +5,31 @@ import CardWrapper from "./CardWrapper";
 import styles from'../../CustomCss/ExerciseCounter/InfoCard.module.css';
 import Typography from '@mui/material/Typography';
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
+import Grow from '@mui/material/Grow';
+
+
+function sleep(ms){
+    return new Promise((r)=>setTimeout(r,ms));
+}
 
 function WeightCheckInstruction(){
 
 
-    const [checked, setChecked] = useState(false);
+    const [checked1, setChecked1] = useState(false);
+    const [checked2, setChecked2] = useState(false);
 
-    const handleChange = () => {
-    setChecked((prev) => !prev);
+    const handleStepShow = () => {
+    setChecked1((prev) => !prev);
     };
 
+    const handleButtonShow = () => {
+        setChecked2((prev) => !prev);
+        };
+
     useEffect(()=>{
-        handleChange();
-        setTimeout(handleChange,3000);
+        handleStepShow();
+        setTimeout(handleStepShow,3000);
+        sleep(3000).then(()=>handleButtonShow());
     },[])
 
     //위에는 맨 처음 트랜지션 
@@ -82,20 +94,25 @@ function WeightCheckInstruction(){
     
                 {/* 처음 트랜지션 */}
     
-                <Slide  mountOnEnter unmountOnExit direction="up"  in={checked}>
+                <Slide  mountOnEnter unmountOnExit direction="up"  in={checked1}>
                 <span className="badge badge-primary" style={partName}>
                     <FitnessCenterIcon sx={{color:"black",fontSize:"1.5em"}}/>벤치프레스
                 </span>
                 </Slide>
     
-                <Slide  mountOnEnter unmountOnExit direction="up"  in={checked} {...(checked ? { timeout: 1000 } : {})}>
+                <Slide  mountOnEnter unmountOnExit direction="up"  in={checked1} {...(checked1 ? { timeout: 1000 } : {})}>
                     <span className="badge badge-primary" style={subtitle}>
                         중량체크
                     </span>
                 </Slide>
     
                 {/* 하단 시작버튼 */}
-                <ScrollTriggerButton content="연습세트"/>
+                <Grow in={checked2} style={{ transformOrigin: '0 0 0' }}
+            {...(checked2 ? { timeout: 1000 } : {})}>
+                <div>
+                    <ScrollTriggerButton content="연습세트"/>
+                </div>
+                </Grow>
             </>
         );
    
