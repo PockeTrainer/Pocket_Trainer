@@ -16,6 +16,7 @@ import PracticeStep from './PracticeStep';
 
 import { useSelector } from 'react-redux';
 import MainStep from './MainStep';
+import Evaluation from './Evaluation';
 function CardLayout(){
 
     const testState=useSelector(state=>state.testState_reducer.testState);//운동을 시작한 여부에 따라서 css변경때문에
@@ -131,6 +132,7 @@ function CardLayout(){
                                                             <Route path="weightcheck/:exercise_name" element={<WeightCheckInstruction/>}/>
                                                             <Route path="weightcheck/practice/:exercise_name" element={<PracticeStep/>}/>
                                                             <Route path="exercise/:exercise_name" element={<MainStep/>}/>
+                                                            <Route path="evaluation/:exercise_name" element={<Evaluation/>}/>
                                                         </Routes>
                                                         
 

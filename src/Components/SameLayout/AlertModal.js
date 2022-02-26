@@ -13,13 +13,7 @@ function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
-const Pstyle={
-    fontSize:"1.0rem",
-    fontWeight:"lighter",
-    lineWeight:"1.0",
-    marginBottom:"0"
 
-}
 
 const Pstyled=styled('p')((props)=>({
     fontSize:"1.0rem",
