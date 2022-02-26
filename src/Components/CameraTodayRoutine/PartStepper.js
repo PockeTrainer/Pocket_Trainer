@@ -4,7 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { styled } from "@mui/system";
-
+import { useSelector } from "react-redux";
 function PartStepper({where}){
     const steps ={
       BodyPart:{
@@ -16,6 +16,8 @@ function PartStepper({where}){
         size:"small"
       }
     };
+
+    const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//운동진행세트 수
 
       const StepLabelStyle=styled(StepLabel)((props)=>({
           ".MuiStepLabel-label":{fontFamily:"Noto Sans KR",fontWeight:"600",fontSize:props.size==="big"?"1.575rem":"1.075rem"},
@@ -40,7 +42,7 @@ function PartStepper({where}){
         return(
           <>
           <Box sx={{ width: '100%' }}>
-                              <Stepper activeStep={1} alternativeLabel>
+                              <Stepper activeStep={howmanySet} alternativeLabel>
                                   {steps[where].series.map((label) => (
                                   <Step key={label}>
                                           <StepLabelStyle size={steps[where].size}  StepIconProps={{sx:stepIconStyle}}>{label}</StepLabelStyle>

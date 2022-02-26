@@ -18,6 +18,7 @@ const PRE_TIMER="pre_timer";
 const PUSHUP_COUNT="pushup_count";
 const SITUP_COUNT="situp_count ";
 const SQUAT_COUNT="squat_count";
+const RESET_COUNT="reset_count"
 //운동추천 루틴페이지에서 눌린 버튼변경 액션
 const CHANGE_CLICKED_BUTTON="change_clicked_button";
 //루틴페이지에서 어디에있는지를 알려주는 액션
@@ -96,6 +97,10 @@ export const situp_count=()=>({
 
 export const squat_count=()=>({
     type:SQUAT_COUNT
+})
+
+export const reset_count=()=>({
+    type:RESET_COUNT
 })
 
 export const change_clicked_button=(button_name)=>({
@@ -309,6 +314,11 @@ export function exercise_count_reducer(state=initialExercise,action){
                 ...state,
                 squat:state.squat+1
             }   
+        case RESET_COUNT:{
+            return{
+                ...initialExercise
+            }
+        }    
         default:
             return state;
     }
@@ -326,7 +336,7 @@ export function change_clicked_button_reducer(state=initialClickedButton,action)
     }
 }
 
-export function change_routine_page_reducer(state=initialPage,action){
+export function change_routine_page_reducer(state=initialPage,action){//루틴페이지에서 상단 소3개 메뉴를 담당한다
     switch (action.type) {
         case TODAY_ROUTINE:
             return{
@@ -419,7 +429,7 @@ export function change_set_reducer(state=initialSet,action){
     }
 }
 
-export function change_timeToModal_reducer(state=initialSet,action){
+export function change_timeToModal_reducer(state=initialTimeToModal,action){
     switch(action.type){
         case TIMETOMODAL:
             return{

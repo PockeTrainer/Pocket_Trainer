@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Skeleton from '@mui/material/Skeleton';
 import Grow from '@mui/material/Grow';
 import Zoom from '@mui/material/Zoom';
+import Slide from '@mui/material/Slide';
 import Stack from '@mui/material/Stack';
 import { useParams } from "react-router-dom";
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 import AlertModal from "../SameLayout/AlertModal";
 import {timeToModal} from "../../modules/action"
@@ -15,8 +17,10 @@ function MainStep(){
     const count=useRef(1);//카운트용
     const timeId=useRef();//운동시간용
     const modalRef=useRef()//브레이크타임 모달창
+    const previous_testState=useRef();//이전의 testState를 담고있다
 
     const [checked, setChecked] = useState(false);//전체 카메라화면 transition
+    const [showChecked, setShowChecked] = useState(false);//세트수 transition
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
     
     
@@ -43,9 +47,13 @@ function MainStep(){
         setMessage((prev)=>!prev);
     }
 
+    const handleShowSetChange = () => {//세트수 보여주는용도
+        setShowChecked((prev) => !prev);
+    };
+
     const handleChange = () => {
         setChecked((prev) => !prev);
-    };
+        };
   
     const openModal=()=>{
         modalRef.current.click()
@@ -65,6 +73,8 @@ function MainStep(){
             handleChange();// 전체화면트랜지션
             
             start();//스탑워치 시작
+            previous_testState.current=testState;//이전값이랑 비교하기 위해 담아둔다
+            setTimeout(handleMessageChange,1000);
         }
 
         if(count_result===1){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
@@ -72,9 +82,10 @@ function MainStep(){
             return;
         }
 
-        if(count_result===0){
+        if(previous_testState.current!==testState){//전에 testState랑 값이 달라졌다면 로딩메시지를 가려줘라..
             setTimeout(handleMessageChange,1000);
             // 처음에는 문자보여주고 두번째 랜더링시 문자다시 숨기기
+            previous_testState.current=testState
         }
     },[testState,count_result])
 
@@ -86,7 +97,26 @@ function MainStep(){
             setTimeout(openModal,1000);//모달창 열어주기 
         }
     },[modalTime])
+
+    useEffect(()=>{
+        if(count.current===1){
+            return;
+        }
+        handleShowSetChange();
+        setTimeout(handleShowSetChange,1500);
+    },[howmanySet])
   
+
+    const setName={
+        position:"absolute",
+        color:"white",
+        zIndex:"9999",
+        fontSize:"3em",
+        top:"1em",
+        left:"0",
+        right:"0",
+        backgroundColor:"#2dce8996"
+    }
 
     const subtitle={
         position:"absolute",
@@ -132,7 +162,7 @@ function MainStep(){
         backgroundColor:"#2dce89",
         borderColor:"#2dce89",
         color:"white",
-        padding:"0.5rem 7.1rem",
+        padding:"0.5rem 6.1rem",
         fontSize:"1.875rem",
         marginTop:"0.3em"
     }
@@ -217,6 +247,12 @@ function MainStep(){
                }}>
                 <Zoom in={message}><span className="badge badge-primary" style={subtitle}>{content[testState]}</span></Zoom>
         </div>
+
+        <Slide  mountOnEnter unmountOnExit direction="up"  in={showChecked}>
+                <span className="badge badge-primary" style={setName}>
+                    <FitnessCenterIcon sx={{color:"black",fontSize:"1.5em"}}/>{howmanySet}세트
+                </span>
+        </Slide>
             
        
         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>

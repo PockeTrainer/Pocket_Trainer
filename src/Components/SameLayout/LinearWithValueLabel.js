@@ -55,6 +55,9 @@ export default function LinearWithValueLabel({where}) {
         clearInterval(timer.current);
     }
 
+    return () => {
+      clearInterval(timer);
+    };
     
   }, [progress]);
 

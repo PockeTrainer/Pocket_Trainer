@@ -2,12 +2,12 @@ import React from "react";
 import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
-import { useDispatch } from "react-redux";
-import { none_testState, testState,increase_set,not_timeToModal} from "../../../modules/action";
+import { useDispatch,useSelector } from "react-redux";
+import { none_testState, testState,increase_set,not_timeToModal,reset_count} from "../../../modules/action";
 
 const setting={
     physical_test_ready:5,
-    Press_and_3major:100,
+    Press_and_3major:10,
     etc:90,
     shoulder_and_arm:40
 }
@@ -22,6 +22,7 @@ const Timer = ({exercise,where}) => {
     const timerId = useRef(null);
 
     const navigate=useNavigate();
+    const howmanySet=useSelector(state=>state.change_set_reducer.current_set);//현재까지 진행된 세트 수를 가져와준다.
     const dispatch=useDispatch();
   
     const [whichTimer,setWhichTimer]=useState("pre-step");
@@ -61,10 +62,18 @@ const Timer = ({exercise,where}) => {
             }
         }
         else{
+            if(howmanySet===5){//세트진행이 5번째 마지막까지 왔다면 더이상 업데이트해줄필요는 없다..
+                return;
+            }
             dispatch(increase_set());//운동 세트 수 증가 시켜주기
             dispatch(not_timeToModal());//휴식세트 창을 다시 닫아주면서 다시 state 변경
         }
        
+      }
+      else if(time.current===1&&where!=="physical_test_ready"){
+        // 여기에서 1초일 때 분기를 하는 이유는 미리 count를 0으로 1초전에 변경해주면 최대한 increase_set나 not_timeToModal에 의한 ui변경전에 모달을 닫을수잇다
+
+        dispatch(reset_count());//다시 카운트된 개수를 리셋시켜줌
       }
     }, [sec]);
   
