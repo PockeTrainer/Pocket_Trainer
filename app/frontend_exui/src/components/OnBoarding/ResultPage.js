@@ -55,8 +55,8 @@ function ResultPage() {
                     const classPrediction =
                         prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                     if(prediction[i].probability.toFixed(2) > 0.75) {
-                        //changeResult(classPrediction)
-                        console.log(classPrediction)
+                        changeResult(classPrediction)
+                        //console.log(classPrediction)
                     }
                     //changeResult(classPrediction)
                     //drawCanvas(pose, video, videoWidth, videoHeight, canvasRef.current);
