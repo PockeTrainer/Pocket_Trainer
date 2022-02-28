@@ -80,7 +80,7 @@ function WeightCheckInstruction(){
                 <CardWrapper time={3000}>
                     <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
                     <h2 className="text-gray-dark display-4" >중량체크</h2>
-                    <hr></hr>
+                    {/* <hr></hr> */}
     
                     <div className="alert alert-warning" role="alert" style={SpanStyle}>
                         <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span> 
@@ -107,12 +107,8 @@ function WeightCheckInstruction(){
                 </Slide>
     
                 {/* 하단 시작버튼 */}
-                <Grow in={checked2} style={{ transformOrigin: '0 0 0' }}
-            {...(checked2 ? { timeout: 1000 } : {})}>
-                <div>
                     <ScrollTriggerButton content="연습세트"/>
-                </div>
-                </Grow>
+
             </>
         );
    

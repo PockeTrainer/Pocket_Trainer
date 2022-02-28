@@ -6,6 +6,7 @@ export class Exercise{
         this.instruction=Exercise_Info.instruction;
         this.image_url=Exercise_Info.image_url;
         this.musclePart=Exercise_Info.musclePart;
+        this.part=Exercise_Info.part
     }
 
     get name(){
@@ -53,21 +54,24 @@ export const BenchPress={
     name:"벤치프레스",
     image_url:"../assets/img/theme/benchPress.gif",
     instruction:"벤치프레스는 대표적인 3대운동 중 하나로서 대흉근,삼각근,상완삼두근의 종합적인 참여를 통해 균형있는 상체를 만들어주는 운동입니다",
-    musclePart:"대흉근+삼각근+상완삼두근"
+    musclePart:"대흉근+삼각근+상완삼두근",
+    part:"가슴"
 }
 
 export const InclinedBenchPress={
     name:"인클라인프레스",
     image_url:"../assets/img/theme/InclinedPress.gif",
     instruction:"플랫벤치가 아닌 45정도 세워진 벤치에서 실시하여 가슴 상부 근육을 좀 더 집중적으로 발달시키는 운동입니다.",
-    musclePart:"가슴상부근+상부대흉근"
+    musclePart:"가슴상부근+상부대흉근",
+    part:"가슴"
 }
 
 export const DumbbelFly={
     name:"덤벨플라이",
     image_url:"../assets/img/theme/DumbbelFly.gif",
     instruction:"덤벨플라이는 왼쪽과 오른쪽 가슴이 만나느 중앙부분을 발달시키는 운동으로서 가슴중앙의 근육분리와 함께 벌어진 가슴을 모아주는 운동입니다.",
-    musclePart:"대흉근"
+    musclePart:"대흉근",
+    part:"가슴"
 }
 
 //등
@@ -75,7 +79,8 @@ export const LatPullDown={
     name:"렛풀다운",
     image_url:"../assets/img/theme/LatPullDown.gif",
     instruction:"턱걸이와 유사한 기능을 가진 수직 당기기 머신 운동으로 등의 광배근을 길러주는 운동입니다",
-    musclePart:"광배근+전완근+이두근"
+    musclePart:"광배근+전완근+이두근",
+    part:"등"
 }
 
 //어깨

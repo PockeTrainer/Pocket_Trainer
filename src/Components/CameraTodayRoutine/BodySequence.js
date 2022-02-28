@@ -64,7 +64,7 @@ function BodySequence(){
         }
         else if(success){
           setTimeout(() => {
-            navigate("/routine/series/benchpress")
+            navigate("/routine/series/BenchPress")
           }, 2000);
         }
         return () => {

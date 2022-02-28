@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Zoom from '@mui/material/Zoom';
@@ -10,11 +10,22 @@ function ScrollButton(props) {
     // Note that you normally won't need to set the window ref as useScrollTrigger
     // will default to window.
     // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-      target: window ? window() : undefined,
-      disableHysteresis: true,
-      threshold: 50,
-    });
+    // 스크롤로 나타내고 모 없애고 싶을때 쓰삼
+    // const trigger = useScrollTrigger({
+    //   target: window ? window() : undefined,
+    //   disableHysteresis: true,
+    //   threshold: 50,
+    // });
+
+    const[check,setCheck]=useState(false);//이걸로 버튼 짜잔 할거임
+
+    const handleChange=()=>{
+      setCheck((prev)=>!prev);
+    }
+
+    useEffect(()=>{
+      setTimeout(handleChange,3000)
+    },[])
   
     const navigate=useNavigate();
     const handleClick = (event) => {
@@ -25,24 +36,24 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          navigate("/routine/weightcheck/benchPress");
+          navigate("/routine/weightcheck/BenchPress");
       }
       else if(content=="연습세트"){
-          navigate("/routine/weightcheck/practice/benchpress");
+          navigate("/routine/weightcheck/practice/BenchPress");
       }
       else if(content=="다음운동"){
         if(grade===null){
           changeModalTime(true);//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
         }
         else{
-          alert(grade)
+          navigate("/routine/weightcheck/BenchPress");
         }
-        // navigate("/routine/weightcheck/benchPress")
+       
       }
     };
   
     return (
-        <Zoom in={true}>
+        <Zoom in={check}>
           <Box
             onClick={handleClick}
             role="presentation"

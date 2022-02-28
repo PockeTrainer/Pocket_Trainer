@@ -109,14 +109,14 @@ function Evaluation(){
                                         <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>오늘중량:60kg</span> 
                                     </Stack>
                                     </Stack>
-                                    <span className="badge badge-success" style={{fontSize:"1em",marginTop:"2em"}}>근성장!(+10kg증량)</span>
+                                    <span className="badge badge-success" style={{fontSize:"1.5em",marginTop:"2em"}}>근성장!(+10kg증량)</span>
                                 </div>
                             </AccordionDetails>
                         </Accordion>
             </CardWrapper>
 
             <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>
-            <AlertModal where="confirm" />
+            <AlertModal where="warning" />
 
             <ScrollTriggerButton content="다음운동" grade={grade} changeModalTime={setModalTime}/>
 

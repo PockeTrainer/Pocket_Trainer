@@ -22,6 +22,7 @@ import axios from 'axios';
 
 
 import CameraTodayRoutine from './Components/CameraTodayRoutine/CameraTodayRoutine';
+import ScrollToTop from './Components/ScrollToTop';
 
 function App(){
 
@@ -124,7 +125,9 @@ function App(){
       <div className="App">
         
         <BrowserRouter>
-        {after_login?<SideNavBar/>:null}
+        {/* {after_login?<SideNavBar/>:null} */}
+        {/* ScrollToTop을 넣으므로써 항상 위로쪽으로 스크롤이 올라가게 만들수있음 */}
+        <ScrollToTop/>
           <Routes>
             <Route path="/account/:subtitle" element={<PublicRoute component={MainContent} isAuthorized={isAuthorized}/>} />
             <Route path="/" element={<PrivateRoute isAuthorized={isAuthorized}/>}>

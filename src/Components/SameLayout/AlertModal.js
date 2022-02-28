@@ -82,6 +82,34 @@ function AlertModal({where}){
         );
     }
 
+    else if(where==="warning"){
+        return(
+            <div className="modal fade" id="modal-default" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
+                            <button  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body" style={{padding:"1rem"}}>
+                            <div className="py-3 text-center">
+                                <i className="ni ni-fat-remove ni-4x" style={{color:"#5e72e4"}} />
+                            </div>
+                                <Pstyled bold="lighter">오늘의 운동 피드백을 해주시기 바랍니다</Pstyled>
+                            
+                        </div>
+                        
+                        <div className="modal-footer" style={{justifyContent:"center"}}>
+                            <button type="button" className="btn btn-primary" data-dismiss="modal" >확인</button>
+                        </div>
+                    </div>
+                </div>
+          </div>
+        );
+    }
+
     else{
 
         const SpanStyle={
