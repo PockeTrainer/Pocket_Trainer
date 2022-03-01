@@ -14,11 +14,14 @@ function PwSearchPage() {
 
     const history = useHistory();
 
+    let server_url = 'http://ec2-52-78-70-202.ap-northeast-2.compute.amazonaws.com:8000'
+    //let server_url = 'http://127.0.0.1:8000'
+
     const signUpBTNClick = (e) => {
         e.preventDefault();
 
         console.log(id, password, name, gender, email, birth);
-        axios.post("http://127.0.0.1:8000/api/user/signup", {
+        axios.post(`${server_url}/api/user/signup`, {
             id : id,
             password : password,
             name : name,

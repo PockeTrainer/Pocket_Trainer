@@ -10,9 +10,12 @@ function LoginPage()  {
     let [id, changeId] = useState();
     let [password, changePassword] = useState();
 
+    let server_url = 'http://ec2-52-78-70-202.ap-northeast-2.compute.amazonaws.com:8000'
+    //let server_url = 'http://127.0.0.1:8000'
+
     const logInBTNClick = (e) => {
         e.preventDefault();
-        axios.post("http://127.0.0.1:8000/api/user/login", {
+        axios.post(`${server_url}/api/user/login`, {
             id : id,
             password : password
         })
@@ -28,6 +31,7 @@ function LoginPage()  {
         .catch(err => 
             console.log(err.response.data)
         )
+
     }
     // const [name, setName] = useState();
 

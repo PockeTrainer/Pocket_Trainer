@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # Create your views here.
 
+
 class SignUpView(APIView):
     permission_classes = [AllowAny]
 
