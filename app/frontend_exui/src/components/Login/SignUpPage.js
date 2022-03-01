@@ -13,8 +13,7 @@ function PwSearchPage() {
     let [birth, changeBirth] = useState();
 
     const history = useHistory();
-    const data = 0;
-    
+
     let server_url = 'http://ec2-52-78-70-202.ap-northeast-2.compute.amazonaws.com:8000'
     //let server_url = 'http://127.0.0.1:8000'
 
