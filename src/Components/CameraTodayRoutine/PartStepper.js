@@ -14,25 +14,23 @@ function PartStepper({where}){
       set_progress:{
         series:["1세트","2세트","3세트","4세트","5세트"],
         size:"small"
+      },
+      Finish:{
+        series:["벤치프레스","인클라인프레스","펙덱플라이"],
+        size:"x=small"
       }
     };
 
-    const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//운동진행세트 수
+      const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//운동진행세트 수
 
       const StepLabelStyle=styled(StepLabel)((props)=>({
-          ".MuiStepLabel-label":{fontFamily:"Noto Sans KR",fontWeight:"600",fontSize:props.size==="big"?"1.575rem":"1.075rem"},
+          ".MuiStepLabel-label":{fontFamily:"Noto Sans KR",fontWeight:"600",fontSize:props.size==="big"?"1.575rem":(props.size==="small"?"1.075rem":"0.875rem")},
           ".MuiStepLabel-label.Mui-active":{color:"#ffc107"},
           ".MuiStepLabel-labelContainer":{color:"#5e72e4"},
-          ".MuiStepLabel-label.Mui-completed":{color:"#2dce89"}
+          ".MuiStepLabel-label.Mui-completed":{color:"#2dce89",fontWeight:"600"}
         })
       )
 
-      const StepLabelStyle_={
-        ".MuiStepLabel-label":{fontFamily:"Noto Sans KR",fontWeight:"600",fontSize:"1.575rem"},
-        ".MuiStepLabel-label.Mui-active":{color:"#ffc107"},
-        ".MuiStepLabel-labelContainer":{color:"#5e72e4"},
-        ".MuiStepLabel-label.Mui-completed":{color:"#2dce89"}
-      }
       const stepIconStyle={
         "&.MuiStepIcon-root":{color:"#8898aa"},
         "&.Mui-active":{color:"orange"},
@@ -42,7 +40,7 @@ function PartStepper({where}){
         return(
           <>
           <Box sx={{ width: '100%' }}>
-                              <Stepper activeStep={howmanySet} alternativeLabel>
+                              <Stepper activeStep={where==="set_progress"?howmanySet:3} alternativeLabel>
                                   {steps[where].series.map((label) => (
                                   <Step key={label}>
                                           <StepLabelStyle size={steps[where].size}  StepIconProps={{sx:stepIconStyle}}>{label}</StepLabelStyle>

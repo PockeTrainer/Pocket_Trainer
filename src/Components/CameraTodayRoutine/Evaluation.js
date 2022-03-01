@@ -27,6 +27,7 @@ function Evaluation(){
         }
     },[modalTime])
 
+
     const Pstyle={
         fontSize:"1.0rem",
         fontWeight:"lighter",
@@ -99,7 +100,7 @@ function Evaluation(){
                             </AccordionSummary>
                             <AccordionDetails sx={{"&.MuiAccordionDetails-root":{padding: "0px 0px 0px"}}}>
                                 <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
-                                    <i class="ni ni-like-2" style={{color:"black",fontSize:"3em"}}></i>
+                                    <i className="ni ni-like-2" style={{color:"black",fontSize:"3em"}}></i>
                                     <h2 style={{color:"black"}}><strong>벤치프레스 레코드</strong></h2>
                                     <Stack direction="column" spacing={2}>
                                     <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>총운동시간:10분03초</span> 

@@ -22,6 +22,7 @@ import MainStep from './MainStep';
 import Evaluation from './Evaluation';
 
 import { none_testState } from '../../modules/action';
+import Finish from './Finish';
 
 
 function CardLayout(){
@@ -228,7 +229,7 @@ function CardLayout(){
                                                             <Route path="weightcheck/practice/:exercise_name" element={<PracticeStep/>}/>
                                                             <Route path="exercise/:exercise_name" element={<MainStep/>}/>
                                                             <Route path="evaluation/:exercise_name" element={<Evaluation/>}/>
-                                                            {/* <Route path="finish" element={}/> */}
+                                                            <Route path="finish" element={<Finish/>}/>
                                                         </Routes>
                                                         
 

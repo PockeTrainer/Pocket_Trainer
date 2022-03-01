@@ -123,6 +123,10 @@ function AlertModal({where}){
         const badgeStyle={
             backgroundColor:"white"
         }
+
+        const gotoFeedback=()=>{
+            navigate("/routine/evaluation/BenchPress")
+        }
         return(
             <div className="modal fade" id="modal-default" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
                 <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
@@ -173,7 +177,7 @@ function AlertModal({where}){
                                 howmanySet===5&&count_result===0
                                 &&
                                 <div className="modal-footer" style={{padding:"0rem"}}>
-                                    <button style={{margin:"auto"}} type="button" className="btn btn-primary"><i className="ni ni-button-play"></i>다음운동</button>
+                                    <button onClick={gotoFeedback} style={{margin:"auto"}} type="button" className="btn btn-primary"><i className="ni ni-button-play"></i>다음운동</button>
                                     <button style={{margin:"auto"}} type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-pause"></i>그만두기</button>
                                 </div>
                                 }
