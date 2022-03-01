@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Zoom from '@mui/material/Zoom';
 import { useNavigate } from "react-router-dom";
+import { exercise_start } from "../../modules/action";
+import { useDispatch } from "react-redux";
 
 
 function ScrollButton(props) {
@@ -17,6 +19,8 @@ function ScrollButton(props) {
     //   threshold: 50,
     // });
 
+    const dispatch=useDispatch();
+
     const[check,setCheck]=useState(false);//이걸로 버튼 짜잔 할거임
 
     const handleChange=()=>{
@@ -30,9 +34,11 @@ function ScrollButton(props) {
     const navigate=useNavigate();
     const handleClick = (event) => {
       if(content==="평가준비"){
+        dispatch(exercise_start());
         navigate("/test/caution");//테스트평가사항페이지로 이동
       }
       else if(content=="운동준비"){
+        dispatch(exercise_start());//운동모드로 바꿔줌
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){

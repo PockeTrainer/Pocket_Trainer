@@ -11,13 +11,23 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ExerciseRoutine from "./ExerciseRoutine";
 
 import Grow from '@mui/material/Grow';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { change_routine_page_reducer } from "../../modules/action";
 import ExtraExercise from "./ExtraExercise";
+import { not_exercise_start } from "../../modules/action";
 
 function CardLayout(props){
     const page=useSelector(state=>state.change_routine_page_reducer.page);//어떤 페이지인지 정보 가지고 있는다
     const [checked, setChecked] = useState(false);
+    const dispatch=useDispatch();
+    const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
+
+    useEffect(()=>{//혹시나 뒤로가기나 이런걸로 다시 왔을때를 대비해 운동모드를 꺼준다
+        if(exercise_start_page){
+            dispatch(not_exercise_start());
+        }
+    },[exercise_start_page])
+
 
 
     const handleChange = () => {
@@ -31,7 +41,7 @@ function CardLayout(props){
         marginLeft:"-12px",
         marginRight:"-12px",
         borderRadius:"5px",
-        lineHeight:"10px"
+        lineHeight:"7px"
     };
 
     const settings = {

@@ -146,7 +146,9 @@ function SwipeableEdgeDrawer(props) {
           return
       }
       //toggleDrawer(true)
-      ref.current.click();//버튼클릭해서 열어주기
+      if(props.select_button!=="total"){
+        ref.current.click();//버튼클릭해서 열어주기
+      }
   },[props])
 
 //Snackbar용

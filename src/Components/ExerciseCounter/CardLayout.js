@@ -11,9 +11,22 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Card from "./Card";
 import Slider from 'react-slick';
 
+import { not_exercise_start } from '../../modules/action';
+
 import { pushup,situp,squat } from '../../ExercisesInfo/ExerciseInfo';
+import { useDispatch,useSelector } from 'react-redux';
 
 function CardLayout(){
+
+    const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);
+    const dispatch=useDispatch();
+
+    useEffect(()=>{
+        if(exercise_start_page){//만약에 운동시작페이지가 켜져있는 상태로 유지되어있다면 다시 운동페이지모드를 꺼주자
+            dispatch(not_exercise_start());
+        }
+    },[exercise_start_page])
+
     const subListHeader={
         bgcolor:"background.paper",
         paddingLeft:"5px",

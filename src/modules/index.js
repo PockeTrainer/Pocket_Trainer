@@ -9,6 +9,7 @@ import { change_routine_page_reducer } from './action';
 import {change_current_weight_reducer} from "./action"
 import {change_set_reducer} from "./action";
 import {change_timeToModal_reducer} from "./action";
+import { Exercise_start_reducer } from './action';
 
 const rootReducer=combineReducers({
     pageMove,
@@ -20,7 +21,8 @@ const rootReducer=combineReducers({
     change_routine_page_reducer,
     change_current_weight_reducer,
     change_set_reducer,
-    change_timeToModal_reducer
+    change_timeToModal_reducer,
+    Exercise_start_reducer
 });
 
 export default rootReducer;

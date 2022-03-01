@@ -4,9 +4,9 @@
 }
 
 .navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
-    max-width: 108%;
-    max-height: 5.0rem;
-    width:120%;
+    max-width: 93%;
+    max-height: 4.3rem;
+    width:100%;
 }
 .navbar{
     padding: 0rem 0rem;

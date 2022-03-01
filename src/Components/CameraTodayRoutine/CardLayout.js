@@ -150,6 +150,7 @@ function CardLayout(){
    const gotoBack=()=>{
        navigate(-1);//뒤로가기
        dispatch(none_testState());//뒤로가기할 시 전체적인 카메라 스테이트를 다시 꺼져줘야함
+       
 
    }
     //슬라이더용

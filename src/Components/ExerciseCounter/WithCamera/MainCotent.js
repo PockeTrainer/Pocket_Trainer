@@ -12,25 +12,13 @@ import { useSelector } from "react-redux";
 import { testState_reducer } from "../../../modules/action";
 
 function MainContent(){
-    // const[testState,setTestState]=useState(false);//해당 state는 아래 밑에 운동이 시작시 준비시간이 지날경우 true로 되어 카메라 전면 켜줄려고 만드는중
-    // const[urlstate,setUrlState]=useState("");//지금 어떤 테스트중인지
-
-
     const test_State=useSelector(state=>state.testState_reducer);
     const{testState,urlState}=test_State;
 
     console.log(testState);
 
     console.log(urlState);
-    //const[combine_string,set_combine_string]=useState("");
-    //const[div_height,setDiv_height]=useState("");
-    //let url_string;
-    //let div_height_str;
 
-    // const change=(tmp1,tmp2)=>{
-    //     setTestState(tmp1);
-    //     setUrlState(tmp2);
-    // };
 
     const count=useRef(1);
     const div=useRef();//card의 크기를 파악하기 위해
@@ -55,8 +43,6 @@ function MainContent(){
 
         setOpen(false);
     };  
-
-    let id=sessionStorage.getItem("user_id");//로그인 했을 때의 세션정보에 접근해서 아이디 가져옴
     const navigate=useNavigate();
     
 
@@ -71,12 +57,6 @@ function MainContent(){
         }
         else if(testState=="true"){
             handleClick();
-            //url_string="http://127.0.0.1:8000/api/detectme/startWorkout/"+urlstate+'/'+id;
-            //set_combine_string('url'+'('+'"'+url_string+'"'+')');
-            console.log("bye")
-            //div_height_str="100%"+" "+div.current.offsetHeight+"px";
-            //setDiv_height(div_height_str)//카메라에 넣을 card의 크기값을 의미
-            
         }
         else if(testState=="completed"){//카메라 준비완료단계
             console.log("카메라준비완료");
@@ -107,14 +87,7 @@ function MainContent(){
         squat:"스쿼트 평가 중 입니다"
     }
     
-{/*
-    const style={
-        backgroundImage:combine_string,
-        backgroundRepeat:"no-repeat",
-        //backgroundSize:"cover",
-        backgroundSize:div_height,
-    };
-*/}
+
     return(
         <div>
             <div className="card bg-secondary shadow" data-component="AccountInformationCard" ref={div}>

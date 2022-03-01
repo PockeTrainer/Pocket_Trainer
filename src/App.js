@@ -9,7 +9,6 @@ import SideNavBar from './Components/SameLayout/SideNavbar';
 import MainContent from './Components/Sign/MainContent';
 import WithCamera from './Components/ExerciseCounter/WithCamera/WithCamera';
 import StartModal from './Components/StartAlert/StartModal';
-import FullScreenDialog from './Components/StartAlert/FullScreenDialog';
 import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
 import TodayRoutine from "./Components/TodayRoutine/TodayRoutine"
@@ -29,19 +28,17 @@ function App(){
   const [after_login,setAfter_Login]=useState(false);
   const button1=useRef(null);
   const syncState=useRef("first");
+
   const dispatch=useDispatch();
+
   const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
+  const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
+
   let isAuthorized=sessionStorage.getItem("isAuthorized");
   let id=sessionStorage.getItem("user_id");
   //let isAuthorized=true
 
 
-  function dispatch_and_open(action){
-    return new Promise(function(resolve,reject){
-      dispatch(action);
-      resolve();
-    })
-  }
 
   
   useEffect(()=>{
@@ -74,7 +71,7 @@ function App(){
   console.log("나여기!")
   },[]);
 
-  useEffect(async() => {
+  useEffect(async() =>  {
     // 해당일 처음 로그인 한 사용자 루틴 생성
     await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
         .then((res) => {
@@ -125,7 +122,7 @@ function App(){
       <div className="App">
         
         <BrowserRouter>
-        {/* {after_login?<SideNavBar/>:null} */}
+        {after_login&&exercise_start_page===false?<SideNavBar/>:null}
         {/* ScrollToTop을 넣으므로써 항상 위로쪽으로 스크롤이 올라가게 만들수있음 */}
         <ScrollToTop/>
           <Routes>

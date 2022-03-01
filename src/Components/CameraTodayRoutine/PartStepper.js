@@ -17,7 +17,11 @@ function PartStepper({where}){
       },
       Finish:{
         series:["벤치프레스","인클라인프레스","펙덱플라이"],
-        size:"x=small"
+        size:"x-small"
+      },
+      etc:{
+        series:["케이블푸시다운","크런치"],
+        size:"x-small"
       }
     };
 

@@ -15,6 +15,9 @@ import { change_clicked_button_reducer } from "../../modules/action";
 import { change_clicked_button } from "../../modules/action";
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 
+import PartStepper from "../CameraTodayRoutine/PartStepper";
+import SelectBar from "../SameLayout/SelectBar";
+
 
 
 
@@ -45,6 +48,21 @@ function TodaySummary(){
         }
     }
 
+    const SpanStyle={
+        backgroundColor:"#f7fafc",
+        borderColor:"#2dce89",
+        color:"white",
+        padding:"0.5rem 0.5rem",
+        fontSize:"1.375rem",
+        marginTop:"0.9em"
+    }
+
+    const ProgressSpanStyle={
+        fontSize:"1.0em",
+        color:"white",
+        marginTop:"1em",
+        backgroundColor:"#2dce89"
+    }
     
     
     return(
@@ -88,17 +106,15 @@ function TodaySummary(){
                 <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>1종목</span> 
                 <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>1종목</span> 
             </Stack>
-          <p className='card-text' style={{marginTop:"30px"}}>마지막 해당루틴날짜:2022/01/18</p>
-          <div className="alert alert-warning" role="alert" style={{padding:"1.5em 1.5em"}}>
-                <i class="ni ni-like-2"></i>
-                <h2><strong>부위별 평균등급</strong></h2>
-                <Stack direction="row" spacing={0}>
-                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white"}}>가슴:3등급</span> 
-                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2"}}>팔(삼두):2등급</span> 
-                <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2"}}>복근:5등급</span> 
-                </Stack>
-          </div>
-          
+          <p className='card-text' style={{marginTop:"30px",marginBottom:"0px"}}>마지막 해당루틴날짜:2022/01/18</p>
+        {/* 여기다가 진행수준 삽입 */}
+                <span className="badge badge-secondary" style={ProgressSpanStyle}>진행정도</span>
+                <div className="alert alert-warning" role="alert" style={SpanStyle} >
+                    <Stack direction="column">
+                        <PartStepper where="Finish"/>
+                        <PartStepper where="etc"/>
+                    </Stack>
+                </div>
         </div>
         <SwipeableEdgeDrawer select_button={clickedButton} />
 

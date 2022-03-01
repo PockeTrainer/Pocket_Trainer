@@ -8,6 +8,9 @@ const GOTOWEIGHT="gotoweight";
 const MODALREF="modalref"
 const FIRST_LOGIN="first_login";
 const SECOND_LOGIN="second_login";
+//메인메뉴쪽에서->운동시작으로 넘어갔을 때 필요한 액션-상단바유무를 가려줌
+const EXERCISE_START="exercise_start";
+const NOT_EXCERCISE_START="not_exercise_start"
 
 //체력측정이 시작되었는지 여부 액션타입
 const TESTSTATE="testState";
@@ -61,6 +64,14 @@ export const gotoweight=()=>({
 export const modalref=(refValue)=>({
     type:MODALREF,
     refValue
+});
+
+export const exercise_start=()=>({
+    type:EXERCISE_START
+});
+
+export const not_exercise_start=()=>({
+    type:NOT_EXCERCISE_START
 });
 
 export const first_Login=()=>({
@@ -183,6 +194,9 @@ const initialRef={//맨 위 모달창 켜는 버튼을 의미
     ref:""
 };
 
+const initialExerciseStart={//운동페이지들어갔나 안들어갔나 의미
+    page:false
+}
 const initialFirstId={
     first_login:""
 }
@@ -247,6 +261,21 @@ export function Appref(state=initialRef,action){
             return {
                 ref:action.refValue
             }    
+        default:
+            return state;
+    }
+}
+
+export function Exercise_start_reducer(state=initialExerciseStart,action){
+    switch (action.type) {
+        case EXERCISE_START:
+            return {
+                page:true
+            }    
+        case NOT_EXCERCISE_START:
+            return {
+                page:false
+            }      
         default:
             return state;
     }

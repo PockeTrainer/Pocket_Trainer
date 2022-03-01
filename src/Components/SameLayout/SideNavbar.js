@@ -28,7 +28,7 @@ function SideNavBar(){
         return(
             <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main" data-component="SideNavbar">
         <div className="container-fluid">
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+          <button onClick={()=>alert('d으아아아아')} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
           <Link className='navbar-brand pt-0' to="/" onClick={()=>showGetId("list1")}>
@@ -51,7 +51,7 @@ function SideNavBar(){
             <li className="nav-item dropdown">
               <a className="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div className="media align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
+                  <span className="avatar avatar-sm rounded-circle" style={{width:"25px",height:"25px"}}>
                     <img alt="Image placeholder" src="./assets/img/theme/dumbel.png" />
                   </span>
                 </div>

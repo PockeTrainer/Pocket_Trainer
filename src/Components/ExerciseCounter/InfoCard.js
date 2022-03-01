@@ -2,9 +2,6 @@ import React, { useEffect, useState,useRef } from 'react';
 import styles from'../../CustomCss/ExerciseCounter/InfoCard.module.css';
 import "slick-carousel/slick/slick.css"; //최소여기서는 한 번 임포트를 해서 전체적으로 쓰이도록 하자
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import { red } from '@mui/material/colors';
-import { Link } from 'react-router-dom';
 
 import ScrollTrigerButton from "../SameLayout/ScrollTriggerButton";
 
