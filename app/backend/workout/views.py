@@ -89,7 +89,7 @@ class CreateRoutineView(APIView):
                     created_DayHistory_Workout.target_kg = User_WorkoutInfo.target_kg
                     created_DayHistory_Workout.save()
 
-                    Workout_Info = WorkoutInfo.objects.get(workout_name="city_draw")
+                    Workout_Info = WorkoutInfo.objects.get(workout_name="seated_row")
                     User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id = user, workout_name = Workout_Info)
 
                     created_DayHistory_Workout = DayHistoryWorkout.objects.create(user_id=user, create_date=date, workout_name=Workout_Info)
@@ -120,7 +120,7 @@ class CreateRoutineView(APIView):
                     created_DayHistory_Workout.save()
 
                     # 복부 운동
-                    Workout_Info = WorkoutInfo.objects.get(workout_name="city_dennis_up")
+                    Workout_Info = WorkoutInfo.objects.get(workout_name="seated_knees_up")
                     User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id = user, workout_name = Workout_Info)
 
                     created_DayHistory_Workout = DayHistoryWorkout.objects.create(user_id=user, create_date=date, workout_name=Workout_Info)
@@ -625,7 +625,7 @@ class SaveTestResultView(APIView):
         cnt = 0
         time = "00:00:00"
 
-        # 가슴
+        # 가슴 (chest)
         Workout_Info = WorkoutInfo.objects.get(workout_name="bench_press")
         User_WorkoutInfo, created = UserWorkoutInfo.objects.update_or_create(user_id = user, workout_name = Workout_Info)
         User_WorkoutInfo.target_kg = kg
@@ -641,13 +641,13 @@ class SaveTestResultView(APIView):
         User_WorkoutInfo.target_kg = kg
         User_WorkoutInfo.save()
 
-        # 등
+        # 등 (back)
         Workout_Info = WorkoutInfo.objects.get(workout_name="lat_pull_down")
         User_WorkoutInfo, created = UserWorkoutInfo.objects.update_or_create(user_id = user, workout_name = Workout_Info)
         User_WorkoutInfo.target_kg = kg
         User_WorkoutInfo.save()
 
-        Workout_Info = WorkoutInfo.objects.get(workout_name="city_draw")
+        Workout_Info = WorkoutInfo.objects.get(workout_name="seated_row")
         User_WorkoutInfo, created = UserWorkoutInfo.objects.update_or_create(user_id = user, workout_name = Workout_Info)
         User_WorkoutInfo.target_kg = kg
         User_WorkoutInfo.save()
@@ -705,13 +705,13 @@ class SaveTestResultView(APIView):
         User_WorkoutInfo.target_kg = kg
         User_WorkoutInfo.save() 
 
-        # 복부
+        # 복부 (stomach)
         Workout_Info = WorkoutInfo.objects.get(workout_name="crunch")
         User_WorkoutInfo, created = UserWorkoutInfo.objects.update_or_create(user_id = user, workout_name = Workout_Info)
         User_WorkoutInfo.target_cnt = cnt
         User_WorkoutInfo.save()          
 
-        Workout_Info = WorkoutInfo.objects.get(workout_name="city_dennis_up")
+        Workout_Info = WorkoutInfo.objects.get(workout_name="seated_knees_up")
         User_WorkoutInfo, created = UserWorkoutInfo.objects.update_or_create(user_id = user, workout_name = Workout_Info)
         User_WorkoutInfo.target_cnt = cnt
         User_WorkoutInfo.save() 
@@ -756,20 +756,20 @@ class SaveTestResultView(APIView):
 class TodayRoutineView(APIView):
     permission_classes = [AllowAny]
     def get(self, request, user_id):
-        try:
-            user = User.objects.get(id=user_id)
+ #       try:
+        user = User.objects.get(id=user_id)
 
-            #오늘의 루틴 기록
-            today = datetime.now().date()
-            DayHistory_Workout_q = DayHistoryWorkout.objects.filter(user_id=user, create_date=today)
-            DayHistory_Serializer = DayHistorySerializer(DayHistory_Workout_q, many=True)
-            return Response({
-                        "code" : 200,
-                        "message" : "오늘의 루틴 페이지 정보 호출 완료",
-                        "todayRoutine" : DayHistory_Serializer.data
-                    })
-        except:
-            return Response({"error":"오늘의 루틴 페이지 정보 호출 실패."}, status=400)
+        #오늘의 루틴 기록
+        today = datetime.now().date()
+        DayHistory_Workout_q = DayHistoryWorkout.objects.filter(user_id=user, create_date=today)
+        DayHistory_Serializer = DayHistorySerializer(DayHistory_Workout_q, many=True)
+        return Response({
+                    "code" : 200,
+                    "message" : "오늘의 루틴 페이지 정보 호출 완료",
+                    "todayRoutine" : DayHistory_Serializer.data
+                })
+#3        except:
+ #           return Response({"error":"오늘의 루틴 페이지 정보 호출 실패."}, status=400)
 
 #운동측정 전 무게 or 갯수 or 시간 호출 
 class GetUserWorkoutInfo(APIView):
@@ -783,7 +783,7 @@ class GetUserWorkoutInfo(APIView):
             User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id=user, workout_name=workout)
 
             #이전에 해당 운동 무게 측정x 상태
-            if(User_WorkoutInfo.workout_feedback == None) :
+            if(User_WorkoutInfo.last_update_date == None) :
                 is_first = True
 
             User_WorkoutInfo.save()
@@ -795,6 +795,7 @@ class GetUserWorkoutInfo(APIView):
                         "target_kg" : User_WorkoutInfo.target_kg,
                         "target_cnt" : User_WorkoutInfo.target_cnt,
                         "target_time" : User_WorkoutInfo.target_time,
+                        "last_update_date" : User_WorkoutInfo.last_update_date,
                         "workout_feedback" : User_WorkoutInfo.workout_feedback,
                     })
         except:
@@ -805,29 +806,36 @@ class GetUserWorkoutInfo(APIView):
 class ChangeUserWorkoutInfo(APIView):
     permission_classes = [AllowAny]
     def put(self, request, workout, user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            workout = WorkoutInfo.objects.get(workout_name=workout)
+        #try:
+        user = User.objects.get(id=user_id)
+        workout = WorkoutInfo.objects.get(workout_name=workout)
+        User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id=user, workout_name=workout)
 
-            User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id=user, workout_name=workout)
+        today = datetime.now().date()
+        DayHistory_Workout = DayHistoryWorkout.objects.get(user_id=user, workout_name=workout, create_date=today)
 
-            if(request.data['target_kg']) :
-                User_WorkoutInfo.target_kg = request.data['target_kg']
-            elif(request.data['target_cnt']) :
-                User_WorkoutInfo.target_cnt = request.data['target_cnt']
-            elif(request.data['target_time']) :
-                User_WorkoutInfo.target_time = request.data['target_time']
+        if('target_kg' in request.data) :
+            User_WorkoutInfo.target_kg = request.data['target_kg']
+            DayHistory_Workout.target_kg = request.data['target_kg']
+        elif('target_cnt' in request.data) :
+            User_WorkoutInfo.target_cnt = request.data['target_cnt']
+            DayHistory_Workout.target_cnt = request.data['target_cnt']
+        elif('target_time' in request.data) :
+            User_WorkoutInfo.target_time = request.data['target_time']
+            DayHistory_Workout.target_time = request.data['target_time']
 
-            User_WorkoutInfo.workout_feedback = 0
+        User_WorkoutInfo.workout_feedback = 0
+        User_WorkoutInfo.last_update_date = today
 
-            User_WorkoutInfo.save()
+        User_WorkoutInfo.save()
+        DayHistory_Workout.save()
 
-            return Response({
-                        "code" : 200,
-                        "message" : "유저 운동정보 변경 완료",
-                    })
-        except:
-            return Response({"error" : "유저 운동정보 변경 실패"}, status=400)
+        return Response({
+                    "code" : 200,
+                    "message" : "유저 운동정보, 해당일 target 수정 완료",
+                })
+        #except:
+        #    return Response({"error" : "유저 운동정보 변경 실패"}, status=400)
 
 #운동측정 기록 update
 class WorkoutResultView(APIView):
@@ -840,15 +848,18 @@ class WorkoutResultView(APIView):
             today = datetime.now().date()
             DayHistory_Workout = DayHistoryWorkout.objects.get(user_id=user, create_date=today, workout_name=workout)
             DayHistory_Workout.workout_set = request.data['workout_set']
-            DayHistory_Workout.workout_cnt = request.data['workout_cnt']
             DayHistory_Workout.workout_time = request.data['workout_time']
-            
+
+            #마지막 세트면 해당 운동 is_clear => True 
+            if (DayHistory_Workout.workout_set == '5') :
+                DayHistory_Workout.is_clear = True
+
             DayHistory_Workout.save()
 
             return Response({
                         "code" : 200,
                         "message" : "운동 기록 저장 완료",
-                    })
+                })
         except:
             return Response({"error" : "운동 기록 저장 실패"}, status=400)
 
@@ -862,6 +873,12 @@ class WorkoutFeedbackView(APIView):
 
             User_WorkoutInfo = UserWorkoutInfo.objects.get(user_id=user, workout_name=workout)
             User_WorkoutInfo.workout_feedback = request.data['feedback']
+
+            #feedback에 따른 무게 수정
+            #if (workout == ""):
+            #elif ():
+            #else:
+
             User_WorkoutInfo.save()
 
             return Response({

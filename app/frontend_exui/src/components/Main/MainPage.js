@@ -18,7 +18,7 @@ function MainPage() {
     let id = sessionStorage.getItem("user_id");
 
     useEffect(() => {
-        axios.get(`http://openapi.foodsafetykorea.go.kr/api/4283446d9a824d28a909/I2790/json/1/10/DESC_KOR=구이`)
+        axios.get(`http://127.0.0.1:8000/api/workout/todayRoutine/2`)
             .then(res => {
                 console.log(res.data);
             })

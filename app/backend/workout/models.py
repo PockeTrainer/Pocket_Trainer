@@ -6,6 +6,7 @@ from accounts import models as user_model
 class WorkoutInfo(models.Model):
     workout_name = models.CharField(primary_key=True, max_length=200)
     workout_kcal = models.IntegerField()
+    body_part = models.CharField(null=True, blank=True, max_length=200)
 
     def __str__(self):
         return self.workout_name

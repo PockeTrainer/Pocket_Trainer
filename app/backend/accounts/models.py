@@ -39,7 +39,9 @@ class UserWorkoutInfo(models.Model):
     target_kg = models.IntegerField(null=True, blank=True)
     target_cnt = models.IntegerField(null=True, blank=True)
     target_time = models.TimeField(null=True, blank=True)
-    workout_feedback  = models.IntegerField(null=True, blank=True)
+    workout_feedback = models.IntegerField(null=True, blank=True)   #0: 적절, 1: 쉬움, 2: 무거움
+    last_update_date = models.DateField(null=True, blank=True)
+
     def __str__(self):
         return str(f'{self.user_id}_{self.workout_name}');
 
