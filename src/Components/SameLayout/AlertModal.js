@@ -125,7 +125,7 @@ function AlertModal({where}){
         }
 
         const gotoFeedback=()=>{
-            navigate("/routine/evaluation/BenchPress")
+            navigate("/routine/evaluation/bench_press")
         }
         return(
             <div className="modal fade" id="modal-default" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">

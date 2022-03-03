@@ -34,10 +34,10 @@ function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함
                       alt={exercise.name}
                     />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic"}}>
+                      <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Noto Sans KR",fontWeight:"600"}}>
                         {exercise.name}(5set)
                       </Typography>
-                      <Typography variant="body2" color="white">
+                      <Typography variant="body2" color="white" sx={{fontWeight:"lighter"}}>
                        {exercise.instruction}
                       </Typography>
                       

@@ -27,7 +27,7 @@ function App(){
 
   const [after_login,setAfter_Login]=useState(false);
   const button1=useRef(null);
-  const syncState=useRef("first");
+  let syncState=useRef("first");
 
   const dispatch=useDispatch();
 
@@ -74,10 +74,8 @@ function App(){
   useEffect(async() =>  {
     // 해당일 처음 로그인 한 사용자 루틴 생성
     await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
-        .then((res) => {
+        .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
             console.log(res.data);
-            dispatch(first_Login());
-            syncState="first";
         })
         .catch((err) => {
             console.log(err.response.data)
@@ -100,14 +98,15 @@ function App(){
             console.log(res.data);
             //유저정보(체중, 키), 체력평가 여부 확인
             
-            if(syncState=="first"){
-              setTimeout(showModal,1000);
-            }
 
         })
         .catch((err) => {
             console.log(err.response.data)
         })
+
+        if(syncState=="first"){
+          setTimeout(showModal,1000);
+        }
 
 
 

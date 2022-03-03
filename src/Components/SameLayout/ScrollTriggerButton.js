@@ -42,17 +42,17 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          navigate("/routine/weightcheck/BenchPress");
+          navigate("/routine/weightcheck/bench_press");
       }
       else if(content=="연습세트"){
-          navigate("/routine/weightcheck/practice/BenchPress");
+          navigate("/routine/weightcheck/practice/bench_press");
       }
       else if(content=="다음운동"){
         if(grade===null){
           changeModalTime(true);//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
         }
         else{
-          navigate("/routine/weightcheck/BenchPress");
+          navigate("/routine/weightcheck/bench_press");
         }
        
       }

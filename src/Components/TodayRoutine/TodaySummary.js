@@ -24,6 +24,9 @@ import SelectBar from "../SameLayout/SelectBar";
 function TodaySummary(){
 
     const clickedButton=useSelector(state=>state.change_clicked_button_reducer.clickedButton);
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+
     const dispatch=useDispatch();
     const handleClick=(select)=>{
         dispatch(change_clicked_button(select))
@@ -69,7 +72,7 @@ function TodaySummary(){
         <div className="card bg-secondary shadow mb-3" data-component="AccountInformationCard">
       
         <div className="card-body" style={{padding:"1rem"}}>
-            <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+            <i className="far fa-clipboard" style={{fontSize:"3.5em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >오늘의부위</h2>
             <hr></hr>
 
@@ -79,32 +82,32 @@ function TodaySummary(){
             sx={
                 popoverStyle
             }>
-                <Avatar sx={avatarStyle}>가슴</Avatar>
+                <Avatar sx={avatarStyle}>{bodypart[0]}</Avatar>
             </Button>
             
 
-            <span className="badge badge-primary btn-lg" style={{fontWeight:"lighter"}}>3종목</span>
+            <span className="badge badge-primary btn-lg" style={{fontWeight:"lighter"}}>{part1.length}종목</span>
             
             <Stack direction="row" spacing={2}>
                 <Button  variant="contained"  onClick={()=>handleClick("button2")}
                 sx={
                     popoverStyle
                 }>
-                    <Avatar sx={avatarStyle}>삼두</Avatar>
+                    <Avatar sx={avatarStyle}>{bodypart[1]}</Avatar>
                 </Button>
                
                 <Button  variant="contained" onClick={()=>handleClick("button3")}
                 sx={
                     popoverStyle
                 }>
-                    <Avatar sx={avatarStyle}>복근</Avatar>
+                    <Avatar sx={avatarStyle}>{bodypart[2]}</Avatar>
                 </Button>
                
                 
             </Stack>
             <Stack direction="row" spacing={2}>
-                <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>1종목</span> 
-                <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>1종목</span> 
+                <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>{part2.length}종목</span> 
+                <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>{part3.length}종목</span> 
             </Stack>
           <p className='card-text' style={{marginTop:"30px",marginBottom:"0px"}}>마지막 해당루틴날짜:2022/01/18</p>
         {/* 여기다가 진행수준 삽입 */}

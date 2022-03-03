@@ -2,7 +2,7 @@ import React,{useRef,useState,useEffect} from "react";
 import InfoTab from "./InfoTab";
 import TodaySummary from './TodaySummary'
 
-import Slider from "react-slick";
+import axios from "axios";
 import CssBaseline from '@mui/material/CssBaseline';
 
 import List from '@mui/material/List';
@@ -12,11 +12,12 @@ import ExerciseRoutine from "./ExerciseRoutine";
 
 import Grow from '@mui/material/Grow';
 import { useDispatch, useSelector } from "react-redux";
-import { change_routine_page_reducer } from "../../modules/action";
 import ExtraExercise from "./ExtraExercise";
-import { not_exercise_start } from "../../modules/action";
+import { not_exercise_start,routine_info } from "../../modules/action";
+
 
 function CardLayout(props){
+    const id=sessionStorage.getItem("user_id");
     const page=useSelector(state=>state.change_routine_page_reducer.page);//어떤 페이지인지 정보 가지고 있는다
     const [checked, setChecked] = useState(false);
     const dispatch=useDispatch();
@@ -28,7 +29,58 @@ function CardLayout(props){
         }
     },[exercise_start_page])
 
+    useEffect(async()=>{
+        let bodypart=new Set();//부위는 중복되는게 있기에 set 선택-중복안되도록
+        let part1=[];
+        let part2=[];
+        let part3=[];
+        let where_to_put;
+        let module= require("../../ExercisesInfo/ExerciseInfo.js");
+        let Exercise=module.Exercise;
 
+        await axios.get(`http://127.0.0.1:8000/api/workout/todayRoutine/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+        .then((res) => {
+
+            console.log(res.data.todayRoutine);
+            let tmp=res.data.todayRoutine;
+
+            tmp.map((info,index)=>{
+               bodypart.add(info.workout_name.body_part);
+
+               if(0<=index<=2){
+                where_to_put=part1;
+            }
+
+               if(info.workout_name.body_part==="하체"){
+                    where_to_put=part2;
+                }
+               else if(index===3){
+                   where_to_put=part2
+               }
+
+               if(info.workout_name.body_part==="복근"){
+                   where_to_put=part3
+               }
+                //운동객체 생성 후 상수정보 까지 합치기
+
+               window[info.workout_name.workout_name]=new Exercise(info,module[info.workout_name.workout_name]);//각각의 api결과+상수정보까지 합침
+               where_to_put.push(eval(info.workout_name.workout_name));
+
+               //각 파트별 나눠진 객체들을 리덕스로 공통으로 쓰이게 올리기
+               dispatch(routine_info([...bodypart],part1,part2,part3));
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+
+        console.log(bodypart);
+        console.log(part1);
+        console.log(part2);
+        console.log(part3);
+
+    },[])
 
     const handleChange = () => {
         setChecked((prev) => !prev);

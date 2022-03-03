@@ -43,6 +43,8 @@ const INCREASE_SET="increase_set"
 //휴식세트를 보여줄지 말지에 대한 액션
 const TIMETOMODAL="timeToModal";
 const NOT_TIMETOMODAL="not_timeToModal";
+//공통으로 쓸 api를 통해 불러온 운동객체 정보를 올리는용도
+const ROUTINE_INFO="routine_info";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -184,6 +186,13 @@ export const not_timeToModal=()=>({
     type:NOT_TIMETOMODAL
 })
 
+export const routine_info=(bodypart,part1,part2,part3)=>({
+    type:ROUTINE_INFO,
+    bodypart,
+    part1,
+    part2,
+    part3
+});
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -231,6 +240,14 @@ const initialSet={//메인운동에서 세트수 진행
 const initialTimeToModal={//휴식세트 창을 보여줄지 말지
     modalTime:false
 }
+
+const initialRoutineInfo={//api로부터 불러온 루틴정보 
+    bodypart:[],
+    part1:[],
+    part2:[],
+    part3:[]
+};
+
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
     switch (action.type) {
@@ -470,5 +487,19 @@ export function change_timeToModal_reducer(state=initialTimeToModal,action){
             }   
         default:
             return state     
+    }
+}
+
+export function update_routineInfo_reducer(state=initialRoutineInfo,action){
+    switch (action.type) {
+        case ROUTINE_INFO:
+            return {
+                bodypart:action.bodypart,
+                part1:action.part1,
+                part2:action.part2,
+                part3:action.part3
+            }    
+        default:
+            return state;
     }
 }

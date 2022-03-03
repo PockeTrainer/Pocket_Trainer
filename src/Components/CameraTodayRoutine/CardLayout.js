@@ -48,6 +48,7 @@ function CardLayout(){
                 exercise_name=url[url.length-1];//운동명이 담긴다
                 const module=await import("../../ExercisesInfo/ExerciseInfo.js");
 
+
                 bodypart=module[exercise_name].part;//url을 통해 안 운동정보로 부위 정보를 가져온다
                 exercise_name=module[exercise_name].name//정확한 한국어 운동명을 가져온다
 
@@ -150,7 +151,7 @@ function CardLayout(){
    const gotoBack=()=>{
        navigate(-1);//뒤로가기
        dispatch(none_testState());//뒤로가기할 시 전체적인 카메라 스테이트를 다시 꺼져줘야함
-       
+
 
    }
     //슬라이더용

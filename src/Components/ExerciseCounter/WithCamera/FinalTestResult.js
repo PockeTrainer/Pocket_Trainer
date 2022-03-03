@@ -46,8 +46,8 @@ function FinalTestResult(){
     
    
 
-    const totalState=(AllExercise.upperbody+AllExercise.abs+AllExercise.lowerbody)/3;
-        
+    const totalState=parseInt((AllExercise.upperbody+AllExercise.abs+AllExercise.lowerbody)/3);
+    
     
     const content={
         title:"최종측정결과",

@@ -27,9 +27,7 @@ import Stack from '@mui/material/Stack';
 
 import { change_clicked_button } from '../../modules/action';
 
-
-import { BenchPress,InclinedBenchPress,DumbbelFly,Crunch,CablePushDown } from '../../ExercisesInfo/ExerciseInfo';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 //한글 바이트 별로 잘라는 함수
 String.prototype.cut = function(len) {
@@ -93,28 +91,42 @@ function SwipeableEdgeDrawer(props) {
     margin:"auto"
   }));
 
-  const todayRoutine=[BenchPress,InclinedBenchPress,DumbbelFly];//오늘 운동 전체 종류
-  const todayPart1=[BenchPress,InclinedBenchPress,DumbbelFly];//오늘 할 운동 부위1
-  const todayPart2=[CablePushDown];//오늘 할 운동 부위2
-  const todayPart3=[Crunch];//오늘 할 운동 부위3
+ 
 
-  const todayRoutineListImage=todayRoutine.map((exercise,index)=>(
-    <Card key={index} sx={{ maxWidth: 345 ,marginTop:"1em"}}>
-      <CardActionArea onClick={()=>dispatch(change_clicked_button("button1"))} >
-              <CardMedia
-                          component="img"
-                          height="250"
-                          image={exercise.image_url}
-                          alt={exercise.name}
-                        />
-                        <CardContent sx={{"&.MuiCardContent-root":{padding:"6px",paddingBottom:"0px"}}}>
-                          <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic",fontWeight:"600"}}>
-                          {exercise.name}(5set)
-                        </Typography>
-                        </CardContent>
-        </CardActionArea>
-    </Card>
-  ))
+  const routine_info=useSelector(state=>state.update_routineInfo_reducer);//루틴정보들 싹 가져오기
+  const{bodypart,part1,part2,part3}=routine_info;
+  
+
+  const todayRoutineListImage=()=>{
+    
+      const result=[];
+      for(let i=1;i<=3;i++){
+        result.push(eval("part"+i).map((exercise,index)=>(
+          <Card key={index} sx={{ maxWidth: 345 ,marginTop:"1em"}}>
+            <CardActionArea onClick={()=>dispatch(change_clicked_button("button1"))} >
+                    <CardMedia
+                                component="img"
+                                height="250"
+                                image={exercise.image_url}
+                                alt={exercise.name}
+                              />
+                              <CardContent sx={{"&.MuiCardContent-root":{padding:"6px",paddingBottom:"0px"}}}>
+                                <Typography gutterBottom variant="h5" component="div" sx={{fontFamily:"Nanum Gothic",fontWeight:"600"}}>
+                                {exercise.name}(5set)
+                              </Typography>
+                              </CardContent>
+              </CardActionArea>
+          </Card>
+        ))
+        )
+      }
+      return result;
+  
+   
+   
+  }
+    
+  
 
   const todayRoutineListButton=(part,color)=>{
     let list=part.map((exercise,index)=>(
@@ -253,19 +265,19 @@ function SwipeableEdgeDrawer(props) {
            <>
            
             <Slider {...settings_for_total} ref={slider}>
-              {todayRoutineListImage}
+              {todayRoutineListImage()}
             </Slider>
             <h2 className="text-gray-dark display-4" style={{textAlign:"center"}} >가슴</h2>
             <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
-              {todayRoutineListButton(todayPart1,"#fc7c5f")}
+              {todayRoutineListButton(part1,"#fc7c5f")}
             </Stack>
             <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
               <h2 className="text-gray-dark display-4">삼두</h2>
               <h2 className="text-gray-dark display-4" >복근</h2>
             </Stack>
             <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
-              {todayRoutineListButton(todayPart2,"#2dce89")}
-              {todayRoutineListButton(todayPart3,"#ffc107")}
+              {todayRoutineListButton(part2,"#2dce89")}
+              {todayRoutineListButton(part3,"#ffc107")}
             </Stack>
             
             
@@ -276,32 +288,26 @@ function SwipeableEdgeDrawer(props) {
           props.select_button=="button1"&&
           <>
           <Slider {...settings_for_exercises} ref={slider}>
-            <EachExerciseInstruction exercise={BenchPress} />
-            <EachExerciseInstruction exercise={InclinedBenchPress} />
-            <EachExerciseInstruction exercise={DumbbelFly}/>
+            {
+              part1.map((exercise,index)=>(
+                <EachExerciseInstruction key={index} exercise={exercise} />
+              ))
+            }
           </Slider>
 
      <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
-       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(0,false)}>
-         <Stack direction="column">
-           <AvatarStyle color="#fc7c5f">벤</AvatarStyle>
-           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>벤치프레스</Typography>
-         </Stack>
-       </Button>
 
-       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(1,false)}>
-         <Stack direction="column">
-            <AvatarStyle color="#fc7c5f">인</AvatarStyle>
-           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>인클라인프레스</Typography>
-         </Stack>
-       </Button>
+       {
+       part1.map((exercise,index)=>(
+          <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(0,false)}>
+            <Stack direction="column">
+              <AvatarStyle color="#fc7c5f">{(exercise.name).cut(2)}</AvatarStyle>
+              <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{exercise.name}</Typography>
+            </Stack>
+        </Button>
+       ))
+       }
 
-       <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(2,false)}>
-         <Stack direction="column">
-            <AvatarStyle color="#fc7c5f">플</AvatarStyle>
-           <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500"}}>덤벨플라이</Typography>
-         </Stack>
-       </Button>
        
      </Stack>
      </>}
