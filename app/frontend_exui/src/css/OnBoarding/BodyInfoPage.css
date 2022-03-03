@@ -1,0 +1,33 @@
+.BodyInfoPage .GNB{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 120px;
+    text-align: center;
+}
+
+.BodyInfoPage .mainsource {
+    display: flex;
+    flex-direction: column;
+    margin: 45px 35px 50px 35px;
+}
+
+.BodyInfoPage .mainsource label {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.BodyInfoPage .mainsource input {
+    border: solid 1px gray;
+    height:25px;
+    margin-bottom: 30px;
+    border-radius: 7px;
+}
+
+.BodyInfoPage .mainsource button {
+    width: 100%;
+    height:40px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin-top: 20px;
+}

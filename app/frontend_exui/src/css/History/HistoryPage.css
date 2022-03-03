@@ -1,0 +1,32 @@
+.HistoryPage .img {
+    text-align: center;
+}
+
+.HistoryPage img {
+    width: 98%;
+    height: 40%;
+}
+
+.HistoryPage .records {
+    display: flex;
+    justify-content: space-around;
+}
+
+.HistoryPage .records button {
+    width: 150px;
+    height: 150px;
+    border: solid 1px white;
+    border-radius: 30px;
+    margin: 20px 0px 20px 0px;
+}
+
+.HistoryPage .records .workoutRecord button {
+    background-color: rgb(151, 151, 255);
+    color: white;
+}
+
+.HistoryPage .records .weightRecord button {
+    background-color: rgb(159, 214, 159);
+    color: white;
+}
+

@@ -1,0 +1,38 @@
+.CheckPwPage {
+    text-align: center;
+}
+
+.CheckPwPage .GNB {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 200px;
+    text-align: center;
+}
+
+.CheckPwPage .mainsource {
+    display: flex;
+    flex-direction : column;
+    margin: 65px 35px 30px 35px;
+}
+
+.CheckPwPage .mainsource label {
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.CheckPwPage .mainsource input {
+    border: solid 1px gray;
+    height:25px;
+    margin-bottom: 30px;
+    border-radius: 7px;
+}
+
+.CheckPwPage .mainsource button {
+    width: 100%;
+    height:40px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin-top: 10px;
+}

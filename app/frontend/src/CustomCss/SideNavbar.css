@@ -1,0 +1,33 @@
+.dropdown-menu .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 1.075rem;
+}
+
+.navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
+    max-width: 108%;
+    max-height: 5.0rem;
+    width:120%;
+}
+.navbar{
+    padding: 0rem 0rem;
+}
+
+@media (max-width: 767.98px){
+.navbar-collapse .collapse-brand img {
+    height: -1%;
+    width: 140%;
+    margin-bottom: -1em;
+}
+}
+
+.userInfo{
+    color: #ffbd04;
+}
+
+.history{
+    color: yellowgreen;
+}
+
+.goal{
+    color: red;
+}
