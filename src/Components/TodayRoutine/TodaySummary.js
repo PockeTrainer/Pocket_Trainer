@@ -2,14 +2,11 @@ import React,{useState} from "react";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 
 import SwipeableEdgeDrawer from "./SwipeableEdgeDrawer";
 
 
-import NavigationIcon from '@mui/icons-material/Navigation';
 import { useDispatch, useSelector } from "react-redux";
 import { change_clicked_button_reducer } from "../../modules/action";
 import { change_clicked_button } from "../../modules/action";
@@ -17,6 +14,7 @@ import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 
 import PartStepper from "../CameraTodayRoutine/PartStepper";
 import SelectBar from "../SameLayout/SelectBar";
+
 
 
 
@@ -42,6 +40,17 @@ function TodaySummary(){
 
         }
     }
+
+    const AvatarStyle=styled(Avatar)((props)=>({
+        margin:"auto",
+        width: "60px",
+        height:"60px",
+        backgroundColor:props.color,
+        fontFamily:"Nanum Gothic",
+        fontWeight:"bold"
+      }));
+
+      
     const popoverStyle={
         "&.MuiButton-root":{
             display:"flex",
@@ -82,7 +91,7 @@ function TodaySummary(){
             sx={
                 popoverStyle
             }>
-                <Avatar sx={avatarStyle}>{bodypart[0]}</Avatar>
+                <AvatarStyle color="#fc7c5f">{bodypart[0]}</AvatarStyle>
             </Button>
             
 
@@ -93,14 +102,14 @@ function TodaySummary(){
                 sx={
                     popoverStyle
                 }>
-                    <Avatar sx={avatarStyle}>{bodypart[1]}</Avatar>
+                    <AvatarStyle color="#2dce89">{bodypart[1]}</AvatarStyle>
                 </Button>
                
                 <Button  variant="contained" onClick={()=>handleClick("button3")}
                 sx={
                     popoverStyle
                 }>
-                    <Avatar sx={avatarStyle}>{bodypart[2]}</Avatar>
+                    <AvatarStyle color="#ffc107">{bodypart[2]}</AvatarStyle>
                 </Button>
                
                 
@@ -114,8 +123,8 @@ function TodaySummary(){
                 <span className="badge badge-secondary" style={ProgressSpanStyle}>진행정도</span>
                 <div className="alert alert-warning" role="alert" style={SpanStyle} >
                     <Stack direction="column">
-                        <PartStepper where="Finish"/>
-                        <PartStepper where="etc"/>
+                        <PartStepper where="part1"/>
+                        <PartStepper where="part2"/>
                     </Stack>
                 </div>
         </div>

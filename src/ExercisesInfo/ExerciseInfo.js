@@ -60,6 +60,18 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
 }
 
 
+//각 bodypart에 따른 한글부위명
+
+export const bodypart={
+    chest:"가슴",
+    back:"등",
+    shoulder:"어깨",
+    bicep:"이두",
+    tricep:"삼두",
+    abs:"복근",
+    leg:"하체"
+}
+
 //여기는 체력측정부분의 운동들을 상수로 담아놓음
 export const pushup={
     name:"푸시업",

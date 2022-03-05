@@ -43,15 +43,17 @@ function CardLayout(){
         if(path.pathname.includes("series") || path.pathname.includes("weightcheck")|| path.pathname.includes("exercise") ||path.pathname.includes("evaluation") ){
             var url=path.pathname.split("/");
 
-            if(url[url.length-1]!=="series"){//즉 파람스가 있는 상황일때-운동명들이 들어올 때
+            if(url[url.length-1]!=="series"){//즉 파람스가 있는 상황일때-운동명및 부위명 이 들어올 때
 
-                exercise_name=url[url.length-1];//운동명이 담긴다
+                let tmp=url[url.length-1];//운동명 또는 부위명이 담긴다
                 const module=await import("../../ExercisesInfo/ExerciseInfo.js");
 
-
-                bodypart=module[exercise_name].part;//url을 통해 안 운동정보로 부위 정보를 가져온다
-                exercise_name=module[exercise_name].name//정확한 한국어 운동명을 가져온다
-
+                if(tmp==="chest"||tmp==="back"||tmp==="shoulder"||tmp==="bicep"||tmp==="tricep"||tmp==="abs"){
+                    bodypart=module.bodypart[tmp]; //부위명을 가져온다
+                }
+                else{
+                    exercise_name=module[tmp].name//정확한 한국어 운동명을 가져온다
+                }
 
                 if(path.pathname.includes("series")){//즉 각 부위별 운동정리 페이지를 의미한다
                     page_title=bodypart+"운동";
