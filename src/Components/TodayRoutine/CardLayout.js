@@ -114,7 +114,7 @@ function CardLayout(props){
         <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
               <div className="container-fluid">
                 <div className="header-body">
-                    <div class="container-fluid" >
+                    <div className="container-fluid" >
                         <div className="row" data-component="ProfileCardLayout">
                             <CssBaseline />
                             <List sx={{ mb: 2 ,marginTop:"-3.85em",paddingTop:"14px"}}>

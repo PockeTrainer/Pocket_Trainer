@@ -66,7 +66,7 @@ export default function VerticalStepper({link}) {
               sx={{".MuiStepIcon-root.Mui-active":{color:"#5e72e4"},".MuiStepIcon-root.Mui-completed":{color:"#2dce89"}}}
             >
               <div className={"alert"+" "+styles[`alert-warning`]} role="alert">
-                <span className={"alert-text"+" "+styles.alert_message}><strong><i class="ni ni-like-2"></i>주의:</strong><br></br>{step.label}</span>
+                <span className={"alert-text"+" "+styles.alert_message}><strong><i className="ni ni-like-2"></i>주의:</strong><br></br>{step.label}</span>
               </div>
             </StepLabel>
             <StepContent sx={{paddingLeft:"15px",paddingRight:"15px",borderLeft:"4px solid #5e72e4"}}>

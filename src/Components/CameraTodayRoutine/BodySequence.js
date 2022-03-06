@@ -14,12 +14,14 @@ import Skeleton from '@mui/material/Skeleton';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 
 import Grow from '@mui/material/Grow';
 import { useNavigate, useParams } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+
 
 function sleep(ms){
   return new Promise((r)=>setTimeout(r,ms));
@@ -32,6 +34,9 @@ function BodySequence(){
     const timer = useRef();
 
     const navigate=useNavigate();
+    const dispatch=useDispatch();
+    const bodypart=useSelector(state=>state.update_routineInfo_reducer.bodypart);//오늘 할당된 부위정보 가져오기
+    
 
       const AvatarStyle=styled(Avatar)((props)=>({
         width:"60px",
@@ -103,23 +108,23 @@ function BodySequence(){
           <div className="card-body pt-4 pt-md-4" style={{padding:"0.5rem"}} >
             <div className="row">
               <div className="col">
-              <i class={"fas fa-clipboard-list fa-5x"+" "+styles.alert_mark}></i>
+              <i className={"fas fa-clipboard-list fa-4x"+" "+styles.alert_mark}></i>
                         <div className={styles[`card-profile-stats`]+" "+"d-flex justify-content-center mt-md-5"}>
-                          <h1 className= {"display-4"+" "+styles.alert_title}><i class="ni ni-bold-right"></i>부위별순서</h1>
+                          <h1 className= {"display-4"} style={{color:"black"}}><i className="ni ni-bold-right"></i>부위별순서</h1>
                         </div>
                         <hr/>
                     <Stack direction="row" spacing={4} sx={{marginTop:"3.5em",justifyContent:"center"}}>
                             <Stack direction="column">
-                                <AvatarStyle color="#5e72e4" >가슴</AvatarStyle>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>가슴운동</Typography>
+                                <AvatarStyle color="#5e72e4" >{bodypart[0]}</AvatarStyle>
+                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{bodypart[0]}운동</Typography>
                             </Stack>
                             <Stack direction="column">
-                                <AvatarStyle color="#2dce89" >삼두</AvatarStyle>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>삼두운동</Typography>
+                                <AvatarStyle color="#2dce89" >{bodypart[1]}</AvatarStyle>
+                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{bodypart[1]}운동</Typography>
                             </Stack>
                             <Stack direction="column">
-                                <AvatarStyle color="#ffc107" >복근</AvatarStyle>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>복근운동</Typography>
+                                <AvatarStyle color="#ffc107" >{bodypart[2]}</AvatarStyle>
+                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{bodypart[2]}운동</Typography>
                             </Stack>
                     </Stack>
                     <Typography variant="h6" gutterBottom sx={{marginTop:"1em",fontWeight:"600",fontSize:"1.35rem"}}>대근육에서 소근육 순서로 진행</Typography>

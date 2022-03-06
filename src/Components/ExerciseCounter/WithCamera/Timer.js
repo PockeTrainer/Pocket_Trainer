@@ -7,7 +7,7 @@ import { none_testState, testState,increase_set,not_timeToModal,reset_count} fro
 
 const setting={
     physical_test_ready:5,
-    Press_and_3major:10,
+    Press_and_3major:20,
     etc:90,
     shoulder_and_arm:40
 }

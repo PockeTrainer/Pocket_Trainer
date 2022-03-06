@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Zoom from '@mui/material/Zoom';
 import { useNavigate } from "react-router-dom";
-import { exercise_start } from "../../modules/action";
-import { useDispatch } from "react-redux";
+import { exercise_start, next_exercise} from "../../modules/action";
+import { useDispatch, useSelector } from "react-redux";
 
 
 function ScrollButton(props) {
@@ -20,6 +20,11 @@ function ScrollButton(props) {
     // });
 
     const dispatch=useDispatch();
+
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//페이지가 담고있는 부위와 운동명 가져옴
+    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
     const[check,setCheck]=useState(false);//이걸로 버튼 짜잔 할거임
 
@@ -42,7 +47,8 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          navigate("/routine/weightcheck/bench_press");
+          let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]")
+          navigate("/routine/weightcheck/"+tmp.eng_name);
       }
       else if(content=="연습세트"){
           navigate("/routine/weightcheck/practice/bench_press");
@@ -52,6 +58,7 @@ function ScrollButton(props) {
           changeModalTime(true);//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
         }
         else{
+          dispatch(next_exercise());//다음운동으로 운동정보 업데이트
           navigate("/routine/weightcheck/bench_press");
         }
        

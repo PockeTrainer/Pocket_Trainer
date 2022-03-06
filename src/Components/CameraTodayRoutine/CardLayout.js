@@ -34,6 +34,10 @@ function CardLayout(){
     const dispatch=useDispatch();
     const path=useLocation();//지속적으로 url이 바뀌는 걸 인식시켜서 이름 바뀌게,,
 
+
+    const pageInfo=useSelector(state=>state.update_page_progress_reducer);//지금 현재 진행하고 있는 페이지의 부위와 운동명을 맡는다
+
+
     //동적 임포트-코드 스플릿팅이라고 부름
     const checkCategory=async()=>{
         let category;
@@ -229,7 +233,7 @@ function CardLayout(){
                                                             <Route path="caution" element={<Instruction/>}/>
                                                             <Route path="series" element={<BodySequence/>}/>
                                                             <Route path="series/:bodypart" element={<CardSlider/>}/>
-                                                            <Route path="weightcheck/:exercise_name" element={<WeightCheckInstruction/>}/>
+                                                            <Route path="weightcheck/:exercise_name" element={<WeightCheckInstruction />}/>
                                                             <Route path="weightcheck/practice/:exercise_name" element={<PracticeStep/>}/>
                                                             <Route path="exercise/:exercise_name" element={<MainStep/>}/>
                                                             <Route path="evaluation/:exercise_name" element={<Evaluation/>}/>

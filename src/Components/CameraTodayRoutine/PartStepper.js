@@ -12,8 +12,6 @@ function PartStepper({where}){
   const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
 
   const part=useParams();//지금은 어떤 부위페이지에서 부르는지 파악하는 것
-  console.log(part.bodypart)
-
     const steps ={
       //부위
       BodyPart:{
@@ -35,10 +33,13 @@ function PartStepper({where}){
       part3:{
         series:part3,
         size:"x-small"
+      },
+      part2_3:{
+        series:[...part2,...part3],
+        size:"x-small"
       }
     };
 
-    console.log(steps[where].series);
       const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//운동진행세트 수
 
       const StepLabelStyle=styled(StepLabel)((props)=>({

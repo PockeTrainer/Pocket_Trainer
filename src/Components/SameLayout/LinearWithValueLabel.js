@@ -32,7 +32,7 @@ export default function LinearWithValueLabel({where}) {
 
 //   이건 각 프로그레스바를 채워줄 1초동안 단위변화량이라 볼수있다
   const setting={
-    Press_and_3major:10000,
+    Press_and_3major:2000,//10초에 10퍼증가-테스트로 2초로바꿈
     etc:9000,
     shoulder_and_arm:4000
   }
@@ -43,16 +43,16 @@ export default function LinearWithValueLabel({where}) {
         setProgress((prevProgress) => (prevProgress + 10));
       }, setting[where]);
       return () => {
-        clearInterval(timer);
+        clearInterval(timer.current);
       };
   },[])
   
   React.useEffect(() => {
 
-    console.log(progress)
+    // console.log(progress)
     // 게이지 꽉 차면 빼주자
     if(progress>=100){
-        clearInterval(timer);
+        clearInterval(timer.current);
     }
 
     return () => {

@@ -13,7 +13,6 @@ import { change_clicked_button } from "../../modules/action";
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 
 import PartStepper from "../CameraTodayRoutine/PartStepper";
-import SelectBar from "../SameLayout/SelectBar";
 
 
 
@@ -91,7 +90,7 @@ function TodaySummary(){
             sx={
                 popoverStyle
             }>
-                <AvatarStyle color="#fc7c5f">{bodypart[0]}</AvatarStyle>
+                <AvatarStyle color="#5e72e4">{bodypart[0]}</AvatarStyle>
             </Button>
             
 
@@ -123,8 +122,20 @@ function TodaySummary(){
                 <span className="badge badge-secondary" style={ProgressSpanStyle}>진행정도</span>
                 <div className="alert alert-warning" role="alert" style={SpanStyle} >
                     <Stack direction="column">
-                        <PartStepper where="part1"/>
-                        <PartStepper where="part2"/>
+                        {
+                            bodypart[0]==="어깨"
+                            ?
+                            <>
+                            <PartStepper where="part1"/>
+                            <PartStepper where="part2"/>
+                            <PartStepper where="part3"/>
+                            </>
+                            :
+                            <>
+                            <PartStepper where="part1"/>
+                            <PartStepper where="part2_3"/>
+                            </>
+                        }
                     </Stack>
                 </div>
         </div>

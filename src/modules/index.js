@@ -11,6 +11,7 @@ import {change_set_reducer} from "./action";
 import {change_timeToModal_reducer} from "./action";
 import { Exercise_start_reducer } from './action';
 import { update_routineInfo_reducer } from './action';
+import {update_page_progress_reducer} from './action';
 
 const rootReducer=combineReducers({
     pageMove,
@@ -24,7 +25,8 @@ const rootReducer=combineReducers({
     change_set_reducer,
     change_timeToModal_reducer,
     Exercise_start_reducer,
-    update_routineInfo_reducer
+    update_routineInfo_reducer,
+    update_page_progress_reducer
 });
 
 export default rootReducer;

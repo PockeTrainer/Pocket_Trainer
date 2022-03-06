@@ -8,9 +8,35 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import PartStepper from "./PartStepper";
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 import CardWrapper from "./CardWrapper"
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 function CardSlider(){
     const [checked, setChecked] = useState(false);
+
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
+    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
+
+    const id=sessionStorage.getItem("user_id");
+    const [weight_info,set_weight_info]=useState([]);//무게정보를 담는 state
+
+
+    console.log(part1);
+    useEffect(()=>{
+        eval('part'+parseInt(current_bodypart+1)).map(async(exercise)=>{
+            await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.eng_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            .then((res) => {
+    
+                set_weight_info(prev=>[...weight_info,res.data]);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    
+        });
+    },[])
 
     const handleChange = () => {
     setChecked((prev) => !prev);
@@ -57,19 +83,21 @@ function CardSlider(){
     return(
         <>
         <Slider {...settings}>
-            <SpecificBody/>
-            <SpecificBody/>
-            <SpecificBody/>
+            {part1.map((exercise,index)=>(
+                <SpecificBody key={index} exercise={exercise} weight_info={weight_info[index]}/>
+            ))}
         </Slider>
 
         <Slide  mountOnEnter unmountOnExit direction="up"  in={checked}>
             <span className="badge badge-primary" style={partName}>
-                <FitnessCenterIcon sx={{color:"black",fontSize:"1.0em"}}/>가슴
+                <FitnessCenterIcon sx={{color:"black",fontSize:"1.0em"}}/>{bodypart[0]}
             </span>
         </Slide>
         <Slide  mountOnEnter unmountOnExit direction="up"  in={checked} {...(checked ? { timeout: 1000 } : {})}>
             <span className="badge badge-primary" style={subtitle}>
-                벤치프레스<br></br>인클라인프레스<br></br>펙덱플라이
+                {part1[0].name}<br></br>
+                {part1[1].name}<br></br>
+                {part1[2].name}
             </span>
        </Slide>
 

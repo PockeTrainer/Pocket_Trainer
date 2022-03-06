@@ -120,7 +120,7 @@ function Finish(){
     }
 
     const BadgeStyle=styled('span')((props)=>({
-        backgroundColor:props.part==="part1"?"#5e72e4":(props.part==="part2"?"#fd0d0d9c":"#ffc107"),
+        backgroundColor:props.part==="part1"?"#5e72e4":(props.part==="part2"?"#2dce89;":"#ffc107"),
         marginBottom:"1em",
         color:"white"
         
@@ -187,7 +187,7 @@ function Finish(){
                             </Stack>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle}  onClick={()=>setTmpClicked_part("part2")}>
-                                    <AvatarStyle color="#fd0d0d9c" ><CheckIcon/></AvatarStyle>
+                                    <AvatarStyle color="#2dce89" ><CheckIcon/></AvatarStyle>
                                 </Button>
                                 <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>삼두운동</Typography>
                             </Stack>
@@ -205,7 +205,7 @@ function Finish(){
                             <div className="alert alert-warning" role="alert" style={SpanStyle} >
                                 <Stack direction="column">
                                     <BadgeStyle part={clicked_part} className="badge badge-primary btn-lg">{content[clicked_part]}</BadgeStyle>
-                                    <PartStepper where="Finish"/>
+                                    <PartStepper where="part1"/>
                                 </Stack>
                             </div>
                         </div>

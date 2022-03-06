@@ -13,7 +13,7 @@ import Slider from 'react-slick';
 
 import { not_exercise_start } from '../../modules/action';
 
-import { pushup,situp,squat } from '../../ExercisesInfo/ExerciseInfo';
+import { Pushup,Situp,Squat } from '../../ExercisesInfo/ExerciseInfo';
 import { useDispatch,useSelector } from 'react-redux';
 
 function CardLayout(){
@@ -112,9 +112,9 @@ function CardLayout(){
                                         {...(checked ? { timeout: 1000 } : {})}>
                                     <div>
                                         <Slider {...settings}>
-                                            <Card exercise={pushup}/>
-                                            <Card exercise={situp}/>
-                                            <Card exercise={squat}/>
+                                            <Card exercise={Pushup}/>
+                                            <Card exercise={Situp}/>
+                                            <Card exercise={Squat}/>
                                         </Slider>
                                     </div>
                                 </Grow>

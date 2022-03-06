@@ -7,27 +7,33 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import PartStepper from "./PartStepper";
+
+import { useSelector } from "react-redux";
 
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
-function SpecificBody(){
+function SpecificBody({exercise,weight_info}){
+
+    let weight_first=true;
+
+    if(weight_info!==undefined){
+        weight_first=weight_info.is_first;
+    }
 
     const badgeStyle={
         fontWeight:"600",
         lineHeight:"2",
         color:"white",
-        margin:"auto",
         backgroundColor:"#5e72e4"
     };
 
+
     const ItemListTitle={
         textAlign:"left",
-        ".MuiImageListItemBar-title":{fontSize:"1.5rem",lineHeight:"25px"},
+        ".MuiImageListItemBar-title":{fontSize:"1.5rem",lineHeight:"25px",fontWeight:"600"},
         ".MuiImageListItemBar-subtitle":{lineHeight:"2"}
 
     }
@@ -55,9 +61,17 @@ function SpecificBody(){
                         <div className="row">
                             <div className="col">
                                     {/* <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i> */}
-                                    <Stack direction="row" spacing={2}>
-                                    <span className="badge badge-default btn-lg" style={badgeStyle}>마지막중량:60kg</span> 
-                                    <span className="badge badge-default btn-lg" style={badgeStyle}>휴식시간:1분40초</span> 
+                                    <Stack direction="row" spacing={2} sx={{justifyContent:"center"}}>
+                                        {
+                                        weight_first===true
+                                        ?
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>회원님께서는 해당운동기록이 없습니다</span>
+                                        :
+                                        <>
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>마지막중량:{weight_info.target_kg}</span> 
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>최근중량변화:{weight_info.last_update_date}</span>
+                                        </> 
+                                    }
                                     </Stack>
                             </div>
                         </div>
@@ -66,20 +80,20 @@ function SpecificBody(){
                     </div>
                 </div>
 
-                <ImageListItem>
+                <ImageListItem sx={{height:"50vh !important"}}>
                                     <img
-                                        src="../assets/img/theme/benchPress.gif"
-                                        alt="벤치프레스"
+                                        src={exercise.image_url}
+                                        alt={exercise.name}
                                         loading="lazy"
                                     />
                                     {/* <Avatar alt="Remy Sharp" src="../assets/img/theme/arm.png" /> */}
                                 <ImageListItemBar
-                                    title="벤치프레스"
-                                    subtitle="가슴운동"
+                                    title={exercise.name}
+                                    subtitle={exercise.part}
                                     actionIcon={
                                     <IconButton
                                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                        aria-label="하이"
+                                        aria-label="정보"
                                     >
                                     <InfoIcon />
                                     </IconButton>

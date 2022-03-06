@@ -11,8 +11,9 @@ import { useParams } from "react-router-dom";
 import { set_current_weight } from "../../modules/action";
 import AlertModal from "../SameLayout/AlertModal";
 
-import { none_testState } from "../../modules/action";
-import { reset } from "../../modules/action";
+import Typography from '@mui/material/Typography';
+
+
 
 function PracticeStep(){
     const testState=useSelector(state=>state.testState_reducer.testState);//카메라가 성공적으로 불러와졌는지 여부
@@ -23,7 +24,7 @@ function PracticeStep(){
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
 
     const exercise_name=useParams();//url에서 운동명 가져오기-벤치프레스이면 해당 초기무게를 따로 설정해둔것에서 가져오자-ExerciseInfo.js에 넣자
-    const start_kg=20;//이건 임시값으로 20이라고 가정-나중에 이건 운동별로 받아올것임
+    const start_kg=useSelector(state=>state.update_page_progress_reducer.api_record.target_kg);//현재 가져온 운동의 무게값
 
     //완료된 설정된 무게는 api로 디비로 보낼예정
 
@@ -32,7 +33,7 @@ function PracticeStep(){
 
     const{current_weight,clicked_button,clicked_count,state}=change_weight_info;
 
-
+    console.log(exercise_name)
     //위에는 각종 상수및 state
 
     const handleMessageChange=()=>{
@@ -115,6 +116,11 @@ function PracticeStep(){
     const badgeStyle={
         backgroundColor:"white"
     }
+
+    const TypographyStyle={
+        fontWeight:"500",
+        lineHeight:"0.95"
+    }
     //Transition용
 
     const skeleton={
@@ -179,6 +185,15 @@ function PracticeStep(){
                         <Stack direction="column">
                             <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span> 
                             <span className="alert-text" ><strong>{current_weight}kg</strong></span>
+                            {
+                                exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"
+                                ?
+                                <>
+                                    <Typography sx={TypographyStyle} variant="subtitle1" gutterBottom component="div">(바포함+20kg)</Typography>
+                                </>
+                                :
+                                null
+                            }
                         </Stack>
                     </div>
                     <SpeedDialTooltipOpen/>

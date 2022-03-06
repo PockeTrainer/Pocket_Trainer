@@ -45,6 +45,12 @@ const TIMETOMODAL="timeToModal";
 const NOT_TIMETOMODAL="not_timeToModal";
 //공통으로 쓸 api를 통해 불러온 운동객체 정보를 올리는용도
 const ROUTINE_INFO="routine_info";
+//지금 운동페이지에서 어디를 맡고있는지 파악용
+const NEXT_PART="next_part";
+const PREV_PART="prev_part";
+const NEXT_EXERCISE="next_exercise";
+const PREV_EXERCISE="prev_exercise";
+const SET_EXERCISE_RECORD="set_exercise_record";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -193,6 +199,31 @@ export const routine_info=(bodypart,part1,part2,part3)=>({
     part2,
     part3
 });
+
+export const next_part=()=>({
+    type:NEXT_PART,
+
+});
+
+export const prev_part=()=>({
+    type:PREV_PART,
+
+});
+
+export const next_exercise=()=>({
+    type:NEXT_EXERCISE,
+
+});
+
+export const prev_exercise=()=>({
+    type:PREV_EXERCISE,
+
+});
+
+export const set_exercise_record=(api_record)=>({//API로부터 받은 최근 중량체크 변화날짜나 처음여부를 담아줄것임
+    type:SET_EXERCISE_RECORD,
+    api_record
+})
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -248,6 +279,11 @@ const initialRoutineInfo={//api로부터 불러온 루틴정보
     part3:[]
 };
 
+const initialPageProgress={//운동페이지에서 지금진행하고 있는 운동부위와 운동명의 인덱스 그리고 현재운동의 중량체크관련 정보를 가진다
+    current_bodypart:"0",
+    current_exercise:"0",
+    api_record:""
+}
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
     switch (action.type) {
@@ -503,3 +539,38 @@ export function update_routineInfo_reducer(state=initialRoutineInfo,action){
             return state;
     }
 }
+
+export function update_page_progress_reducer(state=initialPageProgress,action){
+    switch (action.type) {
+        case NEXT_PART:
+            return {
+                ...state,
+               current_bodypart:state.current_bodypart+1,
+               current_exercise:0
+            }    
+        case PREV_PART:
+            return {
+                ...state,
+                current_bodypart:state.current_bodypart-1,
+                current_exercise:0
+            }   
+        case NEXT_EXERCISE:
+            return {
+                ...state,
+                current_exercise:state.current_exercise+1
+            }     
+        case PREV_EXERCISE:
+            return {
+                ...state,
+                current_exercise:state.current_exercise-1
+            }    
+        case SET_EXERCISE_RECORD:
+            return {
+                ...state,
+                api_record:action.api_record
+            }        
+        default:
+            return state;
+    }
+}
+
