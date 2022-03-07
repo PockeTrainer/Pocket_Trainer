@@ -22,7 +22,7 @@ import { error } from '../../modules/action';
 import { useDispatch,useSelector } from 'react-redux';
 
 
-const actions = [
+const first_actions = [
   { icon: <LooksOneIcon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '매우쉬움' },
   { icon: <LooksTwoIcon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '쉬움' },
   { icon: <Looks3Icon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '적절함' },
@@ -30,7 +30,18 @@ const actions = [
   { icon: <Looks5Icon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '매우무거움' }
 ];
 
-export default function SpeedDialTooltipOpen() {
+const second_actions = [
+  { icon: <LooksTwoIcon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '쉬움' },
+  { icon: <Looks3Icon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '적절함' },
+  { icon: <Looks4Icon sx={{"&.MuiSvgIcon-root":{fontSize:"2.0rem"}}}/>, name: '무거움' }
+];
+
+const actions={
+  true:first_actions,
+  false:second_actions
+}
+
+export default function SpeedDialTooltipOpen({now_exercise,is_First}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -38,21 +49,23 @@ export default function SpeedDialTooltipOpen() {
   const current_weight=useSelector(state=>state.change_current_weight_reducer.current_weight);//현재무게를 가져온다
   const dispatch=useDispatch();//현재무게들을 업데이트할 예정
 
+  console.log(is_First)
+
   const handleGradeButton=(button_name)=>{
     if(button_name==="매우쉬움"){
-      dispatch(very_easy(5));
+      dispatch(very_easy(now_exercise.unit_kg));
     }
     else if(button_name==="쉬움"){
-      dispatch(easy(5));
+      dispatch(easy(now_exercise.unit_kg));
     }
-    else if(button_name==="적절함"){
+    else if(button_name==="적절함"&&current_weight>0){//0키로 일때에 운동을 진행하는 건 좀 이상하자나,,,
       dispatch(proper());
     }
-    else if(button_name==="무거움"&& current_weight-10>0){
-      dispatch(hard(5));
+    else if(button_name==="무거움"&& current_weight-(now_exercise.unit_kg)>0){
+      dispatch(hard(now_exercise.unit_kg));
     }
-    else if(button_name==="매우무거움" && current_weight-10>0){
-      dispatch(very_hard(5));
+    else if(button_name==="매우무거움" && current_weight-(now_exercise.unit_kg)*2>0){
+      dispatch(very_hard(now_exercise.unit_kg));
     }
     else{
       // 무게가 뺄 수 없는 상황일때의 오류상황
@@ -96,7 +109,7 @@ export default function SpeedDialTooltipOpen() {
         onOpen={handleOpen}
         open={open}
       >
-        {actions.map((action) => (
+        {actions[is_First].map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}

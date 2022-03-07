@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import Slide from '@mui/material/Slide';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CardWrapper from "./CardWrapper";
@@ -19,7 +19,7 @@ function WeightCheckInstruction(){
     const id=sessionStorage.getItem("user_id");
     const exercise=useParams();//운동명 뽑아내기
 
-    let is_first=true;//기본적으로 api호출 전까지 가지는 중량정보의 상태
+    let is_first=useRef(true);//기본적으로 api호출 전까지 가지는 중량정보의 상태
     const [exercise_data,set_exercise_data]=useState("");//api로부터 받은 값을 저장할 것임
 
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
@@ -37,8 +37,8 @@ function WeightCheckInstruction(){
             .then((res) => {
                 console.log(res.data);
                 set_exercise_data(res.data);//state에 저장
-                dispatch(set_exercise_record(res.data));//리덕스에서 쓸수있게함
-                is_first=res.data.is_first;
+                dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함
+                is_first.current=res.data.is_first;
 
 
             })
@@ -127,31 +127,54 @@ function WeightCheckInstruction(){
     
                 <CardWrapper time={3000}>
                     <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
-                    <h2 className="text-gray-dark display-4" >중량체크</h2>
-                    {/* <hr></hr> */}
+                    {
+                    exercise.exercise_name==="plank"
+                    ?
+                    <h2 className="text-gray-dark display-4" >시간체크</h2>
+                    :
+                    (exercise.exercise_name==="crunch"||exercise.exercise_name==="seated_knees_up"
+                    ?
+                    <h2 className="text-gray-dark display-4" >세트당횟수</h2>
+                    :
+                        <h2 className="text-gray-dark display-4" >중량체크</h2> 
+                    )
+                    }
     
                     <div className="alert alert-warning" role="alert" style={SpanStyle}>
-                        <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span> 
+
+                            {
+                        exercise.exercise_name==="plank"
+                        ?
+                            <h2 className="text-gray-dark display-4" >현재세트당 시간</h2>
+                        :
+                        (exercise.exercise_name==="crunch"||exercise.exercise_name==="seated_knees_up"
+                        ?
+                            <h2 className="text-gray-dark display-4" >현재세트당 횟수</h2>
+                        :
+                            <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span> 
+                        )
+                        }
+
                         {
-                            is_first
+                            is_first.current
                             ?
                             <>
                                 <i className="ni ni-chart-bar-32" style={iconStyle}></i>
                                 <span className="alert-text" style={noDataAlertStyle}>해당운동 기록이 없습니다..</span>
                             </>
                             :
-                            <span className="alert-text" style={{fontSize:"5em"}}><strong>20<span style={{fontSize:"0.5em"}}>KG</span></strong></span>
+                            <span className="alert-text" style={{fontSize:"5em"}}><strong>{exercise_data.target_kg}<span style={{fontSize:"0.5em"}}>KG</span></strong></span>
                         }
                         
                     </div>
     
                     <Typography variant="h6" gutterBottom sx={{marginTop:"1em",fontWeight:"600",fontSize:"1.35rem"}}>{now_exercise_name}</Typography>
                     {
-                        is_first
+                        is_first.current
                         ?
-                        <span className="badge badge-primary btn-lg">최근중량체크:기록없음</span> 
+                        <span className="badge badge-primary btn-lg">최근체크:기록없음</span> 
                         :
-                        <span className="badge badge-primary btn-lg">최근중량체크:{exercise_data.last_update_date}</span>
+                        <span className="badge badge-primary btn-lg">최근체크:{exercise_data.last_update_date}</span>
                     } 
                 </CardWrapper>
     
@@ -166,7 +189,19 @@ function WeightCheckInstruction(){
     
                 <Slide  mountOnEnter unmountOnExit direction="up"  in={checked1} {...(checked1 ? { timeout: 1000 } : {})}>
                     <span className="badge badge-primary" style={subtitle}>
-                        중량체크
+                    {
+                    exercise.exercise_name==="plank"
+                    ?
+                    "시간체크"
+                    :
+                    (exercise.exercise_name==="crunch"||exercise.exercise_name==="seated_knees_up"
+                    ?
+                    "세트당횟수"
+                    :
+                        "중량체크"
+                    )
+                    }
+    
                     </span>
                 </Slide>
     

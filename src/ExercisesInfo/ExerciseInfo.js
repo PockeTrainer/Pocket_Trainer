@@ -7,6 +7,7 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
         this.musclePart=Exercise_Info.musclePart;
         this.part=Exercise_Info.part
         this.eng_name=Exercise_Info.eng_name;
+        this.unit_kg=Exercise_Info.unit_kg;
     }
     
 
@@ -66,6 +67,14 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
         return this._eng_name;
     }
 
+
+    set unit_kg(unit_kg){
+        this._unit_kg=unit_kg;
+    }
+    
+    get unit_kg(){
+        return this._unit_kg;
+    }
 }
 
 
@@ -110,7 +119,8 @@ export const bench_press={
     instruction:"벤치프레스는 대표적인 3대운동 중 하나로서 대흉근,삼각근,상완삼두근의 종합적인 참여를 통해 균형있는 상체를 만들어주는 운동입니다",
     musclePart:"대흉근+삼각근+상완삼두근",
     part:"가슴",
-    eng_name:"bench_press"
+    eng_name:"bench_press",
+    unit_kg:5
 }
 
 export const incline_press={
@@ -119,7 +129,8 @@ export const incline_press={
     instruction:"플랫벤치가 아닌 45정도 세워진 벤치에서 실시하여 가슴 상부 근육을 좀 더 집중적으로 발달시키는 운동입니다.",
     musclePart:"가슴상부근+상부대흉근",
     part:"가슴",
-    eng_name:"incline_press"
+    eng_name:"incline_press",
+    unit_kg:5
 }
 
 export const pec_dec_fly={
@@ -128,7 +139,8 @@ export const pec_dec_fly={
     instruction:"팩덱플라이는 왼쪽과 오른쪽 가슴이 만나느 중앙부분을 발달시키는 운동으로서 가슴중앙의 근육분리와 함께 벌어진 가슴을 모아주는 운동입니다.",
     musclePart:"대흉근",
     part:"가슴",
-    eng_name:"pec_dec_fly"
+    eng_name:"pec_dec_fly",
+    unit_kg:1//아직 미정
 }
 
 //등
@@ -138,7 +150,8 @@ export const lat_pull_down={
     instruction:"턱걸이와 유사한 기능을 가진 수직 당기기 머신 운동으로 등의 광배근을 길러주는 운동입니다",
     musclePart:"광배근+전완근+이두근",
     part:"등",
-    eng_name:"lat_pull_down"
+    eng_name:"lat_pull_down",
+    unit_kg:1//아직 미정
 }
 
 export const seated_row={
@@ -147,7 +160,8 @@ export const seated_row={
     instruction:"",
     musclePart:"",
     part:"등",
-    eng_name:"seated_row"
+    eng_name:"seated_row",
+    unit_kg:1//아직 미정
 }
 
 export const one_arm_dumbbell_row={
@@ -156,7 +170,8 @@ export const one_arm_dumbbell_row={
     instruction:"",
     musclePart:"",
     part:"등",
-    eng_name:"one_arm_dumbbell_row"
+    eng_name:"one_arm_dumbbell_row",
+    unit_kg:1
 }
 //어깨
 export const dumbbell_shoulder_press={
@@ -165,7 +180,8 @@ export const dumbbell_shoulder_press={
     instruction:"",
     musclePart:"",
     part:"어깨",
-    eng_name:"dumbbell_shoulder_press"
+    eng_name:"dumbbell_shoulder_press",
+    unit_kg:1
 }
 
 export const side_lateral_raise={
@@ -174,7 +190,8 @@ export const side_lateral_raise={
     instruction:"",
     musclePart:"",
     part:"어깨",
-    eng_name:"side_lateral_raise"
+    eng_name:"side_lateral_raise",
+    unit_kg:1
 }
 
 export const reverse_peck_deck_fly={
@@ -183,7 +200,8 @@ export const reverse_peck_deck_fly={
     instruction:"",
     musclePart:"",
     part:"어깨",
-    eng_name:"reverse_peck_deck_fly"
+    eng_name:"reverse_peck_deck_fly",
+    unit_kg:1//아직 미정
 }
 
 
@@ -194,7 +212,8 @@ export const cable_push_down={
     instruction:"",
     musclePart:"",
     part:"삼두",
-    eng_name:"cable_push_down"
+    eng_name:"cable_push_down",
+    unit_kg:1//아직 미정
 
 }
 
@@ -204,7 +223,8 @@ export const lying_triceps_extension={
     instruction:"",
     musclePart:"",
     part:"삼두",
-    eng_name:"lying_triceps_extension"
+    eng_name:"lying_triceps_extension",
+    unit_kg:1//아직 미정
 }
 
 export const dumbbell_kickback={
@@ -213,7 +233,8 @@ export const dumbbell_kickback={
     instruction:"",
     musclePart:"",
     part:"삼두",
-    eng_name:"dumbbell_kickback"
+    eng_name:"dumbbell_kickback",
+    unit_kg:1//아직 미정
 }
 //이두
 export const easy_bar_curl={
@@ -222,7 +243,8 @@ export const easy_bar_curl={
     instruction:"",
     musclePart:"",
     part:"이두",
-    eng_name:"easy_bar_curl"
+    eng_name:"easy_bar_curl",
+    unit_kg:1//아직 미정
 }
 
 export const barbell_curl={
@@ -231,7 +253,8 @@ export const barbell_curl={
     instruction:"",
     musclePart:"",
     part:"이두",
-    eng_name:"barbell_curl"
+    eng_name:"barbell_curl",
+    unit_kg:1
 }
 
 export const hammer_curl={
@@ -240,7 +263,8 @@ export const hammer_curl={
     instruction:"",
     musclePart:"",
     part:"이두",
-    eng_name:"hammer_curl"
+    eng_name:"hammer_curl",
+    unit_kg:1
 }
 
 
@@ -252,7 +276,8 @@ export const crunch={
     instruction:"",
     musclePart:"",
     part:"복근",
-    eng_name:"crunch"
+    eng_name:"crunch",
+    unit_kg:0//필요없음
 }
 
 export const seated_knees_up={
@@ -261,7 +286,8 @@ export const seated_knees_up={
     instruction:"",
     musclePart:"",
     part:"복근",
-    eng_name:"seated_knees_up"
+    eng_name:"seated_knees_up",
+    unit_kg:0//필요없음
 }
 
 export const plank={
@@ -270,7 +296,8 @@ export const plank={
     instruction:"",
     musclePart:"",
     part:"복근",
-    eng_name:"plank"
+    eng_name:"plank",
+    unit_kg:0//필요없음
 }
 //하체
 
@@ -280,7 +307,8 @@ export const squat={
     instruction:"",
     musclePart:"",
     part:"하체",
-    eng_name:"squat"
+    eng_name:"squat",
+    unit_kg:5
 }
 
 export const leg_press={
@@ -289,7 +317,8 @@ export const leg_press={
     instruction:"",
     musclePart:"",
     part:"하체",
-    eng_name:"leg_press"
+    eng_name:"leg_press",
+    unit_kg:5//아직 미정
 }
 
 export const leg_extension={
@@ -298,5 +327,6 @@ export const leg_extension={
     instruction:"",
     musclePart:"",
     part:"하체",
-    eng_name:"leg_extension"
+    eng_name:"leg_extension",
+    unit_kg:5//아직 미정
 }

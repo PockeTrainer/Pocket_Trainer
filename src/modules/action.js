@@ -282,7 +282,7 @@ const initialRoutineInfo={//api로부터 불러온 루틴정보
 const initialPageProgress={//운동페이지에서 지금진행하고 있는 운동부위와 운동명의 인덱스 그리고 현재운동의 중량체크관련 정보를 가진다
     current_bodypart:"0",
     current_exercise:"0",
-    api_record:""
+    is_First:true
 }
 //초기페이지 정보
 export default function pageMove(state=initialState,action){
@@ -567,7 +567,7 @@ export function update_page_progress_reducer(state=initialPageProgress,action){
         case SET_EXERCISE_RECORD:
             return {
                 ...state,
-                api_record:action.api_record
+                is_First:action.api_record
             }        
         default:
             return state;

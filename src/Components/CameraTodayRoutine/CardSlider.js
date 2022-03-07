@@ -23,20 +23,24 @@ function CardSlider(){
     const [weight_info,set_weight_info]=useState([]);//무게정보를 담는 state
 
 
-    console.log(part1);
     useEffect(()=>{
+        let all_weight_info=[];
         eval('part'+parseInt(current_bodypart+1)).map(async(exercise)=>{
             await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.eng_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
-    
-                set_weight_info(prev=>[...weight_info,res.data]);
+                console.log(res.data)
+                // set_weight_info(prev=>[...weight_info,res.data]);
+                all_weight_info.push(res.data);
             })
             .catch((err) => {
                 console.log(err)
             })
     
         });
+       set_weight_info(all_weight_info);
     },[])
+
+    console.log(weight_info);
 
     const handleChange = () => {
     setChecked((prev) => !prev);

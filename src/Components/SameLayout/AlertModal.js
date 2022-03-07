@@ -6,7 +6,9 @@ import LinearWithValueLabel from "./LinearWithValueLabel";
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/system";
 import { none_testState } from "../../modules/action";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+import axios from "axios";
 
 
 function sleep(ms){
@@ -31,6 +33,13 @@ function AlertModal({where}){
     const dispatch=useDispatch();
     const navigate=useNavigate();
 
+    const exercise=useParams();//현재의 운동명을 가져와준다
+    const id=sessionStorage.getItem("user_id");//아이디가져오기
+
+    const change_weight_info=useSelector(state=>state.change_current_weight_reducer);
+    const{current_weight}=change_weight_info;//바뀐 현재의 목표중량을 가져온다
+
+
     const handleClose=()=>{
         closeRef.current.click();
     }
@@ -47,8 +56,20 @@ function AlertModal({where}){
 
     if(where==="confirm"){
 
-        const startExercise=()=>{
-            setTimeout(handleClose,500);//다시 모달창 닫아주기
+        const startExercise=async()=>{
+            await axios.put(`http://127.0.0.1:8000/api/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${id}`,
+            {
+                target_kg:current_weight
+            })//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            .then((res) => {
+                console.log(res.data);
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            
+            closeRef.current.click();
             dispatch(none_testState());//다시 카메라상태 끄기로 변경
             sleep(2000).then(()=>navigate("/routine/exercise/pushup"));
             

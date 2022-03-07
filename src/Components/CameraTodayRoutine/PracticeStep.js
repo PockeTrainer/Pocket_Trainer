@@ -22,16 +22,21 @@ function PracticeStep(){
 
     const [checked, setChecked] = useState(false);//전체 카메라화면 transition
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
+    const dispatch=useDispatch();//이걸로 무게설정할것임
 
     const exercise_name=useParams();//url에서 운동명 가져오기-벤치프레스이면 해당 초기무게를 따로 설정해둔것에서 가져오자-ExerciseInfo.js에 넣자
-    const start_kg=useSelector(state=>state.update_page_progress_reducer.api_record.target_kg);//현재 가져온 운동의 무게값
 
-    //완료된 설정된 무게는 api로 디비로 보낼예정
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
+    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{current_bodypart,current_exercise,is_First}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
-    const dispatch=useDispatch();//이걸로 무게설정할것임
+    const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
+    const start_kg=now_exercise.Info_from_api.target_kg;//현재저장되어 있던 초기 무게를 가져온다
+
+
     const change_weight_info=useSelector(state=>state.change_current_weight_reducer);
-
-    const{current_weight,clicked_button,clicked_count,state}=change_weight_info;
+    const{current_weight,clicked_button,clicked_count}=change_weight_info;
 
     console.log(exercise_name)
     //위에는 각종 상수및 state
@@ -134,12 +139,12 @@ function PracticeStep(){
         false:"불러오는중..",
         completed:"준비완료!",
         // 밑에는 클릭된 버튼여부에 필요한 내용
-        very_hard:"10kg감소 시켜주세요!",
-        hard:"5kg감소 시켜주세요!",
+        very_hard:now_exercise.unit_kg*2+"kg"+"감소 시켜주세요!",
+        hard:now_exercise.unit_kg*1+"kg"+"감소 시켜주세요!",
         proper:"해당무게로 진행!",
-        easy:"5kg증가 시켜주세요!",
-        very_easy:"10kg증가 시켜주세요!",
-        error:"더 이상 줄일 수 없습니다!"
+        easy:now_exercise.unit_kg*1+"kg"+"증가 시켜주세요!",
+        very_easy:now_exercise.unit_kg*1+"kg"+"증가 시켜주세요!",
+        error:"해당무게는 불가능합니다!"
     }
     return(
         <>
@@ -196,7 +201,7 @@ function PracticeStep(){
                             }
                         </Stack>
                     </div>
-                    <SpeedDialTooltipOpen/>
+                    <SpeedDialTooltipOpen now_exercise={now_exercise} is_First={is_First}/>
                     {/* 무게 평가 다이얼 버튼 */}
                 </div>
         </Grow>
