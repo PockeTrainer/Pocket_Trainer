@@ -18,9 +18,20 @@ function sleep(ms){
 function SpecificBody({exercise,weight_info}){
 
     let weight_first=true;
+    let title;
 
     if(weight_info!==undefined){
         weight_first=weight_info.is_first;
+    }
+
+    if(exercise.name==="plank"){
+        title="마지막타임셋:"
+    }
+    else if(exercise.name==="seated_knees_up"||exercise.name==="crunch"){
+        title="마지막셋횟수:"
+    }
+    else{
+        title="마지막중량:"
     }
 
     const badgeStyle={
@@ -68,8 +79,8 @@ function SpecificBody({exercise,weight_info}){
                                         <span className="badge badge-default btn-lg" style={badgeStyle}>회원님께서는 해당운동기록이 없습니다</span>
                                         :
                                         <>
-                                        <span className="badge badge-default btn-lg" style={badgeStyle}>마지막중량:{weight_info.target_kg}kg</span> 
-                                        <span className="badge badge-default btn-lg" style={badgeStyle}>최근중량변화:{weight_info.last_update_date}</span>
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>{title}{weight_info.target_kg}kg</span> 
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>최근업데이트:{weight_info.last_update_date}</span>
                                         </> 
                                     }
                                     </Stack>

@@ -47,8 +47,9 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]")
-          navigate("/routine/weightcheck/"+tmp.eng_name);
+          // let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]")
+          // navigate("/routine/weightcheck/"+tmp.eng_name);
+          navigate("/routine/weightcheck/crunch");
       }
       else if(content=="연습세트"){
           navigate("/routine/weightcheck/practice/bench_press");

@@ -16,6 +16,9 @@ function sleep(ms){
 function WeightCheckInstruction(){
 
 
+    let result=useRef({});//플랭크,크런치,싯티드니업과 etc에 따른 출력데이터 다르게..
+    let key_for_result=useRef("");//키 값으로 쓰일 것의 이름
+    let key_for_unit=useRef("");//각 운동별로 단위들을 위한 키값
     const id=sessionStorage.getItem("user_id");
     const exercise=useParams();//운동명 뽑아내기
 
@@ -31,14 +34,52 @@ function WeightCheckInstruction(){
 
     const dispatch=useDispatch();
 
+    const unit={//운동에 따른 단위
+        count_demand:"개",
+        weight_demand:"KG",
+        etc:""
+    }
+
     useEffect(async()=>{
 
             await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.exercise_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
+                let time_format_result="0초";
                 console.log(res.data);
                 set_exercise_data(res.data);//state에 저장
-                dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함
+                dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
                 is_first.current=res.data.is_first;
+
+                if(exercise.exercise_name==="plank"){
+                    let format=res.data.target_time.split(":");
+                    if(format[1]==="00"){
+                        time_format_result=format[2]+"초";
+                    }
+                    else{
+                        time_format_result=format[1]+"분"+format[2]+"초";
+                    }
+                    key_for_unit.current="etc";
+                }
+                else if(exercise.exercise_name==="seated_knees_up"||exercise.exercise_name==="crunch"){
+                    key_for_unit.current="count_demand";
+                }
+                else{
+                    key_for_unit.current="weight_demand";
+                }
+
+                result.current={
+                    plank:time_format_result,
+                    crunch:res.data.target_cnt,
+                    seated_knees_up:res.data.target_cnt,
+                    etc:res.data.target_kg
+                }
+
+                if(exercise.exercise_name!=="plank"&&exercise.exercise_name!=="crunch"&&exercise.exercise_name!=="seated_knees_up"){
+                    key_for_result.current="etc";
+                }
+                else{
+                    key_for_result.current=exercise.exercise_name;
+                }
 
 
             })
@@ -50,6 +91,8 @@ function WeightCheckInstruction(){
     },[])
    
 
+    console.log(result.current);
+    console.log(key_for_result.current);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
 
@@ -120,6 +163,7 @@ function WeightCheckInstruction(){
     }
     //위에는 스타일객체
 
+
         return(
             <>
     
@@ -145,11 +189,11 @@ function WeightCheckInstruction(){
                             {
                         exercise.exercise_name==="plank"
                         ?
-                            <h2 className="text-gray-dark display-4" >현재세트당 시간</h2>
+                            <span className="badge badge-primary btn-lg" style={badgeStyle}>현재세트당 시간</span>
                         :
                         (exercise.exercise_name==="crunch"||exercise.exercise_name==="seated_knees_up"
                         ?
-                            <h2 className="text-gray-dark display-4" >현재세트당 횟수</h2>
+                            <span className="badge badge-primary btn-lg" style={badgeStyle}>현재세트당 횟수</span>
                         :
                             <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span> 
                         )
@@ -163,7 +207,7 @@ function WeightCheckInstruction(){
                                 <span className="alert-text" style={noDataAlertStyle}>해당운동 기록이 없습니다..</span>
                             </>
                             :
-                            <span className="alert-text" style={{fontSize:"5em"}}><strong>{exercise_data.target_kg}<span style={{fontSize:"0.5em"}}>KG</span></strong></span>
+                            <span className="alert-text" style={{fontSize:"4.5em"}}><strong>{result.current[key_for_result.current]}<span style={{fontSize:"0.5em"}}>{unit[key_for_unit.current]}</span></strong></span>
                         }
                         
                     </div>
