@@ -47,12 +47,12 @@ function ScrollButton(props) {
         navigate("/routine/caution");
       }
       else if(content=="벤치시작"){
-          // let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]")
-          // navigate("/routine/weightcheck/"+tmp.eng_name);
-          navigate("/routine/weightcheck/crunch");
+          let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]");
+          navigate("/routine/weightcheck/"+tmp.eng_name);
       }
       else if(content=="연습세트"){
-          navigate("/routine/weightcheck/practice/bench_press");
+          let tmp=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]")
+          navigate("/routine/weightcheck/practice/"+tmp.eng_name);
       }
       else if(content=="다음운동"){
         if(grade===null){

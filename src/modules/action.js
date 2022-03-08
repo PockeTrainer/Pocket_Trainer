@@ -30,6 +30,8 @@ const EXERCISE_INFO="exercise_info";
 const EXTRA_ROUTINE="extra_routine";
 //현재 중량을 변경해주는 액션
 const SET_CURRENT_WEIGHT="set_current_weight";
+const SET_CURRENT_TIME="set_current_time";
+const SET_CURRENT_CNT="set_current_count";
 const RESET="reset";
 const VERY_HARD="very_hard";
 const HARD="hard";
@@ -144,32 +146,50 @@ export const set_current_weight=(start_kg)=>({
     start_kg
 })
 
+export const set_current_time=(start_time)=>({
+    type:SET_CURRENT_TIME,
+    start_time
+})
+
+export const set_current_cnt=(start_cnt)=>({
+    type:SET_CURRENT_CNT,
+    start_cnt
+})
+
 export const reset=()=>({
     type:RESET
 })
 
-export const very_hard=(unit_kg)=>({
+export const very_hard=(unit_kg,unit_time,unit_cnt)=>({
     type:VERY_HARD,
-    unit_kg
+    unit_kg,
+    unit_time,
+    unit_cnt
 })
 
-export const hard=(unit_kg)=>({
+export const hard=(unit_kg,unit_time,unit_cnt)=>({
     type:HARD,
-    unit_kg
+    unit_kg,
+    unit_time,
+    unit_cnt
 })
 
 export const proper=()=>({
     type:PROPER,
 })
 
-export const easy=(unit_kg)=>({
+export const easy=(unit_kg,unit_time,unit_cnt)=>({
     type:EASY,
-    unit_kg
+    unit_kg,
+    unit_time,
+    unit_cnt
 })
 
-export const very_easy=(unit_kg)=>({
+export const very_easy=(unit_kg,unit_time,unit_cnt)=>({
     type:VERY_EASY,
-    unit_kg
+    unit_kg,
+    unit_time,
+    unit_cnt
 })
 
 export const error=()=>({
@@ -258,8 +278,10 @@ const initialPage={//기본적으로 오늘 하루전체 루틴을 다 보여줌
     page:"today_routine"
 }
 
-const initialWeightChange={//중량체크에서 쓰이는,,
-    current_weight:0,
+const initialInfoChange={//중량체크,시간체크,세트당 횟수에서 쓰이는,,
+    current_weight:1000,
+    current_time:1000,//이건 어차피 그냥 임의의 큰값으로 줘서 무겁다고 하더라도 다 빼는데 한참 걸리게 함,,이해가 안간다면 speedDialToolTipOpen 쪽 무거움 버튼참고
+    current_cnt:1000,//똑같음
     clicked_button:"",
     clicked_count:0
 }
@@ -437,21 +459,35 @@ export function change_routine_page_reducer(state=initialPage,action){//루틴�
     }
 }
 
-export function change_current_weight_reducer(state=initialWeightChange,action){
+export function change_current_weight_reducer(state=initialInfoChange,action){
     switch (action.type) {
         case SET_CURRENT_WEIGHT:
             return{
                 ...state,
                 current_weight:action.start_kg,
             }
+        case SET_CURRENT_TIME:
+            return{
+                ...state,
+                current_time:action.start_time,
+            }        
+
+        case SET_CURRENT_CNT:
+            return{
+                ...state,
+                current_cnt:action.start_cnt,
+            }    
         case RESET:
             return{
-                ...initialWeightChange
+                ...initialInfoChange
             }    
+        
         case VERY_HARD:
             return{
                 ...state,
                 current_weight:state.current_weight-(2*action.unit_kg),
+                current_time:state.current_time-(2*action.unit_time),
+                current_cnt:state.current_cnt-(2*action.unit_cnt),
                 clicked_button:"very_hard",
                 clicked_count:state.clicked_count+1
             }
@@ -459,6 +495,8 @@ export function change_current_weight_reducer(state=initialWeightChange,action){
             return{
                 ...state,
                 current_weight:state.current_weight-(1*action.unit_kg),
+                current_time:state.current_time-(1*action.unit_time),
+                current_cnt:state.current_cnt-(1*action.unit_cnt),
                 clicked_button:"hard",
                 clicked_count:state.clicked_count+1
             }
@@ -473,6 +511,8 @@ export function change_current_weight_reducer(state=initialWeightChange,action){
             return{
                 ...state,
                 current_weight:state.current_weight+(1*action.unit_kg),
+                current_time:state.current_time+(1*action.unit_time),
+                current_cnt:state.current_cnt+(1*action.unit_cnt),
                 clicked_button:"easy",
                 clicked_count:state.clicked_count+1
             } 
@@ -481,6 +521,8 @@ export function change_current_weight_reducer(state=initialWeightChange,action){
             return{
                 ...state,
                 current_weight:state.current_weight+(2*action.unit_kg),
+                current_time:state.current_time+(2*action.unit_time),
+                current_cnt:state.current_cnt+(2*action.unit_cnt),
                 clicked_button:"very_easy",
                 clicked_count:state.clicked_count+1
             }

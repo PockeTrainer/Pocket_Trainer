@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import storageSession from 'redux-persist/lib/storage/session';
+import { persistReducer } from "redux-persist";
 import pageMove from './action';
 import { Appref } from './action';
 import {first_login_check} from './action';
@@ -13,6 +15,11 @@ import { Exercise_start_reducer } from './action';
 import { update_routineInfo_reducer } from './action';
 import {update_page_progress_reducer} from './action';
 
+
+const persistConfig={
+    key:"root",
+    storage:storageSession
+}
 const rootReducer=combineReducers({
     pageMove,
     Appref,
@@ -29,4 +36,5 @@ const rootReducer=combineReducers({
     update_page_progress_reducer
 });
 
+// export default persistReducer(persistConfig,rootReducer);
 export default rootReducer;

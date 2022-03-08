@@ -40,6 +40,13 @@ function AlertModal({where}){
     const{current_weight}=change_weight_info;//바뀐 현재의 목표중량을 가져온다
 
 
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
+    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{current_bodypart,current_exercise,is_First}=page_info;//현재페이지의 운동부위와 운동명 인덱스
+
+    const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
+
     const handleClose=()=>{
         closeRef.current.click();
     }
@@ -50,7 +57,8 @@ function AlertModal({where}){
             return;
         }
         if(count_result===0&&howmanySet!==5){//이건 다시 리셋이 되었을 때의 상황을 의미한다
-            setTimeout(handleClose,500);//다시 모달창 닫아주기
+            // setTimeout(handleClose,500);//다시 모달창 닫아주기
+            handleClose();
         }
     },[count_result])
 
@@ -59,7 +67,10 @@ function AlertModal({where}){
         const startExercise=async()=>{
             await axios.put(`http://127.0.0.1:8000/api/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${id}`,
             {
-                target_kg:current_weight
+                target_kg:current_weight,
+                target_cnt:"",
+                target_time:""
+
             })//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
                 console.log(res.data);
@@ -69,7 +80,7 @@ function AlertModal({where}){
                 console.log(err)
             })
             
-            closeRef.current.click();
+            // setTimeout(handleClose,500);
             dispatch(none_testState());//다시 카메라상태 끄기로 변경
             sleep(2000).then(()=>navigate("/routine/exercise/pushup"));
             
@@ -81,7 +92,7 @@ function AlertModal({where}){
                     <div className="modal-content">
                         <div className="modal-header">
                             <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
-                            <button  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button ref={closeRef} type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -89,7 +100,7 @@ function AlertModal({where}){
                             <div className="py-3 text-center">
                                 <i className="ni ni-check-bold ni-3x" style={{color:"#5e72e4"}} />
                             </div>
-                                <Pstyled bold="lighter">해당 무게로 벤치프레스를 진행하시겠습니까?</Pstyled>
+                                <Pstyled bold="lighter">해당 무게로 {now_exercise.name}를 진행하시겠습니까?</Pstyled>
                             
                         </div>
                         
@@ -110,7 +121,7 @@ function AlertModal({where}){
                     <div className="modal-content">
                         <div className="modal-header">
                             <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
-                            <button  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button ref={closeRef}  type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -146,8 +157,11 @@ function AlertModal({where}){
         }
 
         const gotoFeedback=()=>{
-            navigate("/routine/evaluation/bench_press")
+            navigate("/routine/evaluation/"+exercise.exercise_name);
         }
+        const part=eval("bodypart"+"["+current_bodypart+"]");
+        const next_exercise=eval("part"+parseInt(current_bodypart+1)+"["+parseInt(current_exercise+1)+"]");//다음스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
+
         return(
             <div className="modal fade" id="modal-default" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
                 <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
@@ -181,11 +195,11 @@ function AlertModal({where}){
                                     ?
                                     <>
                                         <Timer where="Press_and_3major"/>
-                                        <Pstyled bold="thick">가슴</Pstyled>
+                                        <Pstyled bold="thick">{part}</Pstyled>
                                         <div className="alert alert-warning" role="alert" style={SpanStyle} >
                                             <Stack direction="column">
                                                 <span className="badge badge-primary btn-lg" style={badgeStyle}>다음운동</span> 
-                                                <span className="alert-text" >인클라인프레스</span>
+                                                <span className="alert-text" >{next_exercise.name}</span>
                                             </Stack>
                                         </div>
                                     </>

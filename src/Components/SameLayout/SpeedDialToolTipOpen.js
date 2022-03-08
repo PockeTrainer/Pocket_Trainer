@@ -46,26 +46,59 @@ export default function SpeedDialTooltipOpen({now_exercise,is_First}) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const current_weight=useSelector(state=>state.change_current_weight_reducer.current_weight);//현재무게를 가져온다
+  const current_info=useSelector(state=>state.change_current_weight_reducer);//현재 체크정보를 가져온다ex)중량,시간,개수
+  const {current_weight,current_time,current_cnt}=current_info;
   const dispatch=useDispatch();//현재무게들을 업데이트할 예정
 
-  console.log(is_First)
+  console.log(now_exercise.name)
 
   const handleGradeButton=(button_name)=>{
     if(button_name==="매우쉬움"){
-      dispatch(very_easy(now_exercise.unit_kg));
+      if(now_exercise.eng_name==="plank"){
+        dispatch(very_easy(0,10,0));//플랭크는 10초가 단위임
+      }
+      else if(now_exercise.eng_name==="seated_knees_up"||now_exercise.eng_name==="crunch"){
+        dispatch(very_easy(0,0,2));//크런치,싯티드니업은 단위가 2개씩임
+      }
+      else{
+        dispatch(very_easy(now_exercise.unit_kg,0,0));//나머지 운동들은 단위중량이 좀 다를 수 있음
+      }
     }
     else if(button_name==="쉬움"){
-      dispatch(easy(now_exercise.unit_kg));
+      if(now_exercise.eng_name==="plank"){
+        dispatch(easy(0,10,0));//플랭크는 10초가 단위임
+      }
+      else if(now_exercise.eng_name==="seated_knees_up"||now_exercise.eng_name==="crunch"){
+        dispatch(easy(0,0,2));//크런치,싯티드니업은 단위가 2개씩임
+      }
+      else{
+        dispatch(easy(now_exercise.unit_kg,0,0));//나머지 운동들은 단위중량이 좀 다를 수 있음
+      }
     }
-    else if(button_name==="적절함"&&current_weight>0){//0키로 일때에 운동을 진행하는 건 좀 이상하자나,,,
+    else if(button_name==="적절함"&&current_weight>0&&current_time>0&&current_cnt>0){//0키로 일때에 운동을 진행하는 건 좀 이상하자나,,,
       dispatch(proper());
     }
-    else if(button_name==="무거움"&& current_weight-(now_exercise.unit_kg)>0){
-      dispatch(hard(now_exercise.unit_kg));
+    else if(button_name==="무거움"&& current_weight-(now_exercise.unit_kg)>0&&current_time-10>0&&current_cnt-2>0){
+      if(now_exercise.eng_name==="plank"){
+        dispatch(hard(0,10,0));//플랭크는 10초가 단위임
+      }
+      else if(now_exercise.eng_name==="seated_knees_up"||now_exercise.eng_name==="crunch"){
+        dispatch(hard(0,0,2));//크런치,싯티드니업은 단위가 2개씩임
+      }
+      else{
+        dispatch(hard(now_exercise.unit_kg,0,0));//나머지 운동들은 단위중량이 좀 다를 수 있음
+      }
     }
-    else if(button_name==="매우무거움" && current_weight-(now_exercise.unit_kg)*2>0){
-      dispatch(very_hard(now_exercise.unit_kg));
+    else if(button_name==="매우무거움" && current_weight-(now_exercise.unit_kg)*2>0&&current_time-20>0&&current_cnt-4>0){
+      if(now_exercise.eng_name==="plank"){
+        dispatch(very_hard(0,10,0));//플랭크는 10초가 단위임
+      }
+      else if(now_exercise.eng_name==="seated_knees_up"||now_exercise.eng_name==="crunch"){
+        dispatch(very_hard(0,0,2));//크런치,싯티드니업은 단위가 2개씩임
+      }
+      else{
+        dispatch(very_hard(now_exercise.unit_kg,0,0));//나머지 운동들은 단위중량이 좀 다를 수 있음
+      }
     }
     else{
       // 무게가 뺄 수 없는 상황일때의 오류상황

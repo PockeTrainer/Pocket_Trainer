@@ -7,7 +7,7 @@ import { none_testState, testState,increase_set,not_timeToModal,reset_count} fro
 
 const setting={
     physical_test_ready:5,
-    Press_and_3major:20,
+    Press_and_3major:10,
     etc:90,
     shoulder_and_arm:40
 }
@@ -42,7 +42,8 @@ const Timer = ({exercise,where}) => {
   
     useEffect(() => {
       // 만약 타임 아웃이 발생했을 경우
-      if (time.current <= 0) {
+      console.log("sec:",sec," time.current:",time.current);
+      if (time.current < 0) {
         console.log("타임 아웃");
 
         clearInterval(timerId.current);
@@ -70,7 +71,7 @@ const Timer = ({exercise,where}) => {
         }
        
       }
-      else if(time.current===1&&where!=="physical_test_ready"){
+      else if(time.current===0&&where!=="physical_test_ready"){
         // 여기에서 1초일 때 분기를 하는 이유는 미리 count를 0으로 1초전에 변경해주면 최대한 increase_set나 not_timeToModal에 의한 ui변경전에 모달을 닫을수잇다
 
         dispatch(reset_count());//다시 카운트된 개수를 리셋시켜줌
@@ -132,7 +133,7 @@ const Timer = ({exercise,where}) => {
             <>
                  <div className={"alert alert-secondary "+classes.mainStepPadding} role="alert" >
                     <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
-                    <span className="alert-text display-4">{time.current<60?<strong>{time.current}초</strong>:<strong>{min}분{sec}초</strong>}</span>
+                    <span className="alert-text display-4">{time.current<60?<strong>{sec}초</strong>:<strong>{min}분{sec}초</strong>}</span>
     
                 </div>
             </>
