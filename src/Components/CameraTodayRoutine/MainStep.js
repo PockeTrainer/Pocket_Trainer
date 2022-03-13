@@ -10,9 +10,12 @@ import { useParams } from "react-router-dom";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 import AlertModal from "../SameLayout/AlertModal";
-import {timeToModal} from "../../modules/action"
+import {timeToModal,how_long} from "../../modules/action"
 
+import axios from "axios"
 function MainStep(){
+    const id=sessionStorage.getItem("user_id");
+
     const testState=useSelector(state=>state.testState_reducer.testState);//카메라가 성공적으로 불러와졌는지 여부
     const count=useRef(1);//카운트용
     const timeId=useRef();//운동시간용
@@ -59,6 +62,20 @@ function MainStep(){
         modalRef.current.click()
     }
 
+    const sendData=async()=>{
+            await axios.put(`http://127.0.0.1:8000/api/workout/workoutResult/${exercise_name.exercise_name}/${id}`,{
+                workout_set:howmanySet,
+                workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60)
+            })//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            .then((res) => {
+                console.log(res.data);
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     const start=()=>{
         timeId.current=setInterval(()=>{
             setMin(parseInt(time.current/60));
@@ -95,8 +112,13 @@ function MainStep(){
             return;
         }
         if(modalTime){
+            if(howmanySet===5){
+                dispatch(how_long(min,sec));//마지막 스텝에서는 총 운동시간을 리덕스에 올려준다.
+            }
             clearInterval(timeId.current);//스탑워치를 잠시 멈추주기 위해 interval함수 초기화
             timeId.current=null;
+            
+            sendData();//api로 지금까지 진행상황 전송
 
             setTimeout(openModal,1000);//모달창 열어주기 
         }

@@ -35,12 +35,18 @@ function BodySequence(){
 
     const navigate=useNavigate();
     const dispatch=useDispatch();
-    const bodypart=useSelector(state=>state.update_routineInfo_reducer.bodypart);//오늘 할당된 부위정보 가져오기
+
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
+    const{bodypart,part1}=routine_info;//부위정보 담아주기
+    const first_exercise_eng_part=part1[0].eng_part;//영어부위명 하나 가져와서 url에서 쓸 예정
+
     
 
       const AvatarStyle=styled(Avatar)((props)=>({
-        width:"60px",
-        height:"60px",
+        width:"4rem",
+        height:"4rem",
+        fontSize:"1.65rem",
         fontFamily:"Nanum Gothic",
         fontWeight:"700",
         backgroundColor:props.color,
@@ -55,8 +61,8 @@ function BodySequence(){
           },
         }),
         backgroundColor:"#5e72e4",
-        width:"80px",
-        height:"80px"
+        width:"5rem",
+        height:"5rem"
 
       };
 
@@ -69,7 +75,7 @@ function BodySequence(){
         }
         else if(success){
           setTimeout(() => {
-            navigate("/routine/series/chest")
+            navigate("/routine/series/"+first_exercise_eng_part)
           }, 2000);
         }
         return () => {
@@ -142,12 +148,14 @@ function BodySequence(){
                 </Fab>
                 {loading && (
                     <CircularProgress
-                    size={90}
+                    size={"5.2rem"}
                     sx={{
                         color: green[500],
                         position: 'absolute',
-                        top: -6,
-                        left: -6,
+                        top: "0rem",
+                        bottom:"0rem",
+                        left: "0rem",
+                        right:"0rem",
                         zIndex: 1,
                     }}
                     />

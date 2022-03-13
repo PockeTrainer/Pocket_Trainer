@@ -47,12 +47,16 @@ const TIMETOMODAL="timeToModal";
 const NOT_TIMETOMODAL="not_timeToModal";
 //공통으로 쓸 api를 통해 불러온 운동객체 정보를 올리는용도
 const ROUTINE_INFO="routine_info";
+//한 운동이 끝났을 때에 운동시간을 담아준다
+const HOW_LONG="how_long";
 //지금 운동페이지에서 어디를 맡고있는지 파악용
 const NEXT_PART="next_part";
 const PREV_PART="prev_part";
 const NEXT_EXERCISE="next_exercise";
 const PREV_EXERCISE="prev_exercise";
 const SET_EXERCISE_RECORD="set_exercise_record";
+//중량,시간,개수 변화전에 마지막 기록을 저장해두는용
+const LAST_RECORD="last_record";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -220,6 +224,12 @@ export const routine_info=(bodypart,part1,part2,part3)=>({
     part3
 });
 
+export const how_long=(min,sec)=>({
+    type:HOW_LONG,
+    min,
+    sec
+})
+
 export const next_part=()=>({
     type:NEXT_PART,
 
@@ -244,6 +254,12 @@ export const set_exercise_record=(api_record)=>({//API로부터 받은 최근 �
     type:SET_EXERCISE_RECORD,
     api_record
 })
+
+export const last_record=(record)=>({
+    type:LAST_RECORD,
+    record
+});
+
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -301,13 +317,22 @@ const initialRoutineInfo={//api로부터 불러온 루틴정보
     part3:[]
 };
 
+const initialHowLong={
+    min:"",
+    sec:""
+}
+
 const initialPageProgress={//운동페이지에서 지금진행하고 있는 운동부위와 운동명의 인덱스 그리고 현재운동의 중량체크관련 정보를 가진다
-    current_bodypart:"0",
-    current_exercise:"0",
+    current_bodypart:0,
+    current_exercise:0,
     is_First:true
 }
+
+const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 갖고 있어준다.-변화량 때문에
+    last_record:""
+}
 //초기페이지 정보
-export default function pageMove(state=initialState,action){
+export default function pageMove(state=initialState,action){//모달창의 페이지 이동 부분 
     switch (action.type) {
         case FIRST_CLEARPAGE:
             return {
@@ -330,7 +355,7 @@ export default function pageMove(state=initialState,action){
             return state;
     }
 }
-export function Appref(state=initialRef,action){
+export function Appref(state=initialRef,action){//첫 로그인 시 뜨는 모달창의 ref값
     switch (action.type) {
         case MODALREF:
             return {
@@ -341,7 +366,7 @@ export function Appref(state=initialRef,action){
     }
 }
 
-export function Exercise_start_reducer(state=initialExerciseStart,action){
+export function Exercise_start_reducer(state=initialExerciseStart,action){//운동모드로 들어갔는지 아닌지-상단 navbar의 유무를 보여줌
     switch (action.type) {
         case EXERCISE_START:
             return {
@@ -356,7 +381,7 @@ export function Exercise_start_reducer(state=initialExerciseStart,action){
     }
 }
 
-export function first_login_check(state=initialFirstId,action){
+export function first_login_check(state=initialFirstId,action){//첫 로그인인가 아님 여러번 접속 기록이 있는지-모달창 여부
     switch (action.type) {
         case FIRST_LOGIN:
             return{
@@ -371,7 +396,7 @@ export function first_login_check(state=initialFirstId,action){
     }
 }
 
-export function testState_reducer(state=initialTestState,action){
+export function testState_reducer(state=initialTestState,action){//카메라 준비->준비완료상태->테스트가능상태,준비타이머 상태
     switch (action.type) {
         case TESTSTATE:
             return{
@@ -401,7 +426,7 @@ export function testState_reducer(state=initialTestState,action){
     }
 }
 
-export function exercise_count_reducer(state=initialExercise,action){
+export function exercise_count_reducer(state=initialExercise,action){//체력측정개수를 담는다
     switch (action.type) {
         case PUSHUP_COUNT:
             return {
@@ -428,7 +453,7 @@ export function exercise_count_reducer(state=initialExercise,action){
     }
 }
 
-export function change_clicked_button_reducer(state=initialClickedButton,action){
+export function change_clicked_button_reducer(state=initialClickedButton,action){//루틴페이지에서 눌린 버튼 담당
     switch (action.type) {
         case CHANGE_CLICKED_BUTTON:
             return{
@@ -459,7 +484,7 @@ export function change_routine_page_reducer(state=initialPage,action){//루틴�
     }
 }
 
-export function change_current_weight_reducer(state=initialInfoChange,action){
+export function change_current_weight_reducer(state=initialInfoChange,action){//버튼 눌러서 중량,시간,개수 변화주는 곳
     switch (action.type) {
         case SET_CURRENT_WEIGHT:
             return{
@@ -479,7 +504,10 @@ export function change_current_weight_reducer(state=initialInfoChange,action){
             }    
         case RESET:
             return{
-                ...initialInfoChange
+                ...state,
+                clicked_button:"",
+                clicked_count:0,
+
             }    
         
         case VERY_HARD:
@@ -538,11 +566,11 @@ export function change_current_weight_reducer(state=initialInfoChange,action){
     // 클릭된 횟수를 바탕으로 버튼이 눌렸음을 인지
 }
 
-export function change_set_reducer(state=initialSet,action){
+export function change_set_reducer(state=initialSet,action){//운동 세트 보여주는 부분 업데이트 해주는 곳
     switch(action.type){
         case RESET_SET:
             return{
-                current_set:0
+                current_set:1
             }
         case INCREASE_SET:
             return{
@@ -553,7 +581,7 @@ export function change_set_reducer(state=initialSet,action){
     }
 }
 
-export function change_timeToModal_reducer(state=initialTimeToModal,action){
+export function change_timeToModal_reducer(state=initialTimeToModal,action){//각 세트 끝났을 때 모달 띄워줄지 말지
     switch(action.type){
         case TIMETOMODAL:
             return{
@@ -568,7 +596,7 @@ export function change_timeToModal_reducer(state=initialTimeToModal,action){
     }
 }
 
-export function update_routineInfo_reducer(state=initialRoutineInfo,action){
+export function update_routineInfo_reducer(state=initialRoutineInfo,action){//오늘의 루틴 api로 받았을 때 값 저장
     switch (action.type) {
         case ROUTINE_INFO:
             return {
@@ -582,7 +610,18 @@ export function update_routineInfo_reducer(state=initialRoutineInfo,action){
     }
 }
 
-export function update_page_progress_reducer(state=initialPageProgress,action){
+export function update_how_long_reducer(state=initialHowLong,action){//각 운동 얼마나 했는지
+    switch(action.type){
+        case HOW_LONG:
+            return{
+                min:action.min,
+                sec:action.sec
+            }
+        default:
+            return state;    
+    }
+}
+export function update_page_progress_reducer(state=initialPageProgress,action){//운동 진행하면서 어디페이지인지
     switch (action.type) {
         case NEXT_PART:
             return {
@@ -616,3 +655,13 @@ export function update_page_progress_reducer(state=initialPageProgress,action){
     }
 }
 
+export function update_last_record_reducer(state=initialLastRecord,action){//api 호출되었을 때 중량,시간,개수 변화전에 저장해두는 곳
+    switch(action.type){
+        case LAST_RECORD:
+            return{
+                last_record:action.record
+            }
+        default:
+            return state;    
+    }
+}

@@ -56,7 +56,7 @@ function MainContent(){
     
     return(
         <div className='bg-default'>
-            <div class="main-content">
+            <div className="main-content">
                 {/*url 뒤에 인자에 따라 나눠줌 */}
                 {stateNav[subtitle.subtitle]} 
                 {stateMain[subtitle.subtitle]}

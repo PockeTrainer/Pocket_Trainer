@@ -26,21 +26,21 @@ function ExerciseRoutine(){
     setClickedButton(select);
   }
   const buttons = [
-    <Button key="one" onClick={()=>handleClick("button1")}  sx={styleButton} ><h2 className="display-3" >가슴루틴</h2><i class="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
-    <Button key="two" onClick={()=>handleClick("button2")} sx={styleButton}><h2 className="display-3" >삼두루틴</h2><i class="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
-    <Button key="three" onClick={()=>handleClick("button3")}  sx={styleButton}><h2 className="display-3" >복근루틴</h2><i class="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
+    <Button key="one" onClick={()=>handleClick("button1")}  sx={styleButton} ><h2 className="display-3" >가슴루틴</h2><i className="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
+    <Button key="two" onClick={()=>handleClick("button2")} sx={styleButton}><h2 className="display-3" >삼두루틴</h2><i className="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
+    <Button key="three" onClick={()=>handleClick("button3")}  sx={styleButton}><h2 className="display-3" >복근루틴</h2><i className="fas fa-arrow-circle-down" style={{fontSize:"4em",color:"white"}}></i></Button>,
   ];
 
     return(
         <div className="card bg-secondary shadow mb-3" data-component="AccountInformationCard">
       
           <div className="card-body">
-            <i class="fas fa-flag-checkered" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+            <i className="fas fa-flag-checkered" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >오늘의루틴</h2>
             <hr></hr>
 
                 {/* <h2 className="display-2" style={{marginTop:"1em"}} >가슴루틴</h2>
-                <i class="fas fa-arrow-circle-down" style={{fontSize:"3em",color:"b"}}></i>
+                <i className="fas fa-arrow-circle-down" style={{fontSize:"3em",color:"b"}}></i>
                 <hr></hr> */}
             <ButtonGroup
             orientation="vertical"

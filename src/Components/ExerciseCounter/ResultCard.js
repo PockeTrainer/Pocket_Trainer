@@ -32,15 +32,15 @@ function UpperBody({upper_idx}){
     
     return(
         <div>
-        <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+        <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >상체평가</h2>
             <hr></hr>
 
             <div className="alert alert-primary" role="alert" >
-                    <span className="alert-icon"><i class="ni ni-chart-bar-32"></i></span>
+                    <span className="alert-icon"><i className="ni ni-chart-bar-32"></i></span>
                     <span className="alert-text display-4" style={{display:"block"}}>마지막측정결과</span>
                     <div className="alert alert-success" role="alert">
-                        <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>상체(3등급)</strong>
+                        <span className="alert-text h3" style={{color:"white"}}><strong><i className="fas fa-thumbs-up"></i>상체(3등급)</strong>
                         </span>
                     </div>
                     <div className="alert alert-secondary" role="alert">
@@ -57,15 +57,15 @@ function UpperBody({upper_idx}){
 function Abs({abs_idx}){
     return(
         <div>
-        <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+        <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >복근평가</h2>
             <hr></hr>
 
             <div className="alert alert-primary" role="alert" >
-                    <span className="alert-icon"><i class="ni ni-chart-bar-32"></i></span>
+                    <span className="alert-icon"><i className="ni ni-chart-bar-32"></i></span>
                     <span className="alert-text display-4" style={{display:"block"}}>마지막측정결과</span>
                     <div className="alert alert-success" role="alert">
-                        <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>복근(3등급)</strong>
+                        <span className="alert-text h3" style={{color:"white"}}><strong><i className="fas fa-thumbs-up"></i>복근(3등급)</strong>
                         </span>
                     </div>
                     <div className="alert alert-secondary" role="alert">
@@ -82,15 +82,15 @@ function Abs({abs_idx}){
 function LowerBody({lower_idx}){
     return(
         <div>
-        <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+        <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >하체평가</h2>
             <hr></hr>
 
             <div className="alert alert-primary" role="alert" >
-                    <span className="alert-icon"><i class="ni ni-chart-bar-32"></i></span>
+                    <span className="alert-icon"><i className="ni ni-chart-bar-32"></i></span>
                     <span className="alert-text display-4" style={{display:"block"}}>마지막측정결과</span>
                     <div className="alert alert-success" role="alert">
-                        <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>하체(3등급)</strong>
+                        <span className="alert-text h3" style={{color:"white"}}><strong><i className="fas fa-thumbs-up"></i>하체(3등급)</strong>
                         </span>
                     </div>
                     <div className="alert alert-secondary" role="alert">
@@ -107,15 +107,15 @@ function LowerBody({lower_idx}){
 function Total({total_idx}){
     return(
         <div>
-            <i class="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+            <i className="far fa-clipboard" style={{fontSize:"4em",color:"#5e72e4"}}></i>
             <h2 className="text-gray-dark display-4" >최종평가</h2>
             <hr></hr>
 
             <div className="alert alert-primary" role="alert" >
-                    <span className="alert-icon"><i class="ni ni-chart-bar-32"></i></span>
+                    <span className="alert-icon"><i className="ni ni-chart-bar-32"></i></span>
                     <span className="alert-text display-4" style={{display:"block"}}>마지막측정결과</span>
                     <div className="alert alert-success" role="alert">
-                        <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>최종등급(3등급)</strong>
+                        <span className="alert-text h3" style={{color:"white"}}><strong><i className="fas fa-thumbs-up"></i>최종등급(3등급)</strong>
                         </span>
                     </div>
                     <div className="alert alert-secondary" role="alert">

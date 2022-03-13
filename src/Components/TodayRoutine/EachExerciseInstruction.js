@@ -51,7 +51,7 @@ function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함
                             </AccordionSummary>
                             <AccordionDetails sx={{"&.MuiAccordionDetails-root":{padding: "0px 2px 2px"}}}>
                                 <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginTop:"2em",marginBottom:"0em"}}>
-                                    <i class="ni ni-like-2"></i>
+                                    <i className="ni ni-like-2"></i>
                                     <h2><strong>벤치프레스 레코드</strong></h2>
                                     <Stack direction="column" spacing={2}>
                                     <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white"}}>세트당 개수:12개</span> 

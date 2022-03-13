@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 import Grow from '@mui/material/Grow';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ErrorIcon from '@mui/icons-material/Error';
 import BodySequence from './BodySequence';
 import CardSlider from './CardSlider';
 import WeightCheckInstruction from './WeightCheckInstruction';
@@ -24,6 +25,8 @@ import Evaluation from './Evaluation';
 import { none_testState } from '../../modules/action';
 import Finish from './Finish';
 
+import AlertModal from "../SameLayout/AlertModal";
+
 
 function CardLayout(){
 
@@ -33,6 +36,7 @@ function CardLayout(){
     const navigate=useNavigate();
     const dispatch=useDispatch();
     const path=useLocation();//지속적으로 url이 바뀌는 걸 인식시켜서 이름 바뀌게,,
+    const modalRef=useRef();//느낌표 눌렀을 때 뜨는 모달창 trigger button
 
 
     const pageInfo=useSelector(state=>state.update_page_progress_reducer);//지금 현재 진행하고 있는 페이지의 부위와 운동명을 맡는다
@@ -120,6 +124,12 @@ function CardLayout(){
         color: "white"
     }
 
+    const ExclmationStyle={
+        fontSize: "1.8em",
+        color:"#ffc107",
+        marginLeft:"8px"
+    }
+
     const IconButtonStyle={
         "&.MuiIconButton-root":{
             padding:"0px",
@@ -154,11 +164,17 @@ function CardLayout(){
         backgroundColor:"#f7fafc52"
     };
 
+    const click_modal=()=>{
+        modalRef.current.click();
+    }
+
    const gotoBack=()=>{
        navigate(-1);//뒤로가기
        dispatch(none_testState());//뒤로가기할 시 전체적인 카메라 스테이트를 다시 꺼져줘야함
+   }
 
-
+   const showAlert=()=>{
+       setTimeout(click_modal,1000);
    }
     //슬라이더용
   
@@ -176,7 +192,7 @@ function CardLayout(){
 //transition용  
         return(
             <div>
-                 <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
+                 <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard" style={{minHeight:"100vh"}}>
                     <div className="container-fluid" style={testState==="completed"?containerStyle:null}>
                             <div className="header-body">
                                 <div className="container-fluid" style={testState==="completed"?containerStyle:null} >
@@ -197,10 +213,27 @@ function CardLayout(){
                                                             <div className="row">
                                                             <div className="col" style={{paddingLeft:"5px",paddingRight:"5px",display:"flex",justifyContent:"space-between"}}>
                                                                 
-                                                                <IconButton sx={IconButtonStyle} onClick={gotoBack}>
-                                                                    <ArrowCircleLeftIcon sx={backArrowStyle}/>
-                                                                </IconButton>
+                                                                {
+                                                                    testState==="completed"
+                                                                    ?
+                                                                        <>
+                                                                            <IconButton sx={IconButtonStyle} onClick={showAlert} >
+                                                                                <ErrorIcon sx={ExclmationStyle}/>
+                                                                            </IconButton>
+                                                                        </>
+                                                                    :
+                                                                        <>
+                                                                            <IconButton sx={IconButtonStyle} onClick={gotoBack}>
+                                                                                <ArrowCircleLeftIcon sx={backArrowStyle}/>
+                                                                            </IconButton>
+                                                                        </>
+                                                                        
+                                                                }
                                                                 
+                                                               
+                                                                
+                                                                
+
                                                                 <span className="badge badge-secondary" style={{
                                                                     fontSize:"2.0em",
                                                                     color:"#5e72e4",
@@ -243,6 +276,9 @@ function CardLayout(){
 
                                             </div>
                                         </List>
+
+                                        <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-stop_today">Default</button>
+                                        <AlertModal where="stop_today"  />
                                     </div>
                                     
                             </div> 

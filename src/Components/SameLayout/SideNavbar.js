@@ -2,13 +2,28 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../CustomCss/SideNavbar.css';
 import {Link} from 'react-router-dom';
 
+function sleep(ms){
+  return new Promise((r)=>setTimeout(r,ms));
+}
+
 function SideNavBar(){     
   const [clickedId,setClickedId]=useState(
-    ()=>JSON.parse(window.localStorage.getItem("clickedId"))||""
+    ()=>JSON.parse(sessionStorage.getItem("clickedId"))||"list1"
   ); //사이드메뉴가 눌렸는지 안 눌렸는지여부를 웹 스토리지를 사용하여 새로고침을 해도 눌린 값은 유지하도록 함
 
+  const collapse_nav_bar=useRef();
+
+  const closeCheck=()=>{
+    let menu_show=collapse_nav_bar.current.className;
+    if(menu_show.includes("show")){//만약에 뒤로가기 같은 상황때문에 바로 show가 붙어서 떠있는 상황에는 없애줌
+      closebutton.current.click();
+    }
+  }
   useEffect(()=>{
-    window.localStorage.setItem("clickedId",JSON.stringify(clickedId))
+    sleep(500).then(()=>closeCheck());
+  },[])
+  useEffect(()=>{
+    sessionStorage.setItem("clickedId",JSON.stringify(clickedId))
     closebutton.current.click()//메뉴 닫아줘
   },[clickedId]);
 
@@ -85,7 +100,7 @@ function SideNavBar(){
               </div>
             </li>
           </ul>
-          <div className="collapse navbar-collapse" id="sidenav-collapse-main">
+          <div ref={collapse_nav_bar} className="collapse navbar-collapse" id="sidenav-collapse-main">
             <div className="navbar-collapse-header d-md-none">
               <div className="row">
                 <div className="col-6 collapse-brand">

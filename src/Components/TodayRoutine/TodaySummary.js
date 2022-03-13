@@ -42,11 +42,12 @@ function TodaySummary(){
 
     const AvatarStyle=styled(Avatar)((props)=>({
         margin:"auto",
-        width: "60px",
-        height:"60px",
+        width: "4rem",
+        height:"4rem",
         backgroundColor:props.color,
         fontFamily:"Nanum Gothic",
-        fontWeight:"bold"
+        fontWeight:"bold",
+        fontSize:"1.55rem"
       }));
 
       
@@ -141,7 +142,7 @@ function TodaySummary(){
         </div>
         <SwipeableEdgeDrawer select_button={clickedButton} />
 
-        <ScrollTriggerButton content={"운동준비"}/>
+        <ScrollTriggerButton content={"운동준비"} css_bottom={'3em'}/>
        
     </div>
     );

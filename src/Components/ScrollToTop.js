@@ -6,7 +6,17 @@ export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    let y_result;
+
+    if(pathname.includes("/routine/weightcheck/practice")||pathname.includes("/routine/exercise")){
+      let rem_size=getComputedStyle(document.documentElement).fontSize;
+      y_result=parseInt(rem_size);
+    }
+    else{
+      y_result=0;
+    }
+
+    window.scrollTo(0,y_result);
   }, [pathname]);
 
   return null;

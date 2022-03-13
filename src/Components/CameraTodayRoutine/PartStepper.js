@@ -58,12 +58,12 @@ function PartStepper({where}){
 
 
       const isAllClear=(part)=>{//해당부위의 모든 운동들이 끝이 실행이 완료됐는지를 알려준다.
-        part.foreach((exercise)=>{
+        for(let exercise of part){
           if(!exercise.Info_from_api.is_clear){
-            return false;
+              return false
           }
-        })
-        return true;
+      }
+      return true;
       }
 
       const isActive=(label,index)=>{
@@ -168,7 +168,7 @@ function PartStepper({where}){
           }
           else if(part.bodypart==="tricep"||part.bodypart==="bicep"||part.bodypart==="leg"){//2등인 운동들
             if(label==="가슴"||label==="등"||label==="어깨"){//첫번째 운동
-              let result=isAllClear();
+              let result=isAllClear(part1);
               return result;
             }
             else if(label==="삼두"||label==="이두"||label==="하체"){//두번째 운동
@@ -180,11 +180,11 @@ function PartStepper({where}){
           }
           else{//마지막 부위스텝일때
             if(label==="가슴"||label==="등"||label==="어깨"){//첫번째 운동
-              let result=isAllClear();
+              let result=isAllClear(part1);
               return result;
             }
             else if(label==="삼두"||label==="이두"||label==="하체"){//두번째 운동
-              let result=isAllClear();
+              let result=isAllClear(part2);
               return result;
             }
             else{//복근운동은 상황상 항상 마지막운동
@@ -257,7 +257,7 @@ function PartStepper({where}){
           }
           else if(part.bodypart==="tricep"||part.bodypart==="bicep"||part.bodypart==="leg"){//2등인 운동들
             if(label==="가슴"||label==="등"||label==="어깨"){//첫번째 운동
-              let result=!isAllClear();
+              let result=!isAllClear(part1);
               return result;
             }
             else if(label==="삼두"||label==="이두"||label==="하체"){//두번째 운동
@@ -269,11 +269,11 @@ function PartStepper({where}){
           }
           else{//마지막 부위스텝일때
             if(label==="가슴"||label==="등"||label==="어깨"){//첫번째 운동
-              let result=!isAllClear();
+              let result=!isAllClear(part1);
               return result;
             }
             else if(label==="삼두"||label==="이두"||label==="하체"){//두번째 운동
-              let result=!isAllClear();
+              let result=!isAllClear(part2);
               return result;
             }
             else{//복근운동은 상황상 항상 마지막운동

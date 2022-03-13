@@ -70,7 +70,7 @@ function CardLayout(){
                  <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
               <div className="container-fluid">
                 <div className="header-body">
-                    <div class="container-fluid" >
+                    <div className="container-fluid" >
                         <div className="row" data-component="ProfileCardLayout">
 
                             <CssBaseline />
@@ -90,7 +90,7 @@ function CardLayout(){
                                                         {/* 여기 위까지는 고정틀 */}
 
                                                             
-                                                        <span class="badge badge-secondary" style={{
+                                                        <span className="badge badge-secondary" style={{
                                                             fontSize:"2.1em",
                                                             color:"#5e72e4",
                                                             backgroundColor:"#f8f9fa",

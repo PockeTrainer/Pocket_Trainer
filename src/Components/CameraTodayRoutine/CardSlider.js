@@ -11,6 +11,8 @@ import CardWrapper from "./CardWrapper"
 import { useSelector } from "react-redux";
 import axios from "axios";
 
+import "../../CustomCss/Slider.css";
+
 function CardSlider(){
     const [checked, setChecked] = useState(false);
 
@@ -20,27 +22,26 @@ function CardSlider(){
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
     const id=sessionStorage.getItem("user_id");
-    const [weight_info,set_weight_info]=useState([]);//무게정보를 담는 state
+    const [info,set_info]=useState([]);//무게정보를 담는 state
 
 
     useEffect(()=>{
-        let all_weight_info=[];
+        let all_info=[];
         eval('part'+parseInt(current_bodypart+1)).map(async(exercise)=>{
             await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.eng_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
                 console.log(res.data)
-                // set_weight_info(prev=>[...weight_info,res.data]);
-                all_weight_info.push(res.data);
+                all_info.push(res.data);
             })
             .catch((err) => {
                 console.log(err)
             })
     
         });
-       set_weight_info(all_weight_info);
+       set_info(all_info);
     },[])
 
-    console.log(weight_info);
+    console.log(info);
 
     const handleChange = () => {
     setChecked((prev) => !prev);
@@ -87,28 +88,32 @@ function CardSlider(){
     return(
         <>
         <Slider {...settings}>
-            {part1.map((exercise,index)=>(
-                <SpecificBody key={index} exercise={exercise} weight_info={weight_info[index]}/>
+            {eval("part"+parseInt(current_bodypart+1)).map((exercise,index)=>(
+                <SpecificBody key={index} exercise={exercise} info={info[index]}/>
             ))}
         </Slider>
 
         <Slide  mountOnEnter unmountOnExit direction="up"  in={checked}>
             <span className="badge badge-primary" style={partName}>
-                <FitnessCenterIcon sx={{color:"black",fontSize:"1.0em"}}/>{bodypart[0]}
+                <FitnessCenterIcon sx={{color:"black",fontSize:"1.0em"}}/>{bodypart[current_bodypart]}
             </span>
         </Slide>
         <Slide  mountOnEnter unmountOnExit direction="up"  in={checked} {...(checked ? { timeout: 1000 } : {})}>
             <span className="badge badge-primary" style={subtitle}>
-                {part1[0].name}<br></br>
-                {part1[1].name}<br></br>
-                {part1[2].name}
+
+                {eval("part"+parseInt(current_bodypart+1)).map((exercise,index)=>(
+                    <>
+                    {exercise.name}<br key={index}></br>
+                    </>
+                ))}
+                
             </span>
        </Slide>
 
        <CardWrapper time={3000}>
            <PartStepper where="BodyPart"/>
        </CardWrapper>
-       <ScrollTriggerButton content={"벤치시작"}/>
+       <ScrollTriggerButton content={"사전체크"}/>
         </>
     );
 }

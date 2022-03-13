@@ -7,7 +7,7 @@ import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { set_exercise_record } from "../../modules/action";
+import { set_exercise_record,last_record } from "../../modules/action";
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
@@ -30,8 +30,9 @@ function WeightCheckInstruction(){
     const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
-    const now_exercise_name=eval("part"+parseInt(current_bodypart+1)+'['+current_exercise+']'+".name");//현재페이지의 한국어운동명을 넣어줌
+    console.log("part"+parseInt(current_bodypart+1)+'['+current_exercise+']'+".name")
 
+    const now_exercise_name=eval("part"+parseInt(current_bodypart+1)+'['+current_exercise+']'+".name");//현재페이지의 한국어운동명을 넣어줌
     const dispatch=useDispatch();
 
     const unit={//운동에 따른 단위
@@ -52,6 +53,8 @@ function WeightCheckInstruction(){
 
                 if(exercise.exercise_name==="plank"){
                     let format=res.data.target_time.split(":");
+                    let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
+
                     if(format[1]==="00"){
                         time_format_result=format[2]+"초";
                     }
@@ -59,12 +62,15 @@ function WeightCheckInstruction(){
                         time_format_result=format[1]+"분"+format[2]+"초";
                     }
                     key_for_unit.current="etc";
+                    dispatch(last_record(sec_converted));//마지막 기록을 혹시나 체크단계에서 변경될것을 대비해 저장해둠
                 }
                 else if(exercise.exercise_name==="seated_knees_up"||exercise.exercise_name==="crunch"){
                     key_for_unit.current="count_demand";
+                    dispatch(last_record(res.data.target_cnt));
                 }
                 else{
                     key_for_unit.current="weight_demand";
+                    dispatch(last_record(res.data.target_kg))
                 }
 
                 result.current={
@@ -91,8 +97,6 @@ function WeightCheckInstruction(){
     },[])
    
 
-    console.log(result.current);
-    console.log(key_for_result.current);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
 
@@ -116,7 +120,7 @@ function WeightCheckInstruction(){
         position:"absolute",
         color:"white",
         zIndex:"9999",
-        fontSize:"3em",
+        fontSize:"2.3rem",
         top:"1em",
         left:"0",
         right:"0",
@@ -207,7 +211,7 @@ function WeightCheckInstruction(){
                                 <span className="alert-text" style={noDataAlertStyle}>해당운동 기록이 없습니다..</span>
                             </>
                             :
-                            <span className="alert-text" style={{fontSize:"4.5em"}}><strong>{result.current[key_for_result.current]}<span style={{fontSize:"0.5em"}}>{unit[key_for_unit.current]}</span></strong></span>
+                            <span className="alert-text" style={{fontSize:"4.5em",margin:"1rem 0"}}><strong>{result.current[key_for_result.current]}<span style={{fontSize:"0.5em"}}>{unit[key_for_unit.current]}</span></strong></span>
                         }
                         
                     </div>

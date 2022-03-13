@@ -1,0 +1,7 @@
+.slick-list {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0 -13px;
+    padding: 0;
+}

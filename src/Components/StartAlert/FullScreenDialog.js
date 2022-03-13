@@ -98,7 +98,7 @@ export default function FullScreenDialog() {
         </AppBar>
         <div className="card" style={{textAlign:"center"}} >
             <div className="card-body">
-                <i class="fas fa-id-card" style={{fontSize:"4em",color:"#5e72e4"}}></i>
+                <i className="fas fa-id-card" style={{fontSize:"4em",color:"#5e72e4"}}></i>
                 <h2 className="text-gray-dark display-4" >신체정보입력</h2>
                 <hr></hr>
 

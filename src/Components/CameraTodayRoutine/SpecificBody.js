@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 
 import Grow from '@mui/material/Grow';
 
@@ -15,19 +15,23 @@ function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
-function SpecificBody({exercise,weight_info}){
+function SpecificBody({exercise,info}){
 
     let weight_first=true;
     let title;
+    let key_for_unit=useRef("");
+    let key_for_result=useRef("");
+    let result=useRef("");
 
-    if(weight_info!==undefined){
-        weight_first=weight_info.is_first;
+
+    if(info!==undefined){
+        weight_first=info.is_first;
     }
 
-    if(exercise.name==="plank"){
+    if(exercise.eng_name==="plank"){
         title="마지막타임셋:"
     }
-    else if(exercise.name==="seated_knees_up"||exercise.name==="crunch"){
+    else if(exercise.eng_name==="seated_knees_up"||exercise.eng_name==="crunch"){
         title="마지막셋횟수:"
     }
     else{
@@ -54,9 +58,49 @@ function SpecificBody({exercise,weight_info}){
     const handleChange = () => {
         setChecked((prev) => !prev);
     };
+
+    const unit={//운동에 따른 단위
+        count_demand:"개",
+        weight_demand:"KG",
+        etc:""
+    }
   
     useEffect(()=>{
         sleep(3000).then(()=>handleChange());//3초동안 그전에 transition으로 나타난 글자 사라지게 하고 나타나게함
+
+        let time_format_result;
+
+        if(exercise.eng_name==="plank"){
+            let format=exercise.Info_from_api.target_time.split(":");
+
+            if(format[1]==="00"){
+                time_format_result=format[2]+"초";
+            }
+            else{
+                time_format_result=format[1]+"분"+format[2]+"초";
+            }
+            key_for_unit.current="etc";
+        }
+        else if(exercise.eng_name==="seated_knees_up"||exercise.eng_name==="crunch"){
+            key_for_unit.current="count_demand";
+        }
+        else{
+            key_for_unit.current="weight_demand";
+        }
+
+        result.current={
+            plank:time_format_result,
+            crunch:exercise.Info_from_api.target_count,
+            seated_knees_up:exercise.Info_from_api.target_count,
+            etc:exercise.Info_from_api.target_kg
+        }
+
+        if(exercise.eng_name!=="plank"&&exercise.eng_name!=="crunch"&&exercise.eng_name!=="seated_knees_up"){
+            key_for_result.current="etc";
+        }
+        else{
+            key_for_result.current=exercise.eng_name;
+        }
     },[])
   
     //Transition용
@@ -79,8 +123,8 @@ function SpecificBody({exercise,weight_info}){
                                         <span className="badge badge-default btn-lg" style={badgeStyle}>회원님께서는 해당운동기록이 없습니다</span>
                                         :
                                         <>
-                                        <span className="badge badge-default btn-lg" style={badgeStyle}>{title}{weight_info.target_kg}kg</span> 
-                                        <span className="badge badge-default btn-lg" style={badgeStyle}>최근업데이트:{weight_info.last_update_date}</span>
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>{title}{result.current[key_for_result.current]}{unit[key_for_unit.current]}</span> 
+                                        <span className="badge badge-default btn-lg" style={badgeStyle}>최근업데이트:{info.last_update_date}</span>
                                         </> 
                                     }
                                     </Stack>

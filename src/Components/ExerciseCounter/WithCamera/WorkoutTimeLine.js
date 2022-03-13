@@ -76,7 +76,7 @@ export default function WorkoutTimeline() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h5" component="span">
-            <span class="badge badge-pill badge-primary">싯업</span>
+            <span className="badge badge-pill badge-primary">싯업</span>
           </Typography>
           <Typography>복근<br/>근발달도 측정</Typography>
         </TimelineContent>
@@ -98,7 +98,7 @@ export default function WorkoutTimeline() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h5" component="span">
-            <span class="badge badge-pill badge-primary">스쿼트</span>
+            <span className="badge badge-pill badge-primary">스쿼트</span>
           </Typography>
           <Typography>하체<br/>근발달도 측정</Typography>
         </TimelineContent>
@@ -113,7 +113,7 @@ export default function WorkoutTimeline() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h5" component="span">
-            <span class="badge badge-pill badge-primary">결과분석</span>
+            <span className="badge badge-pill badge-primary">결과분석</span>
           </Typography>
           <Typography>추천운동</Typography>
         </TimelineContent>

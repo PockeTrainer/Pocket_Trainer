@@ -110,7 +110,7 @@ function Camera({display}) {
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
 
-        if(exercise_name.exercise_name == "pushup") {
+        if(exercise_name.exercise_name === "pushup"||exercise_name.exercise_name === "dumbbell_shoulder_press"||exercise_name.exercise_name === "side_lateral_raise"||exercise_name.exercise_name === "reverse_peck_deck_fly"||exercise_name.exercise_name === "squat"||exercise_name.exercise_name === "leg_press"||exercise_name.exercise_name === "squat"||exercise_name.exercise_name === "leg_extension"||exercise_name.exercise_name === "plank") {
             var leftArmAngle = jointAngle(pose["keypoints"][5].x, pose["keypoints"][5].y, pose["keypoints"][7].x, pose["keypoints"][7].y, pose["keypoints"][9].x, pose["keypoints"][9].y);
             var rightArmAngle = jointAngle(pose["keypoints"][6].x, pose["keypoints"][6].y, pose["keypoints"][8].x, pose["keypoints"][8].y, pose["keypoints"][10].x, pose["keypoints"][10].y);
 

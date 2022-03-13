@@ -25,16 +25,16 @@ function InfoCard(){
                 <div className="row">
                   <div className="col">
                      
-                        <i class={"fas fa-exclamation-triangle fa-5x"+" "+styles.alert_mark}></i>
+                        <i className={"fas fa-exclamation-triangle fa-5x"+" "+styles.alert_mark}></i>
                         <div className={styles[`card-profile-stats`]+" "+"d-flex justify-content-center mt-md-5"}>
-                          <h1 className= {"display-4"+" "+styles.alert_title}><i class="ni ni-bold-right"></i>측정방법</h1>
+                          <h1 className= {"display-4"+" "+styles.alert_title}><i className="ni ni-bold-right"></i>측정방법</h1>
                         </div>
                         <hr/>
-                        <div class="alert alert-warning" role="alert">
-                            <span class="alert-text"><strong><i class="ni ni-like-2"></i>자세연습:</strong><br></br>상단에서 체력측정전 연습을 원하시는 부위는 미리 선택하여 측정전 연습해보세요!</span>
+                        <div className="alert alert-warning" role="alert">
+                            <span className="alert-text"><strong><i className="ni ni-like-2"></i>자세연습:</strong><br></br>상단에서 체력측정전 연습을 원하시는 부위는 미리 선택하여 측정전 연습해보세요!</span>
                         </div>
-                        <div class="alert alert-warning" role="alert">
-                            <span class="alert-text"><strong><i class="ni ni-like-2"></i>Tip!:</strong><br></br>각 평가종목의 그림을 누르면 간략한 운동설명법을 볼 수 있어요!</span>
+                        <div className="alert alert-warning" role="alert">
+                            <span className="alert-text"><strong><i className="ni ni-like-2"></i>Tip!:</strong><br></br>각 평가종목의 그림을 누르면 간략한 운동설명법을 볼 수 있어요!</span>
                         </div>
                         
 

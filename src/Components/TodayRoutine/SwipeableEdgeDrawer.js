@@ -261,7 +261,7 @@ function SwipeableEdgeDrawer(props) {
         >
 
           {
-            props.select_button==="total"&& bodypart[1]!=="어깨"
+            props.select_button==="total"&& bodypart[0]!=="어깨"
             ?
             <>
             
@@ -284,19 +284,19 @@ function SwipeableEdgeDrawer(props) {
             </>
             :
             (
-              props.select_button==="total"&& bodypart[1]==="어깨"?
+              props.select_button==="total"&& bodypart[0]==="어깨"?
               <>
             
               <Slider {...settings_for_total} ref={slider}>
                 {todayRoutineListImage()}
               </Slider>
-              <h2 className="text-gray-dark display-4" style={{textAlign:"center"}} >{bodypart[0]}</h2>
-              <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+              <h2 className="text-gray-dark display-4"  >{bodypart[0]}</h2>
+              <Stack direction="row" spacing={1} sx={{marginTop:"0.5em",justifyContent:"center"}}>
                 {todayRoutineListButton(part1,"#fc7c5f")}
               </Stack>
 
               <h2 className="text-gray-dark display-4">{bodypart[1]}</h2>
-              <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
+              <Stack direction="row" spacing={4} sx={{marginTop:"0.5em",justifyContent:"center"}}>
                 {todayRoutineListButton(part2,"#2dce89")}
               </Stack>
               
@@ -304,7 +304,7 @@ function SwipeableEdgeDrawer(props) {
               <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
                 {todayRoutineListButton(part3,"#ffc107")}
               </Stack>
-              
+              <h1>안녕</h1>
               
             </>
             :null
