@@ -27,6 +27,9 @@ export class ClassificationModel {
         this.data = null;
         this.appendingData = null;
 
+        this.trainedEpoch = null;
+        this.trainedAccuracy = null;
+
         this.init(input, output);
     }
 
@@ -34,11 +37,9 @@ export class ClassificationModel {
         this.modelInput = input;
         this.modelOutput = output;
 
-        // this.data = new dfd.DataFrame([[0,'']], { columns: ['inputs', 'outputs'] });
-        // this.appendingData = {
-        //     'inputs': [],
-        //     'outputs': []
-        // };
+        this.trainedEpoch = 0;
+        this.trainedAccuracy = 0.0;
+
         this.appendingData = [];
 
         this.createModel();
@@ -47,8 +48,6 @@ export class ClassificationModel {
     // data
     addData(rowObj) {
         console.log('add Data');
-        // this.appendingData['inputs'] = this.appendingData['inputs'].concat(inputArray);
-        // this.appendingData['outputs'] = this.appendingData['outputs'].concat(outputArray);
         this.appendingData.push(rowObj);
     }
 
@@ -56,9 +55,6 @@ export class ClassificationModel {
         console.log('concat Data');
         var newData = new dfd.DataFrame(this.appendingData);
         this.data = _.cloneDeep(newData);
-        // let dcData = _.cloneDeep(this.data);
-        // let concatData = dfd.concat({ dfList: [dcData, newRow], axis: 0});
-        // this.data = _.cloneDeep(concatData);
     }
 
     saveData(fileName) {
@@ -70,12 +66,15 @@ export class ClassificationModel {
         });
     }
 
-    loadData(filePath) {
+    loadData(filePath, callback=null) {
         dfd.readCSV(filePath)
         .then(dataFrame => {
             this.data = _.cloneDeep(dataFrame);
             console.log('data loaded');
             this.data.print();
+            if (callback != null) {
+                callback();
+            }
         }).catch(e => {
             console.log(e);
         });
@@ -88,9 +87,16 @@ export class ClassificationModel {
     // model
     createModel() {
         var inputLayer = tf.input({shape: [this.modelInput]});
-        var hiddenLayer = tf.layers.dense({ units: this.modelInput, activation: 'relu' })
-                                    .apply(inputLayer);
-        var outputLayer = tf.layers.dense({ units: this.modelOutput, activation: 'softmax' })
+        var batchNormalizeLayer = tf.layers.batchNormalization().apply(inputLayer);
+        var dropoutLayer = tf.layers.dropout({ rate: 0.6 }).apply(batchNormalizeLayer);
+        var hiddenLayer = tf.layers.dense({ 
+                                        units: this.modelInput, 
+                                        activation: 'relu', 
+                                        kernelInitializer: 'heNormal' })
+                                    .apply(dropoutLayer);
+        var outputLayer = tf.layers.dense({ 
+                                        units: this.modelOutput, 
+                                        activation: 'softmax'})
                                     .apply(hiddenLayer);
         
         this.model = tf.model({inputs: inputLayer, outputs: outputLayer});

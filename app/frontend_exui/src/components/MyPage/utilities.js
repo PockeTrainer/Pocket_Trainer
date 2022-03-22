@@ -123,6 +123,7 @@
   * Draw pose keypoints onto a canvas
   */
  export function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
+  //  console.log('draw keypoints')
    for (let i = 0; i < keypoints.length; i++) {
      const keypoint = keypoints[i];
  
