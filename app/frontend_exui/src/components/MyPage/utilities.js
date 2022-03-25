@@ -90,10 +90,10 @@
  /**
   * Draws a line on a canvas, i.e. a joint
   */
- export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
+ export function drawSegment([ay, ax], [by, bx], color, xScale, yScale, ctx) {
    ctx.beginPath();
-   ctx.moveTo(ax * scale, ay * scale);
-   ctx.lineTo(bx * scale, by * scale);
+   ctx.moveTo(ax * xScale, ay * yScale);
+   ctx.lineTo(bx * xScale, by * yScale);
    ctx.lineWidth = lineWidth;
    ctx.strokeStyle = color;
    ctx.stroke();
@@ -102,7 +102,7 @@
  /**
   * Draws a pose skeleton by looking up all adjacent keypoints/joints
   */
- export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
+ export function drawSkeleton(keypoints, minConfidence, ctx, xScale = 1, yScale = 1) {
    const adjacentKeyPoints = posenet.getAdjacentKeyPoints(
      keypoints,
      minConfidence
@@ -113,7 +113,8 @@
        toTuple(keypoints[0].y, keypoints[0].x),
        toTuple(keypoints[1].y, keypoints[1].x),
        color,
-       scale,
+       xScale,
+       yScale,
        ctx
      );
    });
@@ -122,7 +123,7 @@
  /**
   * Draw pose keypoints onto a canvas
   */
- export function drawKeypoints(keypoints, minConfidence, ctx, scale = 1) {
+ export function drawKeypoints(keypoints, minConfidence, ctx, xScale = 1, yScale = 1) {
   //  console.log('draw keypoints')
    for (let i = 0; i < keypoints.length; i++) {
      const keypoint = keypoints[i];
@@ -133,7 +134,7 @@
  
      const y = keypoint.y;
      const x = keypoint.x;
-     drawPoint(ctx, y * scale, x * scale, 3, color);
+     drawPoint(ctx, y * yScale, x * xScale, 3, color);
    }
  }
  
