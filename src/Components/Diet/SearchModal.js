@@ -176,9 +176,9 @@ function SearchModal({where}){
                         
                         
                         
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-primary" >운동시작</button>
-                            <button type="button" className="btn btn-link  ml-auto" data-dismiss="modal">취소</button>
+                        <div className="modal-footer" style={{justifyContent:"space-between"}}>
+                            <button type="button" className="btn btn-primary"><i className="ni ni-check-bold"></i>완료</button>
+                            <button type="button" className="btn btn-primary" data-dismiss="modal" ><i className="ni ni-fat-remove"></i>취소</button>
                         </div>
                     </div>
                 </div>

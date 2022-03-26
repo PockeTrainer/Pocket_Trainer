@@ -100,9 +100,9 @@ function TodayRecord(){
                     </Pstyled>
 
                     <StyledSlider {...settings}>
-                        <ListBox/>
-                        <ListBox/>
-                        <ListBox/>
+                        <ListBox meal="아침"/>
+                        <ListBox meal="점심"/>
+                        <ListBox meal="저녁"/>
                     </StyledSlider>
 
                     <FormControlLabel

@@ -11,6 +11,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import {pop_breakfast,pop_dinner,pop_lunch} from "../../modules/action"
+import { useDispatch, useSelector } from 'react-redux';
 
 
 //한글 바이트 별로 잘라는 함수
@@ -25,17 +27,20 @@ String.prototype.cut = function(len) {
     return str;
   
   }
-export default function ListBox({where,set_tmp_list}) {
-  const [foods,setFoods]=useState([
-    "현미밥",
-    "닭가슴살",
-    "사과",
-    "오리구이",
-    "빵"
-  ]);
- const copy_foods=foods;
+export default function ListBox(props) {
 
-if(where==="exercise_calander"){
+  const dispatch=useDispatch();
+  let foods=useSelector(state=>state.update_meals_reducer);//음식정보 가져오기
+
+//   const [foods,setFoods]=useState([
+//     "현미밥",
+//     "닭가슴살",
+//     "사과",
+//     "오리구이",
+//     "빵"
+//   ]);
+
+if(props.where==="exercise_calander"){
   return (
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {["덤벨숄더프레스","사이드레터럴레이즈","리버스팩덱플라이"].map((value,index) => {
@@ -48,7 +53,7 @@ if(where==="exercise_calander"){
             }
             disablePadding
           >
-            <ListItemButton onClick={()=>set_tmp_list(index)}>
+            <ListItemButton onClick={()=>props.set_tmp_list(index)}>
               <ListItemAvatar>
                 <Avatar>{value.cut(2)}</Avatar>
               </ListItemAvatar>
@@ -62,14 +67,44 @@ if(where==="exercise_calander"){
 }
 
 else{
-  const popFood=(index)=>{
-    copy_foods.splice(index,1);
-    setFoods([...copy_foods]);
+  // const popFood=(index)=>{
+  //   copy_foods.splice(index,1);
+  //   setFoods([...copy_foods]);
+  // }
+
+
+  const meal=props.meal;//아침,점심,저녁
+  
+  if(meal==="아침"){
+    foods=foods.breakfast
   }
+  else if(meal==="점심"){
+    foods=foods.lunch
+  }
+  else{
+    foods=foods.dinner
+  }
+
+  const copy_foods=foods;
+
+  const pop_Food=(index)=>{
+    copy_foods.splice(index,1);
+    if(meal==="아침"){
+      dispatch(pop_breakfast(copy_foods));
+    }
+    else if(meal==="점심"){
+      dispatch(pop_lunch(copy_foods));
+    }
+    else{
+      dispatch(pop_dinner(copy_foods));
+    }
+
+  }
+  
 
   return (
     <>
-      <span className="badge badge-secondary" style={{fontSize:"1.5em",marginTop:"0.5em",backgroundColor:"#dee2e6",color:"black"}}>아침</span>
+      <span className="badge badge-secondary" style={{fontSize:"1.5em",marginTop:"0.5em",backgroundColor:"#dee2e6",color:"black"}}>{meal}</span>
 
       <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         {foods.map((value,index) => {
@@ -78,7 +113,7 @@ else{
             <ListItem
               key={value}
               secondaryAction={
-                <IconButton aria-label="delete" onClick={()=>popFood(index)}>
+                <IconButton aria-label="delete" onClick={pop_Food}>
                   <DeleteIcon />
                 </IconButton>
               }

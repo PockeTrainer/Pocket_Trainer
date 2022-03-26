@@ -57,6 +57,14 @@ const PREV_EXERCISE="prev_exercise";
 const SET_EXERCISE_RECORD="set_exercise_record";
 //중량,시간,개수 변화전에 마지막 기록을 저장해두는용
 const LAST_RECORD="last_record";
+//식단에서 아침,점심,저녁에 음식들이 저장됨
+const PUSH_BREAKFAST="push_breakfast";
+const PUSH_LUNCH="push_lunch";
+const PUSH_DINNER="push_dinner";
+
+const POP_BREAKFAST="pop_breakfast";
+const POP_LUNCH="pop_lunch";
+const POP_DINNER="pop_dinner";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -260,6 +268,36 @@ export const last_record=(record)=>({
     record
 });
 
+export const push_breakfast=(record)=>({
+    type:PUSH_BREAKFAST,
+    record
+});
+
+export const push_lunch=(record)=>({
+    type:PUSH_LUNCH,
+    record
+});
+
+export const push_dinner=(record)=>({
+    type:PUSH_DINNER,
+    record
+});
+
+export const pop_breakfast=(new_arr)=>({
+    type:POP_BREAKFAST,
+    new_arr
+});
+
+export const pop_lunch=(new_arr)=>({
+    type:POP_LUNCH,
+    new_arr
+});
+
+export const pop_dinner=(new_arr)=>({
+    type:POP_DINNER,
+    new_arr
+});
+
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -331,6 +369,13 @@ const initialPageProgress={//운동페이지에서 지금진행하고 있는 운
 const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 갖고 있어준다.-변화량 때문에
     last_record:""
 }
+
+const initialMeals={//아침,점심,저녁 정보를 가지고 있어준다.
+    breakfast:["현미밥","닭가슴살","사과","오리구이","빵"],
+    lunch:["현미밥","닭가슴살","사과","오리구이","빵"],
+    dinner:["현미밥","닭가슴살","사과","오리구이","빵"]
+}
+
 //초기페이지 정보
 export default function pageMove(state=initialState,action){//모달창의 페이지 이동 부분 
     switch (action.type) {
@@ -465,7 +510,7 @@ export function change_clicked_button_reducer(state=initialClickedButton,action)
     }
 }
 
-export function change_routine_page_reducer(state=initialPage,action){//루틴페이지에서 상단 소3개 메뉴를 담당한다
+export function change_routine_page_reducer(state=initialPage,action){//루틴페이지에서 상단 소개 메뉴를 담당한다
     switch (action.type) {
         case TODAY_ROUTINE:
             return{
@@ -660,6 +705,45 @@ export function update_last_record_reducer(state=initialLastRecord,action){//api
         case LAST_RECORD:
             return{
                 last_record:action.record
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_meals_reducer(state=initialMeals,action){//아침,점심,저녁을 담아주는 곳
+    switch(action.type){
+        case PUSH_BREAKFAST:
+            return{
+                ...state,
+                breakfast:state.breakfast.push(action.record)
+            }
+        case PUSH_LUNCH:
+            return{
+                ...state,
+                lunch:state.lunch.push(action.record)
+            }
+        case PUSH_DINNER:
+            return{
+                ...state,
+                dinner:state.dinner.push(action.record)
+            }   
+        
+        case POP_BREAKFAST:
+            return{
+                ...state,
+                breakfast:action.new_arr
+            }
+        
+        case POP_LUNCH:
+            return{
+                ...state,
+                lunch:action.new_arr
+            }
+        case POP_DINNER:
+            return{
+                ...state,
+                dinner:action.new_arr
             }
         default:
             return state;    
