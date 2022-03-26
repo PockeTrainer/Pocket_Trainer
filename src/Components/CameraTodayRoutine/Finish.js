@@ -376,7 +376,6 @@ function Finish(){
         }
     }
 
-    console.log(clear_count_info.fail_list)
 
     return(
         <>
@@ -480,6 +479,16 @@ function Finish(){
                                             <Chip key={index} label={exercise_name} sx={ChipStyle}  />
                                         </>
                                     ))}
+                                    
+                                    {
+                                        clear_count_info.fail_list.length===0 &&
+                                        <>
+                                             <Typography variant="h6" gutterBottom component="div" sx={{fontSize:"1.0rem",fontWeight:"600"}}>
+                                                스킵한운동이 없습니다
+                                            </Typography>
+                                        </>
+                                    }
+                                   
                                 </div>
                             </AccordionDetails>
                         </Accordion>

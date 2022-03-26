@@ -79,6 +79,8 @@ function SwipeableEdgeDrawer(props) {
   const slider=useRef("");//Slider용
   const dispatch=useDispatch();//디스패치용
 
+
+
    //아바타버튼 디자인
 
 
@@ -203,9 +205,9 @@ function SwipeableEdgeDrawer(props) {
 
   const sub_title={
     total:"오늘의 전체루틴",
-    button1:"오늘의 가슴루틴",
-    button2:"오늘의 삼두루틴",
-    button3:"오늘의 복근루틴"
+    button1:`오늘의 ${bodypart[0]}루틴`,
+    button2:`오늘의 ${bodypart[1]}루틴`,
+    button3:`오늘의 ${bodypart[2]}루틴`
   }
 
   
@@ -304,7 +306,6 @@ function SwipeableEdgeDrawer(props) {
               <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
                 {todayRoutineListButton(part3,"#ffc107")}
               </Stack>
-              <h1>안녕</h1>
               
             </>
             :null

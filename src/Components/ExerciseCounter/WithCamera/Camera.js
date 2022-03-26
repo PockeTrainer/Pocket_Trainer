@@ -175,6 +175,7 @@ function Camera({display}) {
 
     useEffect(()=>{
         runMovenet();//디스패치를 시키면 상태변화때문에 부모 컴포넌트에서 리랜더링되면 카메라도 리랜더링 될것이라서 그때마다 setInterval시키면 계속쌓임 따라서 한번만 실행
+    
     },[])
 
     //detect();

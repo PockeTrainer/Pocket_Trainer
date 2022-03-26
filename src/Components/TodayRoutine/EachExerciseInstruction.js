@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -22,6 +22,27 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함수는 넘겨줄것
+
+  const[break_time,set_break_time]=useState({
+    min:"",
+    sec:""
+  });
+
+  const spanStyle={
+    fontWeight:"lighter",
+    lineHeight:"2",
+    color:"white",
+    backgroundColor:"#5e72e4"
+  }
+
+  useEffect(()=>{
+    set_break_time({
+      ...break_time,
+      min:parseInt(exercise.break_time/60),
+      sec:exercise.break_time%60
+    });
+
+  },[])
 
     return(
         <>
@@ -47,18 +68,25 @@ function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                             >
-                                <Typography>운동레코드</Typography>
+                                <Typography sx={{fontWeight:"600"}}>운동레코드</Typography>
                             </AccordionSummary>
                             <AccordionDetails sx={{"&.MuiAccordionDetails-root":{padding: "0px 2px 2px"}}}>
-                                <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginTop:"2em",marginBottom:"0em"}}>
-                                    <i className="ni ni-like-2"></i>
-                                    <h2><strong>벤치프레스 레코드</strong></h2>
+                                <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginTop:"2em",marginBottom:"0em",backgroundColor:"white",borderColor:"white"}}>
+                                    <i style={{color:"black"}} className="ni ni-like-2"></i>
+                                    <h2 style={{color:"black"}}><strong>{exercise.name} 레코드</strong></h2>
                                     <Stack direction="column" spacing={2}>
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white"}}>세트당 개수:12개</span> 
-                                    <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2"}}>세트당 휴식시간:1분40초</span> 
-                                    <Stack direction="row" spacing={1}>
-                                        <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",lineHeight:"2",color:"white",margin:"auto"}}>마지막중량:50kg</span> 
-                                        <span className="badge badge-default btn-lg" style={{fontWeight:"lighter",color:"white",lineHeight:"2",margin:"auto"}}>추천중량:60kg</span> 
+                                      {
+                                        exercise.eng_name==="side_lateral_raise"
+                                        ?
+                                          <span className="badge badge-default btn-lg" style={spanStyle}>세트당 개수:20개</span>
+                                        :
+                                          <span className="badge badge-default btn-lg" style={spanStyle}>세트당 개수:12개</span>
+                                      }
+                 
+                                    <span className="badge badge-default btn-lg" style={spanStyle}>세트당 휴식시간:{break_time.min}분{break_time.sec}초</span> 
+                                    <Stack direction="row" spacing={1} sx={{justifyContent:"space-around"}}>
+                                        <span className="badge badge-default btn-lg" style={spanStyle}>마지막중량:{exercise.Info_from_api.target_kg}Kg</span> 
+                                        <span className="badge badge-default btn-lg" style={spanStyle}>오늘중량:60kg</span> 
                                     </Stack>
                                     </Stack>
                                 </div>

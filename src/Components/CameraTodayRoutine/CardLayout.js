@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ErrorIcon from '@mui/icons-material/Error';
+import LogoutIcon from "@mui/icons-material/Logout";
 import BodySequence from './BodySequence';
 import CardSlider from './CardSlider';
 import WeightCheckInstruction from './WeightCheckInstruction';
@@ -124,6 +125,11 @@ function CardLayout(){
         color: "white"
     }
 
+    const ExitStyle={
+        fontSize: "1.8em",
+        color: "white"
+    }
+
     const ExclmationStyle={
         fontSize: "1.8em",
         color:"#ffc107",
@@ -173,6 +179,11 @@ function CardLayout(){
        dispatch(none_testState());//뒤로가기할 시 전체적인 카메라 스테이트를 다시 꺼져줘야함
    }
 
+   const gotohome=()=>{//다시메인페이지로 돌아가게
+       navigate("/main/routine");
+
+   }
+
    const showAlert=()=>{
        setTimeout(click_modal,1000);
    }
@@ -214,20 +225,29 @@ function CardLayout(){
                                                             <div className="col" style={{paddingLeft:"5px",paddingRight:"5px",display:"flex",justifyContent:"space-between"}}>
                                                                 
                                                                 {
-                                                                    testState==="completed"
+                                                                    path.pathname.includes("/finish")
                                                                     ?
+                                                                        <>
+                                                                            <IconButton sx={IconButtonStyle} onClick={gotohome} >
+                                                                                <LogoutIcon sx={ExitStyle}/>
+                                                                            </IconButton>
+                                                                        </>
+                                                                    :(
+                                                                        path.pathname.includes("/practice")||path.pathname.includes("/exercise")||path.pathname.includes("/evaluation")
+                                                                        ?
                                                                         <>
                                                                             <IconButton sx={IconButtonStyle} onClick={showAlert} >
                                                                                 <ErrorIcon sx={ExclmationStyle}/>
                                                                             </IconButton>
                                                                         </>
-                                                                    :
+                                                                        :
+                                                                    
                                                                         <>
                                                                             <IconButton sx={IconButtonStyle} onClick={gotoBack}>
                                                                                 <ArrowCircleLeftIcon sx={backArrowStyle}/>
                                                                             </IconButton>
                                                                         </>
-                                                                        
+                                                                    )   
                                                                 }
                                                                 
                                                                

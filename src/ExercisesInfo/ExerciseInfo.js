@@ -9,6 +9,7 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
         this.eng_name=Exercise_Info.eng_name;
         this.unit_kg=Exercise_Info.unit_kg;
         this.eng_part=Exercise_Info.eng_part;
+        this.break_time=Exercise_Info.break_time;
     }
     
 
@@ -84,6 +85,14 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
     get eng_part(){
         return this._eng_part;
     }
+
+    set break_time(break_time){
+        this._break_time=break_time;
+    }
+
+    get break_time(){
+        return this._break_time;
+    }
 }
 
 
@@ -130,7 +139,8 @@ export const bench_press={
     part:"가슴",
     eng_name:"bench_press",
     eng_part:"chest",
-    unit_kg:5
+    unit_kg:5,
+    break_time:100
 }
 
 export const incline_press={
@@ -141,7 +151,8 @@ export const incline_press={
     part:"가슴",
     eng_name:"incline_press",
     eng_part:"chest",
-    unit_kg:5
+    unit_kg:5,
+    break_time:100
 }
 
 export const pec_dec_fly={
@@ -152,7 +163,8 @@ export const pec_dec_fly={
     part:"가슴",
     eng_name:"pec_dec_fly",
     eng_part:"chest",
-    unit_kg:1//아직 미정
+    unit_kg:1,
+    break_time:90
 }
 
 //등
@@ -164,7 +176,8 @@ export const lat_pull_down={
     part:"등",
     eng_name:"lat_pull_down",
     eng_part:"back",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:90
 }
 
 export const seated_row={
@@ -175,7 +188,8 @@ export const seated_row={
     part:"등",
     eng_name:"seated_row",
     eng_part:"back",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:90
 }
 
 export const one_arm_dumbbell_row={
@@ -186,7 +200,8 @@ export const one_arm_dumbbell_row={
     part:"등",
     eng_name:"one_arm_dumbbell_row",
     eng_part:"back",
-    unit_kg:1
+    unit_kg:1,
+    break_time:90
 }
 //어깨
 export const dumbbell_shoulder_press={
@@ -197,7 +212,8 @@ export const dumbbell_shoulder_press={
     part:"어깨",
     eng_name:"dumbbell_shoulder_press",
     eng_part:"shoulder",
-    unit_kg:1
+    unit_kg:1,
+    break_time:100
 }
 
 export const side_lateral_raise={
@@ -208,7 +224,8 @@ export const side_lateral_raise={
     part:"어깨",
     eng_name:"side_lateral_raise",
     eng_part:"shoulder",
-    unit_kg:1
+    unit_kg:1,
+    break_time:40
 }
 
 export const reverse_peck_deck_fly={
@@ -219,7 +236,8 @@ export const reverse_peck_deck_fly={
     part:"어깨",
     eng_name:"reverse_peck_deck_fly",
     eng_part:"shoulder",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:40
 }
 
 
@@ -232,7 +250,8 @@ export const cable_push_down={
     part:"삼두",
     eng_name:"cable_push_down",
     eng_part:"tricep",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:40
 
 }
 
@@ -244,7 +263,8 @@ export const lying_triceps_extension={
     part:"삼두",
     eng_name:"lying_triceps_extension",
     eng_part:"tricep",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:40
 }
 
 export const dumbbell_kickback={
@@ -255,7 +275,8 @@ export const dumbbell_kickback={
     part:"삼두",
     eng_name:"dumbbell_kickback",
     eng_part:"tricep",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:40
 }
 //이두
 export const easy_bar_curl={
@@ -266,7 +287,8 @@ export const easy_bar_curl={
     part:"이두",
     eng_name:"easy_bar_curl",
     eng_part:"bicep",
-    unit_kg:1//아직 미정
+    unit_kg:1,//아직 미정
+    break_time:40
 }
 
 export const barbell_curl={
@@ -277,7 +299,8 @@ export const barbell_curl={
     part:"이두",
     eng_name:"barbell_curl",
     eng_part:"bicep",
-    unit_kg:1
+    unit_kg:1,
+    break_time:40
 }
 
 export const hammer_curl={
@@ -288,7 +311,8 @@ export const hammer_curl={
     part:"이두",
     eng_name:"hammer_curl",
     eng_part:"bicep",
-    unit_kg:1
+    unit_kg:1,
+    break_time:40
 }
 
 
@@ -302,7 +326,8 @@ export const crunch={
     part:"복근",
     eng_name:"crunch",
     eng_part:"abs",
-    unit_kg:0//필요없음
+    unit_kg:0,//필요없음,
+    break_time:90
 }
 
 export const seated_knees_up={
@@ -313,7 +338,8 @@ export const seated_knees_up={
     part:"복근",
     eng_name:"seated_knees_up",
     eng_part:"abs",
-    unit_kg:0//필요없음
+    unit_kg:0,//필요없음
+    break_time:90
 }
 
 export const plank={
@@ -324,7 +350,8 @@ export const plank={
     part:"복근",
     eng_name:"plank",
     eng_part:"abs",
-    unit_kg:0//필요없음
+    unit_kg:0,//필요없음
+    break_time:90
 }
 //하체
 
@@ -336,7 +363,8 @@ export const squat={
     part:"하체",
     eng_name:"squat",
     eng_part:"leg",
-    unit_kg:5
+    unit_kg:5,
+    break_time:100
 }
 
 export const leg_press={
@@ -347,7 +375,8 @@ export const leg_press={
     part:"하체",
     eng_name:"leg_press",
     eng_part:"leg",
-    unit_kg:5//아직 미정
+    unit_kg:5,//아직 미정
+    break_time:100
 }
 
 export const leg_extension={
@@ -358,5 +387,6 @@ export const leg_extension={
     part:"하체",
     eng_name:"leg_extension",
     eng_part:"leg",
-    unit_kg:5//아직 미정
+    unit_kg:5,//아직 미정
+    break_time:90
 }

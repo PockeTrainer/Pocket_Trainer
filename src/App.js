@@ -22,6 +22,8 @@ import axios from 'axios';
 
 import CameraTodayRoutine from './Components/CameraTodayRoutine/CameraTodayRoutine';
 import ScrollToTop from './Components/ScrollToTop';
+import History from './Components/History/History';
+import Diet from './Components/Diet/Diet';
 
 function App(){
 
@@ -132,6 +134,8 @@ function App(){
               <Route path="/test/*" element={<WithCamera/>}/>
               <Route path="/main/routine" element={<TodayRoutine/>}/>
               <Route path='/routine/*' element={<CameraTodayRoutine/>}/>
+              <Route path='/history' element={<History/>}/>
+              <Route path='/diet' element={<Diet/>}/>
             </Route>
 
           </Routes>
