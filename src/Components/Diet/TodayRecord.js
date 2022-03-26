@@ -11,6 +11,7 @@ import styled from "styled-components";
 
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import SearchModal from './SearchModal';
 
 
 function sleep(ms){
@@ -22,6 +23,7 @@ function sleep(ms){
 function TodayRecord(){
 
     const [KcalButton_Clicked,set_KcalButton_Clicked] = useState(false);//칼로리보기 모드로 변환해주는 버튼
+    const modalRef=useRef("");//모달창 버튼 팝업용
     
       const handleChange_kcal = () => {
         set_KcalButton_Clicked(prev=>!prev)
@@ -82,7 +84,7 @@ function TodayRecord(){
                     <span className="badge badge-success" style={{fontSize:"1em",margin:"0.5em"}}>목표달성률:90%</span>
                     <br></br>
 
-                    <form className="mb-3 d-md-none" onClick={()=>alert("hi")}>
+                    <form className="mb-3 d-md-none" onClick={()=>modalRef.current.click()}>
                         <div className="input-group input-group-rounded input-group-merge">
                             <input type="search" className="form-control form-control-rounded form-control-prepended" placeholder="ex)음식검색" aria-label="Search" />
                             <div className="input-group-prepend">
@@ -121,7 +123,15 @@ function TodayRecord(){
                         <div className="progress">
                             <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
                         </div>
-                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+                        {
+                            KcalButton_Clicked
+                            ?
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+                            :
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:50g/150g</Typography>
+                        }
+
+                        
                     </div>
 
                     <div className="progress-wrapper" style={StyleProgress}>
@@ -136,7 +146,15 @@ function TodayRecord(){
                         <div className="progress">
                             <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
                         </div>
-                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+
+                        {
+                            KcalButton_Clicked
+                            ?
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+                            :
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:50g/150g</Typography>
+                        }
+
                     </div>
 
                     <div className="progress-wrapper" style={StyleProgress}>
@@ -151,12 +169,22 @@ function TodayRecord(){
                         <div className="progress">
                             <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
                         </div>
-                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+
+                        {
+                            KcalButton_Clicked
+                            ?
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:1440Kcal/2400Kcal</Typography>
+                            :
+                                <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom>섭취:50g/150g</Typography>
+                        }
+
                     </div>
 
                         
                     
             </CardWrapper>
+            <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-search-meals">Default</button>
+            <SearchModal/>
 
            
 
