@@ -47,7 +47,7 @@ function SideNavBar(){
             <span className="navbar-toggler-icon" />
           </button>
           <Link className='navbar-brand pt-0' to="/" onClick={()=>showGetId("list1")}>
-            <img src="./assets/img/brand/포켓트레이너.png" className="navbar-brand-img" alt="..." />
+            <img src="../assets/img/brand/PocketTrainer.png" className="navbar-brand-img" alt="..." />
           </Link>
           <ul className="nav align-items-center d-md-none">
             <li className="nav-item dropdown">
@@ -105,7 +105,7 @@ function SideNavBar(){
               <div className="row">
                 <div className="col-6 collapse-brand">
                   <a href="./index.html">
-                    <img src="./assets/img/brand/포켓트레이너.png" />
+                    <img src="./assets/img/brand/PocketTrainer.png" />
                   </a>
                 </div>
                 <div className="col-6 collapse-close">
@@ -154,12 +154,12 @@ function SideNavBar(){
 
 
               <li className={clickedId=="list5"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list5")}>
-                <Link className={clickedId=="list5"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
+                <Link className={clickedId=="list5"? "nav-link active" :"nav-link"} to="/diet">
                   <i className="fas fa-utensils"></i>식단플랜
                 </Link>
               </li>
               <li className={clickedId=="list6"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list6")}>
-                <Link className={clickedId=="list6"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
+                <Link className={clickedId=="list6"? "nav-link active" :"nav-link"} to="/diet">
                   <i className="fas fa-calendar-plus"></i>식단기록
                 </Link>
               </li>
