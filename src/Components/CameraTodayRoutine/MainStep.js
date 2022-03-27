@@ -62,8 +62,11 @@ function MainStep(){
         modalRef.current.click()
     }
 
+    const today=new Date();
+    const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
+
     const sendData=async()=>{
-            await axios.put(`http://127.0.0.1:8000/api/workout/workoutResult/${exercise_name.exercise_name}/${id}`,{
+            await axios.put(`http://127.0.0.1:8000/api/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
                 workout_set:howmanySet,
                 workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60)
             })//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌

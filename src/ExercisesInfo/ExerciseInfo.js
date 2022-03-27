@@ -291,13 +291,13 @@ export const easy_bar_curl={
     break_time:40
 }
 
-export const barbell_curl={
-    name:"바벨컬",
+export const arm_curl={
+    name:"암컬",
     image_url:"",
     instruction:"",
     musclePart:"",
     part:"이두",
-    eng_name:"barbell_curl",
+    eng_name:"arm_curl",
     eng_part:"bicep",
     unit_kg:1,
     break_time:40

@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import Zoom from '@mui/material/Zoom';
+import SpecificInfo from './SpecificInfo';
 
 
 
@@ -23,9 +24,14 @@ function TodayRecommend(){
     const [tmp_clicked_part,setTmpClicked_part]=useState("part1");//각 부위별 무엇을 눌렀는지 임시저장 버튼state
     const count1=useRef(1);
     const [showList,setShowList]=useState(true);//밑에 리스트에 주는 zoom transition 
+    const modalRef=useRef("");//세부정보 모달창
 
     const handleShowList=()=>{
         setShowList(prev=>!prev);
+    }
+
+    const handleSpcificInfo=()=>{
+        modalRef.current.click();
     }
 
     useEffect(()=>{
@@ -39,7 +45,6 @@ function TodayRecommend(){
       },[tmp_clicked_part])
 
     const SpanStyle={
-        backgroundColor:"#2dce89",
         borderColor:"#2dce89",
         color:"white",
         padding:"0.5rem 0.5rem",
@@ -83,6 +88,21 @@ function TodayRecommend(){
         lineHeight:"1.0",
 
     }
+
+    const nutritions={
+        part1:{
+            color:"#5e72e4",
+            name:"탄수화물"
+        },
+        part2:{
+            color:"#2dce89",
+            name:"단백질"
+        },
+        part3:{
+            color:"#ffc107",
+            name:"지방"
+        }
+    }
    
     return(
         <>
@@ -96,38 +116,38 @@ function TodayRecommend(){
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part1")}>
                                     <Badge color="success" badgeContent={"150g"} >
-                                        <AvatarStyle src='../assets/img/theme/carbo.png' color="#5e72e4"  ></AvatarStyle>
+                                        <AvatarStyle color="#5e72e4"  >탄</AvatarStyle>
                                     </Badge>
                                 </Button>
-                                 <span className="badge badge-default" style={nutritionStyle}>탄수화물</span>
+                                 <span className="badge badge-default" style={{...nutritionStyle,backgroundColor:"#5e72e4",color:"white"}}>탄수화물</span>
                             </Stack>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part2")} >
                                     <Badge color="success" badgeContent={"150g"} >
-                                        <AvatarStyle src='../assets/img/theme/protein.jpg' color="#2dce89"  ></AvatarStyle>
+                                        <AvatarStyle  color="#2dce89"  >단</AvatarStyle>
                                     </Badge>
                                 </Button>
-                                 <span className="badge badge-primary" style={nutritionStyle}>단백질</span>
+                                 <span className="badge badge-primary" style={{...nutritionStyle,backgroundColor:"#2dce89",color:"white"}}>단백질</span>
                             </Stack>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part3")}>
                                     <Badge color="success" badgeContent={"150g"} >
-                                        <AvatarStyle src='../assets/img/theme/fat.jpg'  color="#ffc107"  ></AvatarStyle>
+                                        <AvatarStyle  color="#ffc107"  >지</AvatarStyle>
                                     </Badge>
                                 </Button>
-                                <span className="badge badge-info" style={nutritionStyle}>지방</span>
+                                <span className="badge badge-info" style={{...nutritionStyle,backgroundColor:"#ffc107",color:"white"}}>지방</span>
                             </Stack>
                     </Stack>
 
                     <Zoom in={showList}>
-                        <div className="alert alert-warning" role="alert" style={SpanStyle} >
+                        <div className="alert alert-warning" role="alert" style={{...SpanStyle,backgroundColor:nutritions[clicked_button].color,borderColor:nutritions[clicked_button].color}} >
                             <Stack direction="column">
-                                <span className="badge badge-primary btn-lg" style={badgeStyle}>탄수화물</span> 
-                                <span className="alert-text" style={{fontSize:"1rem",marginTop:"1rem"}}>탄수화물 150g을 채울려면?</span>
+                                <span className="badge badge-primary btn-lg" style={{...badgeStyle,color:"black"}}>{nutritions[clicked_button].name}</span> 
+                                <span className="alert-text" style={{fontSize:"1rem",marginTop:"1rem"}}>{nutritions[clicked_button].name} 150g을 채울려면?</span>
                             
                                 <Stack direction="row" spacing={4} sx={{marginTop:"1rem",justifyContent:"center"}}>
                                 <Stack direction="column">
-                                    <Button sx={PartButtonStyle}>
+                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo}>
                                         <Badge color="success" badgeContent={"1+1/3개"} >
                                             <AvatarStyle src='../assets/img/theme/carbo.png' color="#5e72e4"  ></AvatarStyle>
                                         </Badge>
@@ -135,7 +155,7 @@ function TodayRecommend(){
                                     <Typography sx={foodNameStyle}>고구마<br></br>(163g)</Typography>
                                 </Stack>
                                 <Stack direction="column">
-                                    <Button sx={PartButtonStyle} >
+                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo} >
                                         <Badge color="success" badgeContent={"2/3공기"} >
                                             <AvatarStyle src='../assets/img/theme/protein.jpg' color="#2dce89"  ></AvatarStyle>
                                         </Badge>
@@ -143,7 +163,7 @@ function TodayRecommend(){
                                     <Typography sx={foodNameStyle}>현미밥<br></br>(154g)</Typography>
                                 </Stack>
                                 <Stack direction="column">
-                                    <Button sx={PartButtonStyle} >
+                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo} >
                                         <Badge color="success" badgeContent={"2/3인분"} >
                                             <AvatarStyle src='../assets/img/theme/fat.jpg'  color="#ffc107"  ></AvatarStyle>
                                         </Badge>
@@ -159,6 +179,10 @@ function TodayRecommend(){
                     </Zoom>
                     
             </CardWrapper>
+
+            <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-specific-info">Default</button>
+            <SpecificInfo/>
+
 
            
 

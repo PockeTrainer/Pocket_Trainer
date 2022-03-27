@@ -95,9 +95,10 @@ function AlertModal({where}){
     console.log(where)
 
     if(where==="confirm"){
-
+        const today=new Date();
+        const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
         const startExercise=async()=>{
-            await axios.put(`http://127.0.0.1:8000/api/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${id}`,sendData[key_for_sendData.current])//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            await axios.put(`http://127.0.0.1:8000/api/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${today_date_form}/${id}`,sendData[key_for_sendData.current])//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
                 console.log(res.data);
 
