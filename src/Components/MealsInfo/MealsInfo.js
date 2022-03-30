@@ -1,7 +1,8 @@
 export class Meal{
-    constructor(Info_from_api,how_many_people){
+    constructor(Info_from_api,how_many_people,when_to_eat){
         this.Info_from_api=Info_from_api;
         this.how_many_people=how_many_people;
+        this.when_to_eat=when_to_eat;
     }
 
     set Info_from_api(Info_from_api){
@@ -19,6 +20,12 @@ export class Meal{
         return this._how_many_people
     }
 
+    set when_to_eat(when_to_eat){
+        this._when_to_eat=when_to_eat
+    }
+    get when_to_eat(){
+        return this._when_to_eat;
+    }
 }
 
 

@@ -27,6 +27,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import {Meal} from "../MealsInfo/MealsInfo";
+import { ThemeProvider } from "@mui/styles";
 
 
 function sleep(ms){
@@ -46,16 +47,36 @@ function SearchModal({where}){
     const [data_searching,set_data_searching]=useState("not_yet");//검색상황을 받음-미검색,로딩중,검색완료,검색결과 없음
 
     const [checked, setChecked] = useState([]);//검색된기록들중에 체크가 되었는지-지속적으로 체크된 것들의 객체자체를 추가해줌
+    const [morning_checked, setMorning] = useState([]);//아침음식들
+    const [lunch_checked, setLunch] = useState([]);//점심음식들
+    const [dinner_checked, setDinner] = useState([]);//저녁음식들
 
     const cancelTokensource=useRef();//취소토큰을 담아준다
     const cancel_or_not=useRef(false);//처음들어오는 입력에대해서는 취소할 요청이 없기에 요청취소의 기준이 됨
 
 
+    const meals=[
+        "아침",
+        "점심",
+        "저녁"
+    ];
 
     const check_toggle=(value,where)=>{//과연 checked에 해당 값이 존재하는지
         let idx=0;
         let currentIndex=-1;
-        for (const item of checked){
+        let tmp;
+        if(meals[meals_idx]==="아침"){
+            tmp=[...morning_checked];
+        }
+        else if(meals[meals_idx]==="점심"){
+            tmp=[...lunch_checked];
+        }
+        else{
+            tmp=[...dinner_checked];
+        }
+
+
+        for (const item of tmp){
             if(item.Info_from_api==value){
                 currentIndex=idx;
                 break;
@@ -69,37 +90,177 @@ function SearchModal({where}){
             return currentIndex===-1?false:true
         }
     }
-    const handleToggle = (value) => () => {
+    const handleToggle = (value) => {//체크한 값들을 체크해주고 빼주는 함수
         const currentIndex =check_toggle(value);
-        const newChecked = [...checked];
+        
+        let newChecked;
+        if(meals[meals_idx]==="아침"){
+            newChecked=[...morning_checked];
+        }
+        else if(meals[meals_idx]==="점심"){
+            newChecked=[...lunch_checked];
+        }
+        else{
+            newChecked=[...dinner_checked];
+        }
+        
 
         if (currentIndex === -1) {
-            let meal=new Meal(value,how_many_people);//api데이터+기본 디폴트 인분 수를 담은 객체생성
+            let meal_name=meals[meals_idx];//아침,점심,저녁을 의미함
+            let meal=new Meal(value,how_many_people,meal_name);//api데이터+기본 디폴트 인분 수를 담은 객체생성
             newChecked.push(meal);
         
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
-        setChecked(newChecked);
+        if(meals[meals_idx]==="아침"){
+            setMorning(newChecked);
+        }
+        else if(meals[meals_idx]==="점심"){
+            setLunch(newChecked);
+        }
+        else{
+            setDinner(newChecked);
+        }
     };
+
+    const secondary_Action=(value)=>{//리스트아이템에서 쓰이는 부가적으로 오른쪽 옆에 뜨는 버튼들
+        let result_idx=check_toggle(value);//해당 value가 checked에 존재하는지
+        let boolean_result;
+        let tmp;
+        
+        if(result_idx===0){//괜히 인덱스 0 값도 거짓으로 판단할 수 있으니
+            boolean_result=true;
+        }
+        else if(result_idx===-1){
+            boolean_result=false;
+        }
+        else{
+            boolean_result=result_idx;
+        }
+
+        if(meals[meals_idx]==="아침"){
+            tmp=[...morning_checked];
+        }
+        else if(meals[meals_idx]==="점심"){
+            tmp=[...lunch_checked];
+        }
+        else{
+            tmp=[...dinner_checked];
+        }
+
+        if(boolean_result){
+            return(
+                <>
+                    <Stack direction="row" spacing={1}>
+                        <IconButton aria-label="decrease" onClick={()=>handle_howMany("decrease","part_controll",result_idx)}>
+                            <RemoveCircleIcon sx={{fontSize:"1.0rem"}}/>
+                        </IconButton>
+                        <Pstyled bold="etc">{tmp[result_idx].how_many_people}</Pstyled>
+                        <IconButton aria-label="increase" onClick={()=>handle_howMany("increase","part_controll",result_idx)}>
+                            <AddCircleIcon sx={{fontSize:"1.0rem"}}/>
+                        </IconButton>
+            
+                    </Stack>
+                </>
+            );
+        }
+        else{
+            return(
+                <>
+                    <IconButton edge="end" aria-label="comments">
+                        <CommentIcon />
+                    </IconButton>
+                </>
+            );
+        }
+        
+    }
 
     const handleClick = () => {
         console.info('You clicked the Chip.');
       };
     
-    const handleDelete = () => {
-    console.info('You clicked the delete icon.');
+    const handleDelete = (value) => {
+        let tmp_list;
+        let func_set;
+        if(value.when_to_eat==="아침"){
+            tmp_list=[...morning_checked];
+            func_set=setMorning;
+        }
+        else if(value.when_to_eat==="점심"){
+            tmp_list=[...lunch_checked];
+            func_set=setLunch;
+        }
+        else{
+            tmp_list=[...dinner_checked];
+            func_set=setDinner;
+        }
+
+        let currentIdx=tmp_list.indexOf(value);
+        tmp_list.splice(currentIdx,1);
+
+        func_set(tmp_list);
+
+
     };
     
     
-    const handle_howMany=(where)=>{
-        if(where==="increase"){
-            set_how_many_people(prev=>prev+1);
+    const handle_howMany=(func,where,idx)=>{
+        let tmp_list;
+        let func_set;
+        if(meals[meals_idx]==="아침"){
+            tmp_list=[...morning_checked];
+            func_set=setMorning;
+        }
+        else if(meals[meals_idx]==="점심"){
+            tmp_list=[...lunch_checked];
+            func_set=setLunch;
         }
         else{
-            if(how_many_people!==1){
-                set_how_many_people(prev=>prev-1);
+            tmp_list=[...dinner_checked];
+            func_set=setDinner;
+        }
+
+        if(func==="increase"){
+            if(where==="entire_controll"){
+                let total_tmp=[];//임시 배열
+                set_how_many_people(prev=>prev+1);//보여지는 전체도 변경
+                for(const item of tmp_list){
+                    let tmp=item;
+                    tmp.how_many_people=how_many_people+1;
+                    total_tmp.push(tmp);
+                }
+                func_set(total_tmp);//각각의 음식들도 디폴트가 변경시 같이 변경
+            }
+            else{
+                let tmp=[...tmp_list];
+                console.log(tmp);
+                tmp[idx].how_many_people+=1
+                func_set(tmp);
+             }
+            
+        }
+        else{
+            if(where==="entire_controll"){
+                if(how_many_people!==1){
+                    let total_tmp=[];//임시 배열
+                    set_how_many_people(prev=>prev-1);//보여지는 전체도 변경 
+                    for(const item of tmp_list){
+                        let tmp=item;
+                        tmp.how_many_people=how_many_people-1;
+                        total_tmp.push(tmp);
+                    }
+                    func_set(total_tmp);//각각의 음식들도 디폴트가 변경시 같이 변경
+                }
+            }
+            else{
+                if(tmp_list[idx].how_many_people!=1){
+                    let tmp=[...tmp_list];
+                    tmp[idx].how_many_people-=1;
+                    func_set(tmp);
+                }
             }
         }
     }
@@ -161,11 +322,7 @@ function SearchModal({where}){
         searchAPI(event.target.value);
     }
 
-    const meals=[
-        "아침",
-        "점심",
-        "저녁"
-    ];
+
     
     const Pstyled=styled('p')((props)=>({
         fontSize:"1.0rem",
@@ -181,7 +338,6 @@ function SearchModal({where}){
     }
 
 
-    console.log(checked)
    
         return(
             <div className="modal fade" id="modal-search-meals" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
@@ -216,11 +372,11 @@ function SearchModal({where}){
                             <Stack direction="column" spacing={1}>
                                 <Pstyled bold="etc">인분</Pstyled>
                                 <Stack direction="row" spacing={1}>
-                                    <IconButton aria-label="decrease" onClick={()=>handle_howMany("decrease")}>
+                                    <IconButton aria-label="decrease" onClick={()=>handle_howMany("decrease","entire_controll")}>
                                         <RemoveCircleIcon/>
                                     </IconButton>
                                     <Pstyled bold="etc">{how_many_people}</Pstyled>
-                                    <IconButton aria-label="increase" onClick={()=>handle_howMany("increase")}>
+                                    <IconButton aria-label="increase" onClick={()=>handle_howMany("increase","entire_controll")}>
                                         <AddCircleIcon/>
                                     </IconButton>
 
@@ -256,30 +412,10 @@ function SearchModal({where}){
 
                                                 return (
                                                 <ListItem
-                                                    key={index}
+                                                    key={index+"zzzz"}
                                                     secondaryAction={
-                                                        check_toggle(value,"from_checked")
-                                                        ?
-                                                        <>
-                                                            <Stack direction="row" spacing={1}>
-                                                                <IconButton aria-label="decrease" onClick={()=>handle_howMany("decrease")}>
-                                                                    <RemoveCircleIcon sx={{fontSize:"1.0rem"}}/>
-                                                                </IconButton>
-                                                                <Pstyled bold="etc">{how_many_people}</Pstyled>
-                                                                <IconButton aria-label="increase" onClick={()=>handle_howMany("increase")}>
-                                                                    <AddCircleIcon sx={{fontSize:"1.0rem"}}/>
-                                                                </IconButton>
-
-                                                            </Stack>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            <IconButton edge="end" aria-label="comments">
-                                                                <CommentIcon />
-                                                            </IconButton>
-                                                        </>
-
-                                                       
+                                                        secondary_Action(value)
+                                                      
                                                     }
                                                     sx={
                                                         check_toggle(value,"from_checked")
@@ -293,7 +429,7 @@ function SearchModal({where}){
                                                         }}}
                                                     disablePadding
                                                 >
-                                                    <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                                                    <ListItemButton role={undefined} onClick={()=>handleToggle(value)} dense>
                                                     <ListItemIcon>
                                                         <Checkbox
                                                         edge="start"
@@ -324,35 +460,95 @@ function SearchModal({where}){
                        
                         <div className="alert alert-secondary" role="alert" style={{marginBottom:"0em",padding:"0.5rem 0.5rem",marginTop:"2rem"}}>
                             <span className="badge badge-success" style={{fontSize:"1em",display:"block",margin:"0rem 4rem"}}>선택음식-아침</span>
-                            <Chip
-                                label="밥"
-                                onClick={handleClick}
-                                onDelete={handleDelete}
-                            />
-                            <Chip
-                                label="닭"
-                                onClick={handleClick}
-                                onDelete={handleDelete}
-                            />
-                            <Chip
-                                label="빵"
-                                onClick={handleClick}
-                                onDelete={handleDelete}
-                            />
+                            {
+                                morning_checked.length===0
+                                ?
+                                    <>
+                                        <Pstyled>
+                                            추가한 음식이 없습니다
+                                        </Pstyled>
+                                    </>
+                                :
+
+                                morning_checked.map((value,index)=>{
+                                            return(
+                                                <>
+                                                <Chip
+                                                    key={value}
+                                                    label={value.how_many_people>1?value.Info_from_api.DESC_KOR+" x"+value.how_many_people:value.Info_from_api.DESC_KOR}
+                                                    onClick={handleClick}
+                                                    onDelete={()=>handleDelete(value)}
+                                                />
+                                            </>
+                                        )
+
+                                   
+                                }
+                                   
+                                )
+                            }
                         </div>
 
                         <div className="alert alert-secondary" role="alert" style={{marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
                             <span className="badge badge-success" style={{fontSize:"1em",display:"block",margin:"0rem 4rem"}}>선택음식-점심</span>
-                            <Pstyled>
-                                추가한 음식이 없습니다
-                            </Pstyled>
+                            {
+                                lunch_checked.length===0
+                                ?
+                                    <>
+                                        <Pstyled>
+                                            추가한 음식이 없습니다
+                                        </Pstyled>
+                                    </>
+                                :
+
+                                lunch_checked.map((value,index)=>{
+                                            return(
+                                                <>
+                                                <Chip
+                                                    key={value}
+                                                    label={value.how_many_people>1?value.Info_from_api.DESC_KOR+" x"+value.how_many_people:value.Info_from_api.DESC_KOR}
+                                                    onClick={handleClick}
+                                                    onDelete={()=>handleDelete(value)}
+                                                />
+                                            </>
+                                        )
+
+                                   
+                                }
+                                   
+                                )
+                            }
                         </div>
 
                         <div className="alert alert-secondary" role="alert" style={{marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
                             <span className="badge badge-success" style={{fontSize:"1em",display:"block",margin:"0rem 4rem"}}>선택음식-저녁</span>
-                            <Pstyled>
-                                추가한 음식이 없습니다
-                            </Pstyled>
+                            {
+                                dinner_checked.length===0
+                                ?
+                                    <>
+                                        <Pstyled>
+                                            추가한 음식이 없습니다
+                                        </Pstyled>
+                                    </>
+                                :
+
+                                dinner_checked.map((value,index)=>{
+                                            return(
+                                                <>
+                                                <Chip
+                                                    key={value}
+                                                    label={value.how_many_people>1?value.Info_from_api.DESC_KOR+" x"+value.how_many_people:value.Info_from_api.DESC_KOR}
+                                                    onClick={handleClick}
+                                                    onDelete={()=>handleDelete(value)}
+                                                />
+                                            </>
+                                        )
+
+                                   
+                                }
+                                   
+                                )
+                            }
                         </div>
 
                         
