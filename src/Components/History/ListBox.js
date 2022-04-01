@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import {pop_breakfast,pop_dinner,pop_lunch} from "../../modules/action"
 import { useDispatch, useSelector } from 'react-redux';
+import { styled } from "@mui/system";
 
 
 //한글 바이트 별로 잘라는 함수
@@ -74,6 +75,13 @@ else{
 
 
   const meal=props.meal;//아침,점심,저녁
+
+  const Pstyled=styled('p')((props)=>({
+    fontSize:"1.0rem",
+    fontWeight:props.bold=="lighter"?"lighter":"600",
+    lineWeight:"1.0",
+    marginBottom:"0"
+}))
   
   if(meal==="아침"){
     foods=foods.breakfast
@@ -102,32 +110,41 @@ else{
   }
   
 
+
   return (
     <>
       <span className="badge badge-secondary" style={{fontSize:"1.5em",marginTop:"0.5em",backgroundColor:"#dee2e6",color:"black"}}>{meal}</span>
 
       <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {foods.map((value,index) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
-          return (
-            <ListItem
-              key={value}
-              secondaryAction={
-                <IconButton aria-label="delete" onClick={pop_Food}>
-                  <DeleteIcon />
-                </IconButton>
-              }
-              disablePadding
-            >
-              <ListItemButton >
-                <ListItemAvatar>
-                  <Avatar>{value.cut(2)}</Avatar>
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={value} secondary={"5kg"} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+        {
+          foods.length===0
+          ?
+            <Pstyled>
+              추가된 음식이 없습니다
+            </Pstyled>
+          :
+            foods.map((value,index) => {
+              const labelId = `checkbox-list-secondary-label-${value}`;
+              return (
+                <ListItem
+                  key={index}
+                  secondaryAction={
+                    <IconButton aria-label="delete" onClick={pop_Food}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                  disablePadding
+                >
+                  <ListItemButton >
+                    <ListItemAvatar>
+                      <Avatar>{value.Info_from_api.DESC_KOR.cut(2)}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText id={labelId} primary={value.Info_from_api.DESC_KOR} secondary={"1회제공량:"+value.Info_from_api.SERVING_SIZE+"g"} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })
+        }
       </List>
 
       

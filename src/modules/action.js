@@ -371,9 +371,9 @@ const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 �
 }
 
 const initialMeals={//아침,점심,저녁 정보를 가지고 있어준다.
-    breakfast:["현미밥","닭가슴살","사과","오리구이","빵"],
-    lunch:["현미밥","닭가슴살","사과","오리구이","빵"],
-    dinner:["현미밥","닭가슴살","사과","오리구이","빵"]
+    breakfast:[],
+    lunch:[],
+    dinner:[]
 }
 
 //초기페이지 정보
@@ -712,21 +712,28 @@ export function update_last_record_reducer(state=initialLastRecord,action){//api
 }
 
 export function update_meals_reducer(state=initialMeals,action){//아침,점심,저녁을 담아주는 곳
+    let tmp_list;
     switch(action.type){
         case PUSH_BREAKFAST:
+            tmp_list=[...state.breakfast];
+            tmp_list.push(...action.record);
             return{
                 ...state,
-                breakfast:state.breakfast.push(action.record)
+                breakfast:tmp_list
             }
         case PUSH_LUNCH:
+            tmp_list=[...state.lunch];
+            tmp_list.push(...action.record);
             return{
                 ...state,
-                lunch:state.lunch.push(action.record)
+                lunch:tmp_list
             }
         case PUSH_DINNER:
+            tmp_list=[...state.dinner];
+            tmp_list.push(...action.record);
             return{
                 ...state,
-                dinner:state.dinner.push(action.record)
+                dinner:tmp_list
             }   
         
         case POP_BREAKFAST:
