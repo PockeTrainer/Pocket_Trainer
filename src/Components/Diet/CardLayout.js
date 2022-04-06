@@ -29,7 +29,8 @@ function CardLayout(props){
         marginLeft:"-12px",
         marginRight:"-12px",
         borderRadius:"5px",
-        lineHeight:"7px"
+        lineHeight:"7px",
+        zIndex:"10"
     };
 
 

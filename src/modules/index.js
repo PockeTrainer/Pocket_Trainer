@@ -17,6 +17,7 @@ import {update_page_progress_reducer} from './action';
 import { update_how_long_reducer } from './action';
 import { update_last_record_reducer } from './action';
 import { update_meals_reducer } from './action';
+import { update_choose_meal_date_reducer } from './action';
 
 const persistConfig={
     key:"root",
@@ -38,7 +39,8 @@ const rootReducer=combineReducers({
     update_page_progress_reducer,
     update_how_long_reducer,
     update_last_record_reducer,
-    update_meals_reducer
+    update_meals_reducer,
+    update_choose_meal_date_reducer
 });
 
 // export default persistReducer(persistConfig,rootReducer);

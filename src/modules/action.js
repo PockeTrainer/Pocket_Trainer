@@ -65,6 +65,8 @@ const PUSH_DINNER="push_dinner";
 const POP_BREAKFAST="pop_breakfast";
 const POP_LUNCH="pop_lunch";
 const POP_DINNER="pop_dinner";
+
+const CHOOSE_MEAL_DATE="choose_meal_date";//식단에서 고른날짜를 보여줌
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -298,6 +300,10 @@ export const pop_dinner=(new_arr)=>({
     new_arr
 });
 
+export const choose_meal_date=(date)=>({//Date객체를 직접 넣어줌
+    type:CHOOSE_MEAL_DATE,
+    date
+})
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -374,6 +380,10 @@ const initialMeals={//아침,점심,저녁 정보를 가지고 있어준다.
     breakfast:[],
     lunch:[],
     dinner:[]
+}
+
+const initialDate={//날짜객체 정보가 담겨져 있을 것
+    date:new Date()
 }
 
 //초기페이지 정보
@@ -751,6 +761,17 @@ export function update_meals_reducer(state=initialMeals,action){//아침,점심,
             return{
                 ...state,
                 dinner:action.new_arr
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_choose_meal_date_reducer(state=initialDate,action){//식단파트에서 달력에서 고른날짜객체 정보가 담김
+    switch(action.type){
+        case CHOOSE_MEAL_DATE:
+            return{
+                date:action.date
             }
         default:
             return state;    

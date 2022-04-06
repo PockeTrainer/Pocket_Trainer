@@ -11,7 +11,11 @@ import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import Zoom from '@mui/material/Zoom';
 import SpecificInfo from './SpecificInfo';
+import { useDispatch,useSelector } from 'react-redux';
 
+import { choose_meal_date } from '../../modules/action';
+import CalandarPicker from "./CalandarPicker";
+import {DatePicker} from "./DatePicker";
 
 
 function sleep(ms){
@@ -25,6 +29,8 @@ function TodayRecommend(){
     const count1=useRef(1);
     const [showList,setShowList]=useState(true);//밑에 리스트에 주는 zoom transition 
     const modalRef=useRef("");//세부정보 모달창
+
+    const dispatch=useDispatch();
 
     const handleShowList=()=>{
         setShowList(prev=>!prev);
@@ -103,13 +109,50 @@ function TodayRecommend(){
             name:"지방"
         }
     }
+
+    const selectedDay = (val) =>{
+        console.log(val);
+        dispatch(choose_meal_date(val));
+    };
+
+    const selectDate = useSelector(state=>state.update_choose_meal_date_reducer.date);
+    const startDate=()=>{
+        let tmp=new Date(selectDate) ;//Date객체를 깊은복사 해줘야함 
+
+        tmp.setDate(selectDate.getDate()-3);
+        return tmp;
+    }
    
     return(
         <>
             <CardWrapper time={1000}>
-                    <FastfoodIcon sx={{fontSize:"3.5em",color:"#5e72e4",marginTop:"0.2em"}}/>
-                    <h4 className="heading" style={{fontSize:"1.5rem"}}>영양소별 추천양</h4>
-                    <span className="badge badge-success" style={{fontSize:"1em",margin:"1em",marginBottom:"2rem"}}>03/23목표량</span>
+                    <CalandarPicker/>
+                    <DatePicker startDate={startDate()} 
+                            days={365}
+                            selectDate={selectDate}
+                            getSelectedDay={selectedDay} 
+                            labelFormat={"yyyy년 MMMM "} 
+                            color={"#5e72e4"}
+                            marked={[
+                            {
+                                date: new Date(2021, 9, 3),
+                                marked: true,
+                                style: {
+                                    color: "#ff0000",
+                                    padding: "2px",
+                                    fontSize: 12,
+                                },
+                                text: "",
+                            },
+                            {
+                                date: new Date(2021, 9, 4),
+                                marked: true,
+                                text: ""
+                            },
+                        ]}
+                            />
+                    <hr></hr>
+                    <h4 className="heading" style={{fontSize:"1.5rem"}}>{selectDate.getMonth()+"/"+selectDate.getDate()}목표량</h4>
                     <br></br>
 
                     <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>
