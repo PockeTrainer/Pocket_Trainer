@@ -23,7 +23,7 @@ function CardLayout(props){
     return(
 
     <div>
-        <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
+        <div className="header bg-gradient-primary pt-5 pt-md-8" data-component="HeaderForCard" style={{minHeight:"100vh"}}>
               <div className="container-fluid" style={padding_style}>
                 <div className="header-body">
                     <div className="container-fluid" style={padding_style} >

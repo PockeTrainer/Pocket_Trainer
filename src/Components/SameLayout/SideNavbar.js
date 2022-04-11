@@ -174,7 +174,7 @@ function SideNavBar(){
                   </Link>
               </li>
               <li className={clickedId=="sub_list2"? "nav-item active" :"nav-item"} onClick={()=>showGetId("sub_list2")}>
-                  <Link className={clickedId=="sub_list2"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
+                  <Link className={clickedId=="sub_list2"? "nav-link active" :"nav-link"} to="/history">
                       <i className="fas fa-book-medical history"></i>나의운동일지
                   </Link>
               </li>

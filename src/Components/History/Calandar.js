@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useRef, useState} from 'react';
 import Paper from '@mui/material/Paper';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
@@ -14,6 +14,7 @@ import {
   AllDayPanel
 } from '@devexpress/dx-react-scheduler-material-ui';
 
+import $ from 'jquery';
 import { appointments } from '../../demo-data/appointments';
 import SwipeInfoTab from './SwipeInfoTab';
 import Grid from '@mui/material/Grid';
@@ -50,7 +51,11 @@ export default function Calandar() {
         year:today_year,
         month:today_month,
         days:today_date
-    })
+    });
+    const tmp_navigate_year_and_month=useRef({
+        year:today_year,
+        month:today_month
+    })//달력 네비게이터에서의 연과월을 의미
     
     const currentViewNameChange=(currentViewName)=>{//달력 뷰형식 바꿔줌
         set_State({
@@ -63,21 +68,21 @@ export default function Calandar() {
 
     const check_which_clicked=(e,props)=>{
         console.log(e.target.innerText);
-        console.log(props.startDate.getMonth()+1);//지금 클릭한 것의 달
+        console.log(props.startDate);//지금 클릭한 것의 달
         set_clicked_cell({
             ...clicked_cell,
-            year:props.startDate.getYear(),
+            year:props.startDate.getFullYear(),
             month:props.startDate.getMonth()+1,
             days:props.startDate.getDate()
         })
     }
-    const customTimeTableCell = (props) => {    
+    const customTimeTableCell = (props) => {   
         return (
-          <MonthView.TimeTableCell sx={props.startDate.getYear()===clicked_cell.year
+          <MonthView.TimeTableCell sx={props.startDate.getFullYear()===clicked_cell.year
             &&
             props.startDate.getMonth()+1===clicked_cell.month
             &&
-            props.startDate.getDate()===clicked_cell.days
+            props.startDate.getDate()==clicked_cell.days
             ?
             {backgroundColor:"#5e72e4"}
             :
@@ -91,7 +96,80 @@ export default function Calandar() {
         return(
             <AppointmentTooltip.Layout {...props} sx={{".MuiPaper-root":{backgroundColor:"white !important"}}}/>
         );
+    };
+
+    const StyledNavigator=styled(DateNavigator.Overlay)(()=>({
+        ".MuiPaper-root":{backgroundColor:"#5e72e4 !important"},
+        ".MuiTableCell-root":{color:"white"},
+        ".MuiTableCell-root.Cell-otherMonth":{color:"rgb(255 252 252 / 38%) !important"},
+        ".MuiIconButton-root.NavigationButton-button":{color:"white !important"},
+        ".MuiTypography-root":{color:"white"}
+    }));
+
+    const change_date=(e,props)=>{
+        
+        if($(e.target).data('testid')){
+            if($(e.target).data('testid')==="ChevronLeftIcon"){//이전 달 버튼
+                if(tmp_navigate_year_and_month.current.month===1){//만약에 1월달이면 12월달로 전환 후 1년을 빼준다
+                    tmp_navigate_year_and_month.current.month=12;
+                    tmp_navigate_year_and_month.current.year-=1;
+                }
+                else{
+                    tmp_navigate_year_and_month.current.month-=1;//그게 아닐경우 한달씩 감소
+                }
+            }
+            else{//오른쪽 달 버튼
+                if(tmp_navigate_year_and_month.current.month===12){//만약에 12월달이면 1월달로 전환 후 1년을 더해준다
+                    tmp_navigate_year_and_month.current.month=1;
+                    tmp_navigate_year_and_month.current.year+=1;
+                }
+                else{
+                    tmp_navigate_year_and_month.current.month+=1;//그게 아닐경우 한달씩 증가
+                }
+            }
+        }
+        else if($(e.target).attr("d")){
+            if($(e.target).attr("d").includes("M15")){//이전 달 버튼
+                if(tmp_navigate_year_and_month.current.month===1){//만약에 1월달이면 12월달로 전환 후 1년을 빼준다
+                    tmp_navigate_year_and_month.current.month=12;
+                    tmp_navigate_year_and_month.current.year-=1;
+                }
+                else{
+                    tmp_navigate_year_and_month.current.month-=1;//그게 아닐경우 한달씩 감소
+                }
+            }   
+            else{//오른쪽 달 버튼
+                if(tmp_navigate_year_and_month.current.month===12){//만약에 12월달이면 1월달로 전환 후 1년을 더해준다
+                    tmp_navigate_year_and_month.current.month=1;
+                    tmp_navigate_year_and_month.current.year+=1;
+                }
+                else{
+                    tmp_navigate_year_and_month.current.month+=1;//그게 아닐경우 한달씩 증가
+                }
+            }
+        }
+        else if($(e.target).attr("class").includes("MuiBackdrop-root")){
+            tmp_navigate_year_and_month.current.month=today_month;
+            tmp_navigate_year_and_month.current.year=today_year;
+        }
+        else{//화살표가 아닌 그냥 밑에 날짜들
+            let date=e.target.innerText.replace("일","");//순수히 날짜 숫자만 가지게함
+            set_clicked_cell({
+                ...clicked_cell,
+                year:tmp_navigate_year_and_month.current.year,
+                month:tmp_navigate_year_and_month.current.month,
+                days:date
+            })
+        }
+        
     }
+    const customDateNavigator=props=>{
+        return(
+            <StyledNavigator {...props} onClick={(e)=>change_date(e,props)}/>
+        );
+    }
+
+
 
 
     const StyledGrid = styled(Grid)(() => ({
@@ -134,28 +212,38 @@ export default function Calandar() {
             currentViewName={state.currentViewName}
             onCurrentViewNameChange={currentViewNameChange}
           />
+          {/* 기본적으로 넣어줌 디폴트 날짜 선정 view스위치시 변동시켜줌 */}
           <MonthView
             displayName='월별'
             timeTableCellComponent={customTimeTableCell}
            />
+           {/* 월별 달력으로서 각 셀들을 커스텀으로 찍어줌 */}
           <DayView
             displayName='일별'
             startDayHour={7}
             endDayHour={23}
            />
+           {/* 일별 달력 */}
           <Toolbar />
-          <DateNavigator />
+          {/* 걍 애는 필수인것같음 */}
+          <DateNavigator
+          overlayComponent={customDateNavigator} />
+          {/* 현재 날짜 바꿔주는 것 */}
           <TodayButton messages={{today:"오늘"}}/>
-          <ViewSwitcher />
+          <ViewSwitcher/>
+          {/* 월간,일간 바꿔줌 */}
           <Appointments />
+          {/* 각 일정들을 기재 */}
           <AppointmentTooltip
             showCloseButton
             layoutComponent={customToolTip}
             contentComponent={Content}
           />
+          {/* 일정들에 해당하는 툴팁들 자세한 정보를 보여줌 */}
           <AllDayPanel 
             messages={{allDay:"BMI지수"}}
           />
+          {/* 일간 달력에 해당하는 맨 위 상단 */}
         </Scheduler>
       </Paper>
 
