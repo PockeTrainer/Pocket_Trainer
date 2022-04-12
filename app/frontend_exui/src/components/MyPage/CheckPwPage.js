@@ -136,7 +136,7 @@ function CheckPwPage() {
             clearInterval(timeId.current);
         }
         runMovenet();
-    }, [mode, use, state]); // , videoPathNum
+    }, [mode, use, state, videoPathNum]);
 
     // ################
     // ### 모델 관련 ###
@@ -169,7 +169,8 @@ function CheckPwPage() {
     ];
 
     // exerciseName : 학습/분류할 운동 이름
-    // -> exerciseName이 변경되면 dataFilePath와 modelName에 반영됨.
+    // -> exerciseName이 변경되면 dataFileName, dataFilePath와 modelName, modelPath에 반영됨.
+    // -> drawCanvas, gotResult에 if문 추가해두면 exerciseName만 변경되면 추가 코드 수정 필요 없음.
     let exerciseName = 'BenchPress';
 
     // 학습시킬 Epoch 수. 원하는 만큼 변경 가능.
