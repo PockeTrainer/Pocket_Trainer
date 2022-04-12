@@ -109,14 +109,28 @@
    );
  
    adjacentKeyPoints.forEach((keypoints) => {
-     drawSegment(
-       toTuple(keypoints[0].y, keypoints[0].x),
-       toTuple(keypoints[1].y, keypoints[1].x),
-       color,
-       xScale,
-       yScale,
-       ctx
-     );
+    // 운동별로 중요 부위에 다른 색으로 선 표시
+    //  if (keypoints[0]['name'] == 'left_knee' || keypoints[1]['name'] == 'left_knee'
+    //   || keypoints[0]['name'] == 'right_knee' || keypoints[1]['name'] == 'right_knee') {
+    //     drawSegment(
+    //       toTuple(keypoints[0].y, keypoints[0].x),
+    //       toTuple(keypoints[1].y, keypoints[1].x),
+    //       "red",
+    //       xScale,
+    //       yScale,
+    //       ctx
+    //     );
+    //   } else {
+        drawSegment(
+          toTuple(keypoints[0].y, keypoints[0].x),
+          toTuple(keypoints[1].y, keypoints[1].x),
+          color,
+          xScale,
+          yScale,
+          ctx
+        );
+      // }
+     
    });
  }
  
@@ -134,7 +148,12 @@
  
      const y = keypoint.y;
      const x = keypoint.x;
-     drawPoint(ctx, y * yScale, x * xScale, 3, color);
+    // 운동별로 중요부위에 다른 색으로 점 표시
+    //  if (11 <= i && i <= 15) {
+    //   drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+    //  } else {
+      drawPoint(ctx, y * yScale, x * xScale, 3, color);
+    //  }
    }
  }
  

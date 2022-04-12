@@ -15,88 +15,44 @@ import * as cm from './ClassificationModel';
 // import { Player } from 'video-react';
 
 // 학습에 사용할 비디오 파일 경로.
-// useVideo -> play -> nextVideo
+// useVideo -> play -> (nextVideo or previousVideo)
+// change videoPathNum 으로도 경로 변경 가능
 // 비디오 파일은 public/videos/ 에 둘 것.
 // `${proecss.env.PUBLIC_URL}/videos/` == `public/videos/`
 const videoPaths = {
-    // benchpress output4 ratio
-    // path0: `${process.env.PUBLIC_URL}/videos/BenchPress/front/correctDown_front2_h264.mp4`,
-    // path1: `${process.env.PUBLIC_URL}/videos/BenchPRess/front/correctUp_front3_h264.mp4`,
-    // path2: `${process.env.PUBLIC_URL}/videos/BenchPRess/front/leanToLeft_front_h264.mp4`,
-    // path3: `${process.env.PUBLIC_URL}/videos/BenchPRess/front/leanToRight_front_h264.mp4`,
-    // // path4: `${process.env.PUBLIC_URL}/videos/BenchPRess/front/leanToRight_front2_h264.mp4`,
+    // BenchPress don't move
+    path0: `${process.env.PUBLIC_URL}/videos/BenchPress/dontmove/correctDown1_h264.mp4`,
     
-    // PushUp
-    // path0: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown1_h264.mp4`,
-    // path1: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown2_h264.mp4`,
-    // path2: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown3_h264.mp4`,
-    // path3: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown4_h264.mp4`,
-    // path4: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown5_h264.mp4`,
-    // path5: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctDown6_h264.mp4`,
+}
 
-    // path6: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctUp1_h264.mp4`,
-    // path7: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctUp2_h264.mp4`,
-    // path8: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctUp3_h264.mp4`,
-    // path9: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctUp4_h264.mp4`,
-    // path10: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_correctUp5_h264.mp4`,
+// 세 점 사이의 각도 구하기
+function jointAngle(p1x, p1y, p2x, p2y, p3x, p3y) {
+    if(p1x == undefined || p1y == undefined || p2x == undefined || p2y == undefined || p3x == undefined || p3y == undefined) {
+        return undefined;
+    }
 
-    // path11: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_lessDown1_h264.mp4`,
-    // path12: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_lessDown2_h264.mp4`,
-    // path13: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_lessDown3_h264.mp4`,
-    // path14: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_lessDown5_h264.mp4`,
-    // path15: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_lessDown6_h264.mp4`,
-    
-    // path16: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_tooWide1_h264.mp4`,
-    // path17: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_tooWide2_h264.mp4`,
-    // path18: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_tooWide3_h264.mp4`,
-    // path19: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_tooWide4_h264.mp4`,
-    // path20: `${process.env.PUBLIC_URL}/videos/PushUp/PushUp_tooWide5_h264.mp4`,
+    else {
+        var deg = 0;
+        
+        var rad1 = Math.atan2(p1y - p2y, p1x - p2x);
+        var deg1 = (360 + (rad1 * 180) / Math.PI) % 360;
 
-    // Squat
-    path0: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown1_h264.mp4`,
-    path1: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown2_h264.mp4`,
-    path2: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown3_h264.mp4`,
-    path3: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown4_h264.mp4`,
-    path4: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown5_h264.mp4`,
-    path5: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown6_h264.mp4`,
-    path6: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown9_h264.mp4`,
-    path7: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown10_h264.mp4`,
-    path8: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown11_h264.mp4`,
-    path9: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctDown12_h264.mp4`,
+        var rad2 = Math.atan2(p3y - p2y, p3x - p2x);
+        var deg2 = (360 + (rad2 * 180) / Math.PI) % 360;
 
-    path10: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp1_h264.mp4`,
-    path11: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp2_h264.mp4`,
-    path12: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp3_h264.mp4`,
-    path13: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp4_h264.mp4`,
-    path14: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp5_h264.mp4`,
-    path15: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp6_h264.mp4`,
-    path16: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp7_h264.mp4`,
-    path17: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp8_h264.mp4`,
-    path18: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp9_h264.mp4`,
-    path19: `${process.env.PUBLIC_URL}/videos/Squat/Squat_correctUp10_h264.mp4`,
+        if(deg1 <= deg2) {
+            deg = deg2 - deg1;
+        }
+        else {
+            deg = 360 - (deg1 - deg2);
+        }
 
-    path20: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown1_h264.mp4`,
-    path21: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown2_h264.mp4`,
-    path22: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown3_h264.mp4`,
-    path23: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown4_h264.mp4`,
-    path24: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown7_h264.mp4`,
-    path25: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown8_h264.mp4`,
-    path26: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown9_h264.mp4`,
-    path27: `${process.env.PUBLIC_URL}/videos/Squat/Squat_lessDown10_h264.mp4`,
-    
-    path28: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend1_h264.mp4`,
-    path29: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend2_h264.mp4`,
-    path30: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend3_h264.mp4`,
-    path31: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend4_h264.mp4`,
-    path32: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend5_h264.mp4`,
-    path33: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend6_h264.mp4`,
-    path34: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend7_h264.mp4`,
-    path35: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend8_h264.mp4`,
-    path36: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend9_h264.mp4`,
-    path37: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend10_h264.mp4`,
-    path38: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend11_h264.mp4`,
-    path39: `${process.env.PUBLIC_URL}/videos/Squat/Squat_tooBend12_h264.mp4`,
+        if(deg > 180) {
+            deg = 360 - deg;
+        }
 
+        return deg;
+    }
 }
 
 let brain = null;
@@ -109,19 +65,28 @@ function CheckPwPage() {
     const webcamRef = useRef(null);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const inputRef = useRef(null);
+    const poseRef = useRef(null);
+    const pathRef = useRef(null);
 
-    const[videoPathNum, setVideoPathNum] = useState(0);
+    // const[videoPathNum, setVideoPathNum] = useState(0);
 
     const nextVideoPathNum = () => {
         console.log('change video path to next');
-        setVideoPathNum(prev => prev + 1)
+        // setVideoPathNum(prev => prev + 1)
+        setInputs({
+            ...inputs,
+            ['videoPathNum']: parseInt(pathRef.current.value) + 1
+        });
         videoRef.current.load();
     }
 
     const previousVideoPathNum = () => {
         console.log('change video path to previous');
-        setVideoPathNum(prev => prev - 1)
+        // setVideoPathNum(prev => prev - 1)
+        setInputs({
+            ...inputs,
+            ['videoPathNum']: parseInt(pathRef.current.value) - 1
+        });
         videoRef.current.load();
     }
 
@@ -156,7 +121,13 @@ function CheckPwPage() {
     }
 
     const [state, setState] = useState('waiting');
-    const [targetPose, setTargetPose] = useState('');
+    // const [targetPose, setTargetPose] = useState('');
+    const [inputs, setInputs] = useState({
+        videoPathNum: 0,
+        targetPose: ''
+    });
+
+    const { videoPathNum, targetPose } = inputs;
 
     const timeId = useRef(null);
 
@@ -165,7 +136,7 @@ function CheckPwPage() {
             clearInterval(timeId.current);
         }
         runMovenet();
-    }, [mode, use, state, videoPathNum]);
+    }, [mode, use, state]); // , videoPathNum
 
     // ################
     // ### 모델 관련 ###
@@ -197,40 +168,43 @@ function CheckPwPage() {
         'right_ankle_X', 'right_ankle_Y'
     ];
 
+    // exerciseName : 학습/분류할 운동 이름
+    // -> exerciseName이 변경되면 dataFilePath와 modelName에 반영됨.
+    let exerciseName = 'BenchPress';
+
     // 학습시킬 Epoch 수. 원하는 만큼 변경 가능.
-    let trainEpochs = 500;
+    let trainEpochs = 100;
 
     // 모델 입력 및 출력 크기
     // 운동에 따라 출력 크기 변경
-    const modelInputSize = 34;
-    const modelOutputSize = 4;
+    let modelInputSize = 34;
+    let modelOutputSize = 3;
+    if (exerciseName == 'Sqaut' || exerciseName == 'CablePushDown') {
+        modelOutputSize = 4;
+    }
 
     // dataFileName : 데이터 수집 후 저장 시 저장되는 파일 명.
     // dataFilePath : 학습을 위해 불러올 데이터 경로. 웹 상에 올라가야 함. (지금은 github repository에 올려둠.)
-    let dataFileName = 'PushUpData';
-    let dataFilePath = 'https://raw.githubusercontent.com/Oneul1213/FileStorage/main/PushUp/PushUpData.csv';
-    
+    let dataFileName = exerciseName + 'Data';
+    let dataFilePath = 'https://raw.githubusercontent.com/Oneul1213/FileStorage/main/' + exerciseName + '/' + dataFileName + '.csv';
+
     // modelName : 학습 후 저장될 데이터 파일, 가중치 파일 이름. 
     //             저장 후 변경 시 에러 발생하니 여기서 지정한 후 저장할 것.
     // modelUrl : 불러올 학습된 모델의 url. 웹 상에 올라가야 함. (지금은 github repository에 올려둠.)
-    let modelName = 'PushUpModel';
-    let modelUrl = 'https://raw.githubusercontent.com/Oneul1213/FileStorage/main/BenchPress/BenchPressModel_output4_ratio.json';
+    let modelName = exerciseName + 'Model';
+    let modelUrl = 'https://raw.githubusercontent.com/Oneul1213/FileStorage/main/' + exerciseName + '/' + modelName + '.json';
 
     // autoTraining = true; 로 설정 후 train mode로 실행 시
     // 데이터 불러온 후 학습 시작을 자동으로 해줌.
     let autoTraining = false;
 
-    /* for data collecting...1s */
-    // if (mode == 'data') {
-    //     // var targetPose;
-    //     // var state = 'waiting';
-    // }
-    /* for data collecting...1e */
-
 
     // 여러가지 함수 부분
 
     // Movenet 관련
+    // detectorConfig : *.SINGLEPOSE_LIGHTNING / *.SINGLEPOSE_THUNDER 중 선택
+    //                  LIGHTNING : 가볍고 성능 약간 낮음
+    //                  THUNDER : 약간 무겁고 성능 높음
     const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER};
     const runMovenet = async () => {
         console.log('---------------------------------');
@@ -241,6 +215,7 @@ function CheckPwPage() {
         console.log('running movenet');
         console.log('mode: ', mode);
         console.log('vidoePathNum: ', videoPathNum);
+        console.log('Exercise Name : ', exerciseName);
 
         /* for classifying...2s */
         if (mode == 'classify') {
@@ -303,6 +278,14 @@ function CheckPwPage() {
                     // for classifying...3s
                     if (mode == 'classify') {
                         classifyPose();
+                        // showAnglePercentage : 세 점의 좌표를 입력받아 퍼센트 출력
+                        //                       poses[0]['keypoints'][11] 형태로 입력
+                        if (exerciseName == 'Squat') {
+                            showAnglePercentage(
+                                poses[0]['keypoints'][11], 
+                                poses[0]['keypoints'][13], 
+                                poses[0]['keypoints'][15]);
+                        }
                     }
                     // for classifying...3e
                     drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
@@ -348,6 +331,14 @@ function CheckPwPage() {
                     // for classifying...3s
                     if (mode == 'classify') {
                         classifyPose();
+                        // showAnglePercentage : 세 점의 좌표를 입력받아 퍼센트 출력
+                        //                       poses[0]['keypoints'][11] 형태로 입력
+                        if (exerciseName == 'Squat') {
+                            showAnglePercentage(
+                                poses[0]['keypoints'][11], 
+                                poses[0]['keypoints'][13], 
+                                poses[0]['keypoints'][15]);
+                        }
                     }
                     // for classifying...3e
                     drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
@@ -369,27 +360,94 @@ function CheckPwPage() {
             ctx.scale(-1, 1);
         }
 
-        // 분류하고자 하는 자세에 따라 적절히 변경. (gotResult의 switch 문도 변경 필요.)
+        // 분류하고자 하는 자세를 추가해주어야 함. (gotResult의 switch 문도 변경 필요.)
         /* for classifying...5s */
         if (mode == 'classify') {
-            switch(classifiedPose) {
-                case 'correctDown':
-                    console.log('정자세 아래');
-                    break;
-                case 'correctUp':
-                    console.log('정자세 위');
-                    break;
-                case 'leanToLeft':
-                    console.log('왼쪽으로 치우침');
-                    break;
-                case 'leanToRight':
-                    console.log('오른쪽으로 치우침');
-                    break;
-                default:
-                    console.log('알수 없음');
-                    break;
+            if (exerciseName == 'PushUp') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 아래');
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 위');
+                        break;
+                    case 'lessDown':
+                        console.log('덜 내려감');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'Squat') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 아래');
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 위');
+                        break;
+                    case 'lessDown':
+                        console.log('덜 내려감');
+                        break;
+                    case 'tooBend':
+                        console.log('허리 너무 숙임');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'BenchPress') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 아래');
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 위');
+                        break;
+                    case 'leanToLeft':
+                        console.log('왼쪽으로 치우침');
+                        break;
+                    case 'leanToRight':
+                        console.log('오른쪽으로 치우침');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'SideLateralRaise') {
+                switch(classifiedPose) {
+                    case 'correctUp':
+                        console.log('정자세 올림');
+                        break;
+                    case 'correctDown':
+                        console.log('정자세 내림');
+                        break;
+                    case 'lessUp':
+                        console.log('덜 올림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'CablePushDown') {
+                switch(classifiedPose) {
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        break;
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        break;
+                    case 'lessUp':
+                        console.log('팔 덜 굽힘');
+                        break;
+                    case 'lessDown':
+                        console.log('팔 덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
             }
-
         }
         /* for classifying...5e */
         let xScale, yScale;
@@ -411,6 +469,7 @@ function CheckPwPage() {
         if (state == 'collecting') {
             let rowObj = {};
             for (let i = 0; i < pose['keypoints'].length; i++) {
+            // for (let i = 5; i < 13; i++) {
                 let nameX = pose['keypoints'][i]['name'] + '_X';
                 let nameY = pose['keypoints'][i]['name'] + '_Y';
                 let x = pose['keypoints'][i]['x'];
@@ -445,6 +504,7 @@ function CheckPwPage() {
             let rowObj = {};
 
             for (let i = 0; i < detectedPose['keypoints'].length; i++) {
+            // for (let i = 5; i < 13; i++) {
                 let nameX = detectedPose['keypoints'][i]['name'] + '_X';
                 let nameY = detectedPose['keypoints'][i]['name'] + '_Y';
                 let x = detectedPose['keypoints'][i]['x'];
@@ -471,6 +531,19 @@ function CheckPwPage() {
         }
     }
 
+    const showAnglePercentage = async (p1, p2, p3) => {
+        let full = 90;
+        let current = jointAngle(p1['x'], p1['y'], p2['x'], p2['y'], p3['x'], p3['y']);
+        console.log('current: ', current);
+        let percent = (180-current) / full * 100;
+        if (percent >= 100) {
+            percent = 100;
+        }
+        console.log(percent, '%');
+    }
+
+    // 콜백 함수들
+
     // brain.classify의 콜백함수.
     const gotResult = async (results) => {
         // console.log('gotResult start');
@@ -484,23 +557,94 @@ function CheckPwPage() {
             }
         });
 
-        // 분류하고자 하는 자세에 따라 적절히 변경. (drawCanvas의 switch 문도 변경 필요.)
-        switch(idx) {
-            case 0:
-                classifiedPose = 'correctDown';
-                break;
-            case 1:
-                classifiedPose = 'correctUp';
-                break;
-            case 2:
-                classifiedPose = 'leanToLeft';
-                break;
-            case 3:
-                classifiedPose = 'leanToRight';
-                break;
-            default:
-                classifiedPose = 'none';
-                break;
+        // 분류하고자 하는 자세를 추가해주어야 함. (drawCanvas의 switch 문도 변경 필요.)
+        if (exerciseName == 'PushUp') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'Squat') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessDown';
+                    break;
+                case 3:
+                    classifiedPose = 'tooBend';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'BenchPress') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'leanToLeft';
+                    break;
+                case 3:
+                    classifiedPose = 'leanToRight';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }    
+        } else if (exerciseName == 'SideLateralRaise') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 1:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 3:
+                    classifiedPose = 'lessDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'CablePushDown') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 1:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 3:
+                    classifiedPose = 'lessDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
         }
 
         console.log(classifiedPose);
@@ -512,8 +656,6 @@ function CheckPwPage() {
 
         loadedModel = model;
     }
-
-    // 콜백 함수들
 
     // autuTraining = true일 때 사용되는 함수.
     const dataLoaded = () => {
@@ -549,6 +691,10 @@ function CheckPwPage() {
         }
     }
 
+    const onKeyFocusClick = () => {
+        console.log('can use keyboard input');
+    }
+
     const onButtonPlayClick = () => {
         videoRef.current.play();
         videoRef.current.onended = onEnd;
@@ -563,11 +709,28 @@ function CheckPwPage() {
     }
 
     const onChange = (e) => {
-        setTargetPose(e.target.value);
+        const { value, name } = e.target;
+        setInputs({
+            ...inputs,
+            [name]: value
+        });
+    }
+
+    const changeVideoPathNum = () => {
+        setInputs({
+            ...inputs,
+            ['videoPathNum']: pathRef.current.value
+        });
+        console.log('change videoPathNum: ', videoPathNum);
+        videoRef.current.load()
     }
 
     const changeTargetPose = () => {
-        setTargetPose(inputRef.current.value);
+        setInputs({
+            ...inputs,
+            ['targetPose']: poseRef.current.value
+        });
+        // setTargetPose(poseRef.current.value);
         console.log('ready for collect', targetPose, 'pose');
     }
 
@@ -648,6 +811,12 @@ function CheckPwPage() {
                     }}>
                     
                     <button type="button"
+                        onClick={onKeyFocusClick}
+                        onKeyPress={handleKeyPress}>
+                        key focus
+                    </button>
+                    
+                    <button type="button"
                         onClick={useWebcam}>
                         Use Webcam
                     </button>
@@ -658,11 +827,17 @@ function CheckPwPage() {
                     </button>
 
                     <br></br>
-                    
+
+                    <input type="text"
+                        ref={pathRef}
+                        name="videoPathNum"
+                        onChange={onChange}
+                        value={videoPathNum}></input>
                     <button type="button"
-                        onKeyPress={handleKeyPress}>
-                        key focus
+                        onClick={changeVideoPathNum}>
+                        change videoPathNum
                     </button>
+                    <br></br>
 
                     <button type="button"
                         onClick={onButtonPlayClick}>
@@ -699,7 +874,8 @@ function CheckPwPage() {
                     <br></br>
 
                     <input type="text"
-                        ref={inputRef}
+                        ref={poseRef}
+                        name="targetPose"
                         onChange={onChange}
                         value={targetPose}></input>
                     <button type="button"
