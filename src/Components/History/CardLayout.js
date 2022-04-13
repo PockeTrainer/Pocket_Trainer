@@ -8,6 +8,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 
 import Grow from '@mui/material/Grow';
 import Calandar from './Calandar'
+import Demo from "./TestScheduler";
 
 
 function CardLayout(props){
@@ -34,6 +35,7 @@ function CardLayout(props){
                                 
                                 <div className="col-xl-8 order-xl-1" style={{paddingLeft:"1px",paddingRight:"1px"}} >
                                    <Calandar/>
+                                   {/* <Demo/> */}
                                 </div>
                             </List>
                         </div>
