@@ -89,7 +89,7 @@ export default function Calandar() {
     }
 
     const [visible,set_visible]=useState(false);//툴팁을 열어서 보여줄지 말지
-    const [appointmentMeta, setAppointmentMeta] = useState({
+    const [appointmentMeta, setAppointmentMeta] = useState({//일정 즉 appointment를 내려주고 타겟 값을 툴팁에게 알려준다
         target: null,
         data: {}
       });
@@ -215,10 +215,21 @@ export default function Calandar() {
       }));
 
 
-    const customAppointMent=useCallback(({children,data,...restProps})=>{
+      const get_day_info=async(date)=>{//일별 info 가져오기 툴팁 열릴때
+        await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+        .then((res) => {
+            console.log(res.data);  
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })
+    }
+
+    const customAppointMent=useCallback(({children,data,...restProps})=>{//useCallback을 사용해 자식에서 발생하는 불필요한 랜더링을 막음-이것 안하면 타겟위치로 할수없음
         return(
             <Appointments.Appointment {...restProps} onClick={(e) => {
-                console.log(e.target);
+                console.log(data);
+                get_day_info(data.startDate);//api로 일별 정보 불러오기-인자로 날짜를 전달
                 set_visible(true);
                 setAppointmentMeta({
                     ...appointmentMeta,
@@ -263,15 +274,7 @@ export default function Calandar() {
     );
 
 
-    const get_day_info=async()=>{//일별 info 가져오기 툴팁 열릴때
-        await axios.get(`http://127.0.0.1:8000/api/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}+"-"+${clicked_cell.days}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
-        .then((res) => {
-            console.log(res.data);  
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
+  
      
 
       useEffect(async()=>{//월별 info들 쭉 받아오기
