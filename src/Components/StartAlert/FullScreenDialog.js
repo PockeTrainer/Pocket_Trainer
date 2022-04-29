@@ -27,6 +27,7 @@ import ActivationLevel from './ActivationLevel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 
+
 function sleep(ms){
   return new Promise((r)=>setTimeout(r,ms));
 }
@@ -96,7 +97,7 @@ export default function FullScreenDialog() {
   }
 
   const finishAlertStyle={
-    position:"absolute",
+    position:"fixed",
     color:"white",
     zIndex:"1",
     fontSize:"2rem",
@@ -143,7 +144,7 @@ export default function FullScreenDialog() {
 }
   useEffect(()=>{
     handleClickOpen();//다이얼로그 열어주기
-    return ()=>setOpen(false);
+    return ()=>setOpen(false);//언마운트시 다시 닫기
   },[]);
 
   useEffect(()=>{

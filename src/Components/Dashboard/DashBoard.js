@@ -30,6 +30,14 @@ function Dashboard(){
                     syncState.current="second";//실제로 dispatch를 비동기적으로 처리하기에 밑에서 바로 체크해버리기에 추가함
                 }
             })
+
+        await axios.post(`http://127.0.0.1:8000/api/diet/createTargetKcal/${id}`)//해당일 목표칼로리 설정해줌
+        .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })    
         
         // 메인 페이지 정보 호출
         await axios.get(`http://127.0.0.1:8000/api/history/mainpageInfo/${id}`)
