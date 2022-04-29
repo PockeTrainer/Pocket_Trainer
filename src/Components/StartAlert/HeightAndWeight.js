@@ -27,10 +27,10 @@ function HeightAndWeight({update_func,value_list}){
       });
     };
   
-    const rendering=(end,select_id,unit)=>{//몸무게와 체중을 쭈욱 랜더링해줌
+    const rendering=(start,end,select_id,unit)=>{//몸무게와 체중을 쭈욱 랜더링해줌
       const result=[];
       let i=1;
-      for(let i=30;i<=end;i++){
+      for(let i=start;i<=end;i++){
         result.push(<MenuItem select={select_id} key ={i} value={i}>{i+unit}</MenuItem>)
       }
       return result;
@@ -74,7 +74,7 @@ function HeightAndWeight({update_func,value_list}){
                           inputProps={{sx:OutlinedLabelStyle}}
                           MenuProps={{sx:{".MuiMenu-paper":{backgroundColor:"#2dce89 !important"}}}}
                         >
-                        {rendering(200,"height","cm")}
+                        {rendering(100,200,"height","cm")}
                         </Select>
                         <FormHelperText sx={HelperStyle}>회원님의 신장을 입력해주세요</FormHelperText>
                       </FormControl>
@@ -98,7 +98,7 @@ function HeightAndWeight({update_func,value_list}){
                         MenuProps={{sx:{".MuiMenu-paper":{backgroundColor:"#2dce89 !important"}}}}
                       >
   
-                        {rendering(150,"weight","kg")}
+                        {rendering(30,150,"weight","kg")}
                       </Select>
                       <FormHelperText sx={HelperStyle}>회원님의 현재체중을 입력해주세요</FormHelperText>
                     </FormControl>

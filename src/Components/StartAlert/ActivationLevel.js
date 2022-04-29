@@ -49,7 +49,7 @@ function ActivationLevel({update_func,value_list}){//활동량 파트
                 당신의 평소 활동수준은 어떤가요?
             </Pstyled>
 
-            <PoolIcon sx={{fontSize:"3rem",color:"#5e72e4 !important",margin:"2rem 0"}}/>
+            <PoolIcon sx={{fontSize:"3rem",color:"#5e72e4 !important",margin:"1rem 0"}}/>
 
             
 

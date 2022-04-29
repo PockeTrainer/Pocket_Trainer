@@ -44,7 +44,7 @@ function Goal({update_func,value_list}){//목표설정 파트
                     당신의 목표는 무엇인가요?
                 </Pstyled>
 
-                <SportsScoreIcon sx={{fontSize:"3rem",color:"#5e72e4 !important",margin:"2rem 0"}}/>
+                <SportsScoreIcon sx={{fontSize:"3rem",color:"#5e72e4 !important",margin:"1rem 0"}}/>
 
                 
 
