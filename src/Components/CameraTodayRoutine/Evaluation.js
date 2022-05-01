@@ -106,7 +106,13 @@ function Evaluation(){
     useEffect(()=>{
         let next_exercise=eval('part'+parseInt(current_bodypart+1)+"["+parseInt(current_exercise+1)+"]");//다음운동객체 갖고오기
         if(next_exercise===undefined){
-            set_where_to_go("다음부위");
+            if(current_bodypart===2){
+                set_where_to_go("종료");//애초에 다음부위가 존재하지 않으면 final로 가야함
+            }
+            else{
+                set_where_to_go("다음부위");
+            }
+            
         }
         else{
             set_where_to_go("다음운동");

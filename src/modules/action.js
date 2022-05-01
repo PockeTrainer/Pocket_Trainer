@@ -12,7 +12,7 @@ const SECOND_LOGIN="second_login";
 const EXERCISE_START="exercise_start";
 const NOT_EXCERCISE_START="not_exercise_start"
 
-//체력측정이 시작되었는지 여부 액션타입
+//체력측정이 시작되었는지 여부 액션타입-카메라와 관계됨
 const TESTSTATE="testState";
 const NONE_TESTSTATE="none_test";
 const SETTING_COMPLETED="setting_completed";
@@ -55,6 +55,7 @@ const PREV_PART="prev_part";
 const NEXT_EXERCISE="next_exercise";
 const PREV_EXERCISE="prev_exercise";
 const SET_EXERCISE_RECORD="set_exercise_record";
+const FINAL_RESULT_PAGE="final_result_page";
 //중량,시간,개수 변화전에 마지막 기록을 저장해두는용
 const LAST_RECORD="last_record";
 //식단에서 아침,점심,저녁에 음식들이 저장됨
@@ -263,6 +264,10 @@ export const prev_exercise=()=>({
 export const set_exercise_record=(api_record)=>({//API로부터 받은 최근 중량체크 변화날짜나 처음여부를 담아줄것임
     type:SET_EXERCISE_RECORD,
     api_record
+});
+
+export const final_result_page=()=>({//최종 운동완료시 현재 결과페이지에 있음을 알려준다.
+    type:FINAL_RESULT_PAGE
 })
 
 export const last_record=(record)=>({
@@ -559,10 +564,7 @@ export function change_current_weight_reducer(state=initialInfoChange,action){//
             }    
         case RESET:
             return{
-                ...state,
-                clicked_button:"",
-                clicked_count:0,
-
+                ...initialInfoChange
             }    
         
         case VERY_HARD:
@@ -705,6 +707,12 @@ export function update_page_progress_reducer(state=initialPageProgress,action){/
                 ...state,
                 is_First:action.api_record
             }        
+        case FINAL_RESULT_PAGE://마지막 결과페이지로 초기화 하는 느낌
+            return{
+                ...state,
+                current_bodypart:0,
+                current_exercise:0
+            }    
         default:
             return state;
     }

@@ -51,8 +51,8 @@ export default function FullScreenDialog() {
   const [each_value_list,set_each_value_list]=useState({//각 문항들에서 가져오는 답변들
     height:100,
     weight:30,
-    goal_answer:1,
-    activation_level:2
+    goal_answer:"",
+    activation_level:""
   });
 
   const [what_im_looking,set_what_im_looking]=useState(0);//현재 보고 있는 페이지를 의미함
@@ -70,6 +70,14 @@ export default function FullScreenDialog() {
   };
 
 
+  const checkDisabled=()=>{
+    if(each_value_list.goal_answer!=="" && each_value_list.activation_level!==""){//둘다 값이 정의 되었다면 disabled가 풀림
+      return false
+    }
+    else{
+      return true;//disabled 하게
+    }
+  }
 
   const settings = {
     initialSlide:initial_state.current==="next"?what_im_looking-1:(initial_state.current==="prev"?what_im_looking+1:(initial_state.current==="end"?2:0)),
@@ -213,7 +221,7 @@ export default function FullScreenDialog() {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               신체정보기입
             </Typography>
-            <Button  autoFocus sx={{fontSize:"0.975rem",fontFamily:"Noto Sans KR",fontWeight:"lighter"}} color="inherit" onClick={sendInfo}>
+            <Button disabled={checkDisabled()}  autoFocus sx={{fontSize:"0.975rem",fontFamily:"Noto Sans KR",fontWeight:"lighter"}} color="inherit" onClick={sendInfo}>
               저장하기
             </Button>
           </Toolbar>

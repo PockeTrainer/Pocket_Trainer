@@ -25,7 +25,7 @@ function AlertMessage({sliderRef}){
                         <h4 className="heading mt-4">안녕하세요 {user_name}님!</h4>
                         <p>저희 포켓트레이너에 오신 것을 환영합니다!저희 서비스를 이용받기 위해서는 사전절차가 좀 더 필요합니다!</p>
                         <hr></hr>
-                        <p>지금 상담을 받아보시겠습니까?</p>
+                        <p>지금 안내를 받아보시겠습니까?</p>
                     </div>
             </div>
             <div className="modal-footer">

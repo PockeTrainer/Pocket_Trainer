@@ -27,6 +27,7 @@ import { none_testState } from '../../modules/action';
 import Finish from './Finish';
 
 import AlertModal from "../SameLayout/AlertModal";
+import AskingSkip from './AskingSkip';
 
 
 function CardLayout(){
@@ -38,10 +39,14 @@ function CardLayout(){
     const dispatch=useDispatch();
     const path=useLocation();//지속적으로 url이 바뀌는 걸 인식시켜서 이름 바뀌게,,
     const modalRef=useRef();//느낌표 눌렀을 때 뜨는 모달창 trigger button
+    const modal_Asking=useRef();//건너뛰기를 눌렀을 때의 모달창
 
 
-    const pageInfo=useSelector(state=>state.update_page_progress_reducer);//지금 현재 진행하고 있는 페이지의 부위와 운동명을 맡는다
 
+    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
+    const{part1}=routine_info;//부위정보 담아주기
+    const first_exercise_part=eval("part1"+"["+parseInt(0)+"]"+".eng_part");//해당 날짜의 첫운동의 부위를 알기위해서
 
     //동적 임포트-코드 스플릿팅이라고 부름
     const checkCategory=async()=>{
@@ -170,7 +175,13 @@ function CardLayout(){
         backgroundColor:"#f7fafc52"
     };
 
-    const click_modal=()=>{
+    const rotatingIconStyle={
+        lineHeight:"1.3",
+        color:"#2dce89",
+        fontSize:"1.8rem"
+    }
+
+    const click_modal=()=>{//오늘 그만두시겠습니까에 해당하는 모달을 보여줌
         modalRef.current.click();
     }
 
@@ -182,6 +193,23 @@ function CardLayout(){
    const gotohome=()=>{//다시메인페이지로 돌아가게
        navigate("/main/routine");
 
+   };
+
+   const click_modal_Asking=()=>{//건너뛰기에 대한 모달을 보여줌
+       modal_Asking.current.click();
+   }
+
+   const show_asking_skip=()=>{
+       if(path.pathname==="/routine/series"){
+           navigate(`/routine/series/${first_exercise_part}`)
+       }
+       else if(path.pathname==="/routine/caution"){
+           navigate("/routine/series");
+       }
+       else{
+            setTimeout(click_modal_Asking,1000);//모달창 띄워주기
+       }
+      
    }
 
    const showAlert=()=>{
@@ -200,6 +228,8 @@ function CardLayout(){
     useEffect(()=>{
         handleChange();
     },[])
+
+
 //transition용  
         return(
             <div>
@@ -261,9 +291,23 @@ function CardLayout(){
                                                                     borderRadius:"1.375rem"
                                                                 }}>{categoryName[path.pathname]}</span>
 
-                                                                <Button sx={skipButtonStyle}>
-                                                                    <span className="badge badge-default" style={skipSpan}>건너뛰기</span>
-                                                                </Button>
+                                                                {
+                                                                    path.pathname.includes("/weightcheck/practice")||path.pathname.includes("/finish")
+                                                                    ?
+                                                                        <i className="fas fa-spinner fa-spin" style={rotatingIconStyle}></i>
+                                                                    :
+                                                                    (path.pathname.includes("/finish")
+                                                                    ?
+                                                                        null
+                                                                    :
+                                                                    <>
+                                                                        <Button sx={skipButtonStyle} onClick={show_asking_skip}>
+                                                                            <span className="badge badge-default" style={skipSpan}>건너뛰기</span>
+                                                                        </Button>
+                                                                    </>
+                                                                    )
+                                                                    
+                                                                }
                                                                 
 
                                                             </div>
@@ -298,7 +342,9 @@ function CardLayout(){
                                         </List>
 
                                         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-stop_today">Default</button>
+                                        <button ref={modal_Asking} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-asking">Default</button>
                                         <AlertModal where="stop_today"  />
+                                        <AskingSkip/>
                                     </div>
                                     
                             </div> 

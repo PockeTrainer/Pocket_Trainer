@@ -91,6 +91,7 @@ function Finish(){
         return true;
     }
 
+    //이와같이 다시 새롭게 호출해주는 이유는 서버로 부터 제일 최신의 정보를 가져와주기위해서
     useEffect(async()=>{
         let bodypart=new Set();//부위는 중복되는게 있기에 set 선택-중복안되도록
         let part1=[];

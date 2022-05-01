@@ -7,7 +7,7 @@ import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { set_exercise_record,last_record } from "../../modules/action";
+import { set_exercise_record,last_record} from "../../modules/action";
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
@@ -30,7 +30,6 @@ function WeightCheckInstruction(){
     const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
-    console.log("part"+parseInt(current_bodypart+1)+'['+current_exercise+']'+".name")
 
     const now_exercise_name=eval("part"+parseInt(current_bodypart+1)+'['+current_exercise+']'+".name");//현재페이지의 한국어운동명을 넣어줌
     const dispatch=useDispatch();
@@ -43,7 +42,7 @@ function WeightCheckInstruction(){
 
     useEffect(async()=>{
 
-            await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.exercise_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.exercise_name}/${id}`)
             .then((res) => {
                 let time_format_result="0초";
                 console.log(res.data);

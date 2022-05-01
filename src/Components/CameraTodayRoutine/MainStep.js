@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 import AlertModal from "../SameLayout/AlertModal";
-import {timeToModal,how_long} from "../../modules/action"
+import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt} from "../../modules/action"
 
 import axios from "axios"
 function MainStep(){
@@ -32,7 +32,8 @@ function MainStep(){
 
     const dispatch=useDispatch();
 
-    const current_weight=useSelector(state=>state.change_current_weight_reducer.current_weight);//연습스텝에서 설정한 무게를 보여준다
+    const current_weight_info=useSelector(state=>state.change_current_weight_reducer);//연습스텝에서 설정한 무게를 보여준다
+    const {current_weight,current_time,current_cnt}=current_weight_info;//중량,시간,개수를 받아둔다
     const count_result=useSelector(state=>state.exercise_count_reducer.pushup);//여기는 나중에 각 운동에 대한 모델에 의존한 개수 결과를 보여줘야한다..지금은 푸시업으로 예시
     const howmanySet=useSelector(state=>state.change_set_reducer.current_set)//진행세트 수
     const modalTime=useSelector(state=>state.change_timeToModal_reducer.modalTime)//모딜창을 열지 말지..
@@ -41,6 +42,13 @@ function MainStep(){
     const[min,setMin]=useState(0);
     const time=useRef(0);
 
+    const [get_data,set_get_data]=useState(false);//데이터를 서버로 부터 받아오는지 여부-즉 weightcheck를 건너뛰었는지 여부이다
+    const key_for_unit=useRef("");//각 운동에 따른 단위를 의미함
+    const key_for_result=useRef("");//각 운동에 따른 담은 최종 객체를 위한 키값
+    const result=useRef("");//플랭크,시티드니업,크런치 외 기타 운동에 따른 표현 중량,개수,시간을 나타내주는 객체
+
+    const [plank_min,set_plank_min]=useState(0);//플랭크시 필요한 분-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
+    const [plank_sec,set_plank_sec]=useState(0);//플랭크시 필요한 초-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
     //위에는 각종 상수및 state
 
 
@@ -65,11 +73,17 @@ function MainStep(){
     const today=new Date();
     const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
 
+    const unit={//운동에 따른 단위
+        count_demand:"개",
+        weight_demand:"KG",
+        etc:""
+    }
+
     const sendData=async()=>{
             await axios.put(`http://127.0.0.1:8000/api/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
                 workout_set:howmanySet,
                 workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60)
-            })//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            })//각 세트 끝날 때마다 현재진행 세트 수와 현재까지의 운동시간을 보내준다
             .then((res) => {
                 console.log(res.data);
 
@@ -78,6 +92,70 @@ function MainStep(){
                 console.log(err)
             })
     }
+
+    const sendStartWorkoutTime=async()=>{//운동 시작시간을 서버로 보내준다
+        await axios.post(`http://127.0.0.1:8000/api/workout/startDateTime/${exercise_name.exercise_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+            .then((res) => {
+                console.log(res.data);
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    };
+
+    const getDataFromServer=async()=>{//서버로부터 해당운동의 정보를 가져온다-weightcheck를 안했을 때 사용
+        await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise_name.exercise_name}/${id}`)
+        .then((res) => {
+                let time_format_result="0초";
+                console.log(res.data);
+                dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
+
+                if(exercise_name.exercise_name==="plank"){
+                    let format=res.data.target_time.split(":");
+                    let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
+
+                    if(format[1]==="00"){
+                        time_format_result=format[2]+"초";
+                    }
+                    else{
+                        time_format_result=format[1]+"분"+format[2]+"초";
+                    }
+                    key_for_unit.current="etc";
+                    dispatch(set_current_time(sec_converted));//리덕스에 올리기
+                    dispatch(last_record(sec_converted));//마지막 기록을 혹시나 체크단계에서 변경될것을 대비해 저장해둠
+                }
+                else if(exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="crunch"){
+                    key_for_unit.current="count_demand";
+                    dispatch(set_current_cnt(res.data.target_cnt));//리덕스에 올리기
+                    dispatch(last_record(res.data.target_cnt));
+                }
+                else{
+                    key_for_unit.current="weight_demand";
+                    dispatch(set_current_weight(res.data.target_kg));//리덕스에 올리기
+                    dispatch(last_record(res.data.target_kg))
+                }
+
+                result.current={
+                    plank:time_format_result,
+                    crunch:res.data.target_cnt,
+                    seated_knees_up:res.data.target_cnt,
+                    etc:res.data.target_kg
+                }
+
+                if(exercise_name.exercise_name!=="plank"&&exercise_name.exercise_name!=="crunch"&&exercise_name.exercise_name!=="seated_knees_up"){
+                    key_for_result.current="etc";
+                }
+                else{
+                    key_for_result.current=exercise_name.exercise_name;
+                }
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
 
     const start=()=>{
         timeId.current=setInterval(()=>{
@@ -94,6 +172,17 @@ function MainStep(){
             start();//스탑워치 시작
             previous_testState.current=testState;//이전값이랑 비교하기 위해 담아둔다
             setTimeout(handleMessageChange,1000);
+            sendStartWorkoutTime();//운동시작시간을 서버로 보냄
+            if(current_weight===1000 && current_cnt===1000 && current_time===1000){//즉 weighcheck 단계를 건너뛰었음을 의미함
+                getDataFromServer();//서버로부터 예전 정보가져오기-아무 정보가 없으니,,
+                set_get_data(true);//데이터를 새롭게 호출했음을 알림
+            }
+            else{
+                if(exercise_name.exercise_name==="plank"){//weightcheck를 했는데 만약 플랭크일 때에는 포맷을 하나 만들어줄것
+                    set_plank_min(parseInt(current_time/60));//플랭크시 분
+                    set_plank_sec(current_time%60);//플랭크시 초
+                }
+            }
         }
 
         if(count_result===1){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
@@ -249,7 +338,36 @@ function MainStep(){
                 justifyContent:"center",
                 alignItems:"center",
                }}>
-                   <span className="badge badge-primary" style={ShowWeight}>{current_weight}kg</span>
+                   {
+                       get_data===true
+                       &&
+                        <span className="badge badge-primary" style={ShowWeight}>{result.current[key_for_result.current]}{unit[key_for_unit.current]}</span>
+                       
+                   }
+                   {
+                       exercise_name.exercise_name==="plank"&&get_data===false
+                       &&
+                       <span className="badge badge-primary" style={ShowWeight}>{plank_min===0?plank_sec+"초":plank_min+"분"+plank_sec+"초"}</span>
+                   }
+                   {
+                       exercise_name.exercise_name==="seated_knees_up"&&get_data===false
+                       &&
+                       <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
+                   }
+                   {
+                       exercise_name.exercise_name==="crunch"&& get_data===false
+                       &&
+                       <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
+                   }
+                   {
+                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"&&get_data===false
+                       ?
+                       <span className="badge badge-primary" style={ShowWeight}>{current_weight}KG</span>
+                       :
+                       null
+                   }
+                   
+                  
                </div>
                
             </div>

@@ -5,8 +5,9 @@ import Timer from "../ExerciseCounter/WithCamera/Timer";
 import LinearWithValueLabel from "./LinearWithValueLabel";
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/system";
-import { none_testState, reset,reset_set,not_timeToModal } from "../../modules/action";
-import { useNavigate, useParams } from "react-router-dom";
+import { none_testState, reset,reset_set,not_timeToModal} from "../../modules/action";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
 
 
 import axios from "axios";
@@ -23,7 +24,9 @@ const Pstyled=styled('p')((props)=>({
     fontWeight:props.bold=="lighter"?"lighter":"600",
     lineWeight:"1.0",
     marginBottom:"0"
-}))
+}));
+
+
 
 function AlertModal({where}){
     let key_for_sendData=useRef("");
@@ -48,6 +51,7 @@ function AlertModal({where}){
     const{current_bodypart,current_exercise,is_First}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
     const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
+
 
     const handleClose=()=>{
         closeRef.current.click();
@@ -92,7 +96,19 @@ function AlertModal({where}){
         }
     },[])
 
-    console.log(where)
+    const sendEndWorkoutTime=async()=>{//운동 종료시간을 서버로 보내준다
+        const today=new Date();
+        const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
+    
+        await axios.post(`http://127.0.0.1:8000/api/workout/endDateTime/${exercise.exercise_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+        .then((res) => {
+            console.log(res.data);
+    
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    };
 
     if(where==="confirm"){
         const today=new Date();
@@ -109,7 +125,6 @@ function AlertModal({where}){
             
             // setTimeout(handleClose,500);
             dispatch(none_testState());//다시 카메라상태 끄기로 변경
-            dispatch(reset());//눌린버튼들에 대한 정보 초기화-다음페이지로 넘어가니까
             sleep(2000).then(()=>navigate("/routine/exercise/"+exercise.exercise_name));
             
         }
@@ -173,7 +188,9 @@ function AlertModal({where}){
     else if(where==="stop_today"){
 
         const gotoFinish=()=>{
+            sendEndWorkoutTime();//해당 스텝에서 운동을 끝낼려고 하니 서버로 운동종료시간을 보내줌
             dispatch(none_testState());
+            dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
             closeRef.current.click();
             navigate("/routine/finish");
         }
@@ -221,6 +238,7 @@ function AlertModal({where}){
         }
 
         const gotoFeedback=()=>{
+            sendEndWorkoutTime();//운동종료시간을 서버로 저장하게 함
             dispatch(none_testState());//다시 카메라 준비상태로 다시원상태로 복귀
             dispatch(reset_set());//다시 세트초기화
             dispatch(not_timeToModal());//다시 모달창 없애기

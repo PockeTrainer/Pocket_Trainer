@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Zoom from '@mui/material/Zoom';
 import { useNavigate } from "react-router-dom";
-import { exercise_start, next_exercise, next_part} from "../../modules/action";
+import { exercise_start, next_exercise, next_part,final_result_page,reset} from "../../modules/action";
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
@@ -45,13 +45,18 @@ function ScrollButton(props) {
     },[])
 
     useEffect(()=>{
-      let next_page=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]");
       if(count.current===1){
         count.current+=1;
         return;
       }
       sendFeedBack();//서버로 api전송
-      navigate("/routine/series/"+next_page.eng_part);
+      if(current_bodypart===0&&current_exercise===0){
+        navigate("/routine/finish")
+      }
+      else{
+        let next_page=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]");
+        navigate("/routine/series/"+next_page.eng_part);
+      }
     },[current_bodypart])//즉 부위의 정보가 다음칸으로 건너뛰었으면 실행해줌
   
     const navigate=useNavigate();
@@ -78,14 +83,18 @@ function ScrollButton(props) {
           changeModalTime(true);//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
         }
         else{
-          dispatch(next_exercise());//다음운동으로 운동정보 업데이트
           sendFeedBack();//피드백 전송
+          dispatch(next_exercise());//다음운동으로 운동정보 업데이트
+          dispatch(reset());//current_weight이런 현재 운동이 가지고 있던 정보들 리셋시킴
           navigate("/routine/weightcheck/"+next_exercise_obj.eng_name);
         }
        
       }
       else if(content==="다음부위"){
         dispatch(next_part());//다음부위로 운동정보 업데이트
+      }
+      else if(content==="종료"){
+        dispatch(final_result_page());//현재부위와 현재까지 했던 운동들을 초기화
       }
     };
 
@@ -100,14 +109,14 @@ function ScrollButton(props) {
         else{
           modified_grade=2;
         }
-        await axios.put(`http://127.0.0.1:8000/api/workout/feedback/${exercise_name.exercise_name}/${id}`,{
+        await axios.put(`http://127.0.0.1:8000/api/workout/changeWorkoutFeedback/${exercise_name.exercise_name}/${id}`,{
             feedback:modified_grade
         })//피드백 결과가 생기면-api로 보내주기
         .then((res) => {
             console.log(res.data);
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err.response.data)
         })
         
     }

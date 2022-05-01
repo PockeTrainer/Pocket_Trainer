@@ -41,7 +41,7 @@ function CardLayout(props){
         await axios.get(`http://127.0.0.1:8000/api/workout/todayRoutine/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
         .then((res) => {
 
-            console.log(res.data.todayRoutine);
+            console.log(res.data);
             let tmp=res.data.todayRoutine;
 
             tmp.map((info,index)=>{
