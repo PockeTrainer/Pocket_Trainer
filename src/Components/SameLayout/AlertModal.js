@@ -88,7 +88,7 @@ function AlertModal({where}){
     },[count_result])
 
     useEffect(()=>{
-        if(exercise.exercise_name==="plank"){
+        if(exercise.exercise_name==="bench_press"){
             if(plank_time_state&&howmanySet!==5){//이건 다시 리셋이 되었을 때의 상황을 의미한다
                 // setTimeout(handleClose,500);//다시 모달창 닫아주기
                 handleClose();

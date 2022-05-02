@@ -8,11 +8,17 @@ import Slide from '@mui/material/Slide';
 import Stack from '@mui/material/Stack';
 import { useParams } from "react-router-dom";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import CampaignIcon from '@mui/icons-material/Campaign';
 
 import AlertModal from "../SameLayout/AlertModal";
 import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
 
-import axios from "axios"
+import axios from "axios";
+
+function sleep(ms){
+    return new Promise((r)=>setTimeout(r,ms));
+}
+
 function MainStep(){
     const id=sessionStorage.getItem("user_id");
 
@@ -25,6 +31,7 @@ function MainStep(){
     const [checked, setChecked] = useState(false);//전체 카메라화면 transition
     const [showChecked, setShowChecked] = useState(false);//세트수 transition
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
+    const [plank_message,set_plank_message]=useState(false);//플랭크시 사용되는 메시지 transition
     
     
 
@@ -46,7 +53,7 @@ function MainStep(){
 
     const [plank_min,set_plank_min]=useState(0);//플랭크시 필요한 분-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
     const [plank_sec,set_plank_sec]=useState(0);//플랭크시 필요한 초-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
-    const plank_timer_type=useRef("pre_timer");//플랭크 준비용 타이머(pre_timer),본 타이머(main_timer) 
+    const [plank_timer_type,set_plank_timer_type]=useState("pre_timer");//플랭크 준비용 타이머(pre_timer),본 타이머(main_timer) 
     const plank_timeId=useRef();//플랭크용 timeId
     const plank_time_state=useSelector(state=>state.plank_time_update_reducer.plank_state);//디폴트로는 true로 되어있음
     const plank_time=useRef(5);//플랭크 시간-준비시간 5초로 시작함
@@ -62,6 +69,9 @@ function MainStep(){
         setShowChecked((prev) => !prev);
     };
 
+    const handlePlankMessageChange=()=>{//플랭크 메시지 보여주는 용도
+        set_plank_message(prev=>!prev);
+    }
     const handleChange = () => {
         setChecked((prev) => !prev);
         };
@@ -106,7 +116,7 @@ function MainStep(){
                 console.log(res.data);
                 dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
 
-                if(exercise_name.exercise_name==="plank"){
+                if(exercise_name.exercise_name==="bench_press"){
                     let format=res.data.target_time.split(":");
                     let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
 
@@ -205,27 +215,35 @@ function MainStep(){
     },[howmanySet])
 
     useEffect(()=>{//플랭크일 때만 타이머가 가동됨
-        if(exercise_name.exercise_name==="plank"&&plank_time_state&&!modalTime){
+        if(exercise_name.exercise_name==="bench_press"&&plank_time_state&&!modalTime){
+            console.log("여기 들어오오오아?:",plank_time_state)
             plankTimerStart();//플랭크 타이머 시작
+            handlePlankMessageChange();//열기
             return () => clearInterval(plank_timeId.current);
         }
-    },[plank_time_state])
+    },[plank_time_state,modalTime])
+
+
 
     useEffect(()=>{
-        if(exercise_name.exercise_name==="plank"){
+        if(exercise_name.exercise_name==="bench_press"){
+            if(plank_time.current===0 && plank_timer_type==="pre_timer"){
+                handlePlankMessageChange();//닫기
+            }
             if(plank_time.current<0){
                 clearInterval(plank_timeId.current);
                 plank_timeId.current=null;
-
-                if(plank_timer_type.current==="pre_timer"){
+                if(plank_timer_type==="pre_timer"){
                     plank_time.current=5;//이 부분에 current_time으로 넣어줄 것
+                    handlePlankMessageChange();//열기
+                    setTimeout(handlePlankMessageChange,1000);
                     plankTimerStart();//다시 재시작
-                    plank_timer_type.current="main_timer";//본 타이머로 들어감을 알림
+                    set_plank_timer_type("main_timer");//본 타이머로 들어감을 알림
                 }
                 else{//본 스텝에서 끝났을 때
                     dispatch(plank_time_set(false));//플랭크 타이머가 다 돌아갔음을 알림
                     plank_time.current=5;
-                    plank_timer_type.current="pre_timer";
+                    set_plank_timer_type("pre_timer");
                 }
 
             }
@@ -252,6 +270,16 @@ function MainStep(){
         fontSize:"2em",
         top:"5em",
         backgroundColor:"#f7fafc",
+        lineHeight:"1.5em"
+    }
+
+    const plankMessageStyle={
+        position:"absolute",
+        color:"#13ff9a",
+        zIndex:"1",
+        fontSize:"2.5rem",
+        top:"8em",
+        backgroundColor:"rgb(45 206 137 / 0%)",
         lineHeight:"1.5em"
     }
 
@@ -309,6 +337,11 @@ function MainStep(){
     const content={
         false:"불러오는중..",
         completed:"준비완료!",
+    };
+
+    const plank_message_content={
+        pre_timer:"엎드리세요!",
+        main_timer:"시작!"
     }
     return(
         <>
@@ -334,7 +367,7 @@ function MainStep(){
                </div>
 
                {//여기 플랭크로 이름 다 나중에 바꿔주기
-                   exercise_name.exercise_name!=="plank"
+                   exercise_name.exercise_name!=="bench_press"
                    &&
                    <div style={{
                     display:"flex",
@@ -354,7 +387,7 @@ function MainStep(){
                }}>
                    
                    {
-                       exercise_name.exercise_name==="plank"
+                       exercise_name.exercise_name==="bench_press"
                        &&
                        <span className="badge badge-primary" style={{...ShowWeight,right:"0px"}}>{plank_min===0?plank_sec+"초":plank_min+"분"+plank_sec+"초"}</span>
                    }
@@ -369,7 +402,7 @@ function MainStep(){
                        <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
                    }
                    {
-                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
+                       exercise_name.exercise_name!=="bench_press" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
                        ?
                        <span className="badge badge-primary" style={ShowWeight}>{current_weight}KG</span>
                        :
@@ -402,6 +435,21 @@ function MainStep(){
                     </div>
                 </div>
         </Grow>
+
+
+        {
+            exercise_name.exercise_name==="bench_press"
+            &&
+            <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+               }}>
+                <Zoom in={plank_message}><span className="badge badge-primary" style={plankMessageStyle}><CampaignIcon sx={{color:"white",fontSize:"1.5em"}}/>{plank_message_content[plank_timer_type]}</span></Zoom>
+            </div>
+
+        }
+        
 
         <div style={{
                 display:"flex",
