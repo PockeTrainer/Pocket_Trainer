@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import LogoutIcon from "@mui/icons-material/Logout";
 import BodySequence from './BodySequence';
@@ -181,6 +182,10 @@ function CardLayout(){
         fontSize:"1.8rem"
     }
 
+    const checkIconStyle={
+        color:"#2dce89",
+        fontSize:"1.8rem"
+    }
     const click_modal=()=>{//오늘 그만두시겠습니까에 해당하는 모달을 보여줌
         modalRef.current.click();
     }
@@ -292,13 +297,13 @@ function CardLayout(){
                                                                 }}>{categoryName[path.pathname]}</span>
 
                                                                 {
-                                                                    path.pathname.includes("/weightcheck/practice")||path.pathname.includes("/finish")
+                                                                    path.pathname.includes("/weightcheck/practice")
                                                                     ?
                                                                         <i className="fas fa-spinner fa-spin" style={rotatingIconStyle}></i>
                                                                     :
                                                                     (path.pathname.includes("/finish")
                                                                     ?
-                                                                        null
+                                                                        <CheckCircleIcon sx={checkIconStyle}/>
                                                                     :
                                                                     <>
                                                                         <Button sx={skipButtonStyle} onClick={show_asking_skip}>

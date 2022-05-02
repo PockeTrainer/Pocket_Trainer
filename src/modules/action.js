@@ -21,7 +21,8 @@ const PRE_TIMER="pre_timer";
 const PUSHUP_COUNT="pushup_count";
 const SITUP_COUNT="situp_count ";
 const SQUAT_COUNT="squat_count";
-const RESET_COUNT="reset_count"
+const RESET_COUNT="reset_count";
+const PLANK_TIME_SET="plank_time_set";
 //운동추천 루틴페이지에서 눌린 버튼변경 액션
 const CHANGE_CLICKED_BUTTON="change_clicked_button";
 //루틴페이지에서 어디에있는지를 알려주는 액션
@@ -137,7 +138,12 @@ export const squat_count=()=>({
 
 export const reset_count=()=>({
     type:RESET_COUNT
-})
+});
+
+export const plank_time_set=(value)=>({//타이머가 끝났을 경우 플랭크시간의 리랜더링을 위한 목적이지 사실 데이터 자체는 큰 의미는없음 Timer->MainStep으로 알려주기위해서
+    type:PLANK_TIME_SET,
+    value
+});
 
 export const change_clicked_button=(button_name)=>({
     type:CHANGE_CLICKED_BUTTON,
@@ -330,10 +336,14 @@ const initialTestState={//체력측정 들어갔는지 안 들어갔는지
     testState:"false",
     urlState:""
 }
-const initialExercise={//체력측정시 각 개수를 의미
+const initialExercise={//체력측정시 각 개수를 의미-플랭크 시간은 별도로 타이머에서 리셋시키는 용도로 필요함
     pushup:0,
     situp:0,
-    squat:0
+    squat:0,
+}
+
+const initialPlankTime={//true이면 플랭크 타이머가 돌아간다는 중 false면 휴식세트중
+    plank_state:true
 }
 const initialClickedButton={//루틴 추천시 어떤 부위가 눌렸는지
     clickedButton:"total"
@@ -510,6 +520,18 @@ export function exercise_count_reducer(state=initialExercise,action){//체력측
         }    
         default:
             return state;
+    }
+}
+
+export function plank_time_update_reducer(state=initialPlankTime,action){
+    switch (action.type){
+        case PLANK_TIME_SET://준비시간 5초로 설정해주어라 이런 뜻,, 자체적인 큰 뜻은 없다..
+            return{
+                ...state,
+                plank_state:action.value
+            }
+        default:
+            return state;    
     }
 }
 

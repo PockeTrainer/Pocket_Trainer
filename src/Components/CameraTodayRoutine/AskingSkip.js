@@ -11,7 +11,7 @@ import { useSelector,useDispatch } from "react-redux";
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 import PersonIcon from '@mui/icons-material/Person';
 import CancelIcon from '@mui/icons-material/Cancel';
-import {next_exercise,next_part,final_result_page,reset,none_testState} from "../../modules/action";
+import {next_exercise,next_part,final_result_page,reset,none_testState,reset_set} from "../../modules/action";
 import axios from "axios";
 
 
@@ -157,7 +157,7 @@ function AskingSkip(){
 
     const goto_next=()=>{
         console.log(dispatch_state);
-        if(dispatch_state.current==="goto_exercise"){
+        if(dispatch_state.current==="goto_exercise"){//중량체크에서 운동으로 넘어감
             handleClose();
             navigate(route_url.current);
         }
@@ -168,23 +168,28 @@ function AskingSkip(){
             }
             dispatch(none_testState());//다시 카메라 준비상태로 다시원상태로 복귀
             dispatch(reset());//현재 가지고있던 운동정보 초기화 시키기
+            dispatch(reset_set());//세트 초기화
             dispatch(next_exercise());
         }
         else if(dispatch_state.current==="next_part"){
             if(path.pathname.includes("exercise")){
                 dispatch(none_testState());//다시 카메라 준비상태로 다시원상태로 복귀
+                dispatch(reset_set());//세트 초기화
                 sendEndWorkoutTime();//다음부위로 뛰기전에 운동스텝에서는 운동시간 종료해줘야함
+                
             }
             dispatch(reset());//현재 가지고있던 운동정보 초기화 시키기
             dispatch(next_part());
         }
         else if(dispatch_state.current==="next_next_exercise"){
             dispatch(reset());//현재 가지고있던 운동정보 초기화 시키기
+            dispatch(reset_set());//세트 초기화
             dispatch(next_exercise());
             dispatch(next_exercise());
         }
         else if(dispatch_state.current==="next_next_part"){
             dispatch(reset());//현재 가지고있던 운동정보 초기화 시키기
+            dispatch(reset_set());//세트 초기화
             dispatch(next_part());
             dispatch(next_part());
         }
@@ -194,6 +199,7 @@ function AskingSkip(){
                 dispatch(none_testState());//다시 카메라 준비상태로 다시원상태로 복귀
             }
             dispatch(reset());//현재 가지고있던 운동정보 초기화 시키기
+            dispatch(reset_set());//세트 초기화
             dispatch(final_result_page());
         }
         handleClose();
@@ -205,7 +211,7 @@ function AskingSkip(){
             set_content(<Pstyled bold="lighter">{now_exercise.name}를 건너뛰시겠습니까?</Pstyled>);
             if(next_exercise_info===undefined){
                 if(next_part_info===undefined){//이건 다음 페이지가 final로서 더 이상 건너뛰기가 의미가없음
-                    set_content(<Pstyled bold="lighter">모든 운동이 끝났습니다!결과페이지로 이동합니다</Pstyled>);
+                    set_content(<Pstyled bold="lighter">{now_exercise.name}을 건너뛰시면 오늘의 루틴은 끝입니다!결과페이지로 이동하시겠습니까?</Pstyled>);
                     route_url.current=`/routine/finish`;
                     dispatch_state.current="final_page";
                 }
@@ -234,7 +240,7 @@ function AskingSkip(){
         else if(path.pathname.includes("evaluation")){//다음 운동 스킵 물어봄
             if(next_exercise_info===undefined){//다음 운동이 없을 때 즉 다음 부위 물어볼때 상황-부위 스킵을 할지,다음 운동을 스킵할지 물어봄
                 if(next_part_info===undefined){//이건 다음 페이지가 final로서 더 이상 건너뛰기가 의미가없음
-                    set_content(<Pstyled bold="lighter">모든 운동이 끝났습니다!결과페이지로 이동합니다</Pstyled>);
+                    set_content(<Pstyled bold="lighter">모든 운동이 끝났습니다!결과페이지로 이동하시겠습니까?</Pstyled>);
                     route_url.current=`/routine/finish`;
                     dispatch_state.current="final_page";
                 }
@@ -319,7 +325,7 @@ function AskingSkip(){
                     
 
                     {
-                            (is_First&&path.pathname.includes("weightcheck"))||path.pathname.includes("finish")
+                            (is_First&&path.pathname.includes("weightcheck"))
                             ?
                                 <div className="modal-footer" style={{justifyContent:"center"}}>
                             

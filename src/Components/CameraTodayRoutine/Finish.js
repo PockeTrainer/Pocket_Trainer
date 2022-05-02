@@ -34,6 +34,7 @@ import Chip from '@mui/material/Chip';
 
 import { routine_info } from '../../modules/action'; 
 import { useDispatch,useSelector} from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
@@ -50,6 +51,7 @@ function Finish(){
     const date=today.getDate();//오늘이 몇일인지
 
     const dispatch=useDispatch();
+    const navigate=useNavigate();
     let clear_count=useRef(0);//몇개부위 클리어했는지 개수
     let clear_or_not=useRef([]);//각 부위별 성공여부를 담고있는다 ex)true,true,false
 
@@ -167,6 +169,8 @@ function Finish(){
                 let tmp_name=module[info.workout_name.workout_name].name
                 fail_list.push(tmp_name);//실패한 운동들의 한국이름을 담아준다.
                }
+
+               console.log(workout_time)
 
             })
         })
@@ -495,8 +499,8 @@ function Finish(){
                         </Accordion>
 
                         <div className="modal-footer" style={{padding:"0rem",marginTop:"2em",justifyContent:"space-between"}}>
-                                    <button  type="button" className="btn btn-primary"><i className="ni ni-calendar-grid-58"></i>히스토리</button>
-                                    <button  type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-power"></i>나가기</button>
+                                    <button onClick={()=>navigate("/history")}  type="button" className="btn btn-primary"><i className="ni ni-calendar-grid-58"></i>히스토리</button>
+                                    <button onClick={()=>navigate("/main/routine")}  type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-power"></i>나가기</button>
                         </div>
             </CardWrapper>
 

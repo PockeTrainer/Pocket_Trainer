@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 import AlertModal from "../SameLayout/AlertModal";
-import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt} from "../../modules/action"
+import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
 
 import axios from "axios"
 function MainStep(){
@@ -42,15 +42,15 @@ function MainStep(){
     const[min,setMin]=useState(0);
     const time=useRef(0);
 
-    const [get_data,set_get_data]=useState(false);//데이터를 서버로 부터 받아오는지 여부-즉 weightcheck를 건너뛰었는지 여부이다
-    const key_for_unit=useRef("");//각 운동에 따른 단위를 의미함
-    const key_for_result=useRef("");//각 운동에 따른 담은 최종 객체를 위한 키값
-    const result=useRef("");//플랭크,시티드니업,크런치 외 기타 운동에 따른 표현 중량,개수,시간을 나타내주는 객체
+
 
     const [plank_min,set_plank_min]=useState(0);//플랭크시 필요한 분-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
     const [plank_sec,set_plank_sec]=useState(0);//플랭크시 필요한 초-weightcheck를 했을 때,안했을 때에는 이미 포맷이 정해져있음
+    const plank_timer_type=useRef("pre_timer");//플랭크 준비용 타이머(pre_timer),본 타이머(main_timer) 
+    const plank_timeId=useRef();//플랭크용 timeId
+    const plank_time_state=useSelector(state=>state.plank_time_update_reducer.plank_state);//디폴트로는 true로 되어있음
+    const plank_time=useRef(5);//플랭크 시간-준비시간 5초로 시작함
     //위에는 각종 상수및 state
-
 
 
     //메시지 띄워주는 용도
@@ -73,11 +73,6 @@ function MainStep(){
     const today=new Date();
     const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
 
-    const unit={//운동에 따른 단위
-        count_demand:"개",
-        weight_demand:"KG",
-        etc:""
-    }
 
     const sendData=async()=>{
             await axios.put(`http://127.0.0.1:8000/api/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
@@ -115,39 +110,17 @@ function MainStep(){
                     let format=res.data.target_time.split(":");
                     let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
 
-                    if(format[1]==="00"){
-                        time_format_result=format[2]+"초";
-                    }
-                    else{
-                        time_format_result=format[1]+"분"+format[2]+"초";
-                    }
-                    key_for_unit.current="etc";
+
                     dispatch(set_current_time(sec_converted));//리덕스에 올리기
                     dispatch(last_record(sec_converted));//마지막 기록을 혹시나 체크단계에서 변경될것을 대비해 저장해둠
                 }
                 else if(exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="crunch"){
-                    key_for_unit.current="count_demand";
                     dispatch(set_current_cnt(res.data.target_cnt));//리덕스에 올리기
                     dispatch(last_record(res.data.target_cnt));
                 }
                 else{
-                    key_for_unit.current="weight_demand";
                     dispatch(set_current_weight(res.data.target_kg));//리덕스에 올리기
                     dispatch(last_record(res.data.target_kg))
-                }
-
-                result.current={
-                    plank:time_format_result,
-                    crunch:res.data.target_cnt,
-                    seated_knees_up:res.data.target_cnt,
-                    etc:res.data.target_kg
-                }
-
-                if(exercise_name.exercise_name!=="plank"&&exercise_name.exercise_name!=="crunch"&&exercise_name.exercise_name!=="seated_knees_up"){
-                    key_for_result.current="etc";
-                }
-                else{
-                    key_for_result.current=exercise_name.exercise_name;
                 }
 
         })
@@ -157,7 +130,7 @@ function MainStep(){
     }
 
 
-    const start=()=>{
+    const start=()=>{//운동 스탑워치용
         timeId.current=setInterval(()=>{
             setMin(parseInt(time.current/60));
             setSec(time.current%60);
@@ -165,6 +138,18 @@ function MainStep(){
         }
         ,1000)
     }
+
+    const plankTimerStart=()=>{//플랭크 타이머용 
+        plank_timeId.current=setInterval(()=>{
+            set_plank_min(parseInt(plank_time.current/60));
+            set_plank_sec(plank_time.current%60);
+            plank_time.current-=1;
+        }
+        ,1000)
+    }
+
+    
+
     useEffect(()=>{
         if(count.current===1){
             handleChange();// 전체화면트랜지션
@@ -174,18 +159,12 @@ function MainStep(){
             setTimeout(handleMessageChange,1000);
             sendStartWorkoutTime();//운동시작시간을 서버로 보냄
             if(current_weight===1000 && current_cnt===1000 && current_time===1000){//즉 weighcheck 단계를 건너뛰었음을 의미함
-                getDataFromServer();//서버로부터 예전 정보가져오기-아무 정보가 없으니,,
-                set_get_data(true);//데이터를 새롭게 호출했음을 알림
+                getDataFromServer();//서버로부터 예전 정보가져오기-중량체크를 안하면 current_weight정보가 없음 아무 정보가 없으니,,
             }
-            else{
-                if(exercise_name.exercise_name==="plank"){//weightcheck를 했는데 만약 플랭크일 때에는 포맷을 하나 만들어줄것
-                    set_plank_min(parseInt(current_time/60));//플랭크시 분
-                    set_plank_sec(current_time%60);//플랭크시 초
-                }
-            }
+
         }
 
-        if(count_result===1){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
+        if(count_result===1||(plank_time.current===5 && plank_time_state===false)){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
             dispatch(timeToModal())//모달창을 이제 쓰겠다 그러니 타이머를 돌려라 이런뜻..
             return;
         }
@@ -195,7 +174,7 @@ function MainStep(){
             // 처음에는 문자보여주고 두번째 랜더링시 문자다시 숨기기
             previous_testState.current=testState
         }
-    },[testState,count_result])
+    },[testState,count_result,plank_time_state])
 
     useEffect(()=>{
 
@@ -224,6 +203,35 @@ function MainStep(){
         handleShowSetChange();//각 몇 세트인지 알려주는 transition
         setTimeout(handleShowSetChange,1500);
     },[howmanySet])
+
+    useEffect(()=>{//플랭크일 때만 타이머가 가동됨
+        if(exercise_name.exercise_name==="plank"&&plank_time_state&&!modalTime){
+            plankTimerStart();//플랭크 타이머 시작
+            return () => clearInterval(plank_timeId.current);
+        }
+    },[plank_time_state])
+
+    useEffect(()=>{
+        if(exercise_name.exercise_name==="plank"){
+            if(plank_time.current<0){
+                clearInterval(plank_timeId.current);
+                plank_timeId.current=null;
+
+                if(plank_timer_type.current==="pre_timer"){
+                    plank_time.current=5;//이 부분에 current_time으로 넣어줄 것
+                    plankTimerStart();//다시 재시작
+                    plank_timer_type.current="main_timer";//본 타이머로 들어감을 알림
+                }
+                else{//본 스텝에서 끝났을 때
+                    dispatch(plank_time_set(false));//플랭크 타이머가 다 돌아갔음을 알림
+                    plank_time.current=5;
+                    plank_timer_type.current="pre_timer";
+                }
+
+            }
+        }
+
+    },[plank_sec])
   
 
     const setName={
@@ -325,42 +333,43 @@ function MainStep(){
                    <span className="badge" style={MainStep}>{howmanySet}세트중</span>
                </div>
 
-               <div style={{
-                display:"flex",
-                justifyContent:"center",
-                alignItems:"center",
-               }}>
-                   <span className="badge badge-primary" style={ShowCount}>{count_result}개</span>
-               </div>
+               {//여기 플랭크로 이름 다 나중에 바꿔주기
+                   exercise_name.exercise_name!=="plank"
+                   &&
+                   <div style={{
+                    display:"flex",
+                    justifyContent:"center",
+                    alignItems:"center",
+                   }}>
+                       <span className="badge badge-primary" style={ShowCount}>{count_result}개</span>
+                   </div>
+
+               }
+              
 
                <div style={{
                 display:"flex",
                 justifyContent:"center",
                 alignItems:"center",
                }}>
+                   
                    {
-                       get_data===true
+                       exercise_name.exercise_name==="plank"
                        &&
-                        <span className="badge badge-primary" style={ShowWeight}>{result.current[key_for_result.current]}{unit[key_for_unit.current]}</span>
-                       
+                       <span className="badge badge-primary" style={{...ShowWeight,right:"0px"}}>{plank_min===0?plank_sec+"초":plank_min+"분"+plank_sec+"초"}</span>
                    }
                    {
-                       exercise_name.exercise_name==="plank"&&get_data===false
-                       &&
-                       <span className="badge badge-primary" style={ShowWeight}>{plank_min===0?plank_sec+"초":plank_min+"분"+plank_sec+"초"}</span>
-                   }
-                   {
-                       exercise_name.exercise_name==="seated_knees_up"&&get_data===false
+                       exercise_name.exercise_name==="seated_knees_up"
                        &&
                        <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
                    }
                    {
-                       exercise_name.exercise_name==="crunch"&& get_data===false
+                       exercise_name.exercise_name==="crunch"
                        &&
                        <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
                    }
                    {
-                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"&&get_data===false
+                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
                        ?
                        <span className="badge badge-primary" style={ShowWeight}>{current_weight}KG</span>
                        :

@@ -3,9 +3,9 @@ import { useState,useRef,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import { useDispatch,useSelector } from "react-redux";
-import { none_testState, testState,increase_set,not_timeToModal,reset_count} from "../../../modules/action";
+import { none_testState, testState,increase_set,not_timeToModal,reset_count,plank_time_set} from "../../../modules/action";
 
-const setting={
+const setting={//해당 시간을 조절해줄것
     physical_test_ready:5,
     Press_and_3major:3,
     etc:90,
@@ -75,6 +75,7 @@ const Timer = ({exercise,where}) => {
         // 여기에서 1초일 때 분기를 하는 이유는 미리 count를 0으로 1초전에 변경해주면 최대한 increase_set나 not_timeToModal에 의한 ui변경전에 모달을 닫을수잇다
 
         dispatch(reset_count());//다시 카운트된 개수를 리셋시켜줌
+        dispatch(plank_time_set(true));//리셋된 플랭크 시간을 다시 5초로 설정해줌
       }
     }, [sec]);
   

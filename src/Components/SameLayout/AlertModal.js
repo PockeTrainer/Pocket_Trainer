@@ -52,6 +52,8 @@ function AlertModal({where}){
 
     const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
 
+    const plank_time_state=useSelector(state=>state.plank_time_update_reducer.plank_state);//디폴트로는 true로 되어있음
+
 
     const handleClose=()=>{
         closeRef.current.click();
@@ -75,7 +77,8 @@ function AlertModal({where}){
     }
 
     useEffect(()=>{
-        if(count.current===0){//첨에는 모달창이 안 떴을지라도 바로 handleClose를 하면 오류가 나기에 첨에는 건너뛰어줘야한다.
+        if(count.current===1){//첨에는 모달창이 안 떴을지라도 바로 handleClose를 하면 오류가 나기에 첨에는 건너뛰어줘야한다.
+            count.current+=1;
             return;
         }
         if(count_result===0&&howmanySet!==5){//이건 다시 리셋이 되었을 때의 상황을 의미한다
@@ -83,6 +86,15 @@ function AlertModal({where}){
             handleClose();
         }
     },[count_result])
+
+    useEffect(()=>{
+        if(exercise.exercise_name==="plank"){
+            if(plank_time_state&&howmanySet!==5){//이건 다시 리셋이 되었을 때의 상황을 의미한다
+                // setTimeout(handleClose,500);//다시 모달창 닫아주기
+                handleClose();
+            }
+        }
+    },[plank_time_state])
     
     useEffect(()=>{
         if(exercise.exercise_name==="plank"){
@@ -237,6 +249,14 @@ function AlertModal({where}){
             backgroundColor:"white"
         }
 
+        const gotoFinish=()=>{
+            sendEndWorkoutTime();//해당 스텝에서 운동을 끝낼려고 하니 서버로 운동종료시간을 보내줌
+            dispatch(none_testState());
+            dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
+            closeRef.current.click();
+            navigate("/routine/finish");
+        }
+
         const gotoFeedback=()=>{
             sendEndWorkoutTime();//운동종료시간을 서버로 저장하게 함
             dispatch(none_testState());//다시 카메라 준비상태로 다시원상태로 복귀
@@ -300,7 +320,7 @@ function AlertModal({where}){
                                 &&
                                 <div className="modal-footer" style={{padding:"0rem"}}>
                                     <button onClick={gotoFeedback} style={{margin:"auto"}} type="button" className="btn btn-primary"><i className="ni ni-button-play"></i>{next_exercise===undefined?"다음부위":"다음운동"}</button>
-                                    <button style={{margin:"auto"}} type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-pause"></i>그만두기</button>
+                                    <button style={{margin:"auto"}} type="button" className="btn btn-primary" onClick={gotoFinish}><i className="ni ni-button-pause"></i>그만두기</button>
                                 </div>
                                 }
 
