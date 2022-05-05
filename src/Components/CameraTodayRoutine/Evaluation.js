@@ -46,7 +46,10 @@ function Evaluation(){
     const [where_to_go,set_where_to_go]=useState("");//어디로 다음으로 갈지
 
     const [grade, setGrade] = useState(null);//레이팅용
-    const [modalTime,setModalTime]=useState(false);//평가 항목에 점수부여가 없을때 띄우는 알림창
+    const [modalTime,setModalTime]=useState({
+        state:false,
+        which:"warning"//디폴트로는 데이터 없는 워닝으로 해주자
+    });//평가 항목에 점수부여가 없을때 띄우는 알림창
     const modalRef=useRef();
 
     const openModal=()=>{
@@ -126,7 +129,7 @@ function Evaluation(){
     }
 
     useEffect(()=>{
-        if(modalTime){
+        if(modalTime.state){
             setTimeout(openModal,500);
         }
     },[modalTime])
@@ -182,7 +185,10 @@ function Evaluation(){
                                 max={3}
                                 onChange={(event, newValue) => {
                                 setGrade(newValue);
-                                setModalTime(false);//값이 존재한다는거니까 모달은 꺼주자
+                                setModalTime({
+                                    ...modalTime,
+                                    state:false
+                                });//값이 존재한다는거니까 모달은 꺼주자
                                 }}
                                 sx={RatingStyle}
                             />
@@ -244,7 +250,7 @@ function Evaluation(){
             </CardWrapper>
 
             <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>
-            <AlertModal where="warning" />
+            <AlertModal where={modalTime.which} />
 
             <ScrollTriggerButton content={where_to_go} grade={grade} changeModalTime={setModalTime}/>
 

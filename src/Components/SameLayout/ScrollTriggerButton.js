@@ -60,6 +60,8 @@ function ScrollButton(props) {
     },[current_bodypart])//즉 부위의 정보가 다음칸으로 건너뛰었으면 실행해줌
   
     const navigate=useNavigate();
+
+
     const handleClick = (event) => {
 
       let next_exercise_obj=eval('part'+parseInt(current_bodypart+1)+"["+parseInt(current_exercise+1)+"]");//다음운동객체 갖고오기-물론 없으면 undefined뜰 것임
@@ -80,13 +82,20 @@ function ScrollButton(props) {
       }
       else if(content=="다음운동"){
         if(grade===null){
-          changeModalTime(true);//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
+          changeModalTime({
+            state:true,
+            which:"warning"
+          });//위에서 받아온 점수항목이면 다시 평가를 하도록 모달창 띄워져야함
         }
         else{
-          sendFeedBack();//피드백 전송
-          dispatch(next_exercise());//다음운동으로 운동정보 업데이트
-          dispatch(reset());//current_weight이런 현재 운동이 가지고 있던 정보들 리셋시킴
-          navigate("/routine/weightcheck/"+next_exercise_obj.eng_name);
+          let result;
+          sendFeedBack().then((value)=>result=value);//피드백 전송
+          if(result){//정상적인 피드백 반영시
+            dispatch(next_exercise());//다음운동으로 운동정보 업데이트
+            dispatch(reset());//current_weight이런 현재 운동이 가지고 있던 정보들 리셋시킴
+            navigate("/routine/weightcheck/"+next_exercise_obj.eng_name);
+          }
+         
         }
        
       }
@@ -100,13 +109,14 @@ function ScrollButton(props) {
 
      const sendFeedBack=async()=>{
         let modified_grade;
-        if(grade===2){
+        let result;
+        if(grade===3){///어려움
           modified_grade=1;
         }
-        else if(grade==1){
+        else if(grade===2){//적절
           modified_grade=0;
         }
-        else{
+        else{//쉬움
           modified_grade=2;
         }
         await axios.put(`http://127.0.0.1:8000/api/workout/changeWorkoutFeedback/${exercise_name.exercise_name}/${id}`,{
@@ -114,10 +124,20 @@ function ScrollButton(props) {
         })//피드백 결과가 생기면-api로 보내주기
         .then((res) => {
             console.log(res.data);
+            result=true;
         })
         .catch((err) => {
-            console.log(err.response.data)
+            console.log(err.response.data.error);
+            if(err.response.data.error==="feedback 반영 실패, 현재 최소"){
+              changeModalTime({
+                state:true,
+                which:"grade_warning"
+              })
+              result=false
+            }
         })
+
+        return result;
         
     }
 

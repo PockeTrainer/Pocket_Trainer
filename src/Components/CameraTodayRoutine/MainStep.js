@@ -116,7 +116,7 @@ function MainStep(){
                 console.log(res.data);
                 dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
 
-                if(exercise_name.exercise_name==="bench_press"){
+                if(exercise_name.exercise_name==="plank"){
                     let format=res.data.target_time.split(":");
                     let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
 
@@ -215,7 +215,7 @@ function MainStep(){
     },[howmanySet])
 
     useEffect(()=>{//플랭크일 때만 타이머가 가동됨
-        if(exercise_name.exercise_name==="bench_press"&&plank_time_state&&!modalTime){
+        if(exercise_name.exercise_name==="plank"&&plank_time_state&&!modalTime){
             console.log("여기 들어오오오아?:",plank_time_state)
             plankTimerStart();//플랭크 타이머 시작
             handlePlankMessageChange();//열기
@@ -226,7 +226,7 @@ function MainStep(){
 
 
     useEffect(()=>{
-        if(exercise_name.exercise_name==="bench_press"){
+        if(exercise_name.exercise_name==="plank"){
             if(plank_time.current===0 && plank_timer_type==="pre_timer"){
                 handlePlankMessageChange();//닫기
             }
@@ -367,7 +367,7 @@ function MainStep(){
                </div>
 
                {//여기 플랭크로 이름 다 나중에 바꿔주기
-                   exercise_name.exercise_name!=="bench_press"
+                   exercise_name.exercise_name!=="plank"
                    &&
                    <div style={{
                     display:"flex",
@@ -387,7 +387,7 @@ function MainStep(){
                }}>
                    
                    {
-                       exercise_name.exercise_name==="bench_press"
+                       exercise_name.exercise_name==="plank"
                        &&
                        <span className="badge badge-primary" style={{...ShowWeight,right:"0px"}}>{plank_min===0?plank_sec+"초":plank_min+"분"+plank_sec+"초"}</span>
                    }
@@ -402,7 +402,7 @@ function MainStep(){
                        <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
                    }
                    {
-                       exercise_name.exercise_name!=="bench_press" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
+                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
                        ?
                        <span className="badge badge-primary" style={ShowWeight}>{current_weight}KG</span>
                        :
@@ -438,7 +438,7 @@ function MainStep(){
 
 
         {
-            exercise_name.exercise_name==="bench_press"
+            exercise_name.exercise_name==="plank"
             &&
             <div style={{
                 display:"flex",

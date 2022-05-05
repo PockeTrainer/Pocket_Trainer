@@ -39,6 +39,7 @@ function AlertModal({where}){
     const navigate=useNavigate();
 
     const exercise=useParams();//현재의 운동명을 가져와준다
+    const path=useLocation();//stop_today일때에는 url에서 운동명을 따줘야함
     const id=sessionStorage.getItem("user_id");//아이디가져오기
 
     const change_weight_info=useSelector(state=>state.change_current_weight_reducer);
@@ -88,7 +89,7 @@ function AlertModal({where}){
     },[count_result])
 
     useEffect(()=>{
-        if(exercise.exercise_name==="bench_press"){
+        if(exercise.exercise_name==="plank"){
             if(plank_time_state&&howmanySet!==5){//이건 다시 리셋이 되었을 때의 상황을 의미한다
                 // setTimeout(handleClose,500);//다시 모달창 닫아주기
                 handleClose();
@@ -111,8 +112,17 @@ function AlertModal({where}){
     const sendEndWorkoutTime=async()=>{//운동 종료시간을 서버로 보내준다
         const today=new Date();
         const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
+        let exercise_name_tmp;//운동명을 받아주는 임시변수
+
+        if(exercise.exercise_name===undefined){//stop_today에서 호출하는 경우 params로 잡지 못하기에
+            let url=path.pathname.split("/");
+            exercise_name_tmp=url[url.length-1];
+        }
+        else{
+            exercise_name_tmp=exercise.exercise_name;
+        }
     
-        await axios.post(`http://127.0.0.1:8000/api/workout/endDateTime/${exercise.exercise_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+        await axios.post(`http://127.0.0.1:8000/api/workout/endDateTime/${exercise_name_tmp}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
         .then((res) => {
             console.log(res.data);
     
@@ -196,11 +206,40 @@ function AlertModal({where}){
           </div>
         );
     }
+    else if(where==="grade_warning"){
+        return(
+            <div className="modal fade" id="modal-default" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
+                            <button ref={closeRef}  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body" style={{padding:"1rem"}}>
+                            <div className="py-3 text-center">
+                                <i className="ni ni-fat-remove ni-4x" style={{color:"#5e72e4"}} />
+                            </div>
+                                <Pstyled bold="lighter">해당 무게는 최소로서 더 이상 낮은 중량으로는 불가능합니다.해당 중량을 유지합니다</Pstyled>
+                            
+                        </div>
+                        
+                        <div className="modal-footer" style={{justifyContent:"center"}}>
+                            <button type="button" className="btn btn-primary" data-dismiss="modal" >확인</button>
+                        </div>
+                    </div>
+                </div>
+          </div>
+        );
+    }
 
-    else if(where==="stop_today"){
+    else if(where==="stop_today"){//cardLayout에 위치함
 
         const gotoFinish=()=>{
-            sendEndWorkoutTime();//해당 스텝에서 운동을 끝낼려고 하니 서버로 운동종료시간을 보내줌
+            if(path.pathname.includes("exercise")){//운동스텝에서만 나갈려고 할때 운동종료를 해줘야 함
+                sendEndWorkoutTime();//해당 스텝에서 운동을 끝낼려고 하니 서버로 운동종료시간을 보내줌   
+            }
             dispatch(none_testState());
             dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
             closeRef.current.click();

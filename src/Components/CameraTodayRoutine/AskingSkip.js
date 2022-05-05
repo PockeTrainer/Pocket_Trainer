@@ -60,6 +60,7 @@ function AskingSkip(){
     const navigate=useNavigate();
     const [content,set_content]=useState(<Pstyled>디폴트</Pstyled>);//보여줄 내용을 맡음
     let route_url=useRef();//건너뛸 url을 맡음
+    const [goto_next_called,set_goto_next_called]=useState(false);//goto_next함수가 호출되었는지 여부-실제로 다른컴포넌트에 의한 current_exercise의 변경으로 인한 영향을 막기위해서
     let dispatch_state=useRef();//어떤식으로 디스패치할지 알려줌
     const next_part_info=bodypart[current_bodypart+1];//다음 부위의 한국어 이름
     const next_exercise_info=eval("part"+parseInt(current_bodypart+1)+"["+parseInt(current_exercise+1)+"]");//다음스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
@@ -156,10 +157,12 @@ function AskingSkip(){
    
 
     const goto_next=()=>{
+        set_goto_next_called(true);//호출이 되었음을 알린다
         console.log(dispatch_state);
         if(dispatch_state.current==="goto_exercise"){//중량체크에서 운동으로 넘어감
             handleClose();
             navigate(route_url.current);
+            set_goto_next_called(false);//애는 바로 여기에서 호출상태를 다시 초기화로 하고 나감
         }
         else if(dispatch_state.current==="next_exercise"){
             if(path.pathname.includes("exercise")){
@@ -293,7 +296,12 @@ function AskingSkip(){
             return;
         }
         console.log(route_url.current);
-        navigate(route_url.current);//이동하기로 건너뛰기를 실제로 해줌
+        console.log("여부:",goto_next_called)
+        if(goto_next_called){//단 goto_next가 호출된 경우만-이동해주자
+            navigate(route_url.current);//이동하기로 건너뛰기를 실제로 해줌
+            set_goto_next_called(false);//다시 초기화 시켜줌 여부
+        }
+        
     },[current_bodypart,current_exercise])
     
     console.log(is_First)
