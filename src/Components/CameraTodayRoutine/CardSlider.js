@@ -28,7 +28,7 @@ function CardSlider(){
     useEffect(()=>{
         let all_info=[];
         eval('part'+parseInt(current_bodypart+1)).map(async(exercise)=>{
-            await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.eng_name}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise.eng_name}/${id}`)//해당운동의 정보를 불러와줌
             .then((res) => {
                 console.log(res.data)
                 all_info.push(res.data);

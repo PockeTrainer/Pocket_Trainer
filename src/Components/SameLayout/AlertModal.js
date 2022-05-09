@@ -5,7 +5,7 @@ import Timer from "../ExerciseCounter/WithCamera/Timer";
 import LinearWithValueLabel from "./LinearWithValueLabel";
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/system";
-import { none_testState, reset,reset_set,not_timeToModal} from "../../modules/action";
+import { none_testState, reset,reset_set,not_timeToModal,final_result_page} from "../../modules/action";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
@@ -48,7 +48,7 @@ function AlertModal({where}){
 
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
-    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise,is_First}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
     const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
@@ -242,6 +242,8 @@ function AlertModal({where}){
             }
             dispatch(none_testState());
             dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
+            dispatch(final_result_page());//페이지 정보 초기화
+            dispatch(reset_set());//다시 세트초기화
             closeRef.current.click();
             navigate("/routine/finish");
         }
@@ -292,6 +294,8 @@ function AlertModal({where}){
             sendEndWorkoutTime();//해당 스텝에서 운동을 끝낼려고 하니 서버로 운동종료시간을 보내줌
             dispatch(none_testState());
             dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
+            dispatch(reset_set());//다시 세트초기화
+            dispatch(final_result_page());//마지막페이지로 이동
             closeRef.current.click();
             navigate("/routine/finish");
         }

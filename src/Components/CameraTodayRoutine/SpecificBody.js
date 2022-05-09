@@ -62,6 +62,7 @@ function SpecificBody({exercise,info}){
     const unit={//운동에 따른 단위
         count_demand:"개",
         weight_demand:"KG",
+        pound_demand:"lbs",
         etc:""
     }
   
@@ -85,7 +86,12 @@ function SpecificBody({exercise,info}){
             key_for_unit.current="count_demand";
         }
         else{
-            key_for_unit.current="weight_demand";
+            if(exercise.eng_name==="pec_dec_fly"||exercise.eng_name==="lat_pull_down"||exercise.eng_name==="seated_row"||exercise.eng_name==="reverse_pec_dec_fly"||exercise.eng_name==="cable_push_down"||exercise.eng_name==="arm_curl"||exercise.eng_name==="leg_extension"){
+                key_for_unit.current="pound_demand";
+            }
+            else{
+                key_for_unit.current="weight_demand";
+            }
         }
 
         result.current={

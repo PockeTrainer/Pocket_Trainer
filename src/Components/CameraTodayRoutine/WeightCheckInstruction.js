@@ -27,7 +27,7 @@ function WeightCheckInstruction(){
 
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
-    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
 
@@ -37,6 +37,7 @@ function WeightCheckInstruction(){
     const unit={//운동에 따른 단위
         count_demand:"개",
         weight_demand:"KG",
+        pound_demand:"lbs",
         etc:""
     }
 
@@ -66,6 +67,10 @@ function WeightCheckInstruction(){
                 else if(exercise.exercise_name==="seated_knees_up"||exercise.exercise_name==="crunch"){
                     key_for_unit.current="count_demand";
                     dispatch(last_record(res.data.target_cnt));
+                }
+                else if(exercise.exercise_name==="pec_dec_fly"||exercise.exercise_name==="lat_pull_down"||exercise.exercise_name==="seated_row"||exercise.exercise_name==="reverse_pec_dec_fly"||exercise.exercise_name==="cable_push_down"||exercise.exercise_name==="arm_curl"||exercise.exercise_name==="leg_extension"){
+                    key_for_unit.current="pound_demand";
+                    dispatch(last_record(res.data.target_kg));//대신 이때는 이 숫자는 파운드인걸로 유념하자
                 }
                 else{
                     key_for_unit.current="weight_demand";

@@ -25,10 +25,7 @@ const RESET_COUNT="reset_count";
 const PLANK_TIME_SET="plank_time_set";
 //운동추천 루틴페이지에서 눌린 버튼변경 액션
 const CHANGE_CLICKED_BUTTON="change_clicked_button";
-//루틴페이지에서 어디에있는지를 알려주는 액션
-const TODAY_ROUTINE="today_routine";
-const EXERCISE_INFO="exercise_info";
-const EXTRA_ROUTINE="extra_routine";
+
 //현재 중량을 변경해주는 액션
 const SET_CURRENT_WEIGHT="set_current_weight";
 const SET_CURRENT_TIME="set_current_time";
@@ -48,6 +45,7 @@ const TIMETOMODAL="timeToModal";
 const NOT_TIMETOMODAL="not_timeToModal";
 //공통으로 쓸 api를 통해 불러온 운동객체 정보를 올리는용도
 const ROUTINE_INFO="routine_info";
+const UPDATE_FAIL_LIST="update_fail_list";
 //한 운동이 끝났을 때에 운동시간을 담아준다
 const HOW_LONG="how_long";
 //지금 운동페이지에서 어디를 맡고있는지 파악용
@@ -56,6 +54,7 @@ const PREV_PART="prev_part";
 const NEXT_EXERCISE="next_exercise";
 const PREV_EXERCISE="prev_exercise";
 const SET_EXERCISE_RECORD="set_exercise_record";
+const RESET_PAGE="reset_page";
 const FINAL_RESULT_PAGE="final_result_page";
 //중량,시간,개수 변화전에 마지막 기록을 저장해두는용
 const LAST_RECORD="last_record";
@@ -150,17 +149,6 @@ export const change_clicked_button=(button_name)=>({
     button_name
 });
 
-export const today_routine=()=>({
-    type:TODAY_ROUTINE
-});
-
-export const exercise_info=()=>({
-    type:EXERCISE_INFO
-});
-
-export const extra_routine=()=>({
-    type:EXTRA_ROUTINE
-});
 
 export const set_current_weight=(start_kg)=>({
     type:SET_CURRENT_WEIGHT,
@@ -241,6 +229,11 @@ export const routine_info=(bodypart,part1,part2,part3)=>({
     part3
 });
 
+export const update_fail_list=(fail_list)=>({//완전히 클리어되지 못한 운동들에 대하여 업데이트해줌
+    type:UPDATE_FAIL_LIST,
+    fail_list
+})
+
 export const how_long=(min,sec)=>({
     type:HOW_LONG,
     min,
@@ -270,6 +263,10 @@ export const prev_exercise=()=>({
 export const set_exercise_record=(api_record)=>({//API로부터 받은 최근 중량체크 변화날짜나 처음여부를 담아줄것임
     type:SET_EXERCISE_RECORD,
     api_record
+});
+
+export const reset_page=()=>({//페이지정보 초기화-아예 나갈때 써주면 될듯
+    type:RESET_PAGE
 });
 
 export const final_result_page=()=>({//최종 운동완료시 현재 결과페이지에 있음을 알려준다.
@@ -369,11 +366,12 @@ const initialTimeToModal={//휴식세트 창을 보여줄지 말지
     modalTime:false
 }
 
-const initialRoutineInfo={//api로부터 불러온 루틴정보 
+const initialRoutineInfo={//api로부터 불러온 루틴정보,클리어하지 못한 운동들의 리스트까지
     bodypart:[],
     part1:[],
     part2:[],
-    part3:[]
+    part3:[],
+    fail_list:[]
 };
 
 const initialHowLong={
@@ -547,24 +545,6 @@ export function change_clicked_button_reducer(state=initialClickedButton,action)
     }
 }
 
-export function change_routine_page_reducer(state=initialPage,action){//루틴페이지에서 상단 소개 메뉴를 담당한다
-    switch (action.type) {
-        case TODAY_ROUTINE:
-            return{
-                page:"today_routine"
-            }
-        case EXERCISE_INFO:
-            return{
-                page:"exercise_info"
-            }
-        case EXTRA_ROUTINE:
-            return{
-                page:"extra_routine"
-            }
-        default:
-            return state
-    }
-}
 
 export function change_current_weight_reducer(state=initialInfoChange,action){//버튼 눌러서 중량,시간,개수 변화주는 곳
     switch (action.type) {
@@ -679,10 +659,16 @@ export function update_routineInfo_reducer(state=initialRoutineInfo,action){//�
     switch (action.type) {
         case ROUTINE_INFO:
             return {
+                ...state,
                 bodypart:action.bodypart,
                 part1:action.part1,
                 part2:action.part2,
-                part3:action.part3
+                part3:action.part3,
+            }    
+        case UPDATE_FAIL_LIST:
+            return{
+                ...state,
+                fail_list:action.fail_list
             }    
         default:
             return state;
@@ -728,7 +714,12 @@ export function update_page_progress_reducer(state=initialPageProgress,action){/
             return {
                 ...state,
                 is_First:action.api_record
-            }        
+            } 
+        case RESET_PAGE://초기화
+            return{
+                ...initialPageProgress
+            }
+
         case FINAL_RESULT_PAGE://마지막 결과페이지로 초기화 하는 느낌
             return{
                 ...state,

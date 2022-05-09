@@ -1,67 +1,44 @@
-import React ,{ useState } from "react";
-import styles from'../../CustomCss/ExerciseCounter/InfoCard.module.css';
-import { Link } from "react-router-dom";
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import { useDispatch } from "react-redux";
+import React,{useState} from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
+export default function InfoTab({change_click_func}) {
+  const [value, setValue] = useState("today_routine");
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    change_click_func(newValue);//부모컴포넌트에 상단 state변경
+  };
 
-
-
-function InfoTab(){
-
-    const [value, setValue] = useState('recents');
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-  
-    const dispatch=useDispatch();
-
-    return(
-        <div className="col-xl-4 order-xl-2 mb-3 mb-xl-0" data-component="ProfileCard">
-            <div className={"card-profile"+" "+"shadow"+" "+"card"}>
-              
-              
-              <div className="card-body pt-0 pt-md-4" style={{padding:"0rem"}}>
-                <div className="row">
-                  <div className="col" style={{paddingLeft:"5px",paddingRight:"5px"}}>
-                    <BottomNavigation sx={{ width: 500,display:"table-cell",height:"40px" }} value={value} onChange={handleChange}>
-                        <BottomNavigationAction
-                            sx={{".MuiBottomNavigationAction-label":{fontFamily:"Noto Sans KR"},"&.MuiBottomNavigationAction-root":{paddingTop:"7px"},"&.MuiBottomNavigationAction-root.Mui-selected":{paddingTop:"6px"}}}
-                            label="오늘의루틴"
-                            value="recents"
-                            icon={<RestoreIcon sx={{"&.MuiSvgIcon-root":{width:"3em"}}} />}
-                        />
-                        <BottomNavigationAction
-                            sx={{".MuiBottomNavigationAction-label":{fontFamily:"Nanum Gothic"},"&.MuiBottomNavigationAction-root":{paddingTop:"7px"},"&.MuiBottomNavigationAction-root.Mui-selected":{paddingTop:"6px"}}}
-                            label="운동정보"
-                            value="favorites"
-                            icon={<AssignmentLateIcon sx={{}} />}
-                        />
-
-                        <BottomNavigationAction
-                                sx={{".MuiBottomNavigationAction-label":{fontFamily:"Nanum Gothic"},"&.MuiBottomNavigationAction-root":{paddingTop:"7px"},"&.MuiBottomNavigationAction-root.Mui-selected":{paddingTop:"6px"}}}
-                                label="추가운동"
-                                value="nearby"
-                                icon={<FitnessCenterIcon />}
-                            />
-                        
-                    </BottomNavigation>
-                        
-                        
-                  </div>
-                </div>
-                
-              </div>
-
-              
-            </div>
-          </div>
-    );
+  const TabStyle={
+      fontFamily:"Noto Sans KR",
+      fontWeight:"600",
+      "&.MuiTab-root.Mui-selected":{
+          color:"#2dce89"
+      },
+      "&.MuiTab-root":{
+          minHeight:"48px"
+      },
+      "&.MuiTab-root>.MuiTab-iconWrapper":{
+          marginRight:"0px"
+      }
+  }
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Tabs
+        centered
+        value={value}
+        onChange={handleChange}
+        textColor="secondary"
+        indicatorColor="secondary"
+        sx={{".MuiTabs-flexContainer":{justifyContent:"space-around"}}}
+      >
+        <Tab sx={TabStyle} value="today_routine" icon={<SportsScoreIcon/>} iconPosition='start' label="오늘의 루틴" />
+        <Tab sx={TabStyle} value="extra_routine" icon={<AddShoppingCartIcon/>} iconPosition='start' label="추가운동" />
+      </Tabs>
+    </Box>
+  );
 }
-export default InfoTab

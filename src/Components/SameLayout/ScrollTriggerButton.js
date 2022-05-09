@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Zoom from '@mui/material/Zoom';
 import { useNavigate } from "react-router-dom";
-import { exercise_start, next_exercise, next_part,final_result_page,reset} from "../../modules/action";
+import { routine_info,exercise_start, next_exercise, next_part,final_result_page,reset} from "../../modules/action";
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ function ScrollButton(props) {
     const count=useRef(1);
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const page_info=useSelector(state=>state.update_page_progress_reducer);//페이지가 담고있는 부위와 운동명 가져옴
-    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
     let now_exercise_obj=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재운동객체 갖고오기
 
@@ -62,6 +62,29 @@ function ScrollButton(props) {
     const navigate=useNavigate();
 
 
+    const set_FailList_to_routine=()=>{//fail_list 정보를 routine_info으로 넘김
+      let part1=[];
+      let part2=[];
+      let part3=[];
+      let where_to_put;
+
+      fail_list.map((exercise,index)=>{
+          if(exercise.part==="가슴"||exercise.part==="등"||exercise.part==="어깨"){
+              where_to_put=part1;
+          }
+          else if(exercise.part==="삼두"||exercise.part==="이두"||exercise.part==="하체"){
+              where_to_put=part2;
+          }
+          else{
+              where_to_put=part3;
+          }
+          where_to_put.push(exercise);
+      });
+
+      dispatch(routine_info(bodypart,part1,part2,part3));//fail_list를 순회하면서 생성된 값을 routine_info로 치환
+  };
+
+
     const handleClick = (event) => {
 
       let next_exercise_obj=eval('part'+parseInt(current_bodypart+1)+"["+parseInt(current_exercise+1)+"]");//다음운동객체 갖고오기-물론 없으면 undefined뜰 것임
@@ -73,6 +96,18 @@ function ScrollButton(props) {
       else if(content==="운동준비"){
         dispatch(exercise_start());//운동모드로 바꿔줌
         navigate("/routine/caution");
+      }
+      else if(content==="이어하기"){
+        set_FailList_to_routine();//fail_list의 값을 routine_info의 값으로 치환
+        dispatch(exercise_start());//운동모드로 바꿔줌
+        if(fail_list[0].part==="삼두"||fail_list[0].part==="이두"||fail_list[0].part==="하체"){//첫 건너뛴 운동의 부위가 운동의 중간 부위일때
+          dispatch(next_part());//한 부위를 건너뛴다
+        }
+        else if(fail_list[0].part==="복근"){//마지막 부위일때
+          dispatch(next_part());
+          dispatch(next_part());
+        }
+        navigate("/routine/weightcheck/"+fail_list[0].eng_name);//이어하기 할시 fail_list 첫번째 운동으로 이동
       }
       else if(content==="사전체크"){
           navigate("/routine/weightcheck/"+now_exercise_obj.eng_name);
@@ -103,6 +138,7 @@ function ScrollButton(props) {
         dispatch(next_part());//다음부위로 운동정보 업데이트
       }
       else if(content==="종료"){
+        dispatch(reset());//current_weight이런 현재 운동이 가지고 있던 정보들 리셋시킴
         dispatch(final_result_page());//현재부위와 현재까지 했던 운동들을 초기화
       }
     };

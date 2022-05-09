@@ -79,7 +79,13 @@ function Evaluation(){
         }
         else{
             result=current_weight-last_record;//중량기록 차
-            unit="kg";
+            if(exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension"){
+                unit="Lbs"
+            }
+            else{
+                unit="kg";
+            }
+            
         }
 
         if(result>0){

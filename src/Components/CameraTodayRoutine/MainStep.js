@@ -112,7 +112,6 @@ function MainStep(){
     const getDataFromServer=async()=>{//서버로부터 해당운동의 정보를 가져온다-weightcheck를 안했을 때 사용
         await axios.get(`http://127.0.0.1:8000/api/workout/userWorkoutInfo/${exercise_name.exercise_name}/${id}`)
         .then((res) => {
-                let time_format_result="0초";
                 console.log(res.data);
                 dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
 
@@ -402,12 +401,17 @@ function MainStep(){
                        <span className="badge badge-primary" style={ShowWeight}>{current_cnt}개</span>
                    }
                    {
-                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"
+                       (exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension")
+                        &&
+                        <span className="badge badge-primary" style={ShowWeight}>{current_weight}Lbs</span>
+                   }
+                    {
+                       exercise_name.exercise_name!=="plank" &&exercise_name.exercise_name!=="seated_knees_up" &&exercise_name.exercise_name!=="crunch"&&exercise_name.exercise_name!=="pec_dec_fly"&&exercise_name.exercise_name!=="lat_pull_down"&&exercise_name.exercise_name!=="seated_row"&&exercise_name.exercise_name!=="reverse_pec_dec_fly"&&exercise_name.exercise_name!=="cable_push_down"&&exercise_name.exercise_name!=="arm_curl"&&exercise_name.exercise_name!=="leg_extension"
                        ?
                        <span className="badge badge-primary" style={ShowWeight}>{current_weight}KG</span>
                        :
                        null
-                   }
+                   } 
                    
                   
                </div>

@@ -7,7 +7,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import AlertModal from "../SameLayout/AlertModal";
 
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -22,17 +21,10 @@ import PartStepper from './PartStepper';
 import Zoom from '@mui/material/Zoom';
 import Button from '@mui/material/Button';
 
-//여기는 주석쳐놓은 부분꺼
-import EastIcon from '@mui/icons-material/East';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import SelectBar from "../SameLayout/SelectBar"
 
 import Chip from '@mui/material/Chip';
 
-import { routine_info } from '../../modules/action'; 
+import { routine_info,update_fail_list } from '../../modules/action'; 
 import { useDispatch,useSelector} from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
@@ -150,7 +142,7 @@ function Finish(){
                     if(info.workout_name.workout_name==="bench_press"||info.workout_name.workout_name==="incline_press"||info.workout_name.workout_name==="squat"||info.workout_name.workout_name==="dumbbell_shoulder_press"||info.workout_name.workout_name==="leg_press"){
                         break_unit=100;
                     }
-                    else if(info.workout_name.workout_name==="side_lateral_raise"||info.workout_name.workout_name==="reverse_peck_deck_fly"||info.workout_name.body_part==="이두"||info.workout_name.body_part==="삼두"){
+                    else if(info.workout_name.workout_name==="side_lateral_raise"||info.workout_name.workout_name==="reverse_pec_dec_fly"||info.workout_name.body_part==="이두"||info.workout_name.body_part==="삼두"){
                         break_unit=40;
                     }
                     else{
@@ -166,8 +158,8 @@ function Finish(){
                }
                else{//클리어 하지 못했다
                 fail+=1;
-                let tmp_name=module[info.workout_name.workout_name].name
-                fail_list.push(tmp_name);//실패한 운동들의 한국이름을 담아준다.
+                fail_list.push(eval(info.workout_name.workout_name));
+                //실패한 운동들의 객체를 담아준다.
                }
 
                console.log(workout_time)
@@ -197,7 +189,9 @@ function Finish(){
             success:success,
             fail:fail,
             fail_list:fail_list
-        })
+        });
+
+        dispatch(update_fail_list(fail_list));//리덕스에 클리어하지 못한 운동들에 대하여 올려놓음
 
         console.log(bodypart);
         console.log(part1);
@@ -425,36 +419,6 @@ function Finish(){
 
 
 
-
-                    {/* <Accordion sx={{marginTop:"1em",backgroundColor:"#2dce89 !important"}}>
-                            <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                            >
-                                <Typography sx={{fontWeight:"600"}}>중량변화</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails sx={{"&.MuiAccordionDetails-root":{padding: "0px 0px 0px"}}}>
-                                <div className="alert alert-warning" role="alert" style={AccordionSpanStyle} >
-                                    <Stack direction="column" >
-                                        <SelectBar/>
-                                        <Stack direction="row" spacing={4} sx={{marginTop:"0.5em",justifyContent:"center"}}>
-                                            <Stack direction="column">
-                                                <AvatarStyle color="#ffc107" >65kg</AvatarStyle>
-                                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>2022.02.29</Typography>
-                                            </Stack>
-                                            <EastIcon sx={EastIconStyle}/>
-                                            <Stack direction="column">
-                                                <AvatarStyle color="#ffc107" >75kg</AvatarStyle>
-                                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>2022.03.01</Typography>
-                                            </Stack>
-                                        </Stack>
-                                    </Stack>
-                                    <span className="badge badge-secondary" style={gainWeight}>+10kg증량</span>
-                                </div>
-                            </AccordionDetails>
-                    </Accordion> */}
-
                            
                     
 
@@ -481,7 +445,7 @@ function Finish(){
                                     <span className="badge badge-secondary" style={{fontSize:"1.0em",marginTop:"1em",color:"#fb6340",display:"block"}}>스킵한운동</span>
                                     {clear_count_info.fail_list.map((exercise_name,index)=>(
                                         <>
-                                            <Chip key={index} label={exercise_name} sx={ChipStyle}  />
+                                            <Chip key={index} label={exercise_name.name} sx={ChipStyle}  />
                                         </>
                                     ))}
                                     
@@ -500,7 +464,7 @@ function Finish(){
 
                         <div className="modal-footer" style={{padding:"0rem",marginTop:"2em",justifyContent:"space-between"}}>
                                     <button onClick={()=>navigate("/history")}  type="button" className="btn btn-primary"><i className="ni ni-calendar-grid-58"></i>히스토리</button>
-                                    <button onClick={()=>navigate("/main/routine")}  type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-power"></i>나가기</button>
+                                    <button onClick={()=>{navigate("/main/routine")}}  type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-button-power"></i>나가기</button>
                         </div>
             </CardWrapper>
 

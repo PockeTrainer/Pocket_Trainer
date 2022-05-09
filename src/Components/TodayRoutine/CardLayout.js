@@ -18,10 +18,10 @@ import { not_exercise_start,routine_info } from "../../modules/action";
 
 function CardLayout(props){
     const id=sessionStorage.getItem("user_id");
-    const page=useSelector(state=>state.change_routine_page_reducer.page);//어떤 페이지인지 정보 가지고 있는다
     const [checked, setChecked] = useState(false);
     const dispatch=useDispatch();
     const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
+    const [page,set_page]=useState("today_routine");//헤더탭에서 어디에 위치에 있는지를 알려줌
 
     useEffect(()=>{//혹시나 뒤로가기나 이런걸로 다시 왔을때를 대비해 운동모드를 꺼준다
         if(exercise_start_page){
@@ -119,7 +119,7 @@ function CardLayout(props){
                             <CssBaseline />
                             <List sx={{ mb: 2 ,marginTop:"-3.85em",paddingTop:"14px"}}>
                                 <ListSubheader sx={subListHeader}>
-                                    <InfoTab/>
+                                    <InfoTab change_click_func={set_page}/>
                                 </ListSubheader>
                                 
                                 <div className="col-xl-8 order-xl-1" style={{paddingLeft:"1px",paddingRight:"1px"}} >
@@ -128,7 +128,6 @@ function CardLayout(props){
                                         <div>
                                             {page=="today_routine"&&<TodaySummary/>}
                                             
-                                            {page=="exercise_info"&&<ExerciseRoutine/>}
 
                                             {page=="extra_routine"&&<ExtraExercise/>}
                                         </div>
@@ -143,8 +142,6 @@ function CardLayout(props){
               </div>
         </div>
 
-        
-        
     </div>
     );
 }

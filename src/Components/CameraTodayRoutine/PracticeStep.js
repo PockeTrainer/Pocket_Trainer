@@ -29,7 +29,7 @@ function PracticeStep(){
     const exercise_name=useParams();//url에서 운동명 가져오기-벤치프레스이면 해당 초기무게를 따로 설정해둔것에서 가져오자-ExerciseInfo.js에 넣자
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
-    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
+    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise,is_First}=page_info;//현재페이지의 운동부위와 운동명 인덱스
 
     const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
@@ -79,7 +79,13 @@ function PracticeStep(){
             else{
                 const start_kg=now_exercise.Info_from_api.target_kg;//현재저장되어 있던 초기 무게를 가져온다-거의 대부분운동
                 dispatch(set_current_weight(start_kg));//시작무게설정
-                key_for_message.current="weight_demand";
+                if(exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension"){
+                    key_for_message.current="pound_demand";
+                }
+                else{
+                    key_for_message.current="weight_demand";
+                }
+                
             }
             
             
@@ -176,33 +182,39 @@ function PracticeStep(){
     const alert_content={
         very_hard:{
             time_demand:"20초를 감소시킵니다!",
-            cnt_demand:"2개를 감소시킵니다!",
-            weight_demand:now_exercise.unit_kg*2+"kg"+"감소 시켜주세요!"
+            cnt_demand:"4개를 감소시킵니다!",
+            weight_demand:now_exercise.unit_kg*2+"kg"+"감소 시켜주세요!",
+            pound_demand:now_exercise.unit_kg*2+"lbs"+"감소 시켜주세요!"
         },
         hard:{
             time_demand:"10초를 감소시킵니다!",
-            cnt_demand:"1개를 감소시킵니다!",
-            weight_demand:now_exercise.unit_kg*1+"kg"+"감소 시켜주세요!"
+            cnt_demand:"2개를 감소시킵니다!",
+            weight_demand:now_exercise.unit_kg*1+"kg"+"감소 시켜주세요!",
+            pound_demand:now_exercise.unit_kg*1+"lbs"+"감소 시켜주세요!"
         },
         proper:{
             time_demand:"한세트시간 설정완료",
             cnt_demand:"한세트개수 설정완료",
-            weight_demand:"해당무게로 진행!"
+            weight_demand:"해당무게로 진행!",
+            pound_demand:"해당파운드로 진행!"
         },
         easy:{
             time_demand:"10초를 증가시킵니다!",
-            cnt_demand:"1개를 증가시킵니다!",
-            weight_demand:now_exercise.unit_kg*1+"kg"+"증가 시켜주세요!"
+            cnt_demand:"2개를 증가시킵니다!",
+            weight_demand:now_exercise.unit_kg*1+"kg"+"증가 시켜주세요!",
+            pound_demand:now_exercise.unit_kg*1+"lbs"+"증가 시켜주세요!",
         },
         very_easy:{
             time_demand:"20초를 증가시킵니다!",
-            cnt_demand:"2개를 증가시킵니다!",
-            weight_demand:now_exercise.unit_kg*2+"kg"+"증가 시켜주세요!"
+            cnt_demand:"4개를 증가시킵니다!",
+            weight_demand:now_exercise.unit_kg*2+"kg"+"증가 시켜주세요!",
+            pound_demand:now_exercise.unit_kg*2+"lbs"+"증가 시켜주세요!",
         },
         error:{
             time_demand:"해당시간으로 불가능!",
             cnt_demand:"해당개수로 불가능",
-            weight_demand:"해당무게로 불가능!"
+            weight_demand:"해당무게로 불가능!",
+            pound_demand:"해당파운드로 불가능!"
         }
 
     }
@@ -263,11 +275,20 @@ function PracticeStep(){
                                     <span className="badge badge-primary btn-lg" style={badgeStyle}>현재세트당횟수</span>
                                     <span className="alert-text" ><strong>{current_cnt}개</strong></span>
                                 </>
-                            :
+                            :(
+                                exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension"
+                                ?
+                                    <>
+                                        <span className="badge badge-primary btn-lg" style={badgeStyle}>현재파운드</span>
+                                        <span className="alert-text" ><strong>{current_weight}lbs</strong></span>
+                                    </> 
+                                :
                                 <>
                                     <span className="badge badge-primary btn-lg" style={badgeStyle}>현재중량</span>
                                     <span className="alert-text" ><strong>{current_weight}kg</strong></span>
                                 </> 
+                            )
+                                
                             )
                             }
 

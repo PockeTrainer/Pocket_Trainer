@@ -163,7 +163,7 @@ export const pec_dec_fly={
     part:"가슴",
     eng_name:"pec_dec_fly",
     eng_part:"chest",
-    unit_kg:1,
+    unit_kg:5,//파운드
     break_time:90
 }
 
@@ -176,7 +176,7 @@ export const lat_pull_down={
     part:"등",
     eng_name:"lat_pull_down",
     eng_part:"back",
-    unit_kg:1,//아직 미정
+    unit_kg:5,//파운드
     break_time:90
 }
 
@@ -188,17 +188,17 @@ export const seated_row={
     part:"등",
     eng_name:"seated_row",
     eng_part:"back",
-    unit_kg:1,//아직 미정
+    unit_kg:5,//파운드
     break_time:90
 }
 
-export const one_arm_dumbbell_row={
-    name:"원암덤벨로우",
+export const barbell_row={
+    name:"바벨로우",
     image_url:"",
     instruction:"",
     musclePart:"",
     part:"등",
-    eng_name:"one_arm_dumbbell_row",
+    eng_name:"barbell_row",
     eng_part:"back",
     unit_kg:1,
     break_time:90
@@ -228,13 +228,13 @@ export const side_lateral_raise={
     break_time:40
 }
 
-export const reverse_peck_deck_fly={
+export const reverse_pec_dec_fly={
     name:"리버스팩덱플라이",
     image_url:"",
     instruction:"",
     musclePart:"",
     part:"어깨",
-    eng_name:"reverse_peck_deck_fly",
+    eng_name:"reverse_pec_dec_fly",
     eng_part:"shoulder",
     unit_kg:1,//아직 미정
     break_time:40
@@ -331,7 +331,7 @@ export const crunch={
 }
 
 export const seated_knees_up={
-    name:"싯티드니업",
+    name:"시티드니업",
     image_url:"",
     instruction:"",
     musclePart:"",

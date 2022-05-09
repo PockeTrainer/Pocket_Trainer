@@ -10,9 +10,12 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 import ErrorIcon from '@mui/icons-material/Error';
 import LogoutIcon from "@mui/icons-material/Logout";
 import BodySequence from './BodySequence';
@@ -24,16 +27,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainStep from './MainStep';
 import Evaluation from './Evaluation';
 
-import { none_testState } from '../../modules/action';
+import { how_long, none_testState,reset,reset_page} from '../../modules/action';
 import Finish from './Finish';
 
 import AlertModal from "../SameLayout/AlertModal";
 import AskingSkip from './AskingSkip';
 
+import { styled } from "@mui/system";
+import { Stack } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+
 
 function CardLayout(){
 
     let [categoryName,setCategoryName]=useState("");
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+    const handleClose = () => {
+    setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
 
     const testState=useSelector(state=>state.testState_reducer.testState);//운동을 시작한 여부에 따라서 css변경때문에
     const navigate=useNavigate();
@@ -42,10 +63,12 @@ function CardLayout(){
     const modalRef=useRef();//느낌표 눌렀을 때 뜨는 모달창 trigger button
     const modal_Asking=useRef();//건너뛰기를 눌렀을 때의 모달창
 
-
+    const [now_exercise_info,set_now_exercise_info]=useState({
+        name:"",
+        part:""
+    });//현재페이지의 한국 운동명과 부위명
 
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
-    const page_info=useSelector(state=>state.update_page_progress_reducer);//운동부위와 운동명 정보를 불러옴
     const{part1}=routine_info;//부위정보 담아주기
     const first_exercise_part=eval("part1"+"["+parseInt(0)+"]"+".eng_part");//해당 날짜의 첫운동의 부위를 알기위해서
 
@@ -74,7 +97,20 @@ function CardLayout(){
                     page_title=bodypart+"운동";
                 }
                 else if(path.pathname.includes("weightcheck")){//연습스텝일때
-                    page_title="중량체크";
+                    if(exercise_name==="플랭크"){
+                        page_title="시간체크";
+                    }
+                    else if(exercise_name==="시티드니업"||exercise_name==="크런치"){
+                        page_title="개수체크";
+                    }
+                    else{
+                         page_title="중량체크";
+                    }
+                   
+                    set_now_exercise_info({//중량체크페이지에서 상단 진행사항 미니 popover에 필요함
+                        name:exercise_name,
+                        part:module[tmp].part
+                    })
                 }
                 else if(path.pathname.includes("exercise")){//본스텝일 때
                     page_title=exercise_name;
@@ -136,6 +172,11 @@ function CardLayout(){
         color: "white"
     }
 
+    const howLongStyle={
+        fontSize: "1.8em",
+        color: "white"
+    }
+
     const ExclmationStyle={
         fontSize: "1.8em",
         color:"#ffc107",
@@ -164,6 +205,25 @@ function CardLayout(){
             backgroundColor:"transparent"
         }
     }
+
+    const popoverStyle={
+        "&.MuiButton-root":{
+            display:"flex",
+            margin:"auto",
+            boxShadow:"0",
+            backgroundColor:"rgb(50 50 93 / 0%) "
+        }
+    }
+
+    const AvatarStyle=styled(Avatar)((props)=>({
+        margin:"auto",
+        width: "3rem",
+        height:"3rem",
+        backgroundColor:props.color,
+        fontFamily:"Nanum Gothic",
+        fontWeight:"bold",
+        fontSize:"1.55rem"
+      }));
 
     const subListHeader={
         paddingLeft:"5px",
@@ -196,6 +256,8 @@ function CardLayout(){
    }
 
    const gotohome=()=>{//다시메인페이지로 돌아가게
+       dispatch(reset());//현재 가지고 있던 운동 정보들 초기화
+       dispatch(reset_page());//페이지 정보들도 다 초기화 시킴
        navigate("/main/routine");
 
    };
@@ -224,6 +286,14 @@ function CardLayout(){
   
 
     const [checked, setChecked] = useState(false);
+
+    const Pstyled=styled('p')((props)=>({
+        fontSize:props.size==="1.0"?"1.0rem":"1.5rem",
+        fontWeight:props.bold=="lighter"?"lighter":"600",
+        lineWeight:"1.0",
+        marginBottom:"0",
+        textAlign:"center"
+    }));
 
 
     const handleChange = () => {
@@ -260,7 +330,7 @@ function CardLayout(){
                                                             <div className="col" style={{paddingLeft:"5px",paddingRight:"5px",display:"flex",justifyContent:"space-between"}}>
                                                                 
                                                                 {
-                                                                    path.pathname.includes("/finish")
+                                                                    path.pathname.includes("/finish")||path.pathname.includes("/routine/series/")
                                                                     ?
                                                                         <>
                                                                             <IconButton sx={IconButtonStyle} onClick={gotohome} >
@@ -275,13 +345,62 @@ function CardLayout(){
                                                                                 <ErrorIcon sx={ExclmationStyle}/>
                                                                             </IconButton>
                                                                         </>
-                                                                        :
-                                                                    
-                                                                        <>
-                                                                            <IconButton sx={IconButtonStyle} onClick={gotoBack}>
-                                                                                <ArrowCircleLeftIcon sx={backArrowStyle}/>
-                                                                            </IconButton>
-                                                                        </>
+                                                                        :(
+                                                                            path.pathname.includes("/weightcheck")
+                                                                            ?
+                                                                                <>
+                                                                                    <IconButton sx={IconButtonStyle} onClick={handleClick}>
+                                                                                        <AssistantDirectionIcon sx={howLongStyle}/>
+                                                                                    </IconButton>
+                                                                                    <Popover
+                                                                                        id={id}
+                                                                                        open={open}
+                                                                                        anchorEl={anchorEl}
+                                                                                        onClose={handleClose}
+                                                                                        anchorOrigin={{
+                                                                                        vertical: 'bottom',
+                                                                                        horizontal: 'left',
+                                                                                        }}
+                                                                                        sx={{".MuiPopover-paper":{backgroundColor:"white !important"}}}
+                                                                                    >
+                                                                                        <Stack direction={"column"}>
+                                                                                            <span className="badge badge-primary" style={{fontSize:"1em",margin:"1em",marginBottom:"0.5rem"}}>현재진행부위</span>
+                                                                                            <div className="alert alert-secondary" role="alert" style={{padding:"0em",margin:"0.3rem"}}>
+                                                                                                <Pstyled bold="etc">{now_exercise_info.part}<span style={{fontSize:"1.0rem"}}> 중</span></Pstyled>
+                                                                                            </div>
+                                                                                            <div className="alert alert-success" role="alert" style={{padding:"0em",margin:"0.3rem"}}>
+                                                                                                <Pstyled bold="lighter" size="1.0">
+                                                                                                    {now_exercise_info.name}
+                                                                                                </Pstyled>
+                                                                                            </div>  
+                                                                                            <Stack direction={"row"} spacing={2} sx={{justifyContent:"space-around"}}>
+
+                                                                                                <Button  variant="contained"  
+                                                                                                    sx={
+                                                                                                        popoverStyle
+                                                                                                    }>
+                                                                                                    <AvatarStyle color="#2dce89"><ContactSupportIcon/></AvatarStyle>
+                                                                                                </Button>
+
+                                                                                                <Button  variant="contained"  onClick={gotohome}
+                                                                                                    sx={
+                                                                                                        popoverStyle
+                                                                                                    }>
+                                                                                                    <AvatarStyle color="#2dce89"><LogoutIcon/></AvatarStyle>
+                                                                                                </Button>
+                                                                                            </Stack>
+                                                                                        </Stack>
+                                                                                       
+                                                                                    </Popover>
+                                                                                </>
+                                                                            :
+                                                                            <>
+                                                                                <IconButton sx={IconButtonStyle} onClick={gotoBack}>
+                                                                                    <ArrowCircleLeftIcon sx={backArrowStyle}/>
+                                                                                </IconButton>
+                                                                            </>
+                                                                        )
+                                                
                                                                     )   
                                                                 }
                                                                 

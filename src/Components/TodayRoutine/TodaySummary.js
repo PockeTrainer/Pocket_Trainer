@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useRef,useEffect} from "react";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -13,17 +13,26 @@ import { change_clicked_button } from "../../modules/action";
 import ScrollTriggerButton from "../SameLayout/ScrollTriggerButton";
 
 import PartStepper from "../CameraTodayRoutine/PartStepper";
+import KeepGoingModal from "./KeepGoingModal";
+import { Grow } from "@mui/material";
 
 
-
-
+function sleep(ms){
+    return new Promise((r)=>setTimeout(r,ms));
+}
 
 function TodaySummary(){
 
+    const [checked, setChecked] = useState(false);//transition
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+    };
+
     const clickedButton=useSelector(state=>state.change_clicked_button_reducer.clickedButton);
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
-    const{bodypart,part1,part2,part3}=routine_info;//부위정보 담아주기
-
+    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
+    const modalRef=useRef();//이어서 진행하기 알림창
     const dispatch=useDispatch();
     const handleClick=(select)=>{
         dispatch(change_clicked_button(select))
@@ -75,10 +84,25 @@ function TodaySummary(){
         marginTop:"1em",
         backgroundColor:"#2dce89"
     }
+
+    const openKeepGoingModal=()=>{//이어서 진행하기 모달창
+        modalRef.current.click();
+    };
+
+    useEffect(()=>{
+        sleep(1000).then(()=>handleChange());
+        if(fail_list.length>0){//만약에 남은 운동들이 존재한다면
+            setTimeout(openKeepGoingModal,1000);
+        }
+    },[])
     
     
     return(
-        <div className="card bg-secondary shadow mb-3" data-component="AccountInformationCard">
+        <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+      {...(checked ? { timeout: 1000 } : {})}>
+
+      
+        <div className="card bg-secondary shadow mb-3" data-component="AccountInformationCard" style={{marginTop:"1.0rem"}}>
       
         <div className="card-body" style={{padding:"1rem"}}>
             <i className="far fa-clipboard" style={{fontSize:"3.5em",color:"#5e72e4"}}></i>
@@ -140,11 +164,15 @@ function TodaySummary(){
                     </Stack>
                 </div>
         </div>
+
+        <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-keep-going-alert">Default</button>
+        <KeepGoingModal/>
         <SwipeableEdgeDrawer select_button={clickedButton} />
 
-        <ScrollTriggerButton content={"운동준비"} css_bottom={'3em'}/>
+        <ScrollTriggerButton content={fail_list.length>0?"이어하기":"운동준비"} css_bottom={'3em'}/>
        
     </div>
+    </Grow>
     );
 
 }
