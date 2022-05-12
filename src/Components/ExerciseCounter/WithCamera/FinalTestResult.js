@@ -7,11 +7,12 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { Last_clear_page } from "../../../modules/action";
+import { useDispatch,useSelector } from "react-redux";
+import { Appref, Last_clear_page } from "../../../modules/action";
 import { not_exercise_start } from "../../../modules/action";
 
 function FinalTestResult(){
+    const appRef=useSelector(state=>state.Appref.ref);//모달창
     const navigate=useNavigate();
     const dispatch=useDispatch();
     const [AllExercise,setAllExercise]=useState(
@@ -102,14 +103,9 @@ function FinalTestResult(){
 
 
     const buttonClicked=(event)=>{
-        dispatch(Last_clear_page());//모달창상으로 완전히 끝남을 의미함
-        dispatch(not_exercise_start());//이제 나갈거니까 운동모드에서 나감을 의미
-        if(event.target.id==="end"){
-            navigate("/main/exercise_counter");
-        }
-        else{
-            navigate("/main/routine");
-        }
+        dispatch(Last_clear_page(event.target.id));//모달창상으로 완전히 끝남을 의미함
+        appRef.current.click();
+        
     };
 
     const theme = useTheme();

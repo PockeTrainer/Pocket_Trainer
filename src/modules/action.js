@@ -78,8 +78,9 @@ export const Second_clear_page=()=>({
     type:SECOND_CLEARPAGE
 });
 
-export const Last_clear_page=()=>({
-    type:LAST_CLEARPAGE
+export const Last_clear_page=(which_clicked)=>({//종료하기랑 루틴추천 받기 페이지 중 무엇이 눌렸는지를 which_clicked에 담음
+    type:LAST_CLEARPAGE,
+    which_clicked
 });
 
 export const gotoweight=()=>({
@@ -315,7 +316,8 @@ export const choose_meal_date=(date)=>({//Date객체를 직접 넣어줌
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
-    page:"start_step"
+    page:"start_step",
+    which:""
 };
 
 const initialRef={//맨 위 모달창 켜는 버튼을 의미
@@ -416,7 +418,8 @@ export default function pageMove(state=initialState,action){//모달창의 페�
             }            
         case LAST_CLEARPAGE:
             return {
-                page:"last_clear_step"
+                page:"last_clear_step",
+                which:action.which_clicked
             }
 
         default:

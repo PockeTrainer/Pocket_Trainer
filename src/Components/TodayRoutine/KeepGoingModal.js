@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import Chip from '@mui/material/Chip';
 import {routine_info,exercise_start,next_part } from "../../modules/action";
+import ReplayIcon from '@mui/icons-material/Replay';
 
 function KeepGoingModal(){
     const closeRef=useRef();//모달창 닫는 버튼용도
@@ -72,7 +73,7 @@ function KeepGoingModal(){
                     </div>
                     <div className="modal-body" style={{padding:"1rem"}}>
                         <div className="text-center">
-                            <i className="ni ni-button-power ni-4x" style={{color:"#5e72e4"}} /> 
+                            <ReplayIcon sx={{color:"#5e72e4",fontSize:"2.5rem"}}/>
                         </div>
                         <span className="badge badge-primary" style={{fontSize:"1em",marginTop:"2rem",marginBottom:"1rem"}}>이어하기</span>
                             <Pstyled bold="lighter">아직 오늘 클리어를 하지 못한 운동들이 있습니다.이어서 하시겠습니까?</Pstyled>

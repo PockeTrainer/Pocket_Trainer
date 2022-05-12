@@ -13,7 +13,7 @@ import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
 import TodayRoutine from "./Components/TodayRoutine/TodayRoutine"
 import { useDispatch,useSelector } from 'react-redux';
-import { modalref } from './modules/action';
+import { Appref, modalref } from './modules/action';
 
 
 import axios from 'axios';
@@ -33,6 +33,7 @@ function App(){
 
   const first_login=useSelector(state=>state.first_login_check.first_login);//스토어에서 처음 로그인 한지에 대한 여부를 가져와줌
   const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
+  const appRef=useSelector(state=>state.Appref.ref);
 
   let isAuthorized=sessionStorage.getItem("isAuthorized");
 
@@ -69,15 +70,18 @@ function App(){
   console.log("나여기!")
   },[]);
 
+  useEffect(()=>{
+    if(first_login){
+      setTimeout(showModal,1000);
+    }
+  },[appRef,first_login])
  
     
   const showModal=()=>{
       button1.current.click();
   }
 
-  if(first_login){
-    setTimeout(showModal,1000);
-  }
+ 
 
     return (
       <div className="App">

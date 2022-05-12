@@ -12,7 +12,7 @@ import StepLabel from '@mui/material/StepLabel';
 import FullScreenDialog from "./FullScreenDialog";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import pageMove, { gotoweight } from "../../modules/action";
+import { gotoweight,not_exercise_start } from "../../modules/action";
 
 
 function AlertMessage({sliderRef}){
@@ -36,7 +36,7 @@ function AlertMessage({sliderRef}){
     );
 }
 
-function PtStep({buttonRef,page}){
+function PtStep({buttonRef,page,which}){
     const steps = [
         '현재 신체 상태와 목표체중 기입',
         '루틴추천을 위한 부위별 체력측정',
@@ -81,15 +81,24 @@ function PtStep({buttonRef,page}){
         dispatch(gotoweight());//체중체크페이지로 이동할 것을 알려줌
     }
     const moveToCheck=()=>{//체력측정페이지로 이동
-        navigate("/main/exercise_counter");
         setTimeout(close,500);
+        navigate("/main/exercise_counter");
     }
     const moveToFinalResult=()=>{
-        navigate("/test/finalResult");
         setTimeout(close,500);
+        navigate("/test/finalResult");
+        
     }
     const moveToEnd=()=>{
         setTimeout(close,500);
+        dispatch(not_exercise_start());//이제 나갈거니까 운동모드에서 나감을 의미
+        if(which==="end"){//그냥 종료하는 것으로 메인페이지로
+            navigate("/");
+        }
+        else{//루틴추천페이지로 이동
+            navigate("/main/routine");
+        }
+
     }
     const close=()=>{
         buttonRef.current.click();
@@ -134,7 +143,8 @@ function StartModal({buttonRef}){
     const slider=useRef();//슬라이더용
 
 
-    const page=useSelector(state=>state.pageMove.page);//스토어를 통해 현재페이지 정보를 가져와줌
+    const page_info=useSelector(state=>state.pageMove);//스토어를 통해 현재페이지 정보를 가져와줌
+    const {page,which}=page_info;
 
     const settings = {
         arrows:false,

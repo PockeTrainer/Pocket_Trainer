@@ -65,8 +65,8 @@ function EachTestResult(){
         else{//최종결과페이지로 이동
 
             // //마지막 페이지로 디스패치 해줄 것
-            // dispatch(Second_clear_page());//체력측정이 완료 되었음을 알려주는 것
-            // appRef.current.click();//루틴생성 데이터가 없을때는 모달창을 띄워주는 것
+            dispatch(Second_clear_page());//체력측정이 완료 되었음을 알려주는 것
+            appRef.current.click();//루틴생성 데이터가 없을때는 모달창을 띄워주는 것
 
             //서버로 모든 운동 정보를 전송
             axios.post(`http://127.0.0.1:8000/api/workout/testResult/${id}`, {
@@ -80,7 +80,7 @@ function EachTestResult(){
             .catch(err => 
                 console.log(err.response.data)
             )
-            navigate("/test/finalResult");
+
         }
         
             
