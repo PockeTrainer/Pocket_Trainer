@@ -115,20 +115,25 @@ function MainStep(){
                 console.log(res.data);
                 dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값
 
+                let tmp_info=localStorage.getItem(exercise_name.exercise_name);//해당 운동에 대한 이전 저장해둔 값을 가져온다
+
                 if(exercise_name.exercise_name==="plank"){
                     let format=res.data.target_time.split(":");
                     let sec_converted=parseInt(format[1])*60+parseInt(format[2]);//초로 환산해줌
 
 
                     dispatch(set_current_time(sec_converted));//리덕스에 올리기
+                    localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:sec_converted}));//기존데이터+새로운 데이터로 업데이트
                     dispatch(last_record(sec_converted));//마지막 기록을 혹시나 체크단계에서 변경될것을 대비해 저장해둠
                 }
                 else if(exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="crunch"){
                     dispatch(set_current_cnt(res.data.target_cnt));//리덕스에 올리기
+                    localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:res.data.target_cnt}));//기존데이터+새로운 데이터로 업데이트
                     dispatch(last_record(res.data.target_cnt));
                 }
                 else{
                     dispatch(set_current_weight(res.data.target_kg));//리덕스에 올리기
+                    localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:res.data.target_kg}));//기존데이터+새로운 데이터로 업데이트
                     dispatch(last_record(res.data.target_kg))
                 }
 

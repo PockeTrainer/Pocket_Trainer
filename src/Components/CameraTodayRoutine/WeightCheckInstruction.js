@@ -63,14 +63,27 @@ function WeightCheckInstruction(){
                     }
                     key_for_unit.current="etc";
                     dispatch(last_record(sec_converted));//마지막 기록을 혹시나 체크단계에서 변경될것을 대비해 저장해둠
+                    localStorage.setItem(exercise.exercise_name,JSON.stringify({//로컬스토리지에 저장시 꺼둬 값이 안지워짐 last:마지막 데이터 new:곧 들어올 신상데이터
+                        last:sec_converted,
+                        new:""
+                    }));
                 }
                 else if(exercise.exercise_name==="seated_knees_up"||exercise.exercise_name==="crunch"){
                     key_for_unit.current="count_demand";
                     dispatch(last_record(res.data.target_cnt));
+                    localStorage.setItem(exercise.exercise_name,JSON.stringify({//로컬스토리지에 저장시 꺼둬 값이 안지워짐 last:마지막 데이터 new:곧 들어올 신상데이터
+                        last:res.data.target_cnt,
+                        new:""
+                    }));
                 }
                 else if(exercise.exercise_name==="pec_dec_fly"||exercise.exercise_name==="lat_pull_down"||exercise.exercise_name==="seated_row"||exercise.exercise_name==="reverse_pec_dec_fly"||exercise.exercise_name==="cable_push_down"||exercise.exercise_name==="arm_curl"||exercise.exercise_name==="leg_extension"){
                     key_for_unit.current="pound_demand";
                     dispatch(last_record(res.data.target_kg));//대신 이때는 이 숫자는 파운드인걸로 유념하자
+                    localStorage.setItem(exercise.exercise_name,JSON.stringify({//로컬스토리지에 저장시 꺼둬 값이 안지워짐 last:마지막 데이터 new:곧 들어올 신상데이터
+                        last:res.data.target_kg,
+                        new:""
+                    }));
+                    
                 }
                 else{
                     key_for_unit.current="weight_demand";

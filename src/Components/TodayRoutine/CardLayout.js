@@ -38,6 +38,35 @@ function CardLayout(props){
         let module= require("../../ExercisesInfo/ExerciseInfo.js");
         let Exercise=module.Exercise;
 
+        let date=new Date();
+        let today=date.getFullYear()+"/"+parseInt(date.getMonth()+1)+"/"+date.getDate();//오늘날짜
+
+        let date_of_routine=localStorage.getItem("today_date");//날짜가 저장되어있는지 먼저 확인
+        if(date_of_routine==null){//만약에 날짜객체가 저장이 안되어있다면 새롭게 오늘날짜 저장
+            localStorage.setItem("today_date",today)
+        }
+        else{//만약에 접속된 날짜정보가 있다
+            if(date_of_routine!==today){//오늘 날짜와 다르다면 
+                localStorage.clear();//모든 저장되어 있던 운동정보+이전날짜 값 지우기
+                localStorage.setItem("today_date",today);//새로운 오늘 날짜 저장
+            }
+        }
+
+        await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
+            .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data)
+                if (err.response.data.error === '오늘의 운동 루틴 생성 실패, 체력평가 결과 필요') {
+                    console.log("체력 평가 유도");
+    
+                } else if (err.response.data.error === '오늘의 운동 계획이 이미 생성되었습니다') {
+                    console.log("skip");
+                   
+                }
+            })
+
         await axios.get(`http://127.0.0.1:8000/api/workout/todayRoutine/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
         .then((res) => {
 

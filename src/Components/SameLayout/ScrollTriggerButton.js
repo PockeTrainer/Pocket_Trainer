@@ -28,9 +28,9 @@ function ScrollButton(props) {
     const exercise_name=useParams();
 
     const count=useRef(1);
-    const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
+    const _routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const page_info=useSelector(state=>state.update_page_progress_reducer);//페이지가 담고있는 부위와 운동명 가져옴
-    const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
+    const{bodypart,part1,part2,part3,fail_list}=_routine_info;//부위정보 담아주기
     const{current_bodypart,current_exercise}=page_info;//현재페이지의 운동부위와 운동명 인덱스
     let now_exercise_obj=eval('part'+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재운동객체 갖고오기
 

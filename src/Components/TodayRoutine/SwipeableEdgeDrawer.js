@@ -78,6 +78,8 @@ function SwipeableEdgeDrawer(props) {
   const ref=useRef("");//drawer여는 버튼용
   const slider=useRef("");//Slider용
   const dispatch=useDispatch();//디스패치용
+  const [initialIndex,set_InitialIndex]=useState(0);//슬라이드의 시작 인덱스 값
+
 
 
 
@@ -93,11 +95,54 @@ function SwipeableEdgeDrawer(props) {
     margin:"auto"
   }));
 
+  
  
 
   const routine_info=useSelector(state=>state.update_routineInfo_reducer);//루틴정보들 싹 가져오기
   const{bodypart,part1,part2,part3}=routine_info;
+  const which_part=useRef(part1);//어디파트를 보여줄지
+
+  if(props.select_button==="button1"){
+    which_part.current=part1;
+  }
+  else if(props.select_button==="button2"){
+    which_part.current=part2;
+  }
+  else{
+    which_part.current=part3;
+  }
   
+  const dispatch_change=(exercise,index)=>{
+    let tmp_part;
+    let tmp_idx;
+    if(exercise.part==="가슴"||exercise.part==="등"||exercise.part==="어깨"){
+      tmp_part="button1";
+    }
+    else if(exercise.part==="이두"||exercise.part==="삼두"||exercise.part==="하체"){
+      tmp_part="button2";
+    }
+    else{
+      tmp_part="button3";
+    }
+    dispatch(change_clicked_button(tmp_part));
+    
+    if(index>=0&&index<=2){
+      tmp_idx=index;
+    }
+    else if(tmp_idx>=3&&tmp_idx<=5){
+      tmp_idx=index-3;
+    }
+    
+    if(bodypart.indexOf("어깨")>0){
+      if(index===6){
+        tmp_idx=index-6
+      }
+      
+    }
+    set_InitialIndex(tmp_idx);//슬라이드의 시작 인덱스 값을 설정
+    
+
+  }
 
   const todayRoutineListImage=()=>{
     
@@ -105,7 +150,7 @@ function SwipeableEdgeDrawer(props) {
       for(let i=1;i<=3;i++){
         result.push(eval("part"+i).map((exercise,index)=>(
           <Card key={index} sx={{ maxWidth: 345 ,marginTop:"1em"}}>
-            <CardActionArea onClick={()=>dispatch(change_clicked_button("button1"))} >
+            <CardActionArea onClick={()=>dispatch_change(exercise,index)} >
                     <CardMedia
                                 component="img"
                                 height="250"
@@ -128,11 +173,30 @@ function SwipeableEdgeDrawer(props) {
    
   }
     
-  
+  const sliderGoto=(part,index)=>{//슬라이더 이동시키는 함수 인덱스 재조정
+    let tmp_idx;
+    if(part===part1){
+      tmp_idx=index;
+    }
+    else if(part===part2){
+      tmp_idx=index+3;
+    }
+    else{
+      if(bodypart.indexOf("어깨")>0){
+        tmp_idx=index+6;
+      }
+      else{
+        tmp_idx=index+4
+      }
+      
+    }
+    slider.current.slickGoTo(tmp_idx,false)
+  }
 
   const todayRoutineListButton=(part,color)=>{
+
     let list=part.map((exercise,index)=>(
-    <Button key={index} sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(index,false)}>
+    <Button key={index} sx={{padding:"0px 0px"}} onClick={()=>sliderGoto(part,index)}>
               <Stack direction="column">
                 <AvatarStyle color={color} >{(exercise.name).cut(2)}</AvatarStyle>
                 <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{exercise.name}</Typography>
@@ -194,6 +258,7 @@ function SwipeableEdgeDrawer(props) {
   }
 
   const settings_for_exercises = {
+    initialSlide:initialIndex,//시작 슬라이드 값을 설정해줌
     infinite: false,
     speed: 500,
     slidesToShow: 1,
@@ -315,11 +380,11 @@ function SwipeableEdgeDrawer(props) {
 
          
           {
-          props.select_button=="button1"&&
+          props.select_button!=="total"&&
           <>
           <Slider {...settings_for_exercises} ref={slider}>
             {
-              part1.map((exercise,index)=>(
+              which_part.current.map((exercise,index)=>(
                 <EachExerciseInstruction key={index} exercise={exercise} />
               ))
             }
@@ -328,7 +393,7 @@ function SwipeableEdgeDrawer(props) {
      <Stack direction="row" spacing={2} sx={{marginTop:"0.5em",justifyContent:"center"}}>
 
        {
-       part1.map((exercise,index)=>(
+      which_part.current.map((exercise,index)=>(
           <Button sx={{padding:"0px 0px"}} onClick={()=>slider.current.slickGoTo(index,false)}>
             <Stack direction="column">
               <AvatarStyle color="#fc7c5f">{(exercise.name).cut(2)}</AvatarStyle>

@@ -237,11 +237,20 @@ function Evaluation(){
                                                     <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>마지막개수:{last_record}개</span> 
                                                     <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>오늘개수:{current_cnt}개</span> 
                                                 </>
-                                            :
-                                            <>
-                                                <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>마지막중량:{last_record}kg</span> 
-                                                <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>오늘중량:{current_weight}kg</span> 
-                                            </>
+                                            :(
+                                                exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension"
+                                                ?
+                                                    <>
+                                                        <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>마지막중량:{last_record}lbs</span> 
+                                                        <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>오늘중량:{current_weight}lbs</span> 
+                                                    </>
+                                                :
+                                                <>
+                                                    <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>마지막중량:{last_record}kg</span> 
+                                                    <span className="badge badge-success btn-lg" style={RecordBadgeStyle}>오늘중량:{current_weight}kg</span> 
+                                                </>
+                                            )
+                                            
                                             )
                                         }
                     

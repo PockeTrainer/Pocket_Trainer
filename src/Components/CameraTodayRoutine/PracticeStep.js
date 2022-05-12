@@ -14,6 +14,7 @@ import { set_current_cnt } from "../../modules/action";
 import AlertModal from "../SameLayout/AlertModal";
 
 import Typography from '@mui/material/Typography';
+import LinearWithValueLabel from "./LinearWithValueLabel";
 
 
 
@@ -79,6 +80,7 @@ function PracticeStep(){
             else{
                 const start_kg=now_exercise.Info_from_api.target_kg;//현재저장되어 있던 초기 무게를 가져온다-거의 대부분운동
                 dispatch(set_current_weight(start_kg));//시작무게설정
+
                 if(exercise_name.exercise_name==="pec_dec_fly"||exercise_name.exercise_name==="lat_pull_down"||exercise_name.exercise_name==="seated_row"||exercise_name.exercise_name==="reverse_pec_dec_fly"||exercise_name.exercise_name==="cable_push_down"||exercise_name.exercise_name==="arm_curl"||exercise_name.exercise_name==="leg_extension"){
                     key_for_message.current="pound_demand";
                 }
@@ -90,12 +92,18 @@ function PracticeStep(){
             
             
         }
+        let tmp_info=localStorage.getItem(exercise_name.exercise_name);//해당 운동에 대한 이전 저장해둔 값을 가져온다
         if(exercise_name.exercise_name==="plank"){
             
             setMin(parseInt(current_time/60));//분설정
             setSec(current_time%60);//초설정
-
-
+            localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:current_time}));//기존데이터+새로운 데이터로 업데이트
+        }
+        else if(exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="crunch"){
+            localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:current_cnt}));//기존데이터+새로운 데이터로 업데이트
+        }
+        else{
+            localStorage.setItem(exercise_name.exercise_name,JSON.stringify({...JSON.parse(tmp_info),new:current_weight}));//기존데이터+새로운 데이터로 업데이트
         }
 
         if(clicked_button!==""){ 
@@ -147,6 +155,13 @@ function PracticeStep(){
         right:"0",
         lineHeight:"1.5em"
     }
+    const ProgressWrpperStyle={
+        position:"absolute",
+        zIndex:"9999",
+        right:"0",
+        transform:"rotate(-90deg)"
+    }
+
     const SpanStyle={
         backgroundColor:"#2dce89",
         borderColor:"#2dce89",
@@ -249,6 +264,19 @@ function PracticeStep(){
                    <span className="badge badge-primary" style={ShowCount}>0개</span>
                </div>
                
+
+                {/* <div className="progress-wrapper" style={ProgressWrpperStyle}>
+                        <div className="progress-info">
+                            <div className="progress-percentage">
+                                <span>60%</span>
+                            </div>
+                        </div>
+                        <div className="progress">
+                            <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
+                        </div>
+                </div> */}
+                <LinearWithValueLabel/>
+
             </div>
         </Grow>
 

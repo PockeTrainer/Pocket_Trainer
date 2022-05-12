@@ -62,6 +62,7 @@ function Camera({display}) {
 
     // const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
+        console.log("여기기기?")
         const detector = await poseDetection.createDetector(
             poseDetection.SupportedModels.MoveNet, 
             // detectorConfig,
@@ -87,11 +88,9 @@ function Camera({display}) {
             webcamRef.current.video.height = videoHeight;
 
             const poses = await detector.estimatePoses(video);
-            //console.log(poses)
             //카메라가 가동되기 시작함-이때부터 점도 찍을수 있게 됨
             if (poses.length > 0) { 
                 drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
-                console.log("디텍트 중");
                 if(count.current==0){
                     count.current+=1;
                     dispatch(setting_completed());//카메라 완료상태를 의미

@@ -65,6 +65,7 @@ function CardLayout(){
 
     const [now_exercise_info,set_now_exercise_info]=useState({
         name:"",
+        eng_name:"",
         part:""
     });//현재페이지의 한국 운동명과 부위명
 
@@ -76,6 +77,7 @@ function CardLayout(){
     const checkCategory=async()=>{
         let category;
         let exercise_name;
+        let now_exercise_eng_name="";
         let bodypart;
         let page_title;
         if(path.pathname.includes("series") || path.pathname.includes("weightcheck")|| path.pathname.includes("exercise") ||path.pathname.includes("evaluation") ){
@@ -91,6 +93,7 @@ function CardLayout(){
                 }
                 else{
                     exercise_name=module[tmp].name//정확한 한국어 운동명을 가져온다
+                    now_exercise_eng_name=tmp;
                 }
 
                 if(path.pathname.includes("series")){//즉 각 부위별 운동정리 페이지를 의미한다
@@ -109,6 +112,7 @@ function CardLayout(){
                    
                     set_now_exercise_info({//중량체크페이지에서 상단 진행사항 미니 popover에 필요함
                         name:exercise_name,
+                        eng_name:now_exercise_eng_name,
                         part:module[tmp].part
                     })
                 }
@@ -258,6 +262,7 @@ function CardLayout(){
    const gotohome=()=>{//다시메인페이지로 돌아가게
        dispatch(reset());//현재 가지고 있던 운동 정보들 초기화
        dispatch(reset_page());//페이지 정보들도 다 초기화 시킴
+       localStorage.removeItem(now_exercise_info.eng_name);//만약 그냥 건너뛰면 있던 정보값을 스토리지에서 삭제
        navigate("/main/routine");
 
    };
