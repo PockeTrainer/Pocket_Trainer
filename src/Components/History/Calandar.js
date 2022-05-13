@@ -215,37 +215,153 @@ export default function Calandar() {
       }));
 
 
-      const get_day_info=async(date)=>{//일별 info 가져오기 툴팁 열릴때
+      const get_day_info=async(date,data)=>{//일별 info 가져오기 툴팁 열릴때
+        let start_datetime_arr=[];//시작시간 배열
+        let end_datetime_arr=[];//종료시간 배열
+        let start_Date;
+        let end_Date;
+        let tmp_location;
+        let bodypart=new Set();
+        let clear_Map=new Map();//각 부위별로 클리어 여부를 알기 위해 사용됨
+        let how_many_clear=0;//몇 부위나 클리어 했는지
+        let tmp_room;
+        let tmp;//임시객체
         await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
         .then((res) => {
-            console.log(res.data);  
+            console.log(res.data);
+
+            if(res.data.day_history_workout[0].workout_name.body_part==="가슴"){//맨 앞의 운동을 가지고 미리 clear_map을 초기화해두자
+                clear_Map.set("가슴",0).set("삼두",0).set("복근",0);
+            }
+            else if(res.data.day_history_workout[0].workout_name.body_part==="등"){
+                clear_Map.set("등",0).set("이두",0).set("복근",0);
+            }
+            else{
+                clear_Map.set("어깨",0).set("하체",0).set("복근",0);
+            }
+
+            for(const exercise of res.data.day_history_workout){
+                if(exercise.start_datetime!==null){
+                    start_datetime_arr.push(new Date(exercise.start_datetime));
+                }
+                if(exercise.end_datetime!==null){
+                    end_datetime_arr.push(new Date(exercise.end_datetime));
+                }
+
+                bodypart.add(exercise.workout_name.body_part);//해당일에 할당된 부위
+
+                
+                if(exercise.is_clear){
+                    clear_Map.set(exercise.workout_name.body_part,clear_Map.get(exercise.workout_name.body_part)+1);
+                    
+                }
+                
+
+            }
+            const final_start_time=new Date(Math.min.apply(null,start_datetime_arr));//가장 이른시간을 시작시간으로 설정
+            const final_end_time=new Date(Math.max.apply(null,end_datetime_arr));//가장 늦은 시간을 끝나는시간으로 설정
+
+            clear_Map.forEach((value,key) => {
+                if(value===3&&(key==="가슴"||key==="등"||key==="어깨"||key==="하체")){
+                    how_many_clear+=1;
+                }
+                else if(value===1&&(key==="이두"||key==="삼두"||key==="복근")){
+                    how_many_clear+=1;
+                }
+            });
+
+
+            console.log("시작시간: ",final_start_time);
+            console.log("엔딩시간: ",final_end_time);
+
+
+            if(data.location==="bmi지수"){//bmi지수일 때에는 그냥 초기로 설정되어 있는 값을 쭉 유지해주자
+                start_Date=data.startDate;
+                end_Date=data.endDate;
+                tmp_location="bmi지수";
+                tmp_room=5;
+            }
+            else{
+                start_Date= new Date(final_start_time.getFullYear(),final_start_time.getMonth(),final_start_time.getDate(),final_start_time.getHours(),final_start_time.getMinutes());
+                end_Date= new Date(final_end_time.getFullYear(),final_end_time.getMonth(),final_end_time.getDate(),final_end_time.getHours(),final_end_time.getMinutes());
+                tmp_location=[...bodypart][0]+"+"+[...bodypart][1]+"+"+[...bodypart][2];
+                if(how_many_clear===0){
+                    tmp_room=4//올Fail을 의미
+                }
+                else if(how_many_clear===1){
+                    tmp_room=3;//1부위 클리어
+                }
+                else if(how_many_clear===2){
+                    tmp_room=2;//2부위 클리어
+                }
+                else{
+                    tmp_room=3;//올클리어
+                }
+            }
+
+ 
+            tmp={   
+                title: data.title,
+                startDate:start_Date,
+                endDate:end_Date ,
+                id: data.id,
+                location: tmp_location,
+                roomId:tmp_room
+            } 
+
+            
+            let tmp_list=[...state.data];
+            tmp_list[tmp_list.indexOf(data)]=tmp;//원래 있던 state의 data를 가져와서 해당 지금 눌린 data의 인덱스를 찾아서 해당 인덱스 값만 새로운걸로 치환
+
+            console.log(tmp_list)
+
+            // set_State({
+            //     ...state,
+            //     data:tmp_list
+            // })
+
+
+
         })
         .catch((err) => {
-            console.log(err.response.data)
+            console.log(err)
         })
+
+        return tmp
+   
     }
 
     const customAppointMent=useCallback(({children,data,...restProps})=>{//useCallback을 사용해 자식에서 발생하는 불필요한 랜더링을 막음-이것 안하면 타겟위치로 할수없음
         return(
-            <Appointments.Appointment {...restProps} onClick={(e) => {
-                console.log(data);
-                get_day_info(data.startDate);//api로 일별 정보 불러오기-인자로 날짜를 전달
+            <Appointments.Appointment {...restProps} onClick={async(e) => {
+                // console.log(data);
+                let new_data;
+                // let  tmp={   
+                //     title: "실패",
+                //     startDate:new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,13, 9, 0),
+                //     endDate:new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,13 , 23, 0),
+                //     id: 13,
+                //     location: "운동",
+                //     roomId:3
+                // } 
+                new_data= await get_day_info(data.startDate,data)//api로 일별 정보 불러오기-인자로 날짜를 전달
+                console.log(new_data);
                 set_visible(true);
                 setAppointmentMeta({
                     ...appointmentMeta,
                     target:e.target,
-                    data:data
+                    data:new_data
                 });
               }}>
                 {children}
             </Appointments.Appointment>
         );
-    },[set_visible,setAppointmentMeta])
+    },[set_visible,setAppointmentMeta,state.data])
     
     const Content = (({//툴팁에서 컨텐츠를 맡던 것
         children, appointmentData, ...restProps
       }) => {
-        console.log(appointmentData)
+        // console.log(appointmentData)
         return(
         <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData} sx={{".Content-text":{color:'black !important'}}}>
           <Grid container alignItems="center">
@@ -278,7 +394,7 @@ export default function Calandar() {
      
 
       useEffect(async()=>{//월별 info들 쭉 받아오기
-        await axios.get(`http://127.0.0.1:8000/api/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+        await axios.get(`http://127.0.0.1:8000/api/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}/${id}`)
         .then((res) => {
             console.log(res.data);
             let date=1;
@@ -289,10 +405,10 @@ export default function Calandar() {
                     let tmp={   
                         title: item,
                         startDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 0, 0),
-                        endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date+1 , 0, 0),
+                        endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 23,59),
                         id: date,
                         location: 'bmi지수',
-                        roomId:3
+                        roomId:5
                       }
 
                       tmp_bmi_list.push(tmp);//배열에추가 appointment
@@ -310,7 +426,7 @@ export default function Calandar() {
                         endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date ,12, 0),
                         id: date,
                         location: '어깨+삼두+복근',//이것도 그냥 디폴트로 해놓자
-                        roomId:item===true?1:2//1이면 올클리어 2이면 일부 클리어
+                        roomId:item===true?1:4//1이면 올클리어 2이면 2부위클리어 3이면 1부위클리어 4이면 올Fail
                       }
                       tmp_clear_list.push(tmp);
                 }
@@ -318,6 +434,7 @@ export default function Calandar() {
             }
             
             let entire_appointment_list=[...tmp_bmi_list,...tmp_clear_list];//bmi리스트랑 클리어리스트 합친거
+            // console.log(entire_appointment_list);
             set_State({
                 ...state,
                 data:entire_appointment_list
@@ -331,7 +448,7 @@ export default function Calandar() {
 
     },[tmp_date_what_im_looking])
 
-
+    console.log(state.data);
 
     return (
         <>

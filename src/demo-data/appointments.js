@@ -3,7 +3,7 @@ import {red,lightGreen,amber} from "@mui/material/colors";
 export const appointments = [
     {
       title: '클리어',
-      startDate: new Date(2022, 3, 1, 9, 35),
+      startDate: new Date(2022, 3, 1, 9, 35),//실제로는 4월을 의미함
       endDate: new Date(2022, 3, 1, 11, 30),
       id: 1,
       location: '어깨+삼두+복근',
@@ -39,12 +39,20 @@ export const appointments = [
       id: 1,
       color: lightGreen,
     }, {
-      text: '일부 클리어',
+      text: '2부위 클리어',
       id: 2,
       color: red,
     }, {
-      text: 'bmi지수',
+      text: '1부위 클리어',
       id: 3,
+      color: red,
+    }, {
+      text: "올Fail",
+      id: 4,
+      color: red,
+    }, {
+      text: 'bmi지수',
+      id: 5,
       color: amber,
     }
   ];

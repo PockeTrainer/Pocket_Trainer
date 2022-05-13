@@ -58,6 +58,8 @@ const RESET_PAGE="reset_page";
 const FINAL_RESULT_PAGE="final_result_page";
 //중량,시간,개수 변화전에 마지막 기록을 저장해두는용
 const LAST_RECORD="last_record";
+//캘린더에서 누른 appointment의 정보를 담아줌
+const SET_INFO_FROM_DAYINFO="set_info_from_dayinfo";
 //식단에서 아침,점심,저녁에 음식들이 저장됨
 const PUSH_BREAKFAST="push_breakfast";
 const PUSH_LUNCH="push_lunch";
@@ -279,6 +281,11 @@ export const last_record=(record)=>({
     record
 });
 
+export const set_info_from_dayinfo=(obj)=>({//캘린더에서 해당 누른날의 정보를 내려줌 
+    type:SET_INFO_FROM_DAYINFO,
+    obj
+});
+
 export const push_breakfast=(record)=>({
     type:PUSH_BREAKFAST,
     record
@@ -385,6 +392,10 @@ const initialPageProgress={//운동페이지에서 지금진행하고 있는 운
     current_bodypart:0,
     current_exercise:0,
     is_First:true
+}
+
+const initialInfoFromDayInfo={//캘린더에서 눌린 일일 데이터가 담김
+    day_info_obj:""
 }
 
 const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 갖고 있어준다.-변화량 때문에
@@ -684,6 +695,17 @@ export function update_how_long_reducer(state=initialHowLong,action){//각 운�
             return{
                 min:action.min,
                 sec:action.sec
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_day_info_obj_reducer(state=initialInfoFromDayInfo,action){//달력에서 눌린 값의 객체정보를 담음
+    switch(action.type){
+        case SET_INFO_FROM_DAYINFO:
+            return{
+               day_info_obj:action.obj
             }
         default:
             return state;    

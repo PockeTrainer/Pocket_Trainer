@@ -18,6 +18,7 @@ import { update_last_record_reducer } from './action';
 import { update_meals_reducer } from './action';
 import { update_choose_meal_date_reducer } from './action';
 import { plank_time_update_reducer } from './action';
+import { update_day_info_obj_reducer } from './action';
 
 const persistConfig={
     key:"root",
@@ -35,6 +36,7 @@ const rootReducer=combineReducers({
     change_timeToModal_reducer,
     Exercise_start_reducer,
     update_routineInfo_reducer,
+    update_day_info_obj_reducer,
     update_page_progress_reducer,
     update_how_long_reducer,
     update_last_record_reducer,

@@ -134,7 +134,7 @@ function Finish(){
 
                if(info.workout_time!==null){//즉 활동시간이 있었던 운동에 대해서 시간 합치기
                     let tmp=info.workout_time.split(":");
-                    let sec_converted=parseInt(tmp[1])*60+tmp[2];//초로 환산
+                    let sec_converted=parseInt(tmp[1])*60+parseInt(tmp[2]);//초로 환산
                     workout_time+=sec_converted;//초를 다 합한다
                }
                if(info.workout_set!==null){//즉 활동세트수가 존재한다면?

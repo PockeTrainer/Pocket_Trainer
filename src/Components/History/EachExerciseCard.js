@@ -7,8 +7,34 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import Demo from './Chart';
+import { styled } from '@mui/system';
+import Collapse from '@mui/material/Collapse';
 
 export default function EachExerciseCard() {
+
+  const [checked, setChecked] = React.useState(false);//밑에 그래프 여는용도
+
+  const handleChange = () => {
+    setChecked((prev) => !prev);
+  };
+
+  const Pstyled=styled('p')((props)=>({
+    fontSize:"1.0rem",
+    fontWeight:props.bold=="lighter"?"lighter":"600",
+    lineWeight:"1.0",
+    marginBottom:"0"
+}));
+
+  const spanStyle={
+    fontWeight:"600",
+    lineHeight:"2",
+    color:"white",
+    backgroundColor:"rgb(126 126 126)",
+    padding:"0.35rem 2.375rem",
+    marginBottom:"0.5rem"
+  }
+
     const BigTitle={
         fontSize:"1.925rem",
         lineHeight:"1.535"
@@ -40,7 +66,11 @@ export default function EachExerciseCard() {
         </Typography>
       </Box>
       <Divider variant="middle" />
-      <Box sx={{ m: 2 }}>
+      <Box sx={{ m: 2,mb:0 }}>
+        <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em",textAlign:"center"}}>
+          <span className="badge badge-default btn-lg" style={spanStyle}>시작운동시간:3시 50분</span>
+          <span className="badge badge-default btn-lg" style={spanStyle}>시작운동시간:3시 50분</span>
+        </div>
         <Typography gutterBottom variant="body1">
           최근운동일 
         </Typography>
@@ -50,9 +80,15 @@ export default function EachExerciseCard() {
           <Chip  label="3/13"/>
           <Chip label="3/16" color="primary" />
         </Stack>
+        <Collapse in={checked}>
+          <div>
+            <Demo/>
+          </div>
+        </Collapse>
+        
       </Box>
-      <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-            <Button variant="outlined" startIcon={<PlayCircleIcon />} sx={{color:"#5e72e4",border: "1px solid #f7fafc",fontFamily:"Noto Sans KR",marginTop:"2rem"}}>
+      <Box sx={{ ml: 1, mb: 1 }}>
+            <Button variant="outlined" onClick={handleChange} startIcon={<PlayCircleIcon />} sx={{color:"#5e72e4",border: "1px solid #f7fafc",fontFamily:"Noto Sans KR",marginTop:"2rem"}}>
                 최근중량변화
             </Button>
       </Box>
