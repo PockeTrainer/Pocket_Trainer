@@ -258,7 +258,7 @@ function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함
 
     return(
         <>
-        <Card sx={{ maxWidth: 345 ,marginTop:"1em"}}>
+        <Card sx={{ maxWidth: 400 ,marginTop:"1em"}}>
                   <CardActionArea >
                     <CardMedia
                       component="img"

@@ -260,6 +260,8 @@ function SwipeableEdgeDrawer(props) {
   const settings_for_exercises = {
     initialSlide:initialIndex,//시작 슬라이드 값을 설정해줌
     infinite: false,
+    dots:false,
+    arrows:false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1

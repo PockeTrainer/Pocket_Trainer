@@ -293,7 +293,7 @@ export const easy_bar_curl={
 
 export const arm_curl={
     name:"암컬",
-    image_url:"../assets/img/theme/exercise_gif/armcurl.gif",
+    image_url:"../assets/img/theme/exercise_gif/armcurl.webp",
     instruction:"암 컬은 상완근과 상완 이두근의 바깥쪽을 단련할 수 있는 운동입니다",
     musclePart:"상완근+상완이두근",
     part:"이두",

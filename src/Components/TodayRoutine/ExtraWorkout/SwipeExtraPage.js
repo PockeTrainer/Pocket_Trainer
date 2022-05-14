@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { useDispatch,useSelector } from 'react-redux';
+import BodyPartButton from './BodyPartButton';
+import ExerciseGroup from './ExerciseGroup';
 
 
 //Drawer용 
@@ -101,14 +103,16 @@ function SwipeExtraPage(props) {
 
         <StyledBox
           sx={{
-            px: 2,
-            pb: 2,
+            paddingRight:"0.2rem",
+            paddingLeft:"0.2rem",
+            paddingBottom:"0.2rem",
             height: '100%',
             overflow: 'auto',
           }}
         >
-            <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
-                
+            <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em",backgroundColor:"#f5f5f5"}}>
+                {/* <BodyPartButton/> */}
+                <ExerciseGroup/>
             </div>
          
         </StyledBox>
