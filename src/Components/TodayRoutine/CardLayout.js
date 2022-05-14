@@ -12,8 +12,8 @@ import ExerciseRoutine from "./ExerciseRoutine";
 
 import Grow from '@mui/material/Grow';
 import { useDispatch, useSelector } from "react-redux";
-import ExtraExercise from "./ExtraExercise";
 import { not_exercise_start,routine_info } from "../../modules/action";
+import ExtraExercise from "./ExtraWorkout/ExtraExercise";
 
 
 function CardLayout(props){
@@ -122,7 +122,8 @@ function CardLayout(props){
         marginLeft:"-12px",
         marginRight:"-12px",
         borderRadius:"5px",
-        lineHeight:"7px"
+        lineHeight:"7px",
+        top:page==="today_routine"?"0.5rem":"2.5rem"
     };
 
     const settings = {
@@ -140,13 +141,13 @@ function CardLayout(props){
     return(
 
     <div>
-        <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8" data-component="HeaderForCard">
+        <div className="header bg-gradient-primary pt-5 pt-md-8" data-component="HeaderForCard" style={{minHeight:"100vh"}}>
               <div className="container-fluid">
                 <div className="header-body">
                     <div className="container-fluid" >
                         <div className="row" data-component="ProfileCardLayout">
                             <CssBaseline />
-                            <List sx={{ mb: 2 ,marginTop:"-3.85em",paddingTop:"14px"}}>
+                            <List sx={{marginTop:"-3.85em",paddingTop:"14px",paddingBottom:"0"}}>
                                 <ListSubheader sx={subListHeader}>
                                     <InfoTab change_click_func={set_page}/>
                                 </ListSubheader>

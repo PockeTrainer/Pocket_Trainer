@@ -149,7 +149,7 @@ function SwipeableEdgeDrawer(props) {
       const result=[];
       for(let i=1;i<=3;i++){
         result.push(eval("part"+i).map((exercise,index)=>(
-          <Card key={index} sx={{ maxWidth: 345 ,marginTop:"1em"}}>
+          <Card key={index} sx={{ maxWidth: 400 ,marginTop:"1em"}}>
             <CardActionArea onClick={()=>dispatch_change(exercise,index)} >
                     <CardMedia
                                 component="img"
