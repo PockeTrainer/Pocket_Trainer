@@ -70,6 +70,20 @@ const POP_LUNCH="pop_lunch";
 const POP_DINNER="pop_dinner";
 
 const CHOOSE_MEAL_DATE="choose_meal_date";//식단에서 고른날짜를 보여줌
+
+//추가운동에서 페이지 이동 정보를 알림
+const NEXT_EXTRA_TAB_PAGE="next_extra_tab_page";
+const PREV_EXTRA_TAB_PAGE="prev_extra_tab_page";
+const RESET_EXTRA_TAB_INFO="reset_extra_tab_info";
+const CLICKED_PART_NAME="clicked_part_name";
+
+//추가운동에서 체크한 운동들을 담음
+const PUSH_WHAT_I_WANT_EXERCISE='push_what_i_want_exercise';
+const POP_WHAT_I_WANT_EXERCISE="pop_what_i_want_exercise";
+
+//추가운동에서 즐겨찾기 체크한 운동들을 담음
+const PUSH_FAVORITE_EXERCISE="push_favorite_exercise";
+const POP_FAVORITE_EXERCISE="pop_favorite_exercise";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -320,6 +334,43 @@ export const choose_meal_date=(date)=>({//Date객체를 직접 넣어줌
     type:CHOOSE_MEAL_DATE,
     date
 })
+
+export const next_extra_tab_page=()=>({
+    type:NEXT_EXTRA_TAB_PAGE
+});
+
+export const prev_extra_tab_page=()=>({
+    type:PREV_EXTRA_TAB_PAGE
+});
+
+export const reset_extra_tab_page=()=>({
+    type:RESET_EXTRA_TAB_INFO
+});
+
+export const clicked_part_name=(part)=>({
+    type:CLICKED_PART_NAME,
+    part
+});
+
+export const push_what_i_want_exercise=(exercise)=>({
+    type:PUSH_WHAT_I_WANT_EXERCISE,
+    exercise
+});
+
+export const pop_what_i_want_exercise=(new_arr)=>({
+    type:POP_WHAT_I_WANT_EXERCISE,
+    new_arr
+});
+
+export const push_favorite_exercise=(exercise)=>({
+    type:PUSH_FAVORITE_EXERCISE,
+    exercise
+});
+
+export const pop_favorite_exercise=(new_arr)=>({
+    type:POP_FAVORITE_EXERCISE,
+    new_arr
+});
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -410,6 +461,13 @@ const initialMeals={//아침,점심,저녁 정보를 가지고 있어준다.
 
 const initialDate={//날짜객체 정보가 담겨져 있을 것
     date:new Date()
+};
+
+const initialExtraExerciseInfo={//추가운동페이지에서 하고싶은것 즐겨찾기 페이지 정보가 담김
+    page:0,
+    what_i_want_exercise:[],
+    favorite:[],
+    clicked_part:""
 }
 
 //초기페이지 정보
@@ -818,6 +876,59 @@ export function update_choose_meal_date_reducer(state=initialDate,action){//식�
         case CHOOSE_MEAL_DATE:
             return{
                 date:action.date
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_extra_exercise_reducer(state=initialExtraExerciseInfo,action){//추가운동페이지 관련 페이지,하고싶은 것, 즐겨찾기
+    let tmp_list;
+    switch(action.type){
+        case NEXT_EXTRA_TAB_PAGE:
+            return{
+                ...state,
+                page:state.page+1
+            }
+        case PREV_EXTRA_TAB_PAGE:
+            return{
+                ...state,
+                page:state.page-1
+            }
+        case RESET_EXTRA_TAB_INFO:
+            return{
+                ...initialExtraExerciseInfo
+            }   
+        case CLICKED_PART_NAME:
+            return{
+                ...state,
+                clicked_part:action.part
+            }     
+        case PUSH_WHAT_I_WANT_EXERCISE:
+            tmp_list=[...state.what_i_want_exercise];
+            tmp_list.push(action.exercise);
+            return{
+                ...state,
+                what_i_want_exercise:tmp_list
+            }   
+        
+        case POP_WHAT_I_WANT_EXERCISE:
+            return{
+                ...state,
+                what_i_want_exercise:action.new_arr
+            }
+        
+        case PUSH_FAVORITE_EXERCISE:
+            tmp_list=[...state.favorite];
+            tmp_list.push(action.exercise);
+            return{
+                ...state,
+                favorite:tmp_list
+            }
+        case POP_FAVORITE_EXERCISE:
+            return{
+                ...state,
+                favorite:action.new_arr
             }
         default:
             return state;    

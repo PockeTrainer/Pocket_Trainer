@@ -1,25 +1,26 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import Grid from '@mui/material/Grid';
-import Chip from '@mui/material/Chip';
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import { Avatar } from '@mui/material';
-import { Button } from '@mui/material';
+
+
 import { styled } from '@mui/system';
-import {
-    bench_press,
-    seated_row,
-    dumbbell_shoulder_press,
-    incline_press
-} from "../../../ExercisesInfo/ExerciseInfo";
+import { Grow } from '@mui/material';
+import { useSelector,useDispatch } from "react-redux";
 
+import { exercise_classfication } from '../../../ExercisesInfo/ExerciseInfo';
 import EachExerciseCard from './EachExerciseCard';
-import { Stack } from '@mui/material';
-import { IconButton } from '@mui/material';
 
+
+function sleep(ms){
+    return new Promise((r)=>setTimeout(r,ms));
+}
 
 export default function ExerciseGroup() {
+
+
+    const extra_routine=useSelector(state=>state.update_extra_exercise_reducer);//추가운동 페이지의 전체 정보가져오기
+    const {page,what_i_want_exercise,favorite,clicked_part}=extra_routine;
 
     const popoverStyle={
         "&.MuiButton-root":{
@@ -49,71 +50,40 @@ export default function ExerciseGroup() {
         marginBottom:"0"
     }))
 
+    const [checked, setChecked] = useState(false);
+
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+    };
+
+    useEffect(()=>{
+        sleep(1000).then(()=>handleChange());
+    },[])
+
+
   return (
     <>
-        <Stack direction={"row"} spacing={2} sx={{justifyContent:"space-between",alignItems:"center"}}>
-            <IconButton sx={IconButtonStyle}>
-                <ArrowCircleLeftIcon sx={{fontSize:"2.5rem"}}/>
-            </IconButton>
-            <Pstyled bold="etc">
-                가슴
-            </Pstyled>
-            <IconButton sx={IconButtonStyle}>
-                <Button variant="contained" 
-                sx={
-                    popoverStyle
-                }>
-                    <Avatar sx={{width:"2rem",height:"2rem",backgroundColor:"#2dce89"}}>
-                        <FitnessCenterIcon/>
-                    </Avatar>
-                </Button>
 
-            </IconButton>
-        </Stack>
+    <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+        {...(checked ? { timeout: 1000 } : {})}>
+        <div>
+
         <Grid container spacing={1}>
             <Grid item xs={12}>
-                <EachExerciseCard/>
+                <EachExerciseCard exercise_obj={exercise_classfication[clicked_part][0]}/>
             </Grid>
             <Grid item xs={6}>
-                <EachExerciseCard/>
+                <EachExerciseCard exercise_obj={exercise_classfication[clicked_part][1]}/>
             </Grid>
             <Grid item xs={6}>
-                <EachExerciseCard/>
+                <EachExerciseCard exercise_obj={exercise_classfication[clicked_part][2]}/>
             </Grid>
         </Grid>
-        <div className="alert alert-secondary" role="alert" style={{marginBottom:"0em",padding:"0.5rem 0.5rem",marginTop:"2rem"}}>
-            <span className="badge badge-success" style={{fontSize:"1em",display:"block",margin:"0rem 4rem"}}><ShoppingCartIcon sx={{color:"#4c4c4c"}}/> 담은 운동들</span>
-            <div style={{padding:"0.3rem"}}>
-                <Chip
-                    label={"벤치프레스"}
-                />
-                <Chip
-                    label={"벤치프레스"}
-                />
-                <Chip
-                    label={"벤치프레스"}
-                />
-                <Chip
-                    label={"벤치"}
-                />
-            </div>
+        
         </div>
+        </Grow>
     </>
   );
 }
 
-const itemData = [
-  {
-    img: bench_press.image_url,
-    title: '벤치프레스',
-    featured: true,
-  },
-  {
-    img: incline_press.image_url,
-    title: '인클라인프레스',
-  },
-  {
-    img: seated_row.image_url,
-    title: '시티드로우',
-  }
-];

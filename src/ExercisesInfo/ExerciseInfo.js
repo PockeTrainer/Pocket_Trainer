@@ -1,3 +1,5 @@
+import { easy } from "../modules/action";
+
 export class Exercise{//필요한 이유 서버데이터+상수데이터를 하나로 합친 정보가 필요함
     constructor(Info_from_api,Exercise_Info){//여기서는 api값들로 받은 것들을 넣어주자+상수값
         this.Info_from_api=Info_from_api
@@ -108,6 +110,8 @@ export const bodypart={
     leg:"하체"
 }
 
+
+
 //여기는 체력측정부분의 운동들을 상수로 담아놓음
 export const Pushup={
     name:"푸시업",
@@ -205,7 +209,7 @@ export const seated_row={
 export const barbell_row={
     name:"바벨로우",
     image_url:"../assets/img/theme/exercise_gif/barbellrow.gif",
-    instruction:"",
+    instruction:"바벨 로우는 바벨을 사용하여 다양한 등근육을 타겟으로 하는 운동으로, 특히 능형근을 공략하기 위한 대표적인 운동입니다",
     musclePart:"광배근+승모근",
     part:"등",
     eng_name:"barbell_row",
@@ -431,4 +435,15 @@ export const leg_extension={
     break_time:90,
     wrong_pose_1:"1.무릎이 양쪽으로 과도하게 벌어지는 경우",
     wrong_pose_2:"2.엉덩이, 등이 머신에 붙지 않은 경우"
+}
+
+
+export const exercise_classfication={
+    가슴:[bench_press,incline_press,pec_dec_fly],
+    등:[lat_pull_down,seated_row,barbell_row],
+    어깨:[dumbbell_shoulder_press,side_lateral_raise,reverse_pec_dec_fly],
+    삼두:[cable_push_down,lying_triceps_extension,dumbbell_kickback],
+    이두:[easy_bar_curl,arm_curl,hammer_curl],
+    복근:[crunch,seated_knees_up,plank],
+    하체:[squat,leg_press,leg_extension]
 }

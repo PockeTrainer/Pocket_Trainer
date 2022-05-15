@@ -1,8 +1,11 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import { Grow } from '@mui/material';
+
+import { clicked_part_name,next_extra_tab_page } from '../../../modules/action';
 
 import {
     bench_press,
@@ -13,12 +16,13 @@ import {
     seated_knees_up,
     squat
 } from "../../../ExercisesInfo/ExerciseInfo"
+import { useDispatch } from 'react-redux';
 
 const images = [
   {
     url: bench_press.image_url,
     title: '가슴',
-    width: '30%',
+    width: '30%'
   },
   {
     url: seated_row.image_url,
@@ -116,38 +120,72 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
+
+function sleep(ms){
+    return new Promise((r)=>setTimeout(r,ms));
+}
+
 export default function BodyPartButton() {
+
+    const dispatch=useDispatch();
+
+    const show_exercise_group=(title)=>{//운동그룹으로 보여주는페이지로 이동
+        dispatch(clicked_part_name(title));
+        dispatch(next_extra_tab_page());
+        
+    };
+
+    const [checked, setChecked] = useState(false);
+
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+    };
+
+    useEffect(()=>{
+        sleep(1000).then(()=>handleChange());
+    },[])
+
+
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-      {images.map((image) => (
-        <ImageButton
-          focusRipple
-          key={image.title}
-          style={{
-            width: image.width,
-            marginBottom:"0.3rem"
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-              }}
+
+    <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+    {...(checked ? { timeout: 1000 } : {})}>
+    <div>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+        {images.map((image) => (
+            <ImageButton
+            focusRipple
+            key={image.title}
+            style={{
+                width: image.width,
+                marginBottom:"0.3rem"
+            }}
+            onClick={()=>show_exercise_group(image.title)}
             >
-              {image.title}
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      ))}
-    </Box>
+            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+            <ImageBackdrop className="MuiImageBackdrop-root" />
+            <Image>
+                <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                }}
+                >
+                {image.title}
+                <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+            </Image>
+            </ImageButton>
+        ))}
+        </Box>
+    </div>
+    
+    </Grow>
   );
 }
