@@ -123,7 +123,7 @@ function CardLayout(props){
         marginRight:"-12px",
         borderRadius:"5px",
         lineHeight:"7px",
-        top:page==="today_routine"?"0.5rem":"2.5rem"
+        top:page==="today_routine"?"-0.5rem":"1.5rem"
     };
 
     const settings = {

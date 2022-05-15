@@ -140,7 +140,9 @@ export const bench_press={
     eng_name:"bench_press",
     eng_part:"chest",
     unit_kg:5,
-    break_time:100
+    break_time:100,
+    wrong_pose_1:"1.팔을 쫙 폈을 때 어깨와 수직이 안 된 경우",
+    wrong_pose_2:"2.팔을 쫙 펼 때와 굽힐 때에 바의 양쪽 균형이 어긋난 경우"
 }
 
 export const incline_press={
@@ -152,7 +154,9 @@ export const incline_press={
     eng_name:"incline_press",
     eng_part:"chest",
     unit_kg:5,
-    break_time:100
+    break_time:100,
+    wrong_pose_1:"1.팔꿈치가 90도 이상 너무 벌어진 경우",
+    wrong_pose_2:"2.팔꿈치를 너무 몸에 붙인 경우"
 }
 
 export const pec_dec_fly={
@@ -164,7 +168,9 @@ export const pec_dec_fly={
     eng_name:"pec_dec_fly",
     eng_part:"chest",
     unit_kg:5,//파운드
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.안쪽으로 접을 때 어깨가 올라가서 승모근을 이용하는 경우",
+    wrong_pose_2:"2. 손과 어깨가 너무 수직이 된 경우 (어깨에 부하 가능성)"
 }
 
 //등
@@ -177,7 +183,9 @@ export const lat_pull_down={
     eng_name:"lat_pull_down",
     eng_part:"back",
     unit_kg:5,//파운드
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.팔을 끝까지 최대한 펴서 광배근을 이용해야 하는데 그렇지 않은 경우 (팔을 펼 때 끝까지 일직선으로 펴지 않은 경우)",
+    wrong_pose_2:"2.내릴 때 끝까지 가슴까지 내리지 않은 경우 (손 위치와 가슴 위치가 최대한 일직선으로)"
 }
 
 export const seated_row={
@@ -189,7 +197,9 @@ export const seated_row={
     eng_name:"seated_row",
     eng_part:"back",
     unit_kg:5,//파운드
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.팔꿈치가 몸에서 많이 떨어진 경우",
+    wrong_pose_2:"2.가슴이 머신에 떨어진 경우"
 }
 
 export const barbell_row={
@@ -201,7 +211,9 @@ export const barbell_row={
     eng_name:"barbell_row",
     eng_part:"back",
     unit_kg:1,
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.아직모름",
+    wrong_pose_2:"2.아직모름"
 }
 //어깨
 export const dumbbell_shoulder_press={
@@ -213,7 +225,9 @@ export const dumbbell_shoulder_press={
     eng_name:"dumbbell_shoulder_press",
     eng_part:"shoulder",
     unit_kg:1,
-    break_time:100
+    break_time:100,
+    wrong_pose_1:"1.어깨와 팔이 일자로 평행하게 밀어야 한다",
+    wrong_pose_2:"2.팔꿈치가 수직이 될 때까지만 내린다"
 }
 
 export const side_lateral_raise={
@@ -225,7 +239,9 @@ export const side_lateral_raise={
     eng_name:"side_lateral_raise",
     eng_part:"shoulder",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.팔을 너무 높게 올리는 경우 (90도 이상) – 가동범위는 90도보다 약간 낮게",
+    wrong_pose_2:"2.어깨와 팔을 제외한 상체가 움직여 반동을 이용하는 경우"
 }
 
 export const reverse_pec_dec_fly={
@@ -237,7 +253,9 @@ export const reverse_pec_dec_fly={
     eng_name:"reverse_pec_dec_fly",
     eng_part:"shoulder",
     unit_kg:1,//아직 미정
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.어깨가 올라간 경우",
+    wrong_pose_2:"2.팔꿈치가 과하게 굽어진 경우"
 }
 
 
@@ -251,7 +269,9 @@ export const cable_push_down={
     eng_name:"cable_push_down",
     eng_part:"tricep",
     unit_kg:1,//아직 미정
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.몸이 너무 위로 일어난 경우",
+    wrong_pose_2:"2.팔꿈치를 올릴 때는 최대 90도까지만 올려야 하는데 더 많이 올린 경우"
 
 }
 
@@ -264,7 +284,9 @@ export const lying_triceps_extension={
     eng_name:"lying_triceps_extension",
     eng_part:"tricep",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.팔을 과도하게 벌린 경우",
+    wrong_pose_2:"2.팔꿈치가 고립되지 않고 팔꿈치 위치가 움직이는 경우"
 }
 
 export const dumbbell_kickback={
@@ -276,7 +298,9 @@ export const dumbbell_kickback={
     eng_name:"dumbbell_kickback",
     eng_part:"tricep",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.팔꿈치가 고정되지 않고 움직이는 경우",
+    wrong_pose_2:"2.상체가 너무 올라온 경우"
 }
 //이두
 export const easy_bar_curl={
@@ -288,7 +312,9 @@ export const easy_bar_curl={
     eng_name:"easy_bar_curl",
     eng_part:"bicep",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.팔이 상체에서 떨어진 경우",
+    wrong_pose_2:"2.팔꿈치가 고정되지 않고 움직이는 경우"
 }
 
 export const arm_curl={
@@ -300,7 +326,9 @@ export const arm_curl={
     eng_name:"arm_curl",
     eng_part:"bicep",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.손을 너무 좁게 잡은 경우",
+    wrong_pose_2:"2.손을 너무 넓게 잡아 상체에서 손이 너무 많이 떨어진 경우"
 }
 
 export const hammer_curl={
@@ -312,7 +340,9 @@ export const hammer_curl={
     eng_name:"hammer_curl",
     eng_part:"bicep",
     unit_kg:1,
-    break_time:40
+    break_time:40,
+    wrong_pose_1:"1.어깨가 올라간 경우",
+    wrong_pose_2:"2.몸의 반동을 이용해서 올리는 경우"
 }
 
 
@@ -327,7 +357,9 @@ export const crunch={
     eng_name:"crunch",
     eng_part:"abs",
     unit_kg:0,//필요없음,
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.엉덩이가 들썩들썩 하는 경우 (반동 사용)",
+    wrong_pose_2:"2.다리 사이가 너무 벌어지는 경우"
 }
 
 export const seated_knees_up={
@@ -339,7 +371,9 @@ export const seated_knees_up={
     eng_name:"seated_knees_up",
     eng_part:"abs",
     unit_kg:0,//필요없음
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.허리를 너무 꼿꼿이 핀 경우 (상체를 조금 구부려야 허리에 무리가 안 가고 복부 근육을 온전히 쓸 수 있음)",
+    wrong_pose_2:"2.팔을 너무 짧게 앞에서 잡은 경우 (최대한 뒤에서 잡아야 상체가 뒤로 누워져서 복근을 더 많이 쓸 수 있음)"
 }
 
 export const plank={
@@ -351,7 +385,9 @@ export const plank={
     eng_name:"plank",
     eng_part:"abs",
     unit_kg:0,//필요없음
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.어깨가 너무 올라간 경우 (어깨와 승모근에 힘이 들어감)",
+    wrong_pose_2:"2.엉덩이가 너무 내려간 경우"
 }
 //하체
 
@@ -364,7 +400,9 @@ export const squat={
     eng_name:"squat",
     eng_part:"leg",
     unit_kg:5,
-    break_time:100
+    break_time:100,
+    wrong_pose_1:"1.앉을때 무릎이 앞으로 나가는 경우",
+    wrong_pose_2:"2.앉을때 너무 엉덩이만 뒤로 빼서 허리가 너무 숙여져 있는 경우"
 }
 
 export const leg_press={
@@ -376,7 +414,9 @@ export const leg_press={
     eng_name:"leg_press",
     eng_part:"leg",
     unit_kg:5,//아직 미정
-    break_time:100
+    break_time:100,
+    wrong_pose_1:"1.무릎이 발바닥보다 안쪽으로 좁혀지는 경우",
+    wrong_pose_2:"2.허벅지가 양쪽으로 벌어지는 경우"
 }
 
 export const leg_extension={
@@ -388,5 +428,7 @@ export const leg_extension={
     eng_name:"leg_extension",
     eng_part:"leg",
     unit_kg:5,//아직 미정
-    break_time:90
+    break_time:90,
+    wrong_pose_1:"1.무릎이 양쪽으로 과도하게 벌어지는 경우",
+    wrong_pose_2:"2.엉덩이, 등이 머신에 붙지 않은 경우"
 }

@@ -12,7 +12,11 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { useDispatch,useSelector } from 'react-redux';
 import BodyPartButton from './BodyPartButton';
 import ExerciseGroup from './ExerciseGroup';
+import EachExerciseMainPhoto from './EachExerciseMainPhoto';
 
+
+import { bench_press } from '../../../ExercisesInfo/ExerciseInfo';
+import ExerciseDetails from './ExerciseDetails';
 
 //Drawer용 
 const drawerBleeding = 60;
@@ -110,9 +114,10 @@ function SwipeExtraPage(props) {
             overflow: 'auto',
           }}
         >
-            <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em",backgroundColor:"#f5f5f5"}}>
+            <div className="alert alert-secondary" role="alert" style={{padding:"0.5em 0.5em",marginBottom:"0em",backgroundColor:"#f5f5f5"}}>
                 {/* <BodyPartButton/> */}
-                <ExerciseGroup/>
+                {/* <ExerciseGroup/> */}
+                <ExerciseDetails/>
             </div>
          
         </StyledBox>

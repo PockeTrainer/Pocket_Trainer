@@ -75,7 +75,7 @@ function ExtraExercise(){
                 exericse_list.map((exercise,index)=>{
                     return(
                         <>
-                         <EachExerciseMainPhoto exercise_obj={exercise}/>
+                         <EachExerciseMainPhoto exercise_obj={exercise} where={"MainPage"}/>
                         </>
                     )
                 }
