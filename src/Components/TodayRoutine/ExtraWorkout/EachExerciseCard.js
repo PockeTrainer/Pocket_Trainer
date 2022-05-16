@@ -42,7 +42,9 @@ export default function EachExerciseCard({exercise_obj}) {
   }
 
   return (
-        <ImageListItem >
+        <ImageListItem
+          sx={{height:"100%"}}
+         >
           <img
             src={exercise_obj.image_url}
             alt={exercise_obj.name}

@@ -87,7 +87,11 @@ function WeightCheckInstruction(){
                 }
                 else{
                     key_for_unit.current="weight_demand";
-                    dispatch(last_record(res.data.target_kg))
+                    dispatch(last_record(res.data.target_kg));
+                    localStorage.setItem(exercise.exercise_name,JSON.stringify({//로컬스토리지에 저장시 꺼둬 값이 안지워짐 last:마지막 데이터 new:곧 들어올 신상데이터
+                        last:res.data.target_kg,
+                        new:""
+                    }));
                 }
 
                 result.current={

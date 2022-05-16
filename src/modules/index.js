@@ -43,6 +43,7 @@ const rootReducer=combineReducers({
     update_last_record_reducer,
     update_meals_reducer,
     update_choose_meal_date_reducer,
+    plank_time_update_reducer,
     update_extra_exercise_reducer
 });
 

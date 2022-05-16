@@ -23,6 +23,8 @@ import Room from '@mui/icons-material/Room';
 import { styled } from '@mui/material/styles';
 import classNames from 'clsx';
 import axios from 'axios';
+import { set_info_from_dayinfo } from '../../modules/action';
+import { useDispatch } from 'react-redux';
 
 const PREFIX = 'Demo';
 
@@ -38,6 +40,7 @@ const classes = {
 
 export default function Calandar() {
     const id=sessionStorage.getItem("user_id");
+    const dispatch=useDispatch();
     
     const today=new Date();
 
@@ -87,6 +90,8 @@ export default function Calandar() {
         })
 
     }
+
+    const clicked_data_obj=useRef();//누른 appointment의 객체정보
 
     const [visible,set_visible]=useState(false);//툴팁을 열어서 보여줄지 말지
     const [appointmentMeta, setAppointmentMeta] = useState({//일정 즉 appointment를 내려주고 타겟 값을 툴팁에게 알려준다
@@ -226,9 +231,13 @@ export default function Calandar() {
         let how_many_clear=0;//몇 부위나 클리어 했는지
         let tmp_room;
         let tmp;//임시객체
+        let final_start_time;
+        let final_end_time;
         await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
         .then((res) => {
             console.log(res.data);
+
+            dispatch(set_info_from_dayinfo(res.data));//받은 정보를 리덕스에 올리자
 
             if(res.data.day_history_workout[0].workout_name.body_part==="가슴"){//맨 앞의 운동을 가지고 미리 clear_map을 초기화해두자
                 clear_Map.set("가슴",0).set("삼두",0).set("복근",0);
@@ -258,9 +267,18 @@ export default function Calandar() {
                 
 
             }
-            const final_start_time=new Date(Math.min.apply(null,start_datetime_arr));//가장 이른시간을 시작시간으로 설정
-            const final_end_time=new Date(Math.max.apply(null,end_datetime_arr));//가장 늦은 시간을 끝나는시간으로 설정
 
+            if(start_datetime_arr.length===0||end_datetime_arr.length===0){//아예 시작한 운동이 없을 때
+                final_start_time=data.startDate;
+                final_end_time=data.endDate;//이 때에는 시간이 안나오게 표현 해주면 어떨까??
+            }
+            else{
+                final_start_time=new Date(Math.min.apply(null,start_datetime_arr));//가장 이른시간을 시작시간으로 설정
+                final_end_time=new Date(Math.max.apply(null,end_datetime_arr));//가장 늦은 시간을 끝나는시간으로 설정
+
+            }
+
+            
             clear_Map.forEach((value,key) => {
                 if(value===3&&(key==="가슴"||key==="등"||key==="어깨"||key==="하체")){
                     how_many_clear+=1;
@@ -310,10 +328,10 @@ export default function Calandar() {
             } 
 
             
-            let tmp_list=[...state.data];
-            tmp_list[tmp_list.indexOf(data)]=tmp;//원래 있던 state의 data를 가져와서 해당 지금 눌린 data의 인덱스를 찾아서 해당 인덱스 값만 새로운걸로 치환
+            // let tmp_list=[...state.data];
+            // tmp_list[tmp_list.indexOf(data)]=tmp;//원래 있던 state의 data를 가져와서 해당 지금 눌린 data의 인덱스를 찾아서 해당 인덱스 값만 새로운걸로 치환
 
-            console.log(tmp_list)
+            // console.log(tmp_list)
 
             // set_State({
             //     ...state,
@@ -334,8 +352,8 @@ export default function Calandar() {
     const customAppointMent=useCallback(({children,data,...restProps})=>{//useCallback을 사용해 자식에서 발생하는 불필요한 랜더링을 막음-이것 안하면 타겟위치로 할수없음
         return(
             <Appointments.Appointment {...restProps} onClick={async(e) => {
-                // console.log(data);
                 let new_data;
+                // console.log(data);
                 // let  tmp={   
                 //     title: "실패",
                 //     startDate:new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,13, 9, 0),
@@ -422,8 +440,8 @@ export default function Calandar() {
                 if(item!==-1){
                     let tmp={
                         title: item===true?"클리어":"실패",
-                        startDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 8, 0),//먼저 툴팁이 눌리기전까지는 그냥 8시로 디폴트로 해두자
-                        endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date ,12, 0),
+                        startDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 0, 0),//먼저 툴팁이 눌리기전까지는 그냥 8시로 디폴트로 해두자
+                        endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date ,23, 59),
                         id: date,
                         location: '어깨+삼두+복근',//이것도 그냥 디폴트로 해놓자
                         roomId:item===true?1:4//1이면 올클리어 2이면 2부위클리어 3이면 1부위클리어 4이면 올Fail
