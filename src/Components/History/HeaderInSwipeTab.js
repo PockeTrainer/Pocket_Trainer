@@ -120,6 +120,25 @@ export default function HeaderInSwipeTab({clicked_date}) {
   const count_bmi=useRef(1);
   //위에는 bmi쪽
 
+  const [diet_info,set_diet_info]=useState({
+    carbo:{
+      percent:0,//바에서 퍼센트
+      state:""//컬러 주기위한 state warning danger success
+    },
+    protein:{
+      percent:0,
+      state:""
+    },
+    fat:{
+      percent:0,
+      state:""
+    }
+    
+  })
+
+  //위에는 식단 칼로리계산파트 부분
+
+
   const handleShowList=()=>{
       setShowList(prev=>!prev);
   }
@@ -175,6 +194,41 @@ export default function HeaderInSwipeTab({clicked_date}) {
           how_many_clear+=1;//각 파트별 성공여부 넣어줌
       }
    }
+
+  
+   let carbo_percent=parseInt(nutrient.carbohydrate/nutrient.target_carbohydrate)*100;//탄수화물 비율
+   let protein_percent=parseInt(nutrient.protein/nutrient.target_protein)*100;//단백질 비율
+   let fat_percent=parseInt(nutrient.province/nutrient.target_province)*100;//지방비율
+   let tmp_total_list=[]//전체를 담아줄 리스트
+
+   let tmp_percent_list=[carbo_percent,protein_percent,fat_percent];
+
+   for(const percent of tmp_percent_list){
+     let tmp_state;
+     if(percent<=30){
+       tmp_state="warning";
+     }
+     else if(percent>=30 && percent<60){
+      tmp_state="danger"
+     }
+     else{
+      tmp_state="success"
+     }
+
+     let tmp_obj={
+       percent:percent,
+       state:tmp_state
+     }
+     tmp_total_list.push(tmp_obj);
+   }
+
+   set_diet_info({
+     ...diet_info,
+     carbo:tmp_total_list[0],
+     protein:tmp_total_list[1],
+     fat:tmp_total_list[2]
+   })
+
 
     set_arrange_data({
       ...arrange_data,
@@ -322,6 +376,24 @@ export default function HeaderInSwipeTab({clicked_date}) {
     2:"badge badge-primary btn-lg",
     1:"badge badge-warning btn-lg",
     0:"badge badge-danger btn-lg"
+  }
+
+  const KcalGramStyle={
+    fontWeight:"600",
+    textAlign:'center',
+    color:"white"
+  }
+
+  const progressPercentageStyle={
+    color:"white",
+    fontSize:"1.075rem",
+
+  }
+
+  const progressColorStyle={
+    success:"progress-bar bg-success",
+    warning:"progress-bar bg-warning",
+    danger:"progress-bar bg-danger"
   }
 
   console.log("arrange된값:",arrange_data)
@@ -497,61 +569,67 @@ export default function HeaderInSwipeTab({clicked_date}) {
           </>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-        <div className="alert alert-secondary" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
+        <div className="alert alert-secondary" role="alert" style={{padding:"0em",marginBottom:"0em"}}>
                                     <i className="ni ni-cart" style={{color:"#212529cf",fontSize:"3em",textAlign:"center"}}></i>
                                     <span className="badge badge-primary btn-lg" style={badgeStyle}>식단정보</span>
-                                    <h2 style={{color:"black",textAlign:"center"}}><strong>2022/03/22</strong></h2>
+                                    <h2 style={{color:"black",textAlign:"center"}}><strong>{clicked_date.year+"년"+clicked_date.month+"월"+clicked_date.days+"일"}</strong></h2>
                                     <Stack direction="column" spacing={2}>
+                                      <div className="alert alert-secondary" role="alert" style={{padding:"0em 0em",marginBottom:"0em",backgroundColor:"#5e72e4"}}>
                                         <div className="progress-wrapper">
                                             <div className="progress-info">
                                                 <div className="progress-label">
-                                                    <span style={{fontSize:"0.925rem"}}>탄수화물(g)</span>
+                                                    <span style={{fontSize:"0.925rem",backgroundColor:"#2dce89",color:"white"}}>탄수화물(g)</span>
                                                 </div>
                                                 <div className="progress-percentage">
-                                                    <span>60%</span>
+                                                    <span style={progressPercentageStyle}>{diet_info.carbo.percent}%</span>
                                                 </div>
                                             </div>
                                             <div className="progress">
-                                                <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
+                                                <div className={progressColorStyle[diet_info.carbo.state]} role="progressbar" aria-valuenow={diet_info.carbo.percent} aria-valuemin={0} aria-valuemax={100} style={{width: diet_info.carbo.percent>100?"100%":diet_info.carbo.percent+"%"}} />
                                             </div>
                                         </div>
 
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><RamenDiningIcon/>칼로리:1440Kcal/2400Kcal</Typography>
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><LunchDiningIcon/>양:90g/150g</Typography>
+                                        <Typography variant="body1" sx={KcalGramStyle} gutterBottom><RamenDiningIcon/>칼로리:{parseInt(nutrient.carbohydrate*4)}Kcal/{parseInt(nutrient.target_carbohydrate*4)}Kcal</Typography>
+                                        <Typography variant="body1" sx={{...KcalGramStyle,color:"black"}} gutterBottom><LunchDiningIcon/>양:{parseInt(nutrient.carbohydrate)}g/{parseInt(nutrient.target_carbohydrate)}g</Typography>
+                                      </div>
 
-                                        <div className="progress-wrapper">
-                                            <div className="progress-info">
-                                                <div className="progress-label">
-                                                    <span style={{fontSize:"0.925rem"}}>단백질(g)</span>
+                                      <div className="alert alert-secondary" role="alert" style={{padding:"0em 0em",marginBottom:"0em",backgroundColor:"#5e72e4"}}>
+                                          <div className="progress-wrapper">
+                                              <div className="progress-info">
+                                                  <div className="progress-label">
+                                                      <span style={{fontSize:"0.925rem",backgroundColor:"#2dce89",color:"white"}}>단백질(g)</span>
+                                                  </div>
+                                                  <div className="progress-percentage">
+                                                      <span style={progressPercentageStyle}>{diet_info.protein.percent}%</span>
+                                                  </div>
+                                              </div>
+                                              <div className="progress">
+                                                  <div className={progressColorStyle[diet_info.protein.state]} role="progressbar" aria-valuenow={diet_info.protein.percent} aria-valuemin={0} aria-valuemax={100} style={{width: diet_info.protein.percent>100?"100%":diet_info.protein.percent+"%"}} />
+                                              </div>
+                                          </div>
+
+                                          <Typography variant="body1" sx={KcalGramStyle} gutterBottom><RamenDiningIcon/>칼로리:{parseInt(nutrient.protein*4)}Kcal/{parseInt(nutrient.target_protein*4)}Kcal</Typography>
+                                          <Typography variant="body1" sx={{...KcalGramStyle,color:"black"}} gutterBottom><LunchDiningIcon/>양:{parseInt(nutrient.protein)}g/{parseInt(nutrient.target_protein)}g</Typography>
+                                      </div>
+
+                                        <div className="alert alert-secondary" role="alert" style={{padding:"0em 0em",marginBottom:"0em",backgroundColor:"#5e72e4"}}>
+                                            <div className="progress-wrapper">
+                                                <div className="progress-info">
+                                                    <div className="progress-label">
+                                                        <span style={{fontSize:"0.925rem",backgroundColor:"#2dce89",color:"white"}}>지방(g)</span>
+                                                    </div>
+                                                    <div className="progress-percentage">
+                                                        <span style={progressPercentageStyle}>{diet_info.protein.fat}%</span>
+                                                    </div>
                                                 </div>
-                                                <div className="progress-percentage">
-                                                    <span>80%</span>
+                                                <div className="progress">
+                                                    <div className={progressColorStyle[diet_info.fat.state]} role="progressbar" aria-valuenow={diet_info.fat.percent} aria-valuemin={0} aria-valuemax={100} style={{width: diet_info.fat.percent>100?"100%":diet_info.fat.percent+"%"}} />
                                                 </div>
                                             </div>
-                                            <div className="progress">
-                                                <div className="progress-bar bg-success" role="progressbar" aria-valuenow={80} aria-valuemin={0} aria-valuemax={100} style={{width: '80%'}} />
-                                            </div>
+
+                                            <Typography variant="body1" sx={KcalGramStyle} gutterBottom><RamenDiningIcon/>칼로리:{parseInt(nutrient.province*9)}Kcal/{parseInt(nutrient.province*9)}Kcal</Typography>
+                                            <Typography variant="body1" sx={{...KcalGramStyle,color:"black"}} gutterBottom><LunchDiningIcon/>양:{parseInt(nutrient.province)}g/{parseInt(nutrient.province)}g</Typography>
                                         </div>
-
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><RamenDiningIcon/>칼로리:1440Kcal/2400Kcal</Typography>
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><LunchDiningIcon/>양:90g/150g</Typography>
-
-                                        <div className="progress-wrapper">
-                                            <div className="progress-info">
-                                                <div className="progress-label">
-                                                    <span style={{fontSize:"0.925rem"}}>지방(g)</span>
-                                                </div>
-                                                <div className="progress-percentage">
-                                                    <span>40%</span>
-                                                </div>
-                                            </div>
-                                            <div className="progress">
-                                                <div className="progress-bar bg-danger" role="progressbar" aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} style={{width: '40%'}} />
-                                            </div>
-                                        </div>
-
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><RamenDiningIcon/>칼로리:1440Kcal/2400Kcal</Typography>
-                                        <Typography variant="body1" sx={{fontWeight:"lighter",textAlign:'center'}} gutterBottom><LunchDiningIcon/>양:90g/150g</Typography>
                                     </Stack>
 
                                     

@@ -74,6 +74,14 @@ export default function Calandar() {
     })//현재 내가 보구있는달력의 연과월을 의미
     
     const currentViewNameChange=(currentViewName)=>{//달력 뷰형식 바꿔줌
+        console.log("달력이름:",currentViewName);
+
+        // if(currentViewName==="Day"){//일별 달력모드로 갈때 
+
+        // }
+        // else{//월별 달력으로 갈때
+
+        // }
         set_State({
             ...state,
             currentViewName:currentViewName
@@ -281,7 +289,7 @@ export default function Calandar() {
 
             if(start_datetime_arr.length===0||end_datetime_arr.length===0){//아예 시작한 운동이 없을 때
                 final_start_time=data.startDate;
-                final_end_time=data.endDate;//이 때에는 시간이 안나오게 표현 해주면 어떨까??
+                final_end_time=data.endDate;//이 때에는 시간이 안나오게 표현 해주면 어떨까??..결국 안되는걸로,,,판단
             }
             else{
                 final_start_time=new Date(Math.min.apply(null,start_datetime_arr));//가장 이른시간을 시작시간으로 설정
