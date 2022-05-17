@@ -36,7 +36,7 @@ const Puller = styled(Box)(({ theme }) => ({
 
 function SwipeInfoTab(props) {
 
-  const { window } = props;
+  const { window,clicked_date } = props;
   const [open, setOpen] = useState(false);
   const buttonRef=useRef("");
 
@@ -85,7 +85,7 @@ function SwipeInfoTab(props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 1, color: 'text.secondary' }}>오늘날짜</Typography>
+          <Typography sx={{ p: 1, color: 'text.secondary' }}>{clicked_date.month+"월"+clicked_date.days+"일 히스토리"}</Typography>
         </StyledBox>
         <StyledBox
           sx={{
@@ -95,7 +95,7 @@ function SwipeInfoTab(props) {
             overflow: 'auto',
           }}
         >
-          <HeaderInSwipeTab/>
+          <HeaderInSwipeTab clicked_date={clicked_date}/>
           {/* 실제 위에 해당하는 헤더와 밑에 내용들이 포함되는 컴포넌트 */}
         </StyledBox>
       </SwipeableDrawer>

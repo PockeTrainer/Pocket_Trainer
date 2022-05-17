@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Chart,
@@ -20,27 +20,27 @@ const compare = (
   { series, point }, { series: targetSeries, point: targetPoint },
 ) => series === targetSeries && point === targetPoint;
 
-export default class Demo extends React.PureComponent {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      data,
-      selection: [],
-    };
 
-    this.click = ({ targets }) => {
-      const target = targets[0];
-      if (target) {
-        this.setState(({ selection }) => ({
-          selection: selection[0] && compare(selection[0], target) ? [] : [target],
-        }));
-      }
-    };
-  }
+export default function Demo() {
 
-  render() {
-    const { data: chartData, selection } = this.state;
+    const [state,setState]=useState({
+        data,
+        selection:[]
+    })
+    
+    const click=({ targets })=>{
+        const target = targets[0];
+        if (target) {
+          setState(({ selection }) => ({
+            selection: selection[0] && compare(selection[0], target) ? [] : [target],
+          }));
+        }
+    }
+    
+  
+
+    const { data:chartData, selection } = state;
 
     return (
       <div>
@@ -66,11 +66,11 @@ export default class Demo extends React.PureComponent {
               argumentField="year"
               color='#2dce89'
             />
-            <EventTracker onClick={this.click} />
+            <EventTracker onClick={click} />
             <SelectionState selection={selection} />
           </Chart>
         </Paper>
       </div>
     );
-  }
+  
 }

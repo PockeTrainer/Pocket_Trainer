@@ -28,7 +28,7 @@ function SpecificInfo(){
         
     const modalBackground={
         minHeight: '600px',
-        backgroundImage: 'url(../assets/img/theme/profile-cover.jpg)',
+        backgroundImage: 'url(../assets/img/theme/foods/almond.jfif)',
         backgroundSize: 'cover',
         backgroundPosition: 'center top'
     }

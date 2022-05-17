@@ -446,7 +446,12 @@ const initialPageProgress={//운동페이지에서 지금진행하고 있는 운
 }
 
 const initialInfoFromDayInfo={//캘린더에서 눌린 일일 데이터가 담김
-    day_info_obj:""
+    day_bmi:"",
+    day_history_diet:[],
+    day_history_workout:[],
+    day_weight:"",
+    nutrient:"",
+    today_kcal_consumption:""
 }
 
 const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 갖고 있어준다.-변화량 때문에
@@ -763,7 +768,13 @@ export function update_day_info_obj_reducer(state=initialInfoFromDayInfo,action)
     switch(action.type){
         case SET_INFO_FROM_DAYINFO:
             return{
-               day_info_obj:action.obj
+                ...state,
+                day_bmi:action.obj.day_bmi,
+                day_history_diet:action.obj.day_history_diet,
+                day_history_workout:action.obj.day_history_workout,
+                day_weight:action.obj.day_weight,
+                nutrient:action.obj.nutrient,
+                today_kcal_consumption:action.obj.today_kcal_consumption
             }
         default:
             return state;    

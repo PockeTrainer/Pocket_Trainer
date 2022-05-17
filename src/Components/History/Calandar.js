@@ -91,7 +91,7 @@ export default function Calandar() {
 
     }
 
-    const clicked_data_obj=useRef();//누른 appointment의 객체정보
+    const count=useRef(1);//랜더링 횟수카운트
 
     const [visible,set_visible]=useState(false);//툴팁을 열어서 보여줄지 말지
     const [appointmentMeta, setAppointmentMeta] = useState({//일정 즉 appointment를 내려주고 타겟 값을 툴팁에게 알려준다
@@ -219,6 +219,17 @@ export default function Calandar() {
         },
       }));
 
+      const get_today_info=async()=>{
+            await axios.get(`http://127.0.0.1:8000/api/history/day/${clicked_cell.year+"-"+clicked_cell.month+"-"+clicked_cell.days}/${id}`)//클릭한 날짜의 오늘날의 정보를 가져와준다
+            .then((res) => {
+                console.log(res.data);
+
+                dispatch(set_info_from_dayinfo(res.data));//받은 정보를 리덕스에 올리자
+        }).catch((err) => {
+            console.log(err)
+        })
+    }   
+
 
       const get_day_info=async(date,data)=>{//일별 info 가져오기 툴팁 열릴때
         let start_datetime_arr=[];//시작시간 배열
@@ -233,7 +244,7 @@ export default function Calandar() {
         let tmp;//임시객체
         let final_start_time;
         let final_end_time;
-        await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+        await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//해당 누른 appointment 날짜의 정보를 가져와줌
         .then((res) => {
             console.log(res.data);
 
@@ -408,9 +419,6 @@ export default function Calandar() {
     );
 
 
-  
-     
-
       useEffect(async()=>{//월별 info들 쭉 받아오기
         await axios.get(`http://127.0.0.1:8000/api/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}/${id}`)
         .then((res) => {
@@ -424,7 +432,7 @@ export default function Calandar() {
                         title: item,
                         startDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 0, 0),
                         endDate: new Date(tmp_date_what_im_looking.year, tmp_date_what_im_looking.month-1,date , 23,59),
-                        id: date,
+                        id: date+"_hello",//아마 해당아이디가 그대로 key값으로 쓰이나 봄 따라서 밑에 운동쪽이랑 겹치지 않게 하기위해 _hello 붙임
                         location: 'bmi지수',
                         roomId:5
                       }
@@ -465,6 +473,11 @@ export default function Calandar() {
 
 
     },[tmp_date_what_im_looking])
+
+
+    useEffect(()=>{//클릭한 셀이 달라질 때마다 정보 불러오기 +처음들어왔을 때 오늘날 정보로 업데이트
+        get_today_info();
+    },[clicked_cell])
 
     console.log(state.data);
 
@@ -526,8 +539,7 @@ export default function Calandar() {
         </Scheduler>
       </Paper>
 
-      <SwipeInfoTab/>
+      <SwipeInfoTab clicked_date={clicked_cell} />
       </>
     );
 }
-

@@ -22,7 +22,6 @@ function sleep(ms){
 }
 
 function TodaySummary(){
-
     const [checked, setChecked] = useState(false);//transition
 
     const handleChange = () => {
@@ -37,6 +36,7 @@ function TodaySummary(){
     const handleClick=(select)=>{
         dispatch(change_clicked_button(select))
       }
+
     const avatarStyle={
         "&.MuiAvatar-root":{
             margin:"auto",

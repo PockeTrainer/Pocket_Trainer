@@ -7,6 +7,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -42,23 +43,76 @@ export default function ListBox(props) {
 //   ]);
 
 if(props.where==="exercise_calander"){
+
+  let target_value;//타겟값
+  let result;
+
   return (
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {["덤벨숄더프레스","사이드레터럴레이즈","리버스팩덱플라이"].map((value,index) => {
+      {props.exercise_list.map((value,index) => {
+        if(value.eng_name==="plank"){
+          if(value.Info_from_api.target_time===null){
+            result="데이터 미설정";
+          }
+          else{
+            target_value=value.Info_from_api.target_time;
+            let tmp_list=target_value.split(":");
+            
+            result="기본시간:"+tmp_list[1]+"분"+tmp_list[2]+"초";
+          }
+        }
+        else if(value.eng_name==="seated_knees_up"||value.eng_name==="crunch"){
+          if(value.Info_from_api.target_cnt===null){
+            result="데이터 미설정";
+          }
+          else{
+            target_value=value.Info_from_api.target_cnt;
+            result="기본개수:"+target_value+"개";
+          }
+        }
+        else if(value.eng_name==="pec_dec_fly"||value.eng_name==="lat_pull_down"||value.eng_name==="seated_row"||value.eng_name==="reverse_pec_dec_fly"||value.eng_name==="cable_push_down"||value.eng_name==="arm_curl"||value.eng_name==="leg_extension"){
+          if(value.Info_from_api.target_kg===0){
+            result="데이터 미설정";
+          }
+          else{
+            target_value=value.Info_from_api.target_kg;
+            result="기본중량:"+target_value+"Lbs";
+          }
+        }
+        else{//벤치프레스같은 운동 중량
+          if(value.Info_from_api.target_kg===0){
+            result="데이터 미설정";
+          }
+          else{
+            target_value=value.Info_from_api.target_kg;
+            result="기본중량:"+target_value+"Kg";
+          }
+        }
+
         const labelId = `checkbox-list-secondary-label-${value}`;
         return (
           <ListItem
-            key={value}
+            key={value.eng_name}
             secondaryAction={
-              <CheckCircleIcon/>
+              value.Info_from_api.is_clear
+              ?
+              <>
+                <CheckCircleIcon sx={{color:"#2dce89"}}/>
+              </>
+              :
+                <>
+                  <CancelIcon sx={{color:"#5e72e4"}}/>
+                </>
+                
             }
+
             disablePadding
           >
             <ListItemButton onClick={()=>props.set_tmp_list(index)}>
               <ListItemAvatar>
-                <Avatar>{value.cut(2)}</Avatar>
+                <Avatar>{value.name.cut(2)}</Avatar>
               </ListItemAvatar>
-              <ListItemText id={labelId} primary={value} secondary={"5kg"} />
+              <ListItemText id={labelId} primary={value.name} secondary={result} />
             </ListItemButton>
           </ListItem>
         );

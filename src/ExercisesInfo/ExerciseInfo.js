@@ -48,7 +48,7 @@ export class Exercise{//필요한 이유 서버데이터+상수데이터를 하�
     }
 
     set musclePart(muscle_part){
-        this._muscle_part=muscle_part;
+        this._musclePart=muscle_part;
     }
 
     get musclePart(){
