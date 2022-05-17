@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import Demo from './Chart';
+import ChartGraph from './Chart';
 import { styled } from '@mui/system';
 import Collapse from '@mui/material/Collapse';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -24,7 +24,8 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
   const [result_obj,set_result_obj]=useState({
     target_value:"",
     start_datetime:new Date(),
-    end_datetime:new Date()
+    end_datetime:new Date(),
+    unit_name:""
   });//최종적으로 보여주는 중량,개수,시간+운동시작시간+끝시간
 
   const [latest_info,set_latest_info]=useState({//api로부터 받아온 최근날짜 및 타겟값들을 가져옴
@@ -86,6 +87,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
     }
 
     useEffect(()=>{
+      let unit_name;
       let result;
       let target_value;
       let start_datetime;
@@ -102,6 +104,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
           let tmp_list=target_value.split(":");
           
           result=tmp_list[1]+"분"+tmp_list[2]+"초";
+          unit_name="시간";
         }
       }
       else if(exercise_obj.eng_name==="seated_knees_up"||exercise_obj.eng_name==="crunch"){
@@ -111,6 +114,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
         else{
           target_value=exercise_obj.Info_from_api.target_cnt;
           result=target_value+"개";
+          unit_name="개수"
         }
       }
       else if(exercise_obj.eng_name==="pec_dec_fly"||exercise_obj.eng_name==="lat_pull_down"||exercise_obj.eng_name==="seated_row"||exercise_obj.eng_name==="reverse_pec_dec_fly"||exercise_obj.eng_name==="cable_push_down"||exercise_obj.eng_name==="arm_curl"||exercise_obj.eng_name==="leg_extension"){
@@ -120,6 +124,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
         else{
           target_value=exercise_obj.Info_from_api.target_kg;
           result=target_value+"Lbs";
+          unit_name="중량";
         }
       }
       else{//벤치프레스같은 운동 중량
@@ -129,6 +134,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
         else{
           target_value=exercise_obj.Info_from_api.target_kg;
           result=target_value+"Kg";
+          unit_name="중량";
         }
       }
 
@@ -144,7 +150,8 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
         ...result_obj,
         target_value:result,
         start_datetime:start_datetime,
-        end_datetime:end_datetime
+        end_datetime:end_datetime,
+        unit_name:unit_name
       })
 
     },[exercise_obj])
@@ -219,22 +226,35 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
                 );
               })
             :
-              <Pstyled bold="lighter">
-                존재하지 않습니다
-              </Pstyled>
+              <Chip label={"최근운동일 없음"} /> 
             
           }
         </Stack>
         <Collapse in={checked}>
           <div>
-            <Demo target_list={latest_info.target_list}/>
+            {
+              latest_info.target_list.length===0 && result_obj.target_value==="미정"
+              ?
+              <>
+                 <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
+                    <Pstyled bold="ligther">
+                      <ErrorIcon/>해당 운동 데이터가 없습니다
+                    </Pstyled>
+                  </div>
+              </>
+              :
+              <>
+                <ChartGraph unit_name={result_obj.unit_name}  clicked_date={clicked_date} target_list={latest_info.target_list} date_list={latest_info.date_list} today_target_value={result_obj.target_value}/>
+              </>
+            }
+            
           </div>
         </Collapse>
         
       </Box>
       <Box sx={{ ml: 1, mb: 1 }}>
             <Button variant="outlined" onClick={handleChange} startIcon={<PlayCircleIcon />} sx={{color:"#5e72e4",border: "1px solid #f7fafc",fontFamily:"Noto Sans KR",marginTop:"2rem"}}>
-                최근중량변화
+                최근{result_obj.unit_name}변화
             </Button>
       </Box>
     </Box>

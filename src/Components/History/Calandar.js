@@ -375,6 +375,12 @@ export default function Calandar() {
                 // } 
                 new_data= await get_day_info(data.startDate,data)//api로 일별 정보 불러오기-인자로 날짜를 전달
                 console.log(new_data);
+                set_clicked_cell({
+                    ...clicked_cell,
+                    year:data.startDate.getFullYear(),
+                    month:parseInt(data.startDate.getMonth())+1,
+                    days:data.startDate.getDate()
+                })
                 set_visible(true);
                 setAppointmentMeta({
                     ...appointmentMeta,
@@ -479,7 +485,7 @@ export default function Calandar() {
         get_today_info();
     },[clicked_cell])
 
-    console.log(state.data);
+    console.log(clicked_cell);
 
     return (
         <>

@@ -21,10 +21,10 @@ import EachExerciseCard from './EachExerciseCard';
 import RamenDiningIcon from '@mui/icons-material/RamenDining';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import ErrorIcon from '@mui/icons-material/Error';
+import HotelIcon from '@mui/icons-material/Hotel';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useSelector } from 'react-redux';
 
-import Grow from '@mui/material/Grow';
 
 
 
@@ -128,6 +128,9 @@ export default function HeaderInSwipeTab({clicked_date}) {
   }
 
   const isAllClear=(part)=>{//해당부위가 클리어 됐는지 확인해줌
+    if(part.length===0){//들어온 부위에 아무것도 없다면
+      return false;
+    }
     for(let exercise of part){
         if(!exercise.is_clear){
             return false
@@ -436,39 +439,59 @@ export default function HeaderInSwipeTab({clicked_date}) {
 
            <div className="alert alert-secondary" role="alert" style={{padding:"0em 0em",marginBottom:"0em"}}>
                 <i className="ni ni-chart-bar-32" style={{color:"#212529cf",fontSize:"3em",textAlign:"center"}}></i>
-                <span className={exercise_clear_css[arrange_data.how_many_clear]} style={badgeStyle}>{arrange_data.how_many_clear===0?"올Fail":arrange_data.how_many_clear+"부위 클리어!"}</span>
-                <h2 style={{color:"black",textAlign:"center"}}><strong>{clicked_date.year+"년"+clicked_date.month+"월"+clicked_date.days+"일"}</strong></h2>
-                <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>
-                            <Stack direction="column">
-                                <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part1")}>
-                                    <AvatarStyle color="#5e72e4" >{arrange_data.bodypart[0]}</AvatarStyle>
-                                </Button>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[0]}운동</Typography>
-                            </Stack>
-                            <Stack direction="column">
-                                <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part2")}>
-                                    <AvatarStyle color="#2dce89" >{arrange_data.bodypart[1]}</AvatarStyle>
-                                </Button>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[1]}운동</Typography>
-                            </Stack>
-                            <Stack direction="column">
-                                <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part3")}>
-                                    <AvatarStyle color="#ffc107" >{arrange_data.bodypart[2]}</AvatarStyle>
-                                </Button>
-                                <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[2]}운동</Typography>
-                            </Stack>
-                </Stack>
-                <Zoom in={showList}>
-                    <div>
-                        <ListBox where="exercise_calander" exercise_list={eval("arrange_data"+"."+clicked_button)}  set_tmp_list={set_tmp_list_clicked_button}/>
-                    </div>
-                </Zoom>
+                {
+                  arrange_data.bodypart.length===0&&arrange_data.part1.length===0&&arrange_data.part2.length===0&&arrange_data.part3.length===0&&arrange_data.how_many_clear===0
+                  ?
+                    <>
+                      <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
+                          <Pstyled bold="ligther">
+                            <ErrorIcon/>해당 날에 접속기록이 없습니다
+                          </Pstyled>
+                          
+                      </div>
+                      <div style={{display:"grid",placeItems:"center",minHeight:"50vh"}}>
+                         <HotelIcon sx={{fontSize:"8.5rem",color:"#4a4d50"}}/>
+                      </div>
+                     
+                    </>
+                  :
+                  <>
+                      <span className={exercise_clear_css[arrange_data.how_many_clear]} style={badgeStyle}>{arrange_data.how_many_clear===0?"올Fail":arrange_data.how_many_clear+"부위 클리어!"}</span>
+                        <h2 style={{color:"black",textAlign:"center"}}><strong>{clicked_date.year+"년"+clicked_date.month+"월"+clicked_date.days+"일"}</strong></h2>
+                        <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>
+                                    <Stack direction="column">
+                                        <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part1")}>
+                                            <AvatarStyle color="#5e72e4" >{arrange_data.bodypart[0]}</AvatarStyle>
+                                        </Button>
+                                        <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[0]}운동</Typography>
+                                    </Stack>
+                                    <Stack direction="column">
+                                        <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part2")}>
+                                            <AvatarStyle color="#2dce89" >{arrange_data.bodypart[1]}</AvatarStyle>
+                                        </Button>
+                                        <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[1]}운동</Typography>
+                                    </Stack>
+                                    <Stack direction="column">
+                                        <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part3")}>
+                                            <AvatarStyle color="#ffc107" >{arrange_data.bodypart[2]}</AvatarStyle>
+                                        </Button>
+                                        <Typography sx={{ color:"black",lineHeight:"1.5",fontWeight:"500" }}>{arrange_data.bodypart[2]}운동</Typography>
+                                    </Stack>
+                        </Stack>
+                        <Zoom in={showList}>
+                            <div>
+                                <ListBox where="exercise_calander" exercise_list={eval("arrange_data"+"."+clicked_button)}  set_tmp_list={set_tmp_list_clicked_button}/>
+                            </div>
+                        </Zoom>
 
-                <Slide  direction="left"  in={showSpecific}>
-                    <div>
-                        <EachExerciseCard exercise_obj={eval("arrange_data"+"."+clicked_button+"["+list_clicked_button+"]")} clicked_date={clicked_date}/>
-                    </div>
-                </Slide>
+                        <Slide  direction="left"  in={showSpecific}>
+                            <div>
+                                <EachExerciseCard exercise_obj={eval("arrange_data"+"."+clicked_button+"["+list_clicked_button+"]")} clicked_date={clicked_date}/>
+                            </div>
+                        </Slide>
+                  </>
+                }
+                
 
             </div>
           </>
