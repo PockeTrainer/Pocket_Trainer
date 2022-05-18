@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import HeaderInSwipeTab from "./HeaderInSwipeTab"
+import { Stack } from '@mui/material';
+import "../../CustomCss/History/SwipeInfoTab.css"
 
 const drawerBleeding = 40;
 
@@ -46,7 +48,8 @@ function SwipeInfoTab(props) {
 
   // This is used only for the example
   const container = window !== undefined ? () => window().document.body : undefined;
-
+ 
+  console.log("토글값:",open)
   return (
     <Root>
       <CssBaseline />
@@ -85,7 +88,23 @@ function SwipeInfoTab(props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 1, color: 'text.secondary' }}>{clicked_date.month+"월"+clicked_date.days+"일 히스토리"}</Typography>
+          <Stack direction={"row"} sx={{justifyContent:"space-between",alignItems:"center"}}>
+              <Typography sx={{ p: 1, color: 'text.secondary' }}>{clicked_date.month+"월"+clicked_date.days+"일 히스토리"}</Typography>
+              {
+                open
+                ?
+                <div className="arrow_going_down">
+                  <i className="fas fa-arrow-down" style={{fontSize:"2rem",color:"#5e72e4"}}></i>
+                </div>
+                :
+                <div className="arrow_going_up">
+                  <i className="fas fa-arrow-up" style={{fontSize:"2rem",color:"#5e72e4"}}></i>
+                </div>
+              }
+             
+             
+          </Stack>
+          
         </StyledBox>
         <StyledBox
           sx={{
