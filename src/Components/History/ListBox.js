@@ -163,8 +163,8 @@ else{
 
   }
   
-
-
+console.log("음식정보들:",foods)
+;
   return (
     <>
       <span className="badge badge-secondary" style={{fontSize:"1.5em",marginTop:"0.5em",backgroundColor:"#dee2e6",color:"black"}}>{meal}</span>

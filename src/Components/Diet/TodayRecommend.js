@@ -62,6 +62,7 @@ function TodayRecommend(){
         })    
     }
 
+
     const get_recommend_data=async()=>{//서버로부터 금일 할당된 추천음식 정보 가져와줌
         await axios.get(`http://127.0.0.1:8000/api/diet/${id}`)
         .then((res) => {
@@ -183,7 +184,7 @@ function TodayRecommend(){
         return tmp;
     }
    
-    const render_eachFood=(start,end,_part)=>{
+    const render_eachFood=(start,end,_part)=>{//밑에 추천 음식 랜더링 해주는 용도
         let result=[];
         let how_many;
         let gram;
@@ -192,9 +193,7 @@ function TodayRecommend(){
         let module= require("../MealsInfo/MealsInfo");
 
         let part=eval("recommend_foods."+_part);//클릭한 파트 문자열을 넣는다
-        console.log(part)
-        if(part.length===0){
-            console.log("여기안걸림?")
+        if(part.length===0){//첫 랜더링시 값이 없어서 오류가 날수잇으니 지나가게
             return;
         }
         for(let i=start;i<=end;i++){
