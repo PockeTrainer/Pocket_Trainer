@@ -40,7 +40,7 @@ const rendering=(start,end,unit)=>{//체중을 쭈욱 랜더링해줌
 
 export default function UpdateWeight({open_state,set_open_state,current_day_weight,clicked_date}) {
   const dispatch=useDispatch();
-  const id=sessionStorage.getItem("user_id");;
+  const id=sessionStorage.getItem("user_id");
   const [open, setOpen] = useState(false);//모달창 열고 닫기
 
   const [weight,setWeight]=useState(current_day_weight===null?30:current_day_weight);//최근 몸무게로 설정해줌

@@ -17,18 +17,29 @@ import { choose_meal_date } from '../../modules/action';
 import CalandarPicker from "./CalandarPicker";
 import {DatePicker} from "./DatePicker";
 
+import axios from 'axios';
+
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
+
+
 function TodayRecommend(){
 
+    const id=sessionStorage.getItem("user_id");
     const [clicked_button,set_Clicked_button]=useState("part1");//몇번째 버튼을 눌렀는지에 대한 state
     const [tmp_clicked_part,setTmpClicked_part]=useState("part1");//각 부위별 무엇을 눌렀는지 임시저장 버튼state
     const count1=useRef(1);
     const [showList,setShowList]=useState(true);//밑에 리스트에 주는 zoom transition 
     const modalRef=useRef("");//세부정보 모달창
+
+    const [recommend_foods,set_recommend_foods]=useState({
+        part1:[],
+        part2:[],
+        part3:[]
+    });//각 영양소별 대표 음식들의 정보를 담아줄 것임
 
     const dispatch=useDispatch();
 
@@ -36,13 +47,62 @@ function TodayRecommend(){
         setShowList(prev=>!prev);
     }
 
-    const handleSpcificInfo=()=>{
+    const handleSpcificInfo=()=>{//음식별 상세정보 보여주기 모달
         modalRef.current.click();
+    }
+
+
+    const set_target_kcal=async()=>{//금일 추천 식단 칼로리 생성
+        await axios.post(`http://127.0.0.1:8000/api/diet/createTargetKcal/${id}`)//해당일 목표칼로리 설정해줌
+        .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })    
+    }
+
+    const get_recommend_data=async()=>{//서버로부터 금일 할당된 추천음식 정보 가져와줌
+        await axios.get(`http://127.0.0.1:8000/api/diet/${id}`)
+        .then((res) => {
+            console.log(res.data);
+            let part1=[];
+            let part2=[];
+            let part3=[];
+
+            let idx=0;
+            for(const food of res.data.total){
+                if(idx>=0&& idx<=5){
+                    part1.push(food);
+                }
+                else if(idx>=6 && idx<=11){
+                    part2.push(food);
+                }
+                else{
+                    part3.push(food);
+                }
+                idx+=1;
+            }
+
+            set_recommend_foods({
+                ...recommend_foods,
+                part1:part1,
+                part2:part2,
+                part3:part3
+            });
+
+      
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     useEffect(()=>{
         if(count1.current===1){
             count1.current+=1;
+
+            set_target_kcal();//금일 식단칼로리 설정
+            get_recommend_data();//서버로부터 가져오기 정보
             return;
         }
         handleShowList();//닫아주기
@@ -123,6 +183,41 @@ function TodayRecommend(){
         return tmp;
     }
    
+    const render_eachFood=(start,end,_part)=>{
+        let result=[];
+        let how_many;
+        let gram;
+        let food_name;
+        let image_url;
+        let module= require("../MealsInfo/MealsInfo");
+
+        let part=eval("recommend_foods."+_part);//클릭한 파트 문자열을 넣는다
+        console.log(part)
+        if(part.length===0){
+            console.log("여기안걸림?")
+            return;
+        }
+        for(let i=start;i<=end;i++){
+            how_many=part[i][Object.keys(part[i])[0]][0]+ part[i][Object.keys(part[i])[0]][2];//5.7인분
+            gram=part[i][Object.keys(part[i])[0]][1];//그램
+            food_name=module[Object.keys(part[i])[0]].name;//고구마
+            image_url=module[Object.keys(part[i])[0]].image_url;//사진경로
+    
+            result.push(
+                <Stack direction="column">
+                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo}>
+                        <Badge color="success" badgeContent={how_many} >
+                            <AvatarStyle src={image_url} color="#5e72e4"  ></AvatarStyle>
+                        </Badge>
+                    </Button>
+                    <Typography sx={foodNameStyle}>{food_name}<br></br>({gram}g)</Typography>
+                </Stack>
+            )
+        }
+        return result;
+    
+    }
+  
     return(
         <>
             <CardWrapper time={1000}>
@@ -152,7 +247,7 @@ function TodayRecommend(){
                         ]}
                             />
                     <hr></hr>
-                    <h4 className="heading" style={{fontSize:"1.5rem"}}>{selectDate.getMonth()+"/"+selectDate.getDate()}목표량</h4>
+                    <h4 className="heading" style={{fontSize:"1.5rem"}}>{selectDate.getMonth()+1+"/"+selectDate.getDate()}목표량</h4>
                     <br></br>
 
                     <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>
@@ -188,32 +283,17 @@ function TodayRecommend(){
                                 <span className="badge badge-primary btn-lg" style={{...badgeStyle,color:"black"}}>{nutritions[clicked_button].name}</span> 
                                 <span className="alert-text" style={{fontSize:"1rem",marginTop:"1rem"}}>{nutritions[clicked_button].name} 150g을 채울려면?</span>
                             
+
                                 <Stack direction="row" spacing={4} sx={{marginTop:"1rem",justifyContent:"center"}}>
-                                <Stack direction="column">
-                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo}>
-                                        <Badge color="success" badgeContent={"1+1/3개"} >
-                                            <AvatarStyle src='../assets/img/theme/carbo.png' color="#5e72e4"  ></AvatarStyle>
-                                        </Badge>
-                                    </Button>
-                                    <Typography sx={foodNameStyle}>고구마<br></br>(163g)</Typography>
+                                        {render_eachFood(0,2,clicked_button)}
                                 </Stack>
-                                <Stack direction="column">
-                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo} >
-                                        <Badge color="success" badgeContent={"2/3공기"} >
-                                            <AvatarStyle src='../assets/img/theme/protein.jpg' color="#2dce89"  ></AvatarStyle>
-                                        </Badge>
-                                    </Button>
-                                    <Typography sx={foodNameStyle}>현미밥<br></br>(154g)</Typography>
+
+                                <Stack direction="row" spacing={4} sx={{marginTop:"1rem",justifyContent:"center"}}>
+                                        {render_eachFood(3,5,clicked_button)}
                                 </Stack>
-                                <Stack direction="column">
-                                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo} >
-                                        <Badge color="success" badgeContent={"2/3인분"} >
-                                            <AvatarStyle src='../assets/img/theme/fat.jpg'  color="#ffc107"  ></AvatarStyle>
-                                        </Badge>
-                                    </Button>
-                                    <Typography sx={foodNameStyle}>오트밀<br></br>(74g)</Typography>
-                                </Stack>
-                            </Stack>
+                            
+                                       
+                              
                             
                             </Stack>
 
