@@ -129,6 +129,7 @@ else{
 
 
   const meal=props.meal;//아침,점심,저녁
+  const change_searchModal_submit_clicked=props.change_searchModal_submit_clicked;//쓰레기통 버튼을 눌렀을 때에만 제거후 서버로 전송되도록
 
   const Pstyled=styled('p')((props)=>({
     fontSize:"1.0rem",
@@ -160,6 +161,8 @@ else{
     else{
       dispatch(pop_dinner(copy_foods));
     }
+
+    change_searchModal_submit_clicked(true);//눌렀다를 위로 알림
 
   }
   

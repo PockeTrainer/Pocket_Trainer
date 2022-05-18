@@ -69,6 +69,8 @@ const POP_BREAKFAST="pop_breakfast";
 const POP_LUNCH="pop_lunch";
 const POP_DINNER="pop_dinner";
 
+const RESET_ALL_MEALS="reset_all_meals";//모든 아점저 다 초기화 시킴
+
 const CHOOSE_MEAL_DATE="choose_meal_date";//식단에서 고른날짜를 보여줌
 
 //추가운동에서 페이지 이동 정보를 알림
@@ -328,6 +330,11 @@ export const pop_lunch=(new_arr)=>({
 export const pop_dinner=(new_arr)=>({
     type:POP_DINNER,
     new_arr
+});
+
+export const reset_all_meals=()=>({
+    type:RESET_ALL_MEALS
+
 });
 
 export const choose_meal_date=(date)=>({//Date객체를 직접 넣어줌
@@ -877,6 +884,10 @@ export function update_meals_reducer(state=initialMeals,action){//아침,점심,
                 ...state,
                 dinner:action.new_arr
             }
+        case RESET_ALL_MEALS:
+            return{
+                ...initialMeals
+            }    
         default:
             return state;    
     }

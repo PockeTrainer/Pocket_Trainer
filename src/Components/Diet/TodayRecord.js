@@ -15,8 +15,9 @@ import SearchModal from './SearchModal';
 import {DatePicker} from "./DatePicker";
 import CalandarPicker from './CalandarPicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { choose_meal_date } from '../../modules/action';
+import { choose_meal_date,push_breakfast,push_dinner,push_lunch, reset_all_meals } from '../../modules/action';
 import axios from "axios";
+import {Meal} from "../MealsInfo/MealsInfo";
 
 
 function sleep(ms){
@@ -32,6 +33,7 @@ function TodayRecord(){
     const [KcalButton_Clicked,set_KcalButton_Clicked] = useState(false);//칼로리보기 모드로 변환해주는 버튼
     const modalRef=useRef("");//모달창 버튼 팝업용
     const count=useRef(1);//첫랜더링은 피하기
+    const [searchModal_submit_clicked,change_searchModal_submit_clicked]=useState(false);//서치모달에서 확인버튼을 눌러야만 서버로 전송되게 한다 그 외에불러오기 때에는 서버전송막기위해
     const dispatch=useDispatch();
     const [nutrition_ratio,set_nutrition_ratio]=useState({//각 영양소별 현재 퍼센트 비율을 가짐
         carbo:{
@@ -90,6 +92,40 @@ function TodayRecord(){
         await axios.get(`http://127.0.0.1:8000/api/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`)//서버로 음식들 전송
             .then((res) => {
                 console.log(res.data);
+                let tmp_breakfast=[];
+                let tmp_lunch=[];
+                let tmp_dinner=[];
+
+                //데이터 정리하기
+                for(const food of res.data.day_history_diet){
+                    let tmp_Info_from_api={//Info_from_api처럼 값을 쓰는것들로만 가지고 똑같이 생기게 재구성중
+                        DESC_KOR:food.food_name,
+                        NUTR_CONT1:food.food_kcal,
+                        NUTR_CONT2:food.carbohydrate,
+                        NUTR_CONT3:food.protein,
+                        NUTR_CONT4:food.province,
+                        SERVING_SIZE:food.food_one_meal_g
+                    };
+                    let meal=new Meal(tmp_Info_from_api,parseInt(food.food_g/food.food_one_meal_g),food.food_g,food.time);//api데이터+기본 디폴트 인분 수를 담은 객체생성
+
+                    if(food.time==="아침"){
+                        tmp_breakfast.push(meal);
+                    }
+                    else if(food.time==="점심"){
+                        tmp_lunch.push(meal);
+                    }
+                    else{
+                        tmp_dinner.push(meal);
+                    }
+                }
+
+                dispatch(push_breakfast(tmp_breakfast));
+                dispatch(push_lunch(tmp_lunch));
+                dispatch(push_dinner(tmp_dinner));
+
+
+               
+
             })
             .catch((err) => {
                 console.log(err.response.data)
@@ -110,6 +146,7 @@ function TodayRecord(){
                 food_g:parseInt(food.gram),//먹은 그램수
                 food_kcal:food.Info_from_api.NUTR_CONT1===""?0:parseInt(food.Info_from_api.NUTR_CONT1),//열량
                 carbohydrate:food.Info_from_api.NUTR_CONT2===""?0:parseFloat(food.Info_from_api.NUTR_CONT2).toFixed(1),//탄수화물 그램
+                food_one_meal_g:food.Info_from_api.SERVING_SIZE,//1회 제공량 같이 제공
                 protein:food.Info_from_api.NUTR_CONT3===""?0:parseFloat(food.Info_from_api.NUTR_CONT3).toFixed(1),//단백질 그램
                 province:food.Info_from_api.NUTR_CONT4===""?0:parseFloat(food.Info_from_api.NUTR_CONT4).toFixed(1)//지방 그램
             })//서버로 음식들 전송
@@ -120,6 +157,8 @@ function TodayRecord(){
                 console.log(err.response.data)
             })    
         })
+
+        change_searchModal_submit_clicked(false);//다시 안눌려진상태로 전환
 
         
     }
@@ -152,6 +191,7 @@ function TodayRecord(){
                 console.log(err)
             })    
         })
+        change_searchModal_submit_clicked(false);//다시 안눌려진상태로 전환
 
         
     }
@@ -220,19 +260,21 @@ function TodayRecord(){
 
         set_nutrition_ratio(tmp);
 
-        if(update_or_not==="update"){
-            sendfood_to_server_update(new_obj);//서버로 음식 업데이트 전송
+        if(searchModal_submit_clicked){//직접적으로 눌렀을 때에만 서버에 전송되도록
+            if(update_or_not==="update"){
+                sendfood_to_server_update(new_obj);//서버로 음식 업데이트 전송
+            }
+            else{
+                sendfood_to_server_remove(new_obj);//서버로 음식 제거 전송
+            }
         }
-        else{
-            sendfood_to_server_remove(new_obj);//서버로 음식 제거 전송
-        }
-        
         
         previous_foods.current=tmp_total_list;//현재 정보를 저장
         
     },[foods])
 
     useEffect(()=>{
+        dispatch(reset_all_meals());//갖고있던 모든 식단들 초기화
         get_data_from_sercer();//선택 날짜가 바뀔 때마다 서버로부터 결과 호출
     },[selectDate])
     
@@ -337,9 +379,9 @@ function TodayRecord(){
 
 
                     <StyledSlider {...settings}>
-                        <ListBox meal="아침"/>
-                        <ListBox meal="점심"/>
-                        <ListBox meal="저녁"/>
+                        <ListBox meal="아침" change_searchModal_submit_clicked={change_searchModal_submit_clicked}/>
+                        <ListBox meal="점심" change_searchModal_submit_clicked={change_searchModal_submit_clicked}/>
+                        <ListBox meal="저녁" change_searchModal_submit_clicked={change_searchModal_submit_clicked}/>
                     </StyledSlider>
 
                     <FormControlLabel
@@ -421,7 +463,7 @@ function TodayRecord(){
                     
             </CardWrapper>
             <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-search-meals">Default</button>
-            <SearchModal/>
+            <SearchModal change_searchModal_submit_clicked={change_searchModal_submit_clicked}/>
 
            
 

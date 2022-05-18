@@ -41,7 +41,7 @@ function sleep(ms){
 
 
 
-function SearchModal({where}){
+function SearchModal({change_searchModal_submit_clicked}){
 
     const closeRef=useRef("");
     const [how_many_people,set_how_many_people]=useState(1);//몇 인분인지 
@@ -242,7 +242,9 @@ function SearchModal({where}){
         set_data_searching("not_yet");
         setMorning([]);
         setLunch([]);
-        setDinner([])
+        setDinner([]);
+
+        change_searchModal_submit_clicked(true);//확인 버튼을 눌렀음을 위에 알린다
     }
 
     const handleClick = () => {
