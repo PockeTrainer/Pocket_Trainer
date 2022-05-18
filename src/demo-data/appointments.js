@@ -54,6 +54,16 @@ export const appointments = [
       text: 'bmi지수',
       id: 5,
       color: amber,
+    },
+    {
+      text: '클리어',
+      id: 6,
+      color: lightGreen,
+    }, {
+      text: '실패',
+      id: 7,
+      color: red,
     }
+
   ];
   

@@ -24,6 +24,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import HotelIcon from '@mui/icons-material/Hotel';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useSelector } from 'react-redux';
+import UpdateWeight from './UpdateWeight';
 
 
 
@@ -118,6 +119,9 @@ export default function HeaderInSwipeTab({clicked_date}) {
   });//섭취칼로리-소모칼로리의 값을 담음
 
   const count_bmi=useRef(1);
+
+  const [open_state,set_open_state]=useState(false);//체중업데이트 모달창을 여는 여부
+
   //위에는 bmi쪽
 
   const [diet_info,set_diet_info]=useState({
@@ -503,8 +507,10 @@ export default function HeaderInSwipeTab({clicked_date}) {
                                 </div>
 
                                 <div className="modal-footer" style={{padding:"0rem",marginTop:"1em",justifyContent:"center"}}>
-                                    <button  type="button" className="btn btn-primary"><i className="ni ni-settings"></i>신체정보수정</button>
+                                    <button onClick={()=>set_open_state(true)}  type="button" className="btn btn-primary"><i className="ni ni-settings"></i>체중업데이트</button>
                                 </div>
+
+                                <UpdateWeight open_state={open_state} set_open_state={set_open_state} current_day_weight={day_weight} clicked_date={clicked_date}/>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
            <>
