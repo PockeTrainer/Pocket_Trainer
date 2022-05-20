@@ -112,6 +112,7 @@
     // 운동별로 중요 부위에 다른 색으로 선 표시
     switch (exerciseName) {
       case 'Squat':
+      case 'LightSquat':
       case 'LegPress':
         if (keypoints[0]['name'] == 'left_knee' || keypoints[1]['name'] == 'left_knee'
           || keypoints[0]['name'] == 'right_knee' || keypoints[1]['name'] == 'right_knee'
@@ -135,6 +136,7 @@
           );
         }
         break;
+      case 'PushUp':
       case 'BenchPress':
       case 'InclinePress':
       case 'PecDeckFly':
@@ -362,6 +364,7 @@
     // 운동별로 중요부위에 다른 색으로 점 표시
     switch (exerciseName) {
       case 'Squat':
+      case 'LightSquat':
       case 'LegPress':
         if (11 <= i && i <= 16) {
           drawPoint(ctx, y * yScale, x * xScale, 4, "red");
@@ -369,6 +372,7 @@
           drawPoint(ctx, y * yScale, x * xScale, 3, color);
         }
         break;
+      case 'PushUp':
       case 'BenchPress':
       case 'InclinePress':
       case 'PecDeckFly':
