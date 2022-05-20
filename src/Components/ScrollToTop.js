@@ -8,7 +8,7 @@ export default function ScrollToTop() {
   useEffect(() => {
     let y_result;
 
-    if(pathname.includes("/routine/weightcheck/practice")||pathname.includes("/routine/exercise")){
+    if(pathname.includes("/routine/weightcheck/practice")||pathname.includes("/routine/exercise")||pathname.includes("/test/pushup")||pathname.includes("/test/situp")||pathname.includes("/test/squat")){
       let rem_size=getComputedStyle(document.documentElement).fontSize;
       y_result=parseInt(rem_size);
     }

@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainStep from './MainStep';
 import Evaluation from './Evaluation';
 
-import { how_long, none_testState,reset,reset_page} from '../../modules/action';
+import { none_testState,reset,reset_page} from '../../modules/action';
 import Finish from './Finish';
 
 import AlertModal from "../SameLayout/AlertModal";

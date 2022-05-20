@@ -8,7 +8,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch,useSelector } from "react-redux";
-import { Appref, Last_clear_page } from "../../../modules/action";
+import {  Last_clear_page } from "../../../modules/action";
 import { not_exercise_start } from "../../../modules/action";
 
 function FinalTestResult(){
@@ -144,7 +144,7 @@ function FinalTestResult(){
                 <span className="alert-text display-4" style={{display:"block"}}>About Me-상체</span>
                 <div className="alert alert-success" role="alert" style={alertStyle}>
                     <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>(상체)코멘트</strong></span>
-                    <p>{upperbody[AllExercise.upperbody]}</p>
+                    <p style={{color:"black"}}>{upperbody[AllExercise.upperbody]}</p>
                 </div>
 
             </div>
@@ -155,7 +155,7 @@ function FinalTestResult(){
                 <span className="alert-text display-4" style={{display:"block"}}>About Me-복근</span>
                 <div className="alert alert-success" role="alert" style={alertStyle}>
                     <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>(복근)코멘트</strong></span>
-                    <p>{abs[AllExercise.abs]}</p>
+                    <p style={{color:"black"}}>{abs[AllExercise.abs]}</p>
                 </div>
 
             </div>
@@ -166,7 +166,7 @@ function FinalTestResult(){
                 <span className="alert-text display-4" style={{display:"block"}}>About Me-하체</span>
                 <div className="alert alert-success" role="alert" style={alertStyle}>
                     <span className="alert-text h3" style={{color:"white"}}><strong><i class="fas fa-thumbs-up"></i>(하체)코멘트</strong></span>
-                    <p>{lowerbody[AllExercise.lowerbody]}</p>
+                    <p style={{color:"black"}}>{lowerbody[AllExercise.lowerbody]}</p>
                 </div>
 
             </div>

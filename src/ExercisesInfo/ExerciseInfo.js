@@ -131,6 +131,40 @@ export const Squat={
     instruction:"스쿼트는 하체부분에 대표적인 근력운동으로서 하체근육의 근발달정도를 가늠할 때 사용합니다"
 }
 
+export const pushup_content={
+    title:"상체측정\n[푸시업]",
+    message:"상체측정을 위한 푸시업 방법을 알려드립니다.",
+    correct_posture:"팔의 간격은 어깨너비보다 넓게 벌리지만 팔꿈치의 위치가 가슴보다 아래에 위치하도록 하는 것이 어깨 관절에 부담을 적게 주고 가슴과 삼두근의 자극을 높여줄 수 있습니다.",
+    correct_posture_pic:"../assets/img/theme/pushup_movement.gif",
+    wrong_posture:"팔을 너무 넓게 벌리며 손에 위치가 어깨 높이에 가까운 경우에 생기는 자세입니다. (어깨를 다칠 수 있습니다.)",
+    wrong_posture_pic:"../assets/img/theme/pushup_notgood.gif",
+    youtube_url:"https://www.youtube.com/watch?v=-_DUjHxgmWk",
+    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+};
+
+export const situp_content={
+    title:"복근측정\n[싯업]",
+    message:"복근측정을 위한 싯업 방법을 알려드립니다.",
+    correct_posture:"손깍지를 낀 상태로 다리(발)가 움직이지 않도록 하며, 복근의 힘으로 상체를 동글게 말아주며 올라와 줍니다",
+    correct_posture_pic:"../assets/img/theme/situp_movement.gif",
+    wrong_posture:"중간에 힘이 풀려서 손을 이와 같이 풀지는 말아주세요.측정에 방해가 됩니다.",
+    wrong_posture_pic:"../assets/img/theme/situp_notgood.gif",
+    youtube_url:"https://www.youtube.com/watch?v=0PgmYmjnoM8",
+    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+};
+
+export const squat_content={
+    title:"하체측정\n[스쿼트]",
+    message:"하체측정을 위한 스쿼트 방법을 알려드립니다.",
+    correct_posture:"팔은 어깨높이에서 팔꿈치쪽으로 양손을 접어주시거나 , '앞으로 나란히 자세'처럼 쭉 뻗어줍니다. 그리고 양발은 어깨 넓이보다 약간 넓게 벌려서 의자에 앉듯이 내려갔다가 다시 일어섭니다.",
+    correct_posture_pic:"../assets/img/theme/squat_movement.gif",
+    wrong_posture:"무릎이 안쪽으로 쏠리게 되면 엉덩이 근육과 허벅지근육에 불균형을 초래하여 무릎에 통증이 발생할 수 있습니다.무릎과 발은 동일선상에 위치할 수 있도록 합니다.",
+    wrong_posture_pic:"../assets/img/theme/squat_notgood.png",
+    youtube_url:"https://www.youtube.com/watch?v=vQNFiMi0m9M",
+    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+};
+
+
 
 //각 운동별 설명 및 이미지url 상수로 모아둠
 //여기는 그냥 정해져있는 값들이라 상수로 만들어둠

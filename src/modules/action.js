@@ -22,6 +22,7 @@ const PUSHUP_COUNT="pushup_count";
 const SITUP_COUNT="situp_count ";
 const SQUAT_COUNT="squat_count";
 const RESET_COUNT="reset_count";
+//플랭크 운동시 사용됨
 const PLANK_TIME_SET="plank_time_set";
 //운동추천 루틴페이지에서 눌린 버튼변경 액션
 const CHANGE_CLICKED_BUTTON="change_clicked_button";
@@ -136,11 +137,13 @@ export const none_testState=(page)=>({
     page
 })
 
-export const setting_completed=()=>({
-    type:SETTING_COMPLETED
+export const setting_completed=(page)=>({
+    type:SETTING_COMPLETED,
+    page
 });
-export const pre_timer=()=>({
-    type:PRE_TIMER
+export const pre_timer=(page)=>({
+    type:PRE_TIMER,
+    page
 });
 export const pushup_count=()=>({
     type:PUSHUP_COUNT
@@ -396,9 +399,9 @@ const initialFirstId={
     first_login:""
 }
 
-const initialTestState={//체력측정 들어갔는지 안 들어갔는지
+const initialTestState={//카메라가  켜졌는지 준비상태를 의미 false->completed->pre_timer->false
     testState:"false",
-    urlState:""
+    exercise:"pushup"//디폴트 체력측정시에만 사용되는 프로퍼티로서 푸시업으로 해두자
 }
 const initialExercise={//체력측정시 각 개수를 의미-플랭크 시간은 별도로 타이머에서 리셋시키는 용도로 필요함
     pushup:0,
@@ -553,25 +556,25 @@ export function testState_reducer(state=initialTestState,action){//카메라 준
         case TESTSTATE:
             return{
                 testState:"true",
-                urlState:action.page
+                exercise:action.page
             }
     
         case NONE_TESTSTATE:{
             return{
                 testState:"false",
-                urlState:action.page
+                exercise:action.page
             }
         } 
         case SETTING_COMPLETED:
             return{
                 testState:"completed",
-                urlState:""
+                exercise:action.page
             }
 
         case PRE_TIMER:
             return{
                 testState:"preTimer",
-                urlState:""
+                exercise:action.page
             }    
         default:
             return state

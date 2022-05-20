@@ -191,7 +191,7 @@ function TodayRecord(){
                 console.log(err)
             })    
         })
-        change_searchModal_submit_clicked(false);//다시 안눌려진상태로 전환
+        change_searchModal_submit_clicked(false);//다시 전송버튼이 안눌려진상태로 전환하는 느낌적인 느낌느낌?
 
         
     }
@@ -283,7 +283,6 @@ function TodayRecord(){
       };
 
 
-   
     const Pstyled=styled('p')((props)=>({
         fontSize:"1.0rem",
         fontWeight:props.bold=="lighter"?"lighter":"600",

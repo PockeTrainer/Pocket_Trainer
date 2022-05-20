@@ -170,7 +170,7 @@ function StartModal({buttonRef}){
 
                 <Slider {...settings} ref={slider}>
                     <AlertMessage sliderRef={slider}/>
-                    <PtStep buttonRef={closeRef} page={page}/>
+                    <PtStep buttonRef={closeRef} page={page} which={which}/>
                     {page=="weight_page"&&<FullScreenDialog/>}
                 </Slider>
                 

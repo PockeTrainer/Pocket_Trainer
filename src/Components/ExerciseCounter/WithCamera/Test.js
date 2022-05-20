@@ -3,109 +3,59 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Camera from "./Camera";
 import Timer from "./Timer";
-import TitleMessage from "./TitleMessage";
-
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
-import Fab from '@mui/material/Fab';
-import CheckIcon from '@mui/icons-material/Check';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { Skeleton } from "@mui/material";
 
 import Zoom from '@mui/material/Zoom';
+import { Grow } from "@mui/material";
+import ModalInstruction from "./ModalInstruction";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AlarmOnIcon from '@mui/icons-material/AlarmOn';
+import FlagIcon from '@mui/icons-material/Flag';
 
-import { pre_timer  } from "../../../modules/action";
 
 
 
 function sleep(ms){
-    return new Promise((r)=>setTimeout(r,ms));
+  return new Promise((r)=>setTimeout(r,ms));
 }
 
 function Test(){
 
     const testState=useSelector(state=>state.testState_reducer.testState);
     const dispatch=useDispatch();
+    const module=require("../../../ExercisesInfo/ExerciseInfo.js");
 
     const exercise_name=useParams();//뒤에 파람스 가져올려고
 
-    const count=useRef(1);
+    const modalRef=useRef();//초반에 띄워주는 알림창
+
+    const [checked, setChecked] = useState(false);//화면 transition
+    const [grid_show,set_grid_show]=useState(false);//그리드 보여주기 transition
+    const [message_effect,set_message_effect]=useState(false);//준비,시작 transition
+    const [modalTime,set_modalTime]=useState(false);//모달이 열렸는지 닫혔는지
+    const [buttonClicked,set_ButtonClicked]=useState(false);//모달창에서 최종 모달닫기 버튼 눌렸는지를 알려준다
+    const count=useRef(1);//초반랜더링 잡기
+    const [message_state,set_message_state]=useState(false);//3초남았는지 준비시간까지
 
 
-    const [loading, setLoading] = useState(false);//로딩바용
-    const [success, setSuccess] = useState(false);//로딩성공시
-    const timer = useRef();//로딩바용 
-
-
-    const [checked, setChecked] = useState(false);
-
-    const handleChange = () => {
+    const handleChange = () => {//transition 
     setChecked((prev) => !prev);
     };
 
-
-    useEffect(()=>{
-        if(count.current==1){
-            count.current+=1;
-            return;
-        }
-        if(testState==="true"){//시작을 띄워줘야 함 
-            setTimeout(handleChange,1000)
-        }
-        if(success&&testState==="completed"){
-            sleep(2000).then(()=>dispatch(pre_timer()));//Promise객체로 비동기지연-카메라 켜주는 상태로 전환 testState==preTimer
-            handleChange();//준비 띄워주기
-        }
-        else if(testState==="completed"){//카메라가 준비 완료됨을 알게되면 로딩바를 끝냄 
-            setSuccess(true);
-            setLoading(false);
-        }
-    },[testState,success]);
-
-    //위에거는 상태변화에 따른 로딩바 변화 및 다음 카메라측정으로 넘어가는 부분
-
-    const pushup_content={
-        title:"체력평가를\n시작합니다",
-        message:"상체측정을 위한 푸시업을 곧 시작하겠습니다."
-    };
-
-    const situp_content={
-        title:"체력평가를\n시작합니다",
-        message:"복근측정을 위한 싯업을 곧 시작하겠습니다."
-    };
-
-    const squat_content={
-        title:"체력평가를\n시작합니다",
-        message:"하체측정을 위한 스쿼트를 곧 시작하겠습니다."
-    };
-
-    const entire={
-        pushup:pushup_content,
-        situp:situp_content,
-        squat:squat_content
-    };
-
-    const counting_number={
-        position:"relative",
-        color:"white",
-        float:"right",
-        zIndex:"9999",
-        fontSize:"2em",
-        backgroundColor:"#5e72e4"
+    const handleModalInstruction=()=>{//모달창 열어주기
+      modalRef.current.click();
+      set_modalTime(true);//모달창을 열었다
     }
 
-    const message={
-        position:"absolute",
-        zIndex:"9999",
-        fontSize:"3em",
-        marginBottom:"2em",
-        color:"white",
-        backgroundColor:"#5e72e46b"
+    const handleGridShow=()=>{//그리드 보여주기
+      set_grid_show(prev=>!prev);
     }
 
-    //위에는 스타일 객체 및 멘트
+    const handleMessage=()=>{//준비,시작 멘트
+      set_message_effect(prev=>!prev);
+    }
 
-    let result=useSelector(state=>state.exercise_count_reducer);
+    let result=useSelector(state=>state.exercise_count_reducer);//방금 운동의 카운트된 개수
     if(exercise_name.exercise_name==="pushup"){
         result=result.pushup
     }
@@ -116,97 +66,194 @@ function Test(){
         result=result.squat
     }
 
-    //위에거는 운동개수 측정용
-    const buttonSx = {
-        ...(success && {
-          bgcolor: green[500],
-          '&:hover': {
-            bgcolor: green[700],
-          },
-        }),
-        width:"80px",
-        height:"80px"
+    const skeleton={
+      width:"100%",
+      height:"80vh",
+      "&.MuiSkeleton-root::after":{background: "linear-gradient(90deg, transparent, #5e72e4, transparent)"},
+      visibility:testState==="completed"||testState==="preTimer"||testState==="true"?"hidden":"visible"
+  }
 
-      };
+
+  const MainStep={
+    position:"absolute",
+    color:"#2dce89",
+    zIndex:"1",
+    fontSize:"1em",
+    bottom:"0",
+    backgroundColor:"rgb(247 250 252 / 0%)",
+    lineHeight:"1.5em"
+}
+
+
+    const ShowCount={
+      position:"absolute",
+      color:"#2dce89",
+      zIndex:"1",
+      fontSize:"2em",
+      top:"0",
+      right:"0",
+      lineHeight:"1.5em"
+  }
+
+
+
+const MessageStyle={
+  position:"absolute",
+  color:"white",
+  zIndex:"1",
+  fontSize:"2.5rem",
+  top:"1em",
+  backgroundColor:"rgb(45 206 137 / 19%)",
+  lineHeight:"1.5em"
+}
+
+  const gridStyle={//그리드 보여주기 transition
+    position:"absolute",
+    color:"#5e72e4",
+    zIndex:"1",
+    fontSize:"1em",
+    bottom:"7em",
+    backgroundColor:"rgb(247 250 252 / 0%)",
+    lineHeight:"1.5em",
+    width:"100%",
+    overflow:"hidden"
+  }
+
+    //위에는 스타일 객체 및 멘트
+
+    useEffect(()=>{
+      handleChange();//화면 열기
+      setTimeout(handleModalInstruction,500);//모달창 열어줘서 초반 인스트럭션 알려주기
+
+    },[])
+
+    useEffect(()=>{
+      if(count.current===1){
+        count.current+=1;
+        return;
+      }
+      if(!modalTime){
+        handleGridShow();//그리드 보여주기
+        handleMessage();//그리드에 몸을 맞춰주세요! 열기
+        setTimeout(handleMessage,2000)//2초뒤에 다시 닫아주고
+      }
+    },[modalTime])
+
+    useEffect(()=>{
+      if(message_state===true){
+        handleMessage();//다시 열어주기-준비 시작
+        sleep(2000).then(()=>{
+          handleMessage();
+        });
+        sleep(3000).then(()=>set_message_state(false))
+        
+      }
+    },[message_state])
+
+    useEffect(()=>{
+
+      if(testState==="true"){
+
+        handleMessage();//열기
+        setTimeout(handleMessage,1000);//닫기
+        handleGridShow();//그리드 닫기
+      }
+    },[testState])
     
-      useEffect(() => {
-        handleButtonClick();//로딩바를 돌리기 위해서
-        return () => {
-          clearTimeout(timer.current);
-        };
-      }, []);
 
-      const handleButtonClick = () => {//로딩바 돌리는 이벤트
-        if (!loading) {
-          setSuccess(false);
-          setLoading(true);
-        }
-      };
-
-      //위에거는 로딩용
-
-      
+    const message_content={
+      false:"",
+      preTimer:<><AccountBoxIcon  sx={{color:"#2dce89",fontSize:"2.0em"}}/>그리드에 몸을<br></br>맞춰넣어주세요!</>,
+      before_start:<><AlarmOnIcon  sx={{color:"#2dce89",fontSize:"2.0em"}}/>준비!</>,
+      true:<><FlagIcon  sx={{color:"#2dce89",fontSize:"2.0em"}}/>시작</>
+    }
     return(
-        <div>
-            <TitleMessage content={entire[exercise_name.exercise_name]} display={testState=="true"||testState=="preTimer"?"no":"yes"}/>
-            {testState=="true"||testState=="preTimer"?
-            <div style={{height:"18em"}}>
-                <span className="badge badge-primary" style={counting_number}>{result}개</span>
-            </div>
-            :null
-            }
+        <div style={{position:"relative"}}>
 
-            {testState=="preTimer"&&
-            <div style={{
+
+          {/* 카메라부분 */}
+        <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+            {...(checked ? { timeout: 1000 } : {})}>
+            <div style={{position:"relative"}}>
+
+                
+                <Camera display={testState=="true"||testState=="preTimer"?"yes":"no"} />
+
+                <Skeleton animation="wave" variant="rectangular" sx={skeleton}/>
+
+                <div style={{//화면 아래에 떠주는 상태
                 display:"flex",
                 justifyContent:"center",
                 alignItems:"center",
                }}>
-                <Zoom in={checked}><span className="badge badge-primary" style={message}>준비!</span></Zoom>
+                 {
+                   testState==="true"
+                   ?
+                   <span className="badge" style={MainStep}>평가중</span>
+                   :
+                   <span className="badge" style={{...MainStep,color:"#5e72e4"}}>평가준비중</span>
+                 }
+                   
+               </div>
+
+
+                {/* 개수카운트 */}
+                <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+                }}>
+                    <span className="badge badge-primary" style={ShowCount}>{result}개</span>
+                </div>
+
+              
+
+               
+               
             </div>
-            }
+        </Grow>
 
+         {/* 스탑워치정보부분 */}
+         <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
+            {...(checked ? { timeout: 1000 } : {})}>
+                <div style={{position:"relative"}}>
+                    {/* <div className="alert alert-warning" role="alert" style={SpanStyle} >
+                        <Stack direction="column">
+                            <span className="badge badge-primary btn-lg" style={badgeStyle}>운동시간</span> 
+                            
+                        </Stack>
+                    </div> */}
+                    <Timer exercise={exercise_name.exercise_name} where="physical_test_ready" buttonClicked={buttonClicked} set_message_state={set_message_state}/>
+                    {/* 모달창에서 눌렸는지 여부를 바꿔주는 함수,메시지 3초전에 알림 줄 수있는 여부 함수 */}
+                </div>
+        </Grow>
 
-            {testState=="true"&&
-                        <div style={{
-                            display:"flex",
-                            justifyContent:"center",
-                            alignItems:"center",
-                        }}>
-                            <Zoom in={checked}><span className="badge badge-primary" style={message}>시작!</span></Zoom>
-                        </div>
-            }
+        <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+               }}>
+                <Zoom in={grid_show}>
+                  {/* <span className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name+"_content"].grid}/>
+                  </span> */}
 
-            <Camera  display={testState=="true"||testState=="preTimer"?"yes":"no"}/>
+                  <div className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name+"_content"].grid} style={{maxWidth:"100%",display:"block",objectFit:"cover"}}/>
+                  </div>
+                </Zoom>
+          </div>
 
-            {/* 로딩바 */}
-            {
-            testState=="false"||testState=="completed" ? <Box sx={{ display: 'flex', alignItems: 'center',justifyContent:"center" }}>
-            <Box sx={{ m: 1, position: 'relative' }}>
-              <Fab
-                aria-label="save"
-                color="warning"
-                sx={buttonSx}
-                onClick={handleButtonClick}
-              >
-                {success ? <CheckIcon sx={{"&.MuiSvgIcon-root":{fontSize:"2.5rem"}}} /> : <HourglassBottomIcon sx={{"&.MuiSvgIcon-root":{fontSize:"2.5rem"}}}/>}
-              </Fab>
-              {loading && (
-                <CircularProgress
-                  size={90}
-                  sx={{
-                    color: green[500],
-                    position: 'absolute',
-                    top: -6,
-                    left: -6,
-                    zIndex: 1,
-                  }}
-                />
-              )}
-            </Box>
-          </Box>:null}
+          <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+               }}>
+                <Zoom in={message_effect}><span className="badge badge-primary" style={MessageStyle}>{message_state?message_content.before_start:message_content[testState]}</span></Zoom>
+        </div>
 
-            {testState=="true"||testState=="preTimer"?<Timer where="physical_test_ready" exercise={exercise_name.exercise_name}/>:null}
+        <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-instruction">Default</button>
+        <ModalInstruction set_modalTime={set_modalTime} set_ButtonClicked={set_ButtonClicked} />
             
         </div>
     );

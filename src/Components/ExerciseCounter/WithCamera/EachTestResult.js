@@ -5,6 +5,7 @@ import TitleMessage from "./TitleMessage";
 import { Second_clear_page } from "../../../modules/action";
 import { exercise_count_reducer } from "../../../modules/action";
 import axios from "axios";
+import CardWrapper from "../../CameraTodayRoutine/CardWrapper";
 
 function EachTestResult(){
     const pushup_content={
@@ -57,10 +58,10 @@ function EachTestResult(){
 
     const moveToNext=()=>{
         if(exercise_name.exercise_name=="pushup"){//싯업 평가전 페이지로 이동
-            navigate("/test/howto/situp");
+            navigate("/test/situp");
         }
         else if(exercise_name.exercise_name=="situp"){//스쿼트평가전 페이지로 이동
-            navigate("/test/howto/squat");
+            navigate("/test/squat");
         }
         else{//최종결과페이지로 이동
 
@@ -88,18 +89,21 @@ function EachTestResult(){
     }
     return(
         <div>
-            <TitleMessage content={entire[exercise_name.exercise_name]}/>
-            <div className="alert alert-success" role="alert" >
-                <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
-                <span className="alert-text display-4" style={{display:"block"}}>1분동안</span>
-                <span className="alert-text display-1">{result}개</span>
+            <CardWrapper time={1000}>
+                <TitleMessage content={entire[exercise_name.exercise_name]}/>
+                <div className="alert alert-success" role="alert" >
+                    <span className="alert-icon"><i class="ni ni-time-alarm"></i></span>
+                    <span className="alert-text display-4" style={{display:"block"}}>1분동안</span>
+                    <span className="alert-text display-1">{result}개</span>
 
-            </div>
-            <div className="alert alert-success" role="alert">
+                </div>
+                <div className="alert alert-success" role="alert">
 
-                <h3 style={{color:"white"}}><strong>{entire[exercise_name.exercise_name].next_title+":"}</strong>{entire[exercise_name.exercise_name].next_exam}</h3>
-            </div>
-            <button onClick={moveToNext} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}><i className="ni ni-button-play"></i>다음평가</button>
+                    <h3 style={{color:"white"}}><strong>{entire[exercise_name.exercise_name].next_title+":"}</strong>{entire[exercise_name.exercise_name].next_exam}</h3>
+                </div>
+                <button onClick={moveToNext} type="button" className="btn btn-primary btn-lg btn-block" style={{marginTop:'5px'}}><i className="ni ni-button-play"></i>다음평가</button>
+            </CardWrapper>
+            
         </div>
 
     );

@@ -5,7 +5,7 @@ import Timer from "../ExerciseCounter/WithCamera/Timer";
 import LinearWithValueLabel from "./LinearWithValueLabel";
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/system";
-import { none_testState, reset,reset_set,not_timeToModal,final_result_page} from "../../modules/action";
+import { none_testState, reset,reset_set,not_timeToModal,final_result_page, Last_clear_page, reset_count} from "../../modules/action";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
@@ -54,6 +54,9 @@ function AlertModal({where}){
     const now_exercise=eval("part"+parseInt(current_bodypart+1)+"["+current_exercise+"]");//현재스텝의 운동정보를 가지고 있는다 ex)벤치프레스 객체
 
     const plank_time_state=useSelector(state=>state.plank_time_update_reducer.plank_state);//디폴트로는 true로 되어있음
+
+    const appRef=useSelector(state=>state.Appref.ref);//모달창-초기회원시 유도해주는 모달
+
 
 
     const handleClose=()=>{
@@ -235,6 +238,14 @@ function AlertModal({where}){
     }
 
     else if(where==="stop_today"){//cardLayout에 위치함
+        let page;//어디쪽에서 호출된 상황인지
+        //체력평가 페이지에서 그만둘때
+        if(path.pathname.includes("/test")){//끝까지 다왔을때 그만두면 그냥 말그대로 루틴 나가면 됌
+            page="test";
+        }
+        else{
+            page="routine";
+        }
 
         const gotoFinish=()=>{
             if(path.pathname.includes("exercise")){//운동스텝에서만 나갈려고 할때 운동종료를 해줘야 함
@@ -242,10 +253,25 @@ function AlertModal({where}){
             }
             dispatch(none_testState());
             dispatch(reset());//현재운동이 가지고 있던 current_weight같은 정보 리셋
-            dispatch(final_result_page());//페이지 정보 초기화
+            dispatch(final_result_page());//페이지 정보 초기화-결과페이지로 이동
             dispatch(reset_set());//다시 세트초기화
             closeRef.current.click();
             navigate("/routine/finish");
+        }
+
+        const stopTest=()=>{//체력평가 쪽에서 그만둘때
+            if(path.pathname.includes("/test/finalResult")){
+                dispatch(Last_clear_page("end"));//모달창상으로 완전히 끝남을 의미함-굳이 모달을 또 띄울필요는 없을듯
+                // appRef.current.click();
+                closeRef.current.click();
+                navigate("/");//홈으로 가게하기
+            }
+            else{//그외에 체력평가 중도포기시
+                dispatch(none_testState());
+                dispatch(reset_count());
+                closeRef.current.click();
+                navigate("/main/exercise_counter");
+            }
         }
         return(
             <div className="modal fade" id="modal-stop_today" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
@@ -262,12 +288,19 @@ function AlertModal({where}){
                                 <i className="ni ni-button-power ni-4x" style={{color:"#5e72e4"}} /> 
                             </div>
                             <span className="badge badge-primary" style={{fontSize:"1em",marginTop:"2rem",marginBottom:"1rem"}}>긴급정지</span>
-                                <Pstyled bold="lighter">오늘의 운동을 여기서 그만두시겠습니까?</Pstyled>
+                                {
+                                    page==="test"
+                                    ?
+                                    <Pstyled bold="lighter">체력평가를 여기서 그만두시겠습니까?체력평가를 하지 않을시 서비스이용이 불가능합니다</Pstyled>
+                                    :
+                                    <Pstyled bold="lighter">오늘의 운동을 여기서 그만두시겠습니까?</Pstyled>
+                                }
+                                
                             
                         </div>
                         
                         <div className="modal-footer" style={{justifyContent:"space-between"}}>
-                            <button type="button" className="btn btn-primary" onClick={gotoFinish} > <i className="ni ni-check-bold" /> 확인</button>
+                            <button type="button" className="btn btn-primary" onClick={page==="test"?stopTest:gotoFinish} > <i className="ni ni-check-bold" /> 확인</button>
                             <button type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-fat-remove" /> 취소</button>
                         </div>
                     </div>
@@ -337,14 +370,16 @@ function AlertModal({where}){
                                     timeToModal && howmanySet!==5
                                     ?
                                     <>
-                                    <Timer where="Press_and_3major"/>
+                                    {/* 버튼눌린게 딱히 큰 의미는 없지만 true여야만 타이머 돌아가기 시작함 */}
+                                    <Timer where="Press_and_3major" buttonClicked={true}/>
                                     <Pstyled bold="lighter">다음세트까지</Pstyled>
                                     <LinearWithValueLabel where="Press_and_3major"/>
                                 </>:
                                 (howmanySet===5&&timeToModal
                                     ?
                                     <>
-                                        <Timer where="Press_and_3major"/>
+                                        {/* 버튼눌린게 딱히 큰 의미는 없지만 true여야만 타이머 돌아가기 시작함 */}
+                                        <Timer where="Press_and_3major" buttonClicked={true}/>
                                         <Pstyled bold="thick">{part}</Pstyled>
                                         <div className="alert alert-warning" role="alert" style={SpanStyle} >
                                             <Stack direction="column">
