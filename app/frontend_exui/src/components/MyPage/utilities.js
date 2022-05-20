@@ -111,16 +111,29 @@
    adjacentKeyPoints.forEach((keypoints) => {
     // 운동별로 중요 부위에 다른 색으로 선 표시
     switch (exerciseName) {
+      // 하체
       case 'Squat':
       case 'LightSquat':
       case 'LegPress':
-        if (keypoints[0]['name'] == 'left_knee' || keypoints[1]['name'] == 'left_knee'
-          || keypoints[0]['name'] == 'right_knee' || keypoints[1]['name'] == 'right_knee'
-          || keypoints[1]['name'] == 'right_hip') {
+      case 'LegExtension':
+        if (keypoints[1]['name'] == 'left_knee'
+          || keypoints[1]['name'] == 'right_knee') {
+            lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FF8000",
+              xScale,
+              yScale,
+              ctx
+            );
+            lineWidth = 4;
+        } else if (keypoints[0]['name'] == 'left_knee' 
+          || keypoints[0]['name'] == 'right_knee') {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FFFF00",
             xScale,
             yScale,
             ctx
@@ -136,14 +149,11 @@
           );
         }
         break;
+      // 가슴
       case 'PushUp':
       case 'BenchPress':
       case 'InclinePress':
-      case 'PecDeckFly':
-      case 'ReversePecDeckFly':
-      case 'ShoulderPress':
         if (keypoints[0]['name'] == 'left_shoulder') {
-          lineWidth = 4;
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
@@ -152,7 +162,6 @@
             yScale,
             ctx
           );
-          lineWidth = 4;
         } else if (keypoints[0]['name'] == 'left_elbow' || keypoints[1]['name'] == 'left_elbow'
         || keypoints[0]['name'] == 'right_elbow' || keypoints[1]['name'] == 'right_elbow') {
           lineWidth = 6;
@@ -176,6 +185,30 @@
           );
         }
         break;
+      case 'PecDeckFly':
+        if (keypoints[0]['name'] == 'left_shoulder'
+          || keypoints[0]['name'] == 'left_elbow' || keypoints[1]['name'] == 'left_elbow'
+        || keypoints[0]['name'] == 'right_elbow' || keypoints[1]['name'] == 'right_elbow') {
+          drawSegment(
+            toTuple(keypoints[0].y, keypoints[0].x),
+            toTuple(keypoints[1].y, keypoints[1].x),
+            "#FF8000",
+            xScale,
+            yScale,
+            ctx
+          );
+        } else  {
+          drawSegment(
+            toTuple(keypoints[0].y, keypoints[0].x),
+            toTuple(keypoints[1].y, keypoints[1].x),
+            color,
+            xScale,
+            yScale,
+            ctx
+          );
+        }
+        break;
+      // 어깨
       case 'SideLateralRaise':
         if ((keypoints[0]['name'] == 'left_shoulder' && keypoints[1]['name'] == 'right_shoulder')
           || (keypoints[0]['name'] == 'left_elbow' && keypoints[1]['name'] == 'left_shoulder')
@@ -183,37 +216,120 @@
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FF8000",
             xScale,
             yScale,
             ctx
           );
+        } else if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
+                || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')) {
+            lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FFFF00",
+              xScale,
+              yScale,
+              ctx
+            );
+            lineWidth = 4;
         } else {
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              color,
+              xScale,
+              yScale,
+              ctx
+            );
+        }
+        break;
+      case 'ShoulderPress':
+        if ((keypoints[0]['name'] == 'left_shoulder' && keypoints[1]['name'] == 'right_shoulder')
+          || (keypoints[0]['name'] == 'left_elbow' && keypoints[1]['name'] == 'left_shoulder')
+          || (keypoints[0]['name'] == 'right_elbow' && keypoints[1]['name'] == 'right_shoulder')) {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            color,
+            "#FF8000",
             xScale,
             yScale,
             ctx
           );
+        } else if (keypoints[0]['name'] == 'left_wrist'
+                || keypoints[0]['name'] == 'right_wrist') {
+            lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FFFF00",
+              xScale,
+              yScale,
+              ctx
+            );
+            lineWidth = 4;
+        } else {
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              color,
+              xScale,
+              yScale,
+              ctx
+          );
         }
         break;
+      case 'ReversePecDeckFly':
+        if (keypoints[0]['name'] == 'left_elbow' || keypoints[1]['name'] == 'left_elbow'
+          || keypoints[0]['name'] == 'right_elbow' || keypoints[1]['name'] == 'right_elbow') {
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FF8000",
+              xScale,
+              yScale,
+              ctx
+            );
+          } else {
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              color,
+              xScale,
+              yScale,
+              ctx
+          );
+          }
+        break;
+      // 삼두, 이두
       case 'CablePushDown':
       case 'ArmCurl':
       case 'DumbbellKickBack':
       case 'EasybarCurl':
       case 'HammerCurl':
+      case 'LyingTricepsExtension':
         if ((keypoints[0]['name'] == 'left_elbow' && keypoints[1]['name'] == 'left_shoulder')
           || (keypoints[0]['name'] == 'right_elbow' && keypoints[1]['name'] == 'right_shoulder')) {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FF8000",
             xScale,
             yScale,
             ctx
           );
+        } else if (keypoints[0]['name'] == 'left_wrist' 
+                || keypoints[0]['name'] == 'right_wrist') {
+          lineWidth = 6;
+          drawSegment(
+            toTuple(keypoints[0].y, keypoints[0].x),
+            toTuple(keypoints[1].y, keypoints[1].x),
+            "#FFFF00",
+            xScale,
+            yScale,
+            ctx
+          );
+          lineWidth = 4;
         } else {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
@@ -225,14 +341,16 @@
           );
         }
         break;
+      // 복부
       case 'Plank':
+      case 'Crunch':
         if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
           || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')
           || (keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'right_hip')) {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FF8000",
             xScale,
             yScale,
             ctx
@@ -249,77 +367,44 @@
         }
         break;
       case 'SeatedKneeUp':
-        if (keypoints[0]['name'] == 'left_knee' || keypoints[1]['name'] == 'left_knee'
-          || keypoints[0]['name'] == 'right_knee' || keypoints[1]['name'] == 'right_knee'
+        if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
+          || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')
           || (keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'right_hip')) {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FF8000",
             xScale,
             yScale,
             ctx
           );
+        } else if ((keypoints[1]['name'] == 'left_knee' && keypoints[0]['name'] == 'left_hip')
+                  || (keypoints[1]['name'] == 'right_knee' && keypoints[0]['name'] == 'right_hip')) {
+            lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FFFF00",
+              xScale,
+              yScale,
+              ctx
+            );
+            lineWidth = 4;
         } else {
-          drawSegment(
-            toTuple(keypoints[0].y, keypoints[0].x),
-            toTuple(keypoints[1].y, keypoints[1].x),
-            color,
-            xScale,
-            yScale,
-            ctx
-          );
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              color,
+              xScale,
+              yScale,
+              ctx
+            );
         }
         break;
-      case 'LyingTricepsExtension':
-        if ((keypoints[0]['name'] == 'left_elbow' && keypoints[1]['name'] == 'left_shoulder')
-          || (keypoints[0]['name'] == 'right_elbow' && keypoints[1]['name'] == 'right_shoulder')) {
-          drawSegment(
-            toTuple(keypoints[0].y, keypoints[0].x),
-            toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
-            xScale,
-            yScale,
-            ctx
-          );
-        } else {
-          drawSegment(
-            toTuple(keypoints[0].y, keypoints[0].x),
-            toTuple(keypoints[1].y, keypoints[1].x),
-            color,
-            xScale,
-            yScale,
-            ctx
-          );
-        }
-        break;
-      case 'LegExtension':
-        if (keypoints[0]['name'] == 'left_knee' || keypoints[1]['name'] == 'left_knee'
-          || keypoints[0]['name'] == 'right_knee' || keypoints[1]['name'] == 'right_knee'
-          || keypoints[1]['name'] == 'right_hip') {
-          drawSegment(
-            toTuple(keypoints[0].y, keypoints[0].x),
-            toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
-            xScale,
-            yScale,
-            ctx
-          );
-        } else {
-          drawSegment(
-            toTuple(keypoints[0].y, keypoints[0].x),
-            toTuple(keypoints[1].y, keypoints[1].x),
-            color,
-            xScale,
-            yScale,
-            ctx
-          );
-        }
-        break;
+      // 등
       case 'LatPullDown':
       case 'SeatedRow':
       case 'BarbellRow':
-      case 'Crunch':
         if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
           || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')
           || (keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'right_hip')
@@ -327,11 +412,23 @@
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
             toTuple(keypoints[1].y, keypoints[1].x),
-            "red",
+            "#FF8000",
             xScale,
             yScale,
             ctx
           );
+        } else if (keypoints[0]['name'] == 'left_elbow' || keypoints[1]['name'] == 'left_elbow'
+                || keypoints[0]['name'] == 'right_elbow' || keypoints[1]['name'] == 'right_elbow') {
+            lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FFFF00",
+              xScale,
+              yScale,
+              ctx
+            );
+            lineWidth = 4;
         } else {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
@@ -361,22 +458,46 @@
  
      const y = keypoint.y;
      const x = keypoint.x;
-    // 운동별로 중요부위에 다른 색으로 점 표시
+    // 운동별로 중요 부위에 다른 색으로 점 표시, 게이지 각도에 강조 점 표시
     switch (exerciseName) {
+      // 하체
       case 'Squat':
       case 'LightSquat':
       case 'LegPress':
+      case 'LegExtension':
         if (11 <= i && i <= 16) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+          drawPoint(ctx, y * yScale, x * xScale, 8, "white");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
+        }
+        break;
+      // 가슴
+      case 'PecDeckFly':
+        if (5 <= i && i <= 10) {
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
+        } else {
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
       case 'PushUp':
       case 'BenchPress':
       case 'InclinePress':
-      case 'PecDeckFly':
-      case 'ReversePecDeckFly':
+      // 삼두, 이두
+      case 'CablePushDown':
+      case 'ArmCurl':
+      case 'DumbbellKickBack':
+      case 'EasybarCurl':
+      case 'HammerCurl':
+      case 'LyingTricepsExtension':
+        if (5 <= i && i <= 10) {
+          drawPoint(ctx, y * yScale, x * xScale, 8, "white");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
+        } else {
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
+        }
+        break;
+      // 어깨
       case 'ShoulderPress':
         if (5 <= i && i <= 10) {
           drawPoint(ctx, y * yScale, x * xScale, 8, "white");
@@ -385,60 +506,49 @@
           drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
+      case 'ReversePecDeckFly':
+        if (5 <= i && i <= 8) {
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
+        } else {
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
+        }
+        break;
       case 'SideLateralRaise':
-        if (5 <= i && i <= 8) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+        if ((5 <= i && i <= 8) || i == 11 || i == 12) {
+          drawPoint(ctx, y * yScale, x * xScale, 8, "white");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
-      case 'CablePushDown':
-      case 'ArmCurl':
-      case 'DumbbellKickBack':
-      case 'EasybarCurl':
-      case 'HammerCurl':
-        if (5 <= i && i <= 8) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
-        } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
-        }
-        break;
+      // 복부
       case 'Plank':
+      case 'Crunch':
         if (i == 5 || i == 6 || i == 11 || i == 12) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
       case 'SeatedKneeUp':
-        if (11 <= i && i <= 16) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+        if ((11 <= i && i <= 14) || i == 5 || i == 6) {
+          drawPoint(ctx, y * yScale, x * xScale, 8, "white");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
-      case 'LyingTricepsExtension':
-        if (5 <= i && i <= 8) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
-        } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
-        }
-        break;
-      case 'LegExtension':
-        if (11 <= i && i <= 16) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
-        } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
-        }
-        break;
+      // 등
       case 'LatPullDown':
       case 'SeatedRow':
       case 'BarbellRow':
-      case 'Crunch':
-        if (5 <= i && i <= 8) {
-          drawPoint(ctx, y * yScale, x * xScale, 4, "red");
+        if (5 <= i && i <= 10) {
+          drawPoint(ctx, y * yScale, x * xScale, 8, "white");
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
+        } else if (i == 11 || i == 12) {
+          drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
-          drawPoint(ctx, y * yScale, x * xScale, 3, color);
+          drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
   }
