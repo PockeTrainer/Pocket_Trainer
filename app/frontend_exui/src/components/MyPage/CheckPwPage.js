@@ -14,15 +14,22 @@ import { NonMaxSuppressionV3, time, version_layers } from '@tensorflow/tfjs';
 import * as cm from './ClassificationModel';
 // import { Player } from 'video-react';
 
+// exerciseName : 학습/분류할 운동 이름
+// -> exerciseName이 변경되면 dataFileName, dataFilePath와 modelName, modelPath에 반영됨.
+// -> drawCanvas, gotResult에 if문 추가해두면 exerciseName만 변경되면 추가 코드 수정 필요 없음.
+var exerciseName = 'LatPullDown';
+
 // 학습에 사용할 비디오 파일 경로.
 // useVideo -> play -> (nextVideo or previousVideo)
 // change videoPathNum 으로도 경로 변경 가능
 // 비디오 파일은 public/videos/ 에 둘 것.
 // `${proecss.env.PUBLIC_URL}/videos/` == `public/videos/`
-const videoPaths = {
-    // BenchPress don't move
-    path0: `${process.env.PUBLIC_URL}/videos/BenchPress/dontmove/correctDown1_h264.mp4`,
+// switch(exerciseName) {
     
+// }
+
+const videoPaths = {
+    path0: `${process.env.PUBLIC_URL}/videos/InclinePress/correctDown (6).mp4`,
 }
 
 // 세 점 사이의 각도 구하기
@@ -171,7 +178,12 @@ function CheckPwPage() {
     // exerciseName : 학습/분류할 운동 이름
     // -> exerciseName이 변경되면 dataFileName, dataFilePath와 modelName, modelPath에 반영됨.
     // -> drawCanvas, gotResult에 if문 추가해두면 exerciseName만 변경되면 추가 코드 수정 필요 없음.
-    let exerciseName = 'BenchPress';
+    // let exerciseName = 'BenchPress';
+
+    // 운동 수행 갯수
+    let count = 0;
+    let countStack = [];
+    let countState = false;
 
     // 학습시킬 Epoch 수. 원하는 만큼 변경 가능.
     let trainEpochs = 100;
@@ -179,9 +191,20 @@ function CheckPwPage() {
     // 모델 입력 및 출력 크기
     // 운동에 따라 출력 크기 변경
     let modelInputSize = 34;
-    let modelOutputSize = 3;
-    if (exerciseName == 'Sqaut' || exerciseName == 'CablePushDown') {
-        modelOutputSize = 4;
+    let modelOutputSize;
+    switch(exerciseName) {
+        case 'BenchPress':
+            modelOutputSize = 5;
+            break;
+        case 'SeatedKneeUp':
+        case 'Squat':
+        case 'BenchPress':
+        case 'LyingTricepsExtension':
+        case 'SideLateralRaise':
+            modelOutputSize = 4;
+            break;
+        default:
+            modelOutputSize = 3;
     }
 
     // dataFileName : 데이터 수집 후 저장 시 저장되는 파일 명.
@@ -281,11 +304,163 @@ function CheckPwPage() {
                         classifyPose();
                         // showAnglePercentage : 세 점의 좌표를 입력받아 퍼센트 출력
                         //                       poses[0]['keypoints'][11] 형태로 입력
-                        if (exerciseName == 'Squat') {
+                        if (exerciseName == 'PushUp') {
                             showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'Squat') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
                                 poses[0]['keypoints'][11], 
                                 poses[0]['keypoints'][13], 
                                 poses[0]['keypoints'][15]);
+                        } else if (exerciseName == 'BenchPress') {
+                            showAnglePercentage(
+                                45, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'SideLateralRaise') {
+                            showAnglePercentage(
+                                0, 
+                                90, 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][12]
+                            );
+                        } else if (exerciseName == 'CablePushDown') {
+                            showAnglePercentage(
+                                45, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'Plank') {
+                            // 플랭크는 어떻게 처리 하지?
+                        } else if (exerciseName == 'SeatedKneeUp') {
+                            showAnglePercentage(
+                                90, 
+                                45, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][11], 
+                                poses[0]['keypoints'][13]
+                            );
+                        } else if (exerciseName == 'LyingTricepsExtension') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LegExtension') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14], 
+                                poses[0]['keypoints'][16]
+                            );
+                        } else if (exerciseName == 'ArmCurl') {
+                            showAnglePercentage(
+                                135, 
+                                45, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'BarbellRow') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'Crunch') {
+                            showAnglePercentage(
+                                135, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14]
+                            );
+                        } else if (exerciseName == 'DumbbellKickBack') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'EasybarCurl') {
+                            showAnglePercentage(
+                                135, 
+                                45, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'HammerCurl') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'InclinePress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LatPullDown') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LegPress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14], 
+                                poses[0]['keypoints'][16]
+                            );
+                        } else if (exerciseName == 'PecDeckFly') {
+                            //어카지
+                        } else if (exerciseName == 'ReversePecDeckFly') {
+                            //어카지
+                        } else if (exerciseName == 'SeatedRow') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'ShoulderPress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
                         }
                     }
                     // for classifying...3e
@@ -334,11 +509,170 @@ function CheckPwPage() {
                         classifyPose();
                         // showAnglePercentage : 세 점의 좌표를 입력받아 퍼센트 출력
                         //                       poses[0]['keypoints'][11] 형태로 입력
-                        if (exerciseName == 'Squat') {
+                        if (exerciseName == 'PushUp') {
                             showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'Squat') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
                                 poses[0]['keypoints'][11], 
                                 poses[0]['keypoints'][13], 
                                 poses[0]['keypoints'][15]);
+                        } else if (exerciseName == 'BenchPress') {
+                            showAnglePercentage(
+                                45, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'SideLateralRaise') {
+                            showAnglePercentage(
+                                0, 
+                                90, 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][12]
+                            );
+                        } else if (exerciseName == 'CablePushDown') {
+                            showAnglePercentage(
+                                45, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'Plank') {
+                            // 플랭크는 어떻게 처리 하지?
+                            // showAnglePercentage(
+                            //     0, 
+                            //     90, 
+                            //     poses[0]['keypoints'][8], 
+                            //     poses[0]['keypoints'][6], 
+                            //     poses[0]['keypoints'][12]
+                            // );
+                        } else if (exerciseName == 'SeatedKneeUp') {
+                            showAnglePercentage(
+                                90, 
+                                45, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][11], 
+                                poses[0]['keypoints'][13]
+                            );
+                        } else if (exerciseName == 'LyingTricepsExtension') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LegExtension') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14], 
+                                poses[0]['keypoints'][16]
+                            );
+                        } else if (exerciseName == 'ArmCurl') {
+                            showAnglePercentage(
+                                135, 
+                                45, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'BarbellRow') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'Crunch') {
+                            showAnglePercentage(
+                                135, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14]
+                            );
+                        } else if (exerciseName == 'DumbbellKickBack') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'EasybarCurl') {
+                            showAnglePercentage(
+                                135, 
+                                45, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'HammerCurl') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'InclinePress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LatPullDown') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
+                        } else if (exerciseName == 'LegPress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][12], 
+                                poses[0]['keypoints'][14], 
+                                poses[0]['keypoints'][16]
+                            );
+                        } else if (exerciseName == 'PecDeckFly') {
+                            //어카지
+                        } else if (exerciseName == 'ReversePecDeckFly') {
+                            //어카지
+                        } else if (exerciseName == 'SeatedRow') {
+                            showAnglePercentage(
+                                180, 
+                                90, 
+                                poses[0]['keypoints'][6], 
+                                poses[0]['keypoints'][8], 
+                                poses[0]['keypoints'][10]
+                            );
+                        } else if (exerciseName == 'ShoulderPress') {
+                            showAnglePercentage(
+                                90, 
+                                180, 
+                                poses[0]['keypoints'][5], 
+                                poses[0]['keypoints'][7], 
+                                poses[0]['keypoints'][9]
+                            );
                         }
                     }
                     // for classifying...3e
@@ -347,6 +681,25 @@ function CheckPwPage() {
             }
         }
         
+    }
+
+    const countStart = () => {
+        if(countStack.length < 7) {
+            if(countStack.length == 6) {
+                countState = true;
+            }
+            countStack.push(1);
+        }
+    }
+    
+    const countEnd = () => {
+        if(countStack.length > 0) {
+            if(countStack.length == 1 && countState == true) {
+                countState = false;
+                count++;
+            }
+            countStack.pop();
+        }
     }
 
     const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
@@ -368,9 +721,11 @@ function CheckPwPage() {
                 switch(classifiedPose) {
                     case 'correctDown':
                         console.log('정자세 아래');
+                        countEnd();
                         break;
                     case 'correctUp':
                         console.log('정자세 위');
+                        countStart();
                         break;
                     case 'lessDown':
                         console.log('덜 내려감');
@@ -383,9 +738,11 @@ function CheckPwPage() {
                 switch(classifiedPose) {
                     case 'correctDown':
                         console.log('정자세 아래');
+                        countStart();
                         break;
                     case 'correctUp':
                         console.log('정자세 위');
+                        countEnd();
                         break;
                     case 'lessDown':
                         console.log('덜 내려감');
@@ -401,9 +758,14 @@ function CheckPwPage() {
                 switch(classifiedPose) {
                     case 'correctDown':
                         console.log('정자세 아래');
+                        countEnd();
                         break;
                     case 'correctUp':
                         console.log('정자세 위');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 올림');
                         break;
                     case 'leanToLeft':
                         console.log('왼쪽으로 치우침');
@@ -419,12 +781,17 @@ function CheckPwPage() {
                 switch(classifiedPose) {
                     case 'correctUp':
                         console.log('정자세 올림');
+                        countStart();
                         break;
                     case 'correctDown':
                         console.log('정자세 내림');
+                        countEnd();
                         break;
                     case 'lessUp':
                         console.log('덜 올림');
+                        break;
+                    case 'tooUp':
+                        console.log('너무 올림');
                         break;
                     default:
                         console.log('알수 없음');
@@ -434,15 +801,316 @@ function CheckPwPage() {
                 switch(classifiedPose) {
                     case 'correctUp':
                         console.log('정자세 굽힘');
+                        countEnd();
                         break;
                     case 'correctDown':
                         console.log('정자세 핌');
+                        countStart();
+                        break;
+                    case 'lessDown':
+                        console.log('팔 덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'Plank') {
+                switch(classifiedPose) {
+                    case 'correct':
+                        console.log('정자세');
+                        break;
+                    case 'tooDown':
+                        console.log('너무 내림');
+                        break;
+                    case 'tooUp':
+                        console.log('너무 올림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'SeatedKneeUp') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 아래');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 위');
+                        countStart();
+                        break;
+                    case 'tooBack':
+                        console.log('허리 너무 눕힘');
+                        break;
+                    case 'tooDown':
+                        console.log('다리 너무 내림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'LyingTricepsExtension') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('팔 덜 핌');
+                        break;
+                    case 'tooDown':
+                        console.log('너무 내려감');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'LegExtension') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 굽힘');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 핌');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'ArmCurl') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'BarbellRow') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 내림');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 올림');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('팔 덜 올림');
+                        break;
+                    case 'tooUp':
+                        console.log('허리 덜 굽힘');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'Crunch') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        countStart();
+                        break;
+                    case 'tooDown':
+                        console.log('다리 과하게 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'DumbbellKickBack') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 굽힘');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 핌');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 핌');
+                        break;
+                    case 'tooUp':
+                        console.log('허리 덜 굽힘');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'EasybarCurl') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        countStart();
                         break;
                     case 'lessUp':
                         console.log('팔 덜 굽힘');
                         break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'HammerCurl') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 굽힘');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('팔 덜 굽힘');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'InclinePress') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 내림');
+                        countStart();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 올림');
+                        countEnd();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 올림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'LatPullDown') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 내림');
+                        countStart();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 올림');
+                        countEnd();
+                        break;
                     case 'lessDown':
+                        console.log('덜 내림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'LegPress') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 굽힘');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 핌');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('다리 덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'PecDeckFly') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 오므림');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 오므림');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'ReversePecDeckFly') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 핌');
+                        countStart();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 오므림');
+                        countEnd();
+                        break;
+                    case 'lessUp':
                         console.log('팔 덜 핌');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'SeatedRow') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 굽힘');
+                        countStart();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 핌');
+                        countEnd();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 굽힘');
+                        break;
+                    case 'tooBend':
+                        console.log('허리 너무 숙임');
+                        break;
+                    default:
+                        console.log('알수 없음');
+                        break;
+                }
+            } else if (exerciseName == 'ShoulderPress') {
+                switch(classifiedPose) {
+                    case 'correctDown':
+                        console.log('정자세 내림');
+                        countEnd();
+                        break;
+                    case 'correctUp':
+                        console.log('정자세 올림');
+                        countStart();
+                        break;
+                    case 'lessUp':
+                        console.log('덜 올림');
                         break;
                     default:
                         console.log('알수 없음');
@@ -460,8 +1128,9 @@ function CheckPwPage() {
             yScale = 480 / videoRef.current.videoHeight;
         }
         // console.log("scale: ", scale);
-        drawKeypoints(pose["keypoints"], 0.3, ctx, xScale, yScale); //0.6
-        drawSkeleton(pose["keypoints"], 0.4, ctx, xScale, yScale); // 0.7
+        // 운동 별 다른 하이라이트를 위해 exerciseName을 매개변수로 넘겨줌
+        drawKeypoints(pose["keypoints"], exerciseName, 0.3, ctx, xScale, yScale); //0.6
+        drawSkeleton(pose["keypoints"], exerciseName, 0.4, ctx, xScale, yScale); // 0.7
     };
 
     // data mode에서 데이터 수집하는 함수
@@ -532,11 +1201,10 @@ function CheckPwPage() {
         }
     }
 
-    const showAnglePercentage = async (p1, p2, p3) => {
-        let full = 90;
+    const showAnglePercentage = async (start, end, p1, p2, p3) => {
         let current = jointAngle(p1['x'], p1['y'], p2['x'], p2['y'], p3['x'], p3['y']);
         console.log('current: ', current);
-        let percent = (180-current) / full * 100;
+        let percent = Math.abs(start-current) / Math.abs(end-start) * 100;
         if (percent >= 100) {
             percent = 100;
         }
@@ -604,6 +1272,9 @@ function CheckPwPage() {
                     classifiedPose = 'leanToLeft';
                     break;
                 case 3:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 4:
                     classifiedPose = 'leanToRight';
                     break;
                 default:
@@ -622,7 +1293,7 @@ function CheckPwPage() {
                     classifiedPose = 'lessUp';
                     break;
                 case 3:
-                    classifiedPose = 'lessDown';
+                    classifiedPose = 'tooUp';
                     break;
                 default:
                     classifiedPose = 'none';
@@ -637,10 +1308,277 @@ function CheckPwPage() {
                     classifiedPose = 'correctDown';
                     break;
                 case 2:
+                    classifiedPose = 'lessDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'Plank') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correct';
+                    break;
+                case 1:
+                    classifiedPose = 'tooDown';
+                    break;
+                case 2:
+                    classifiedPose = 'tooUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'SeatedKneeUp') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'tooBack';
+                    break;
+                case 3:
+                    classifiedPose = 'tooDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'LyingTricepsExtension') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
                     classifiedPose = 'lessUp';
                     break;
                 case 3:
+                    classifiedPose = 'tooDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'LegExtension') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'ArmCurl') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'BarbellRow') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 3:
+                    classifiedPose = 'tooUp';
+                    break; 
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'Crunch') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'tooDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'DumbbellKickBack') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 3:
+                    classifiedPose = 'tooUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'EasybarCurl') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'HammerCurl') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'InclinePress') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'LatPullDown') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
                     classifiedPose = 'lessDown';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'LegPress') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'PecDeckFly') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'ReversePecDeckFly') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'SeatedRow') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
+                    break;
+                case 3:
+                    classifiedPose = 'tooBend';
+                    break;
+                default:
+                    classifiedPose = 'none';
+                    break;
+            }
+        } else if (exerciseName == 'ShoulderPress') {
+            switch(idx) {
+                case 0:
+                    classifiedPose = 'correctDown';
+                    break;
+                case 1:
+                    classifiedPose = 'correctUp';
+                    break;
+                case 2:
+                    classifiedPose = 'lessUp';
                     break;
                 default:
                     classifiedPose = 'none';
@@ -697,11 +1635,11 @@ function CheckPwPage() {
     }
 
     const onButtonPlayClick = () => {
-        videoRef.current.play();
-        videoRef.current.onended = onEnd;
-
         console.log('collecting');
         setState('collecting');
+        
+        videoRef.current.play();
+        videoRef.current.onended = onEnd;
     }
 
     const onEnd = () => {

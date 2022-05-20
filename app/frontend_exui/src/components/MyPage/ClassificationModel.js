@@ -94,6 +94,13 @@ export class ClassificationModel {
                                         activation: 'relu', 
                                         kernelInitializer: 'heNormal' })
                                     .apply(dropoutLayer);
+        // test~
+        // var hiddenLayer2 = tf.layers.dense({
+        //                                 units: this.modelInput,
+        //                                 activation: 'relu',
+        //                                 kernelInitializer: 'heNormal' })
+        //                             .apply(hiddenLayer);
+        // ~test
         var outputLayer = tf.layers.dense({ 
                                         units: this.modelOutput, 
                                         activation: 'softmax'})
