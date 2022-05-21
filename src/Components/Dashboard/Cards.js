@@ -11,6 +11,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+
 function Cards(){
 
 
@@ -139,9 +141,6 @@ const Pstyled=styled('p')((props)=>({
               </div>
               
               <div className="alert alert-secondary" role="alert" style={{marginTop:"1rem",marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
-               <Pstyled bold="lighter" color="black">
-                 벤치프레스부터
-               </Pstyled>
                <span className="badge badge-success" style={{fontSize:"1em",}}>벤치프레스부터</span>
                <button type="button" className="btn btn-primary btn-lg btn-block"><i className="fas fa-running"></i>운동하러 가기</button>
               </div>
@@ -154,52 +153,53 @@ const Pstyled=styled('p')((props)=>({
           </div>
         </div>
         <div className="col-xl-3 col-lg-6">
-          <div className="card card-stats mb-4 mb-xl-0">
-            <div className="card-body">
-              <div className="row">
-                <div className="col">
-                  <h5 className="card-title text-uppercase text-muted mb-0">오늘의 운동교정평가</h5>
+          <div className="card card-stats mb-4 mb-xl-0" style={CardBackGround}>
+            <div className="card-body" style={{padding:"1rem 0.5rem"}}>
+                  <Pstyled bold="etc">
+                   오늘의 잘못된 자세
+                  </Pstyled>
                   <div className="form-group">
-                                <label for="exampleFormControlSelect1">Today운동</label>
                                 <select className="form-control" id="exampleFormControlSelect1">
                                 <option>벤치프레스</option>
                                 <option>인클라인프레스</option>
                                 <option>펙덱 플라이</option>
                                 </select>
-                            </div>
-                  <span className="h3 font-weight-bold mb-0">"벤치프레스를 할 때 오른쪽 어깨가 15도정도 내려가있으니 오른쪽을 좀 더 올려주시기 바랍니다"</span>
-                </div>
-                <div className="col-auto">
-                  <div className="icon icon-shape bg-purple text-white rounded-circle shadow">
-                    <i className="fas fa-users" />
                   </div>
-                </div>
-              </div>
-              <p className="mt-3 mb-0 text-muted text-sm">
-                <span className="text-warning mr-2"><i className="fas fa-arrow-down" />불균형발생</span>
-                <span className="text-nowrap">마지막 기록대비(11/07)</span>
-              </p>
+
+                  <div className="alert alert-secondary" role="alert" style={{marginTop:"1rem",marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
+                    <Pstyled bold="lighter" color="black">
+                      1.왼쪽으로 기울어짐
+                    </Pstyled>
+                    <Pstyled bold="lighter" color="black">
+                      2.왼쪽으로 기울어짐
+                    </Pstyled>
+                    <Pstyled bold="lighter" color="black">
+                      3.왼쪽으로 기울어짐
+                    </Pstyled>
+                  </div>
+
+
             </div>
+               
           </div>
+             
         </div>
+
+
         <div className="col-xl-3 col-lg-6">
-          <div className="card card-stats mb-4 mb-xl-0">
-            <div className="card-body">
+          <div className="card card-stats mb-4 mb-xl-0" style={CardBackGround}>
+            <div className="card-body" style={{padding:"1rem 0.5rem"}}>
               <div className="row">
                 <div className="col">
-                  <h5 className="card-title text-uppercase text-muted mb-0">오늘의 섭취열량</h5>
-                  <span className="h2 font-weight-bold mb-0">총 칼로리:2700kcal</span>
+                  <Pstyled bold="etc">오늘의 섭취열량</Pstyled>
+                  <span className="h2 font-weight-bold mb-0" style={{fontSize:"1.875rem"}}><LocalDiningIcon sx={{fontSize:"3.5rem",color:"#2dce89"}}/>2700kcal</span>
                 </div>
                 <div className="col-auto">
                   <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                    <i className="fas fa-percent" />
+                    Kcal
                   </div>
                 </div>
               </div>
-              <p className="mt-3 mb-0 text-muted text-sm">
-                <span className="text-warning mr-2"><i className="fas fa-arrow-up" />칼로리 150kcal증가</span>
-                <span className="text-nowrap">전 날 대비(11/07)</span>
-              </p>
             </div>
           </div>
         </div>
