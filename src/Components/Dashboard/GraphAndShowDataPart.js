@@ -11,9 +11,6 @@ class GraphAndShowDataPart extends React.Component{
               <CardGraph/>
               <CardStickGraph/>
             </div>
-            <div className="row mt-5">
-                <DarkTable/>
-            </div>
             <Footer/>
         </div>
         );
