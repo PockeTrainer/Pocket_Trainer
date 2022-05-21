@@ -256,8 +256,8 @@
             yScale,
             ctx
           );
-        } else if (keypoints[0]['name'] == 'left_wrist'
-                || keypoints[0]['name'] == 'right_wrist') {
+        } else if (keypoints[1]['name'] == 'left_wrist'
+                || keypoints[1]['name'] == 'right_wrist') {
             lineWidth = 6;
             drawSegment(
               toTuple(keypoints[0].y, keypoints[0].x),
