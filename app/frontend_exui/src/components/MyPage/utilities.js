@@ -343,6 +343,28 @@
         break;
       // 복부
       case 'Plank':
+        if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
+          || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')
+          || (keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'right_hip')) {
+          drawSegment(
+            toTuple(keypoints[0].y, keypoints[0].x),
+            toTuple(keypoints[1].y, keypoints[1].x),
+            "#FF8000",
+            xScale,
+            yScale,
+            ctx
+          );
+        } else {
+          drawSegment(
+            toTuple(keypoints[0].y, keypoints[0].x),
+            toTuple(keypoints[1].y, keypoints[1].x),
+            color,
+            xScale,
+            yScale,
+            ctx
+          );
+        }
+        break;
       case 'Crunch':
         if ((keypoints[0]['name'] == 'left_hip' && keypoints[1]['name'] == 'left_shoulder')
           || (keypoints[0]['name'] == 'right_hip' && keypoints[1]['name'] == 'right_shoulder')
@@ -355,6 +377,18 @@
             yScale,
             ctx
           );
+        } else if (keypoints[1]['name'] == 'left_knee'
+                || keypoints[1]['name'] == 'right_knee') {
+          lineWidth = 6;
+            drawSegment(
+              toTuple(keypoints[0].y, keypoints[0].x),
+              toTuple(keypoints[1].y, keypoints[1].x),
+              "#FFFF00",
+              xScale,
+              yScale,
+              ctx
+            );
+          lineWidth = 4;
         } else {
           drawSegment(
             toTuple(keypoints[0].y, keypoints[0].x),
@@ -523,13 +557,13 @@
         break;
       // 복부
       case 'Plank':
-      case 'Crunch':
         if (i == 5 || i == 6 || i == 11 || i == 12) {
           drawPoint(ctx, y * yScale, x * xScale, 5, "red");
         } else {
           drawPoint(ctx, y * yScale, x * xScale, 5, color);
         }
         break;
+      case 'Crunch':
       case 'SeatedKneeUp':
         if ((11 <= i && i <= 14) || i == 5 || i == 6) {
           drawPoint(ctx, y * yScale, x * xScale, 8, "white");
