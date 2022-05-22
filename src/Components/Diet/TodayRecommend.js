@@ -34,6 +34,12 @@ function TodayRecommend(){
     const count1=useRef(1);
     const [showList,setShowList]=useState(true);//밑에 리스트에 주는 zoom transition 
     const modalRef=useRef("");//세부정보 모달창
+    const selectDate = useSelector(state=>state.update_choose_meal_date_reducer.date);//누른날짜를 알려줌
+    const [target_gram,set_target_gram]=useState({//각 영양소별 금일 타겟 그램을알려줌
+        carbo:0,
+        protein:0,
+        province:0
+    })
 
     const [recommend_foods,set_recommend_foods]=useState({
         part1:[],
@@ -52,19 +58,10 @@ function TodayRecommend(){
     }
 
 
-    const set_target_kcal=async()=>{//금일 추천 식단 칼로리 생성
-        await axios.post(`http://127.0.0.1:8000/api/diet/createTargetKcal/${id}`)//해당일 목표칼로리 설정해줌
-        .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
-            console.log(res.data);
-        })
-        .catch((err) => {
-            console.log(err.response.data)
-        })    
-    }
-
 
     const get_recommend_data=async()=>{//서버로부터 금일 할당된 추천음식 정보 가져와줌
-        await axios.get(`http://127.0.0.1:8000/api/diet/${id}`)
+        
+        await axios.get(`http://127.0.0.1:8000/api/diet/${selectDate.getFullYear()+"-"+parseInt(selectDate.getMonth()+1)+"-"+selectDate.getDate()}/${id}`)
         .then((res) => {
             console.log(res.data);
             let part1=[];
@@ -92,6 +89,12 @@ function TodayRecommend(){
                 part3:part3
             });
 
+            set_target_gram({
+                ...target_gram,
+                carbo:res.data.target_carbohydrate,
+                protein:res.data.target_protein,
+                province:res.data.target_province
+            })
       
         }).catch((err) => {
             console.log(err)
@@ -99,18 +102,16 @@ function TodayRecommend(){
     }
 
     useEffect(()=>{
-        if(count1.current===1){
-            count1.current+=1;
+        get_recommend_data();//서버로부터 가져오기 정보
+    },[selectDate])
 
-            set_target_kcal();//금일 식단칼로리 설정
-            get_recommend_data();//서버로부터 가져오기 정보
-            return;
-        }
+    useEffect(()=>{
         handleShowList();//닫아주기
         sleep(500).then(()=>set_Clicked_button(tmp_clicked_part));
         setTimeout(handleShowList,500);//열어주기
       },[tmp_clicked_part])
-
+    
+   
     const SpanStyle={
         borderColor:"#2dce89",
         color:"white",
@@ -176,7 +177,6 @@ function TodayRecommend(){
         dispatch(choose_meal_date(val));
     };
 
-    const selectDate = useSelector(state=>state.update_choose_meal_date_reducer.date);
     const startDate=()=>{
         let tmp=new Date(selectDate) ;//Date객체를 깊은복사 해줘야함 
 
@@ -252,7 +252,7 @@ function TodayRecommend(){
                     <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part1")}>
-                                    <Badge color="success" badgeContent={"150g"} >
+                                    <Badge color="success" badgeContent={target_gram.carbo+"g"} >
                                         <AvatarStyle color="#5e72e4"  >탄</AvatarStyle>
                                     </Badge>
                                 </Button>
@@ -260,7 +260,7 @@ function TodayRecommend(){
                             </Stack>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part2")} >
-                                    <Badge color="success" badgeContent={"150g"} >
+                                    <Badge color="success" badgeContent={target_gram.protein+"g"} >
                                         <AvatarStyle  color="#2dce89"  >단</AvatarStyle>
                                     </Badge>
                                 </Button>
@@ -268,7 +268,7 @@ function TodayRecommend(){
                             </Stack>
                             <Stack direction="column">
                                 <Button sx={PartButtonStyle} onClick={()=>setTmpClicked_part("part3")}>
-                                    <Badge color="success" badgeContent={"150g"} >
+                                    <Badge color="success" badgeContent={target_gram.province+'g'} >
                                         <AvatarStyle  color="#ffc107"  >지</AvatarStyle>
                                     </Badge>
                                 </Button>

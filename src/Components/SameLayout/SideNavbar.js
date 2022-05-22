@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../CustomCss/SideNavbar.css';
 import {Link} from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
 
 function sleep(ms){
   return new Promise((r)=>setTimeout(r,ms));
 }
 
-function SideNavBar(){     
+function SideNavBar(){ 
+  
+  
   const [clickedId,setClickedId]=useState(
     ()=>JSON.parse(sessionStorage.getItem("clickedId"))||"list1"
   ); //사이드메뉴가 눌렸는지 안 눌렸는지여부를 웹 스토리지를 사용하여 새로고침을 해도 눌린 값은 유지하도록 함
@@ -22,28 +28,33 @@ function SideNavBar(){
   useEffect(()=>{
     sleep(500).then(()=>closeCheck());
   },[])
+
+
   useEffect(()=>{
     sessionStorage.setItem("clickedId",JSON.stringify(clickedId))
     closebutton.current.click()//메뉴 닫아줘
   },[clickedId]);
 
+
   const showGetId=(id)=>{
     setClickedId(id);
     
-    
-    if(id=="list1"){
-      window.location.replace("/");
-      return;
-    }
-  
-    //window.location.reload();//다른 링크로 이동시 외부 스크립트으 재호출을 위해 다시 새로고침 시켜줌
   };
   const closebutton=useRef();
+
+  const Pstyled=styled('p')((props)=>({
+    fontSize:"1.0rem",
+    fontWeight:props.bold=="lighter"?"lighter":"600",
+    lineWeight:"1.0",
+    marginBottom:"0",
+    color:props.color?props.color:"white",
+    textAlign:"center"
+  }));
 
         return(
             <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main" data-component="SideNavbar">
         <div className="container-fluid">
-          <button onClick={()=>alert('d으아아아아')} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+          <button  className="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
           <Link className='navbar-brand pt-0' to="/" onClick={()=>showGetId("list1")}>
@@ -55,12 +66,17 @@ function SideNavBar(){
                 <i className="ni ni-bell-55" />
               </a>
               <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right" aria-labelledby="navbar-default_dropdown_1">
-                <h3 className="dropdown-item">📢오늘의운동추천-어깨Day</h3>
-                <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">✔사이드레터럴라이즈<i className="fas fa-dumbbell fa-10x"></i></a>
-                <a className="dropdown-item" href="#">✔머신프레스<i className="fas fa-dumbbell fa-10x"></i></a>
-                <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">🥚식단추천 받으러가<i className="fas fa-utensils"></i></a>
+                <div className="alert alert-success" role="alert" style={{padding:"1em 1em",marginBottom:"0em",backgroundColor:"#rgb(213 213 213 / 55%)"}}>
+                    <Pstyled bold="etc">
+                      즐겨찾기에 좋아하는 운동을 추가해보세요!
+                    </Pstyled>
+                </div>
+                <Stack direction={"column"} spacing={1} sx={{margin:"0 1rem"}}>
+                    <Chip avatar={<Avatar>벤</Avatar>} label="벤치프레스" />
+                    <Chip avatar={<Avatar>인</Avatar>} label="인클라인프레스" />
+                </Stack>
+                  
+               
               </div>
             </li>
             <li className="nav-item dropdown">
@@ -158,29 +174,20 @@ function SideNavBar(){
                   <i className="fas fa-utensils"></i>식단플랜
                 </Link>
               </li>
-              <li className={clickedId=="list6"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list6")}>
-                <Link className={clickedId=="list6"? "nav-link active" :"nav-link"} to="/diet">
-                  <i className="fas fa-calendar-plus"></i>식단기록
-                </Link>
-              </li>
             </ul>
             <hr className="my-3" />
             <h6 className="navbar-heading text-muted">나의 Gym</h6>
 
             <ul className="navbar-nav mb-md-3">
+              <li className={clickedId=="sub_list2"? "nav-item active" :"nav-item"} onClick={()=>showGetId("sub_list2")}>
+                  <Link className={clickedId=="sub_list2"? "nav-link active" :"nav-link"} to="/history">
+                      <i className="fas fa-book-medical history"></i>나의캘린더
+                  </Link>
+              </li>
+
               <li className={clickedId=="sub_list1"? "nav-item active" :"nav-item"} onClick={()=>showGetId("sub_list1")}>
                   <Link className={clickedId=="sub_list1"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
                       <i className="far fa-address-card userInfo"></i>회원정보
-                  </Link>
-              </li>
-              <li className={clickedId=="sub_list2"? "nav-item active" :"nav-item"} onClick={()=>showGetId("sub_list2")}>
-                  <Link className={clickedId=="sub_list2"? "nav-link active" :"nav-link"} to="/history">
-                      <i className="fas fa-book-medical history"></i>나의운동일지
-                  </Link>
-              </li>
-              <li className={clickedId=="sub_list3"? "nav-item active" :"nav-item"} onClick={()=>showGetId("sub_list3")}>
-                  <Link className={clickedId=="sub_list3"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
-                      <i className="fas fa-burn goal"></i>목표설정
                   </Link>
               </li>
             </ul>

@@ -13,6 +13,7 @@ import {
 import ko from "date-fns/locale/ko";
 
 const DateView = ({startDate, lastDate, selectDate, getSelectedDay, primaryColor, labelFormat, marked}) => {
+    const today=new Date();//오늘 날짜
     const [selectedDate, setSelectedDate] = useState(null);
     const firstSection = {marginLeft: '40px'};
     const selectedStyle = {fontWeight:"bold",width:"3rem",height:"3rem",borderRadius:"50%",border:`2px solid ${primaryColor}`,color:primaryColor};
@@ -100,6 +101,9 @@ const DateView = ({startDate, lastDate, selectDate, getSelectedDay, primaryColor
     }
 
     const onDateClick = day => {
+        if(day.getTime()>today.getTime()){//오늘보다 미래일경우에는 스킵
+            return;
+        }
         setSelectedDate(day);
         if (getSelectedDay) {
             getSelectedDay(day);
