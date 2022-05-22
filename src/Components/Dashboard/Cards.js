@@ -61,16 +61,21 @@ function Cards(){
     useEffect(()=>{
  
       let tmp_first_left;//남은 첫운동
-      let find_it=true;//찾았는지 여부
-      [...part1,...part2,...part3].map((exercise,index)=>{
-        if(find_it){
-          tmp_first_left=exercise.name;
+      let total_list=[...part1,...part2,...part3];
+      if(total_list.length===0){
+        return;
+      }
+      for(let i=0;i<=total_list.length;i++){
+        console.log(total_list[i]);
+        if(!total_list[i].Info_from_api.is_clear){
+          tmp_first_left=total_list[i].name;
+          break;
         }
-        
-      })
+      }
+      console.log(tmp_first_left);
       set_left_First_exercise(tmp_first_left);//앞으로 해야하는 첫 운동
 
-    },[])
+    },[today_info])
 
 
         return(

@@ -41,7 +41,7 @@ export default function LinearWithValueLabel() {
 
   return (
     <Box sx={{ width: '100%',transform:"rotate(-90deg)",position:"absolute !important",top:"15rem",left:"9rem"}}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={progress} sx={{height:"1rem",color:"white",fontWeight:"600",fontSize:"1.875rem",backgroundColor:"rgb(246 246 246 / 30%)",".MuiLinearProgress-bar1":{backgroundColor:"#2dce89"}}}/>
     </Box>
   );
 }

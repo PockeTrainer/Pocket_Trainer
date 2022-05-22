@@ -139,7 +139,7 @@ export const pushup_content={
     wrong_posture:"팔을 너무 넓게 벌리며 손에 위치가 어깨 높이에 가까운 경우에 생기는 자세입니다. (어깨를 다칠 수 있습니다.)",
     wrong_posture_pic:"../assets/img/theme/pushup_notgood.gif",
     youtube_url:"https://www.youtube.com/watch?v=-_DUjHxgmWk",
-    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+    grid:"../assets/img/theme/exercise_grid/pushup.png"//여기 푸시업으로 바꿔줄것
 };
 
 export const situp_content={
@@ -150,7 +150,7 @@ export const situp_content={
     wrong_posture:"중간에 힘이 풀려서 손을 이와 같이 풀지는 말아주세요.측정에 방해가 됩니다.",
     wrong_posture_pic:"../assets/img/theme/situp_notgood.gif",
     youtube_url:"https://www.youtube.com/watch?v=0PgmYmjnoM8",
-    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+    grid:"../assets/img/theme/exercise_grid/situp.png"//여기 푸시업으로 바꿔줄것
 };
 
 export const squat_content={
@@ -161,7 +161,7 @@ export const squat_content={
     wrong_posture:"무릎이 안쪽으로 쏠리게 되면 엉덩이 근육과 허벅지근육에 불균형을 초래하여 무릎에 통증이 발생할 수 있습니다.무릎과 발은 동일선상에 위치할 수 있도록 합니다.",
     wrong_posture_pic:"../assets/img/theme/squat_notgood.png",
     youtube_url:"https://www.youtube.com/watch?v=vQNFiMi0m9M",
-    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
+    grid:"../assets/img/theme/exercise_grid/squat.png"//여기 푸시업으로 바꿔줄것
 };
 
 
@@ -180,7 +180,8 @@ export const bench_press={
     unit_kg:5,
     break_time:100,
     wrong_pose_1:"1.팔을 쫙 폈을 때 어깨와 수직이 안 된 경우",
-    wrong_pose_2:"2.팔을 쫙 펼 때와 굽힐 때에 바의 양쪽 균형이 어긋난 경우"
+    wrong_pose_2:"2.팔을 쫙 펼 때와 굽힐 때에 바의 양쪽 균형이 어긋난 경우",
+    grid:"../assets/img/theme/exercise_grid/bench_press.png"//여기 푸시업으로 바꿔줄것
 }
 
 export const incline_press={
@@ -194,7 +195,8 @@ export const incline_press={
     unit_kg:5,
     break_time:100,
     wrong_pose_1:"1.팔꿈치가 90도 이상 너무 벌어진 경우",
-    wrong_pose_2:"2.팔꿈치를 너무 몸에 붙인 경우"
+    wrong_pose_2:"2.팔꿈치를 너무 몸에 붙인 경우",
+    grid:"../assets/img/theme/exercise_grid/incline_press.png"//여기 푸시업으로 바꿔줄것
 }
 
 export const pec_dec_fly={
@@ -279,7 +281,8 @@ export const side_lateral_raise={
     unit_kg:1,
     break_time:40,
     wrong_pose_1:"1.팔을 너무 높게 올리는 경우 (90도 이상) – 가동범위는 90도보다 약간 낮게",
-    wrong_pose_2:"2.어깨와 팔을 제외한 상체가 움직여 반동을 이용하는 경우"
+    wrong_pose_2:"2.어깨와 팔을 제외한 상체가 움직여 반동을 이용하는 경우",
+    grid:"../assets/img/theme/exercise_grid/side_lateral_raise.png"
 }
 
 export const reverse_pec_dec_fly={
@@ -411,7 +414,8 @@ export const seated_knees_up={
     unit_kg:0,//필요없음
     break_time:90,
     wrong_pose_1:"1.허리를 너무 꼿꼿이 핀 경우 (상체를 조금 구부려야 허리에 무리가 안 가고 복부 근육을 온전히 쓸 수 있음)",
-    wrong_pose_2:"2.팔을 너무 짧게 앞에서 잡은 경우 (최대한 뒤에서 잡아야 상체가 뒤로 누워져서 복근을 더 많이 쓸 수 있음)"
+    wrong_pose_2:"2.팔을 너무 짧게 앞에서 잡은 경우 (최대한 뒤에서 잡아야 상체가 뒤로 누워져서 복근을 더 많이 쓸 수 있음)",
+    grid:"../assets/img/theme/exercise_grid/seated_knees_up.png"
 }
 
 export const plank={

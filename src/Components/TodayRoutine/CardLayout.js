@@ -22,6 +22,7 @@ function CardLayout(props){
     const dispatch=useDispatch();
     const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
     const [page,set_page]=useState("today_routine");//헤더탭에서 어디에 위치에 있는지를 알려줌
+    const [last_routine_date,set_last_routine_date]=useState("");//해당 루틴이었던 마지막 날짜를 내려줌
 
     useEffect(()=>{//혹시나 뒤로가기나 이런걸로 다시 왔을때를 대비해 운동모드를 꺼준다
         if(exercise_start_page){
@@ -97,6 +98,7 @@ function CardLayout(props){
 
                //각 파트별 나눠진 객체들을 리덕스로 공통으로 쓰이게 올리기
                dispatch(routine_info([...bodypart],part1,part2,part3));
+               set_last_routine_date(res.data.last_routine_date);//마지막 해당루틴이었던 날짜 내려주기
             })
         })
         .catch((err) => {
@@ -156,7 +158,7 @@ function CardLayout(props){
                                     <Grow in={checked} style={{ transformOrigin: '0 0 0' }}
                                         {...(checked ? { timeout: 1000 } : {})}>
                                         <div>
-                                            {page=="today_routine"&&<TodaySummary/>}
+                                            {page=="today_routine"&&<TodaySummary last_routine_date={last_routine_date}/>}
                                             
 
                                             {page=="extra_routine"&&<ExtraExercise/>}

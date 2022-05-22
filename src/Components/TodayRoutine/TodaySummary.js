@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
 import SwipeableEdgeDrawer from "./SwipeableEdgeDrawer";
-
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 import { useDispatch, useSelector } from "react-redux";
 import { change_clicked_button_reducer } from "../../modules/action";
@@ -21,7 +21,7 @@ function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
-function TodaySummary(){
+function TodaySummary({last_routine_date}){
     const [checked, setChecked] = useState(false);//transition
 
     const handleChange = () => {
@@ -31,23 +31,19 @@ function TodaySummary(){
     const clickedButton=useSelector(state=>state.change_clicked_button_reducer.clickedButton);
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
     const{bodypart,part1,part2,part3,fail_list}=routine_info;//부위정보 담아주기
+    const [last_routine_date_format,set_last_routine_date]=useState("");//마지막 날짜
     const modalRef=useRef();//이어서 진행하기 알림창
     const dispatch=useDispatch();
     const handleClick=(select)=>{
         dispatch(change_clicked_button(select))
       }
 
-    const avatarStyle={
-        "&.MuiAvatar-root":{
-            margin:"auto",
-            width: "60px",
-            height:"60px",
-            backgroundColor:"#5e72e4",
-            fontFamily:"Nanum Gothic",
-            fontWeight:"bold"
-
-        }
-    }
+      const Pstyled=styled('p')((props)=>({
+        fontSize:"1.0rem",
+        fontWeight:props.bold=="lighter"?"lighter":"600",
+        lineWeight:"1.0",
+        marginBottom:"0"
+    }));
 
     const AvatarStyle=styled(Avatar)((props)=>({
         margin:"auto",
@@ -95,6 +91,16 @@ function TodaySummary(){
             setTimeout(openKeepGoingModal,1000);
         }
     },[])
+
+    useEffect(()=>{
+        if(last_routine_date!==null){
+            let date=new Date(last_routine_date);
+            let date_format=date.getFullYear()+"/"+parseInt(date.getMonth()+1)+"/"+date.getDate();
+
+            set_last_routine_date(date_format);
+
+        }
+    },[last_routine_date])
     
     
     return(
@@ -142,7 +148,20 @@ function TodaySummary(){
                 <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>{part2.length}종목</span> 
                 <span className="badge badge-primary btn-lg" style={{margin:"auto",fontWeight:"lighter"}}>{part3.length}종목</span> 
             </Stack>
-          <p className='card-text' style={{marginTop:"30px",marginBottom:"0px"}}>마지막 해당루틴날짜:2022/01/18</p>
+            {
+                last_routine_date!==null
+                ?
+                    <p className='card-text' style={{marginTop:"2rem",marginBottom:"0px",fontWeight:"600"}}>마지막 해당루틴날짜:{last_routine_date_format}</p>
+                :
+                <>
+                    <div className="alert alert-warning" role="alert" style={{marginBottom:"0em",padding:"0.5rem 0.5rem",marginTop:"2rem"}}>
+                        <Pstyled bold="etc">
+                            <FitnessCenterIcon/>해당루틴은 처음입니다
+                        </Pstyled>
+                    </div>
+                </>
+            }
+          
         {/* 여기다가 진행수준 삽입 */}
                 <span className="badge badge-secondary" style={ProgressSpanStyle}>진행정도</span>
                 <div className="alert alert-warning" role="alert" style={SpanStyle} >
