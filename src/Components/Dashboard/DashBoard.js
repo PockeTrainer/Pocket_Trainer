@@ -2,7 +2,8 @@ import React,{useEffect, useRef} from 'react';
 import MainContent from './MainContent';
 import axios from "axios"
 import { useDispatch } from 'react-redux';
-import { first_Login,second_Login } from '../../modules/action';
+import { first_Login,second_Login,set_mainpage_info } from '../../modules/action';
+import { Exercise } from '../../ExercisesInfo/ExerciseInfo';
 
 function Dashboard(){
     const dispatch=useDispatch();
@@ -44,11 +45,38 @@ function Dashboard(){
             .then((res) => {
                 console.log(res.data);
                 //유저정보(체중, 키), 체력평가 여부 확인
+                console.log(res.data.workout_part)//부위
+
+                let module=require('../../ExercisesInfo/ExerciseInfo');
+                let Exercise=module.Exercise;
+                
+                let bodypart=res.data.workout_part;
+
+                let tmp_part1=res.data.today_routine_part[bodypart[0]];
+                let tmp_part2=res.data.today_routine_part[bodypart[1]];
+                let tmp_part3=res.data.today_routine_part[bodypart[2]];
+
+                let part1=[];
+                let part2=[];
+                let part3=[];
+
+
+                for(let i=0;i<=2;i++){
+                    let tmp_list=[]
+                    for(let exercise of eval("tmp_part"+parseInt(i+1))){
+                        let obj=new Exercise(exercise,module[exercise.workout_name.workout_name]);
+                        tmp_list.push(obj);
+                    }
+                    eval("part"+parseInt(i+1)+"=tmp_list")
+                    
+                }
+                // console.log(part1);
+                dispatch(set_mainpage_info(res.data,bodypart,part1,part2,part3));
                 
     
             })
             .catch((err) => {
-                console.log(err.response.data)
+                console.log(err)
             })
     
             // if(syncState.current=="first"){

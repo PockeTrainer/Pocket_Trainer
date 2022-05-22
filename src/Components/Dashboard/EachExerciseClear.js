@@ -3,13 +3,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
 
-import {bench_press} from "../../ExercisesInfo/ExerciseInfo";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 
-export default function EachExerciseClear(){//메인페이지에서 각 위의 맨 상단 운동클리어여부도 보내줌
+export default function EachExerciseClear({exercise_obj}){//메인페이지에서 각 위의 맨 상단 운동클리어여부도 보내줌
+
+    const today=new Date();
+    const today_month=today.getMonth()+1;
+    const today_date=today.getDate();
+
+    const today_data=today_month+"/"+today_date;
 
     const Widget = styled('div')(({ theme }) => ({
         padding: 16,
@@ -42,27 +47,49 @@ export default function EachExerciseClear(){//메인페이지에서 각 위의 �
           fontSize:"2.5rem"
       }
 
+      // console.log("하이:",exercise_obj);
+
     return(
         <>
             <Widget>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <CoverImage>
                     <img
-                      alt="벤치프레스"
-                      src={bench_press.image_url}
+                      alt={exercise_obj.name}
+                      src={exercise_obj.image_url}
+                      style={{height:"100%"}}
                     />
-                    {/* <span className="text-success" style={{fontSize:"0.8rem"}}><i className="fas fa-arrow-down" />5세트 클리어</span> */}
                   </CoverImage>
                   <Box sx={{ ml: 1.5, minWidth: 0 }}>
-                    <Typography variant="caption" color="text.secondary" fontWeight={500}>
-                      05/21가슴
+                    <Typography variant="caption" color="text.secondary" sx={{fontWeight:"600",color:"white"}}>
+                      {today_data}{exercise_obj.part}
                     </Typography>
                     <Typography  sx={{fontWeight:"600",color:"white",fontSize:"30px"}}>
-                      벤치프레스
+                      {exercise_obj.name}
                     </Typography>
-                    <CheckCircleIcon sx={IconStyle}/>
-                    {/* <span className="text-success" style={{fontSize:"0.8rem"}}><i className="fas fa-arrow-down" />5세트 클리어</span> */}
-                    <span className="badge badge-success" style={{fontSize:"0.7rem"}}><i className="fas fa-arrow-up" />5세트 클리어</span>
+                    {
+                      exercise_obj.Info_from_api.is_clear//풀세트 클리어
+                      ?
+                        <>
+                          <CheckCircleIcon sx={{...IconStyle,color:"#2dce89"}}/>
+                          <span className="badge badge-success" style={{fontSize:"0.7rem",color:"#198754"}}><i className="fas fa-arrow-up" />5세트 클리어</span>
+                        </>
+                      :(
+                        exercise_obj.Info_from_api.workout_time!==null//일부세트 클리어
+                        ?
+                          <>
+                            <ReportProblemIcon sx={{...IconStyle,color:"#fb6340"}} />
+                            <span className="badge badge-danger" style={{fontSize:"0.7rem"}}><i className="fas fa-arrow-right" />일부 클리어</span>
+                          </>
+                        :
+                        <>
+                          <CancelIcon sx={{...IconStyle,color:"#dc3545"}} />
+                          <span className="badge badge-warning" style={{fontSize:"0.7rem"}}><i className="fas fa-arrow-down" />올Fail</span>
+                        </>
+                      )
+                    }
+                    
+                    
                   </Box>
                 </Box>
               

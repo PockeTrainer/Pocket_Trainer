@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CardGraph from './CardGraph';
 import CardStickGraph from './CardStickGraph';
 import Footer from '../SameLayout/Footer';
-class GraphAndShowDataPart extends React.Component{
-    render(){
+function GraphAndShowDataPart(){
+
+
         return(
         <div className="container-fluid mt--7" data-component="GraphAndShowDataPart">
             <div className="row">
@@ -13,6 +14,6 @@ class GraphAndShowDataPart extends React.Component{
             <Footer/>
         </div>
         );
-    }
+    
 }
 export default GraphAndShowDataPart;

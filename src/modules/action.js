@@ -61,6 +61,8 @@ const FINAL_RESULT_PAGE="final_result_page";
 const LAST_RECORD="last_record";
 //캘린더에서 누른 appointment의 정보를 담아줌
 const SET_INFO_FROM_DAYINFO="set_info_from_dayinfo";
+//메인페이지에서의 받은 전체 데이터
+const SET_MAINPAGE_INFO="set_mainpage_info";
 //식단에서 아침,점심,저녁에 음식들이 저장됨
 const PUSH_BREAKFAST="push_breakfast";
 const PUSH_LUNCH="push_lunch";
@@ -305,6 +307,15 @@ export const set_info_from_dayinfo=(obj)=>({//캘린더에서 해당 누른날�
     obj
 });
 
+export const set_mainpage_info=(obj,bodypart,part1,part2,part3)=>({//메인페이지에서의 받은정보를 담아준다
+    type:SET_MAINPAGE_INFO,
+    obj,
+    bodypart,
+    part1,
+    part2,
+    part3
+});
+
 export const push_breakfast=(record)=>({
     type:PUSH_BREAKFAST,
     record
@@ -464,6 +475,19 @@ const initialInfoFromDayInfo={//캘린더에서 눌린 일일 데이터가 담�
     today_kcal_consumption:""
 }
 
+const initialMainPageInfo={
+    clear_workout_percentage:0,
+    diff_kcal:0,
+    nutrient_graph:"",
+    bodypart:[],
+    part1:[],
+    part2:[],
+    part3:[],
+    today_kcal:0,
+    today_kcal_consumption:0,
+    workout_graph:"",
+    wrong_poses_dict:""
+}
 const initialLastRecord={//중량,시간,개수 체크 변화전 초기값을 갖고 있어준다.-변화량 때문에
     last_record:""
 }
@@ -785,6 +809,29 @@ export function update_day_info_obj_reducer(state=initialInfoFromDayInfo,action)
                 day_weight:action.obj.day_weight,
                 nutrient:action.obj.nutrient,
                 today_kcal_consumption:action.obj.today_kcal_consumption
+            }
+        default:
+            return state;    
+    }
+}
+
+
+export function update_mainpage_reducer(state=initialMainPageInfo,action){//메인페이지에서 받은 모든정보들을 담아준다
+    switch(action.type){
+        case SET_MAINPAGE_INFO:
+            return{
+                ...state,
+                clear_workout_percentage:action.obj.clear_workout_percentage,
+                diff_kcal:action.obj.diff_kcal,
+                nutrient_graph:action.obj.nutrient_graph,
+                bodypart:action.bodypart,
+                part1:action.part1,
+                part2:action.part2,
+                part3:action.part3,
+                today_kcal:action.obj.today_kcal,
+                today_kcal_consumption:action.obj.today_kcal_consumption,
+                workout_graph:action.obj.workout_graph,
+                wrong_poses_dict:action.obj.wrong_poses_dict
             }
         default:
             return state;    
