@@ -312,7 +312,7 @@ export const born = [
     }, {
       country: '05/03', hydro: 12, oil: 128.5, gas: 361.8, coal: 105, nuclear: 32.4,
     }, {
-      country: '05/04', hydro: 15, oil: 241.5, gas: 64.9, coal: 120.8, nuclear: 64.8,
+      country: '05/04', hydro: 80, oil: 241.5, gas: 64.9, coal: 120.8, nuclear: 64.8,
     },
      ];
   
