@@ -8,10 +8,10 @@ function LinearProgressWithLabel(props) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
+        <LinearProgress variant="determinate" {...props} sx={{height:"1rem",backgroundColor:"rgb(246 246 246 / 30%)",".MuiLinearProgress-bar":{backgroundColor:"#2dce89"}}} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
+        <Typography sx={{color:"white",fontSize:"1.875rem",fontWeight:"600"}} variant="body2" color="text.secondary">{`${Math.round(
           props.value,
         )}%`}</Typography>
       </Box>
@@ -30,6 +30,11 @@ LinearProgressWithLabel.propTypes = {
 export default function LinearWithValueLabel() {
   const [progress, setProgress] = React.useState(10);
 
+  const LinearStyle={
+    height:"1rem",
+    
+  }
+
   React.useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
@@ -41,7 +46,7 @@ export default function LinearWithValueLabel() {
 
   return (
     <Box sx={{ width: '100%',transform:"rotate(-90deg)",position:"absolute !important",top:"15rem",left:"9rem"}}>
-      <LinearProgressWithLabel value={progress} sx={{height:"1rem",color:"white",fontWeight:"600",fontSize:"1.875rem",backgroundColor:"rgb(246 246 246 / 30%)",".MuiLinearProgress-bar1":{backgroundColor:"#2dce89"}}}/>
+      <LinearProgressWithLabel value={progress} />
     </Box>
   );
 }

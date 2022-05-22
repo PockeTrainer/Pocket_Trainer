@@ -15,6 +15,7 @@ import AlertModal from "../SameLayout/AlertModal";
 
 import Typography from '@mui/material/Typography';
 import LinearWithValueLabel from "./LinearWithValueLabel";
+import { styled } from "@mui/system";
 
 
 
@@ -26,6 +27,11 @@ function PracticeStep(){
     const [checked, setChecked] = useState(false);//전체 카메라화면 transition
     const [message,setMessage]=useState(false);//화면에 띄우는 메시지 transition
     const dispatch=useDispatch();//이걸로 무게설정할것임
+
+    const [grid_show,set_grid_show]=useState(false);//그리드 보여주기 transition
+    const [message_effect,set_message_effect]=useState(false);//준비,시작 transition
+
+    const module=require("../../ExercisesInfo/ExerciseInfo");
 
     const exercise_name=useParams();//url에서 운동명 가져오기-벤치프레스이면 해당 초기무게를 따로 설정해둔것에서 가져오자-ExerciseInfo.js에 넣자
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
@@ -44,23 +50,50 @@ function PracticeStep(){
 
     let key_for_message=useRef();//메시지를 주기위한 메시지 객체의 키값
 
+    //그리에서 쓸 준비타임 타이머
+    const timerId=useRef(null);
+    const [grid_timer_sec,set_Grid_timer_sec]=useState(10);//10초 준비시간
+
+
+
     //위에는 각종 상수및 state
 
-    const handleMessageChange=()=>{
+    const handleMessageChange=()=>{//중량관련 메시지
         setMessage((prev)=>!prev);
     }
 
     const handleChange = () => {
         setChecked((prev) => !prev);
     };
+
+    const handleGridShow=()=>{//그리드 보여주기
+        set_grid_show(prev=>!prev);
+    };
+
+    const handleMessage=()=>{//그리드 뜰 때의 메시지
+        set_message_effect(prev=>!prev);
+    }
   
     const openModal=()=>{
         modalRef.current.click()
+    }
+
+    const showGridAndMessge=()=>{
+        if (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise"){
+            handleGridShow();//그리드 열어주기-졸작시연에서는 위에 그리드밖에 준비를 못해 이것만 보여줄거임
+            handleMessage();//그리드랑 같이 뜨는 메시지
+            timerId.current = setInterval(() => {
+                set_Grid_timer_sec(prev=>prev-1);
+            }, 1000);
+        }
     }
     useEffect(()=>{
         if(count.current===1){
             count.current+=1;
             handleChange();// 전체화면트랜지션
+
+           
+            
 
             if(exercise_name.exercise_name==="plank"){
                 const start_time=now_exercise.Info_from_api.target_time;//현재저장되어 있던 초기 시간을 가져온다-플랭크-대신에 초로 환산해주자
@@ -121,10 +154,34 @@ function PracticeStep(){
         setTimeout(handleMessageChange,1000);
         // 처음에는 문자보여주고 두번째 랜더링시 문자다시 숨기기
 
+        return () => clearInterval(timerId.current);
+
     },[testState,clicked_button,clicked_count,current_time])
   
     // clicked_count를 넣으므로써 지속적인 업데이틀를 반영가능-버튼이 안 바뀌어도
 
+    useEffect(()=>{
+        if(grid_timer_sec===0){
+            console.log('아아아?');
+            clearInterval(timerId.current);
+            handleGridShow();
+            handleMessage();
+        }
+    },[grid_timer_sec])
+
+    useEffect(()=>{
+        if(testState==="completed"){
+            showGridAndMessge();
+        }
+    },[testState])
+    
+
+    const Pstyled=styled('p')((props)=>({
+        fontSize:props.size?props.size:"1.0rem",
+        fontWeight:props.bold=="lighter"?"lighter":"600",
+        lineWeight:"1.0",
+        marginBottom:"0"
+    }));
 
     const subtitle={
         position:"absolute",
@@ -162,6 +219,16 @@ function PracticeStep(){
         transform:"rotate(-90deg)"
     }
 
+    const MessageStyle={//그리드시 보여주는 메시지 타이머 스타일
+        position:"absolute",
+        color:"white",
+        zIndex:"1",
+        fontSize:"2.5rem",
+        top:"1em",
+        backgroundColor:"rgb(45 206 137 / 19%)",
+        lineHeight:"1.5em"
+      }
+
     const SpanStyle={
         backgroundColor:"#2dce89",
         borderColor:"#2dce89",
@@ -169,6 +236,17 @@ function PracticeStep(){
         padding:"0.5rem 7.1rem",
         fontSize:"1.875rem",
         marginTop:"0.3em"
+    }
+
+    const GridMessageTimerStyle={
+        backgroundColor:"rgba(45, 206, 137, 0)",
+        borderColor:"rgba(45, 206, 137, 0)",
+        color:"#2dce89",
+        padding:"0.5rem 1.1rem",
+        fontSize:"1.875rem",
+        marginTop:"0.3em",
+        position:"absolute",
+        top:"0"
     }
 
     const badgeStyle={
@@ -233,6 +311,19 @@ function PracticeStep(){
         }
 
     }
+
+    const gridStyle={//그리드 보여주기 transition
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"100%",
+        overflow:"hidden"
+    }
+
     return(
         <>
         <div style={{position:"relative"}}>
@@ -265,16 +356,7 @@ function PracticeStep(){
                </div>
                
 
-                {/* <div className="progress-wrapper" style={ProgressWrpperStyle}>
-                        <div className="progress-info">
-                            <div className="progress-percentage">
-                                <span>60%</span>
-                            </div>
-                        </div>
-                        <div className="progress">
-                            <div className="progress-bar bg-success" role="progressbar" aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} style={{width: '60%'}} />
-                        </div>
-                </div> */}
+              
                 <LinearWithValueLabel/>
 
             </div>
@@ -344,7 +426,48 @@ function PracticeStep(){
                 <Zoom in={message}><span className="badge badge-primary" style={subtitle}>{clicked_button===""?loading_content[testState]:alert_content[clicked_button][key_for_message.current]}</span></Zoom>
                 {/* 버튼이 눌린게 있냐 없냐에 따라 여부로 컨텐츠 용도가 준비,시작 또는 알림전달로 쓰임 */}
         </div>
+
+        {
+            (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise")
+            &&
+            <>
             
+            <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+               }}>
+                <Zoom in={grid_show}>
+                  {/* <span className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name+"_content"].grid}/>
+                  </span> */}
+
+                  <div className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name].grid} style={{maxWidth:"100%",display:"block",objectFit:"cover"}}/>
+                  </div>
+                </Zoom>
+            </div>
+
+            <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+            }}>
+                <Zoom in={message_effect}>
+                    <div className="alert alert-warning" role="alert" style={GridMessageTimerStyle} >
+                        <span className="badge badge-primary" >
+                            {grid_timer_sec}초
+                        </span>
+                        <Pstyled bold="etc" size="1.5rem">
+                            그리드에 몸을 맞춰주세요
+                        </Pstyled>
+                    </div>
+                </Zoom>
+            </div>
+            </>
+            
+        }
+        
        
         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>
         <AlertModal where="confirm" />
