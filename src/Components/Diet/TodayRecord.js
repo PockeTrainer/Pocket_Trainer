@@ -56,6 +56,20 @@ function TodayRecord(){
     let foods=useSelector(state=>state.update_meals_reducer);//음식정보 가져오기
     let previous_foods=useRef([]);//업데이트 되기전의 음식정보를 담음
     const selectDate = useSelector(state=>state.update_choose_meal_date_reducer.date);//누른 날짜
+    const [day_recommend_amount,set_day_recommend_amount]=useState({//오늘 먹어야하는 목표타겟량
+        carbo:{
+            gram:300,
+            kcal:1000
+        },
+        protein:{
+            gram:300,
+            kcal:1000
+        },
+        fat:{
+            gram:300,
+            kcal:1000
+        }
+    })
 
     const selectedDay = (val) =>{
         console.log(val);
@@ -70,21 +84,7 @@ function TodayRecord(){
         return tmp;
     }
 
-    const day_recommend_amount={//하루에 먹어야하는 권장그램-api로 불러온 값으로 바꿔줘야함
-        carbo:{
-            gram:300,
-            kcal:1000
-        },
-        protein:{
-            gram:300,
-            kcal:1000
-        },
-        fat:{
-            gram:300,
-            kcal:1000
-        }
-
-    }
+   
 
     const get_data_from_sercer=async()=>{//선택한날의 음식들 정보를 다 가져옴
         let tmp_date=new Date(selectDate);//누른날을 날짜객체로 만들어줌
@@ -118,6 +118,22 @@ function TodayRecord(){
                         tmp_dinner.push(meal);
                     }
                 }
+                set_day_recommend_amount({
+                    ...day_recommend_amount,
+                    carbo:{
+                        gram:res.data.target_carbohydrate,
+                        kcal:res.data.target_carbohydrate*4
+                    },
+                    protein:{
+                        gram:res.data.target_protein,
+                        kcal:res.data.target_protein*4
+                    },
+                    fat:{
+                        gram:res.data.target_province,
+                        kcal:res.data.target_province*9
+                    }
+
+                })
 
                 dispatch(push_breakfast(tmp_breakfast));
                 dispatch(push_lunch(tmp_lunch));
@@ -245,11 +261,12 @@ function TodayRecord(){
                 tmp.carbo.gram+=(parseInt(item.Info_from_api.NUTR_CONT2)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
                 tmp.carbo.kcal+=4*tmp.carbo.gram;
             }
-            else if(item.Info_from_api.NUTR_CONT3!=="" && item.Info_from_api.NUTR_CONT1!==""){
+            if(item.Info_from_api.NUTR_CONT3!=="" && item.Info_from_api.NUTR_CONT1!==""){
                 tmp.protein.gram+=(parseInt(item.Info_from_api.NUTR_CONT3)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
                 tmp.protein.kcal+=4*tmp.protein.gram;
+                console.log(tmp.carbo.gram);
             }
-            else if(item.Info_from_api.NUTR_CONT4!=="" && item.Info_from_api.NUTR_CONT1!==""){
+            if(item.Info_from_api.NUTR_CONT4!=="" && item.Info_from_api.NUTR_CONT1!==""){
                 tmp.fat.gram+=(parseInt(item.Info_from_api.NUTR_CONT4)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
                 tmp.fat.kcal+=9*tmp.fat.gram;
             }
