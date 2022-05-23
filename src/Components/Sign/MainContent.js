@@ -8,12 +8,15 @@ import { useParams } from 'react-router-dom';
 import SignUpPart from './SignUpPart';
 import FindIdPart from './FindIdPart';
 import FindPwPart from './FindPwPart';
-import Modal from '../SameLayout/Modal';
+import Collapse from '@mui/material/Collapse';
+import { useLocation } from "react-router-dom";
 
 
 function MainContent(){
 
     const subtitle=useParams();//v6 dom부터는 params대신 useParams를 사용하여 가져옴
+    const path=useLocation();
+    const count=useRef(1);
 
 
     const signIn_message={
@@ -42,6 +45,11 @@ function MainContent(){
         findPw:<NavBar text={findPw_message} />
     };
 
+    const [checked, setChecked] = useState(false);//밑에 그래프 여는용도
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+      };
     
 
 
@@ -53,13 +61,30 @@ function MainContent(){
     };
 
     
-    
+    useEffect(()=>{
+        handleChange();
+    },[])
+
+    useEffect(()=>{
+    if(count.current===1){
+        count.current+=1;
+        return;
+    }
+        handleChange();
+        setTimeout(handleChange,1000)
+    },[path])
     return(
         <div className='bg-default'>
             <div className="main-content">
                 {/*url 뒤에 인자에 따라 나눠줌 */}
-                {stateNav[subtitle.subtitle]} 
-                {stateMain[subtitle.subtitle]}
+                <Collapse in={checked} orientation="horizontal" style={{ transformOrigin: '0 0 0' }}
+      {...(checked ? { timeout: 2000 } : {})}>
+                    <div>
+                        {stateNav[subtitle.subtitle]} 
+                        {stateMain[subtitle.subtitle]}
+                    </div>
+                </Collapse>
+                
                 <Footer/>
                 
             </div>

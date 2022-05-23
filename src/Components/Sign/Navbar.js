@@ -7,7 +7,7 @@ function NavBar(props){
         <nav className="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
           <div className="container px-4_">
             <a className="navbar-brand_" href="../index.html">
-              <img src="../assets/img/brand/포켓트레이너.png" />
+              <img src="../assets/img/brand/PocketTrainer.png" />
             </a>
           </div>
         </nav>
