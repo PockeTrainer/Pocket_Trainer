@@ -32,7 +32,7 @@ function FinalTestResult(){
 
 
     useEffect(()=>{
-        axios.get(`http://127.0.0.1:8000/api/workout/lastTestResult/${id}`)
+        axios.get(`/workout/lastTestResult/${id}`)
         .then(res => {
             console.log(res.data);
             setAllExercise({

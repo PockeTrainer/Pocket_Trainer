@@ -69,7 +69,7 @@ export default function UpdateWeight({open_state,set_open_state,current_day_weig
 }))
 
 const update_weight_info=async()=>{
-    await axios.post(`http://127.0.0.1:8000/api/user/dayInfo/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${id}`,
+    await axios.post(`/user/dayInfo/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${id}`,
     {
         weight:weight
     })//새롭게 업데이트 된 무게를 api로 전송
@@ -85,7 +85,7 @@ const update_weight_info=async()=>{
 }
 
 const get_today_info=async()=>{//체중정보를 보냈으면 새롭게 온 서버결과를 다시 리덕스에 올려놓자
-    await axios.get(`http://127.0.0.1:8000/api/history/day/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${id}`)//클릭한 날짜의 오늘날의 최신정보를 가져와준다
+    await axios.get(`/history/day/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${id}`)//클릭한 날짜의 오늘날의 최신정보를 가져와준다
     .then((res) => {
         console.log(res.data);
 

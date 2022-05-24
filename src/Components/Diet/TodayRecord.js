@@ -89,7 +89,7 @@ function TodayRecord(){
     const get_data_from_sercer=async()=>{//선택한날의 음식들 정보를 다 가져옴
         let tmp_date=new Date(selectDate);//누른날을 날짜객체로 만들어줌
 
-        await axios.get(`http://127.0.0.1:8000/api/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`)//서버로 음식들 전송
+        await axios.get(`/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`)//서버로 음식들 전송
             .then((res) => {
                 console.log(res.data);
                 let tmp_breakfast=[];
@@ -155,7 +155,7 @@ function TodayRecord(){
 
 
         new_obj.map(async(food,index)=>{
-            await axios.post(`http://127.0.0.1:8000/api/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`,
+            await axios.post(`/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`,
             {
                 time:food.when_to_eat,
                 food_name:food.Info_from_api.DESC_KOR,
@@ -190,7 +190,7 @@ function TodayRecord(){
             console.log("시간?",food.when_to_eat)
             console.log("그램?",parseInt(food.gram))
             
-            await axios.delete(`http://127.0.0.1:8000/api/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`,
+            await axios.delete(`/diet/${tmp_date.getFullYear()+"-"+parseInt(tmp_date.getMonth()+1)+"-"+tmp_date.getDate()}/${id}`,
             {
                 data:{ 
                     time:food.when_to_eat,

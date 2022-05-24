@@ -18,7 +18,7 @@ function LoginPart(){
 
     const logInBTNClick = (e) => {
         e.preventDefault();
-        axios.post("http://127.0.0.1:8000/api/user/login", {
+        axios.post("/user/login", {
             id : id,
             password : password
         })

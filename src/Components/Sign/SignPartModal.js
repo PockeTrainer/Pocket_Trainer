@@ -14,35 +14,70 @@ export default function SignPartModal({which_error}){
         marginBottom:"0"
     }));
 
-
-    return(
-        <>
-            <div className="modal fade" id="modal-show-Wrong-login" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-                <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
-                            <button ref={closeRef}  type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div className="modal-body" style={{padding:"1rem"}}>
-                            <div className="text-center">
-                                <CancelIcon sx={{color:"#5e72e4",fontSize:"2.5rem"}}/>
+    if(which_error==="wrong_login"){
+        return(
+            <>
+                <div className="modal fade" id="modal-show-Wrong-login" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                    <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
+                                <button ref={closeRef}  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
                             </div>
-                            <span className="badge badge-warning" style={{fontSize:"1em",marginTop:"2rem",marginBottom:"1rem"}}>로그인실패</span>
-                                <Pstyled bold="lighter">존재하지 않는 ID이거나 PassWord입니다</Pstyled>
-
-                                        
+                            <div className="modal-body" style={{padding:"1rem"}}>
+                                <div className="text-center">
+                                    <CancelIcon sx={{color:"#5e72e4",fontSize:"2.5rem"}}/>
+                                </div>
+                                <span className="badge badge-warning" style={{fontSize:"1em",marginTop:"2rem",marginBottom:"1rem"}}>로그인실패</span>
+                                    <Pstyled bold="lighter">존재하지 않는 ID이거나 PassWord입니다</Pstyled>
+    
+                                            
+                                
+                            </div>
                             
-                        </div>
-                        
-                        <div className="modal-footer" style={{justifyContent:"center"}}>
-                            <button type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-fat-remove" /> 취소</button>
+                            <div className="modal-footer" style={{justifyContent:"center"}}>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-fat-remove" /> 취소</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </>
-    );
+            </>
+        );
+    }
+    else{
+        return(
+            <>
+                <div className="modal fade" id="modal-show-Wrong-signup" tabIndex={-1} role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                    <div className="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h6 className="modal-title" id="modal-title-default">포켓트레이너알리미</h6>
+                                <button ref={closeRef}  type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div className="modal-body" style={{padding:"1rem"}}>
+                                <div className="text-center">
+                                    <CancelIcon sx={{color:"#5e72e4",fontSize:"2.5rem"}}/>
+                                </div>
+                                <span className="badge badge-warning" style={{fontSize:"1em",marginTop:"2rem",marginBottom:"1rem"}}>회원가입실패</span>
+                                    <Pstyled bold="lighter">모든 정보를 다 입력해주시길 바랍니다</Pstyled>
+    
+                                            
+                                
+                            </div>
+                            
+                            <div className="modal-footer" style={{justifyContent:"center"}}>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal"><i className="ni ni-fat-remove" /> 취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    
 }

@@ -29,6 +29,7 @@
     "danfojs": "^1.1.1",
     "date-fns": "^2.28.0",
     "global": "^4.4.0",
+    "http-proxy-middleware": "^2.0.6",
     "jquery": "^3.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -47,7 +48,6 @@
     "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1"
   },
-  "proxy": "https://openapi.foodsafetykorea.go.kr",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

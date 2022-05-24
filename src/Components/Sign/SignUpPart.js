@@ -26,7 +26,7 @@ function SignUpPart(){
         e.preventDefault();
 
         console.log(id, password, name, gender, email, birth);
-        axios.post("http://127.0.0.1:8000/api/user/signup", {
+        axios.post("/user/signup", {
             id : id,
             password : password,
             name : name,

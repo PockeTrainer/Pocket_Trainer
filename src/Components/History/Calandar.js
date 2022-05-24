@@ -237,7 +237,7 @@ export default function Calandar() {
       }));
 
       const get_today_info=async()=>{
-            await axios.get(`http://127.0.0.1:8000/api/history/day/${clicked_cell.year+"-"+clicked_cell.month+"-"+clicked_cell.days}/${id}`)//클릭한 날짜의 오늘날의 정보를 가져와준다
+            await axios.get(`/history/day/${clicked_cell.year+"-"+clicked_cell.month+"-"+clicked_cell.days}/${id}`)//클릭한 날짜의 오늘날의 정보를 가져와준다
             .then((res) => {
                 console.log(res.data);
 
@@ -248,7 +248,7 @@ export default function Calandar() {
     }   
         const get_daily_calandar_info=async()=>{//일별 그래프 때 해당일에만 해당하는 정보를 가져와준다
             console.log("클릭된셀:",clicked_cell);
-            await axios.get(`http://127.0.0.1:8000/api/history/day/${clicked_cell.year+"-"+clicked_cell.month+"-"+clicked_cell.days}/${id}`)//클릭한 날짜의 오늘날의 정보를 가져와준다
+            await axios.get(`/history/day/${clicked_cell.year+"-"+clicked_cell.month+"-"+clicked_cell.days}/${id}`)//클릭한 날짜의 오늘날의 정보를 가져와준다
             .then((res) => {
                 console.log(res.data);
 
@@ -313,7 +313,7 @@ export default function Calandar() {
         let tmp;//임시객체
         let final_start_time;
         let final_end_time;
-        await axios.get(`http://127.0.0.1:8000/api/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//해당 누른 appointment 날짜의 정보를 가져와줌
+        await axios.get(`/history/day/${date.getFullYear()+"-"+parseInt(date.getMonth()+1)+"-"+date.getDate()}/${id}`)//해당 누른 appointment 날짜의 정보를 가져와줌
         .then((res) => {
             console.log(res.data);
 
@@ -430,7 +430,7 @@ export default function Calandar() {
     }
 
     const get_month_info=async()=>{//월별 info들 쭉 받아오기
-        await axios.get(`http://127.0.0.1:8000/api/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}/${id}`)
+        await axios.get(`/history/month/${tmp_date_what_im_looking.year+"-"+tmp_date_what_im_looking.month}/${id}`)
         .then((res) => {
             console.log(res.data);
             let date=1;

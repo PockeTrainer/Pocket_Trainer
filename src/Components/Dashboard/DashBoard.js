@@ -13,7 +13,7 @@ function Dashboard(){
 
     useEffect(async() =>  {
         // 해당일 처음 로그인 한 사용자 루틴 생성
-        await axios.post(`http://127.0.0.1:8000/api/workout/createRoutine/${id}`)
+        await axios.post(`/workout/createRoutine/${id}`)
             .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
                 console.log(res.data);
             })
@@ -32,7 +32,7 @@ function Dashboard(){
                 }
             })
 
-        await axios.post(`http://127.0.0.1:8000/api/diet/createTargetKcal/${id}`)//해당일 목표칼로리 설정해줌
+        await axios.post(`/diet/createTargetKcal/${id}`)//해당일 목표칼로리 설정해줌
         .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
             console.log(res.data);
         })
@@ -41,7 +41,7 @@ function Dashboard(){
         })    
         
         // 메인 페이지 정보 호출
-        await axios.get(`http://127.0.0.1:8000/api/history/mainpageInfo/${id}`)
+        await axios.get(`/history/mainpageInfo/${id}`)
             .then((res) => {
                 console.log(res.data);
                 //유저정보(체중, 키), 체력평가 여부 확인
