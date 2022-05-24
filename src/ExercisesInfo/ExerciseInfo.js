@@ -187,7 +187,7 @@ export const bench_press={
 export const incline_press={
     name:"인클라인프레스",
     image_url:"../assets/img/theme/exercise_gif/inclinepress.gif",
-    instruction:"플랫벤치가 아닌 45정도 세워진 벤치에서 실시하여 가슴 상부 근육을 좀 더 집중적으로 발달시키는 운동입니다.",
+    instruction:"플랫벤치가 아닌 45도 정도 세워진 벤치에서 실시하여 가슴 상부 근육을 좀 더 집중적으로 발달시키는 운동입니다.",
     musclePart:"가슴상부근+상부대흉근",
     part:"가슴",
     eng_name:"incline_press",
@@ -202,7 +202,7 @@ export const incline_press={
 export const pec_dec_fly={
     name:"팩덱플라이",
     image_url:"../assets/img/theme/exercise_gif/pecdecfly.gif",
-    instruction:"팩덱플라이는 왼쪽과 오른쪽 가슴이 만나느 중앙부분을 발달시키는 운동으로서 가슴중앙의 근육분리와 함께 벌어진 가슴을 모아주는 운동입니다.",
+    instruction:"팩덱플라이는 왼쪽과 오른쪽 가슴이 만나는 중앙부분을 발달시키는 운동으로서 가슴중앙의 근육분리와 함께 벌어진 가슴을 모아주는 운동입니다.",
     musclePart:"대흉근",
     part:"가슴",
     eng_name:"pec_dec_fly",

@@ -401,7 +401,7 @@ function TodayRecord(){
                     </StyledSlider>
 
                     <FormControlLabel
-                        control={<Switch color="default" checked={KcalButton_Clicked} onChange={handleChange_kcal} />}
+                        control={<Switch color="secondary" checked={KcalButton_Clicked} onChange={handleChange_kcal} />}
                         label="칼로리"
                         sx={StyleSwitch}
                     />

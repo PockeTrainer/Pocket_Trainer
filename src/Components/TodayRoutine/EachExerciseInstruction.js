@@ -346,9 +346,9 @@ function EachExerciseInstruction({openSnackBar,exercise}){//스낵바 여는 함
                     </CardContent>
                   </CardActionArea>
                   <CardActions>
-                    <FormGroup>
+                    {/* <FormGroup>
                         <FormControlLabel control={<Checkbox defaultChecked sx={{color:"white",'&.Mui-checked':{color:"#fc7c5f"}}} />} label="해당 운동을 숙지하였습니다" />
-                    </FormGroup>
+                    </FormGroup> */}
                   </CardActions>
               </Card>
 

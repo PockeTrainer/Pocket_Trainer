@@ -338,7 +338,7 @@ function SearchModal({change_searchModal_submit_clicked}){
         // cancel_or_not.current=true;
         // cancelTokensource.current=axios.CancelToken.source();//캔슬 토큰을 생성해준다
         set_data_searching("loading");//로딩중
-         axios.get(`/api/4283446d9a824d28a909/I2790/json/1/50/DESC_KOR=${keyWord}`)
+         axios.get(`/api/4283446d9a824d28a909/I2790/json/1/20/DESC_KOR=${keyWord}`)
             .then(res => {
                 if (res.data.I2790.total_count != 0) {
                     console.log(res.data.I2790.row);
@@ -410,7 +410,7 @@ function SearchModal({change_searchModal_submit_clicked}){
                             
                             <form className="d-md-none"  onKeyPress={EnterClick}>
                                 <div className="input-group input-group-rounded input-group-merge">
-                                    <input type="search" className="form-control form-control-rounded form-control-prepended" onChange={handleChangeKeyword}  placeholder="ex)음식검색" aria-label="Search" />
+                                    <input type="search" className="form-control form-control-rounded form-control-prepended" value={keyword} onChange={handleChangeKeyword}  placeholder="ex)음식검색" aria-label="Search" />
                                     <div className="input-group-prepend">
                                         <div className="input-group-text">
                                             <span className="fa fa-search" onClick={()=>searchAPI(keyword)} />

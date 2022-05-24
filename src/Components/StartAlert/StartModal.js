@@ -62,7 +62,7 @@ function PtStep({buttonRef,page,which}){
     }
     else if(page=="second_clear_step"){
         active_step=2;
-        alertMessage="체력측정 하니라 수고하셨습니다!최종결과를 확인하고 루틴을 추천받으러 갈까요?";
+        alertMessage="체력측정 하느라 수고하셨습니다!최종결과를 확인하고 루틴을 추천받으러 갈까요?";
         button_name="최종결과확인";
     }
     else if(page==="last_clear_step"){

@@ -13,9 +13,10 @@ function sleep(ms){
 
 
 
-function SpecificInfo(){
+function SpecificInfo({food_name}){
 
     const closeRef=useRef("");
+    let module= require("../MealsInfo/MealsInfo");
 
 
     const Pstyled=styled('p')((props)=>({
@@ -28,7 +29,7 @@ function SpecificInfo(){
         
     const modalBackground={
         minHeight: '600px',
-        backgroundImage: 'url(../assets/img/theme/foods/almond.jfif)',
+        backgroundImage: `url(${module[food_name].image_url})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center top'
     }
@@ -56,14 +57,14 @@ function SpecificInfo(){
                                 <div className="container-fluid d-flex align-items-center" style={{justifyContent:"center"}}>
                                     <div className="row">
                                         <div className="col-lg-7 col-md-10">
-                                        <h1 className="display-2 text-white">들깻잎</h1>
+                                        <h1 className="display-2 text-white">{module[food_name].name}</h1>
                                         <Pstyled bold="etc" color="white">영양정보</Pstyled>
                                         <hr style={hrStyle}></hr>
-                                        <Pstyled bold="lighter" color="white">제품명:들깻잎</Pstyled>
-                                        <Pstyled bold="lighter" color="white">열량:47kcal(1회제공량)</Pstyled>
-                                        <Pstyled bold="lighter" color="white">탄수화물:5g(1회제공량)</Pstyled>
-                                        <Pstyled bold="lighter" color="white">단백질:5g(1회제공량)</Pstyled>
-                                        <Pstyled bold="lighter" color="white">지방:5g(1회제공량)</Pstyled>
+                                        <Pstyled bold="lighter" color="white">제품명:{module[food_name].name}</Pstyled>
+                                        <Pstyled bold="lighter" color="white">열량:{module[food_name].kcal}kcal(1회제공량)</Pstyled>
+                                        <Pstyled bold="lighter" color="white">탄수화물:{module[food_name].carbo}g(1회제공량)</Pstyled>
+                                        <Pstyled bold="lighter" color="white">단백질:{module[food_name].protein}g(1회제공량)</Pstyled>
+                                        <Pstyled bold="lighter" color="white">지방:{module[food_name].province}g(1회제공량)</Pstyled>
                                         </div>
                                     </div>
                                 </div>

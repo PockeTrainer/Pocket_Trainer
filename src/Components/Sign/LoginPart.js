@@ -11,8 +11,8 @@ function LoginPart(){
     const navigate = useNavigate();
     const modalRef=useRef();
 
-    const code = new URL(window.location.href).searchParams.get("code")
-    const state = new URL(window.location.href).searchParams.get("state")
+    // const code = new URL(window.location.href).searchParams.get("code")
+    // const state = new URL(window.location.href).searchParams.get("state")
   //소셜계정용
 
     const ShowWrongInfo=()=>{//모달창 보여주기
@@ -48,32 +48,36 @@ function LoginPart(){
         })
     }
 
+    const goto_kakao=(e)=>{
+      e.preventDefault();
+      window.location.replace(KAKAO_AUTH_URL);
+    }
   
     
-    useEffect(()=>{
-       //네이버 로그인
-       if (code != null & state != null) {
-        console.log('naver')
-        axios.get(`http://127.0.0.1:8000/api/user/naver/login/${code}/${state}`)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => console.log(err))
-      }
-    //카카오 로그인
-      else if (code != null) {
-          console.log('kakao')
-          axios.get(`http://127.0.0.1:8000/api/user/kakao/login/${code}`)
-              .then(res => {
-                  console.log(res)
-              })
-              .catch(err => console.log(err))
-      }
+    // useEffect(()=>{
+    //    //네이버 로그인
+    //    if (code != null & state != null) {
+    //     console.log('naver')
+    //     axios.get(`http://127.0.0.1:8000/user/naver/login/${code}/${state}`)
+    //         .then(res => {
+    //             console.log(res)
+    //         })
+    //         .catch(err => console.log(err))
+    //   }
+    // //카카오 로그인
+    //   else if (code != null) {
+    //       console.log('kakao')
+    //       axios.get(`http://127.0.0.1:8000/user/kakao/login/${code}`)
+    //           .then(res => {
+    //               console.log(res)
+    //           })
+    //           .catch(err => console.log(err))
+    //   }
 
-    },[code,state])
+    // },[code,state])
 
-    console.log(code);
-    console.log(state);
+    // console.log(code);
+    // console.log(state);
 
     return (
         <div>
@@ -118,7 +122,7 @@ function LoginPart(){
                   <div className="card-header_ bg-transparent_ pb-5_">
                     <div className="text-muted text-center mt-2 mb-3"><small className="login_method_">다른계정으로 로그인</small></div>
                     <div className="btn-wrapper text-center">
-                      <a href={KAKAO_AUTH_URL} className="btn btn-neutral btn-icon">
+                      <a  className="btn btn-neutral btn-icon" onClick={goto_kakao}>
                         <span className="btn-inner--icon"><img src="../assets/img/brand/카카오톡로고.png" /></span>
                         <span className="btn-inner--text">KAKAO</span>
                       </a>

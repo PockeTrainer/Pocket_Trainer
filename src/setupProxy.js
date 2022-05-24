@@ -11,41 +11,41 @@ module.exports = (app) => {
 //   app.use(
 // 		'/admin',
 // 		createProxyMiddleware({
-// 			target: 'http://remote.test.com',
+// 			target: 'https://www.pockettrainerserver.link',
 // 			changeOrigin: true,
 // 		}));
 
 //     app.use(
 //         '/accounts',
 //         createProxyMiddleware({
-//             target: 'http://remote.test.com',
+//             target: 'https://www.pockettrainerserver.link',
 //             changeOrigin: true,
 //         }));
 
 //     app.use(
 //         '/user',
 //         createProxyMiddleware({
-//             target: 'http://remote.test.com',
+//             target: 'https://www.pockettrainerserver.link',
 //             changeOrigin: true,
 //         }));    
 
 //     app.use(
 //         '/workout',
 //         createProxyMiddleware({
-//             target: 'http://remote.test.com',
+//             target: 'https://www.pockettrainerserver.link',
 //             changeOrigin: true,
 //         }));
 //     app.use(
 //         '/history',
 //         createProxyMiddleware({
-//             target: 'http://remote.test.com',
+//             target: 'https://www.pockettrainerserver.link',
 //             changeOrigin: true,
 //         })); 
 
 //     app.use(
 //         '/diet',
 //         createProxyMiddleware({
-//             target: 'http://remote.test.com',
+//             target: 'https://www.pockettrainerserver.link',
 //             changeOrigin: true,
 //         }));          
 }

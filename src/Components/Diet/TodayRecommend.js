@@ -47,13 +47,16 @@ function TodayRecommend(){
         part3:[]
     });//각 영양소별 대표 음식들의 정보를 담아줄 것임
 
+    const [food_name,set_food_name]=useState("rice")//디폴트로는 그냥 rice를 내려준다고 하자-세부사항에서 보여주는 음식들
+
     const dispatch=useDispatch();
 
     const handleShowList=()=>{
         setShowList(prev=>!prev);
     }
 
-    const handleSpcificInfo=()=>{//음식별 상세정보 보여주기 모달
+    const handleSpcificInfo=(food)=>{//음식별 상세정보 보여주기 모달
+        set_food_name(food);
         modalRef.current.click();
     }
 
@@ -160,15 +163,18 @@ function TodayRecommend(){
     const nutritions={
         part1:{
             color:"#5e72e4",
-            name:"탄수화물"
+            name:"탄수화물",
+            target:target_gram.carbo
         },
         part2:{
             color:"#2dce89",
-            name:"단백질"
+            name:"단백질",
+            target:target_gram.protein
         },
         part3:{
             color:"#ffc107",
-            name:"지방"
+            name:"지방",
+            target:target_gram.province
         }
     }
 
@@ -204,7 +210,7 @@ function TodayRecommend(){
     
             result.push(
                 <Stack direction="column">
-                    <Button sx={PartButtonStyle} onClick={handleSpcificInfo}>
+                    <Button sx={PartButtonStyle} onClick={()=>handleSpcificInfo(Object.keys(part[i])[0])}>
                         <Badge color="success" badgeContent={how_many} >
                             <AvatarStyle src={image_url} color="#5e72e4"  ></AvatarStyle>
                         </Badge>
@@ -280,7 +286,7 @@ function TodayRecommend(){
                         <div className="alert alert-warning" role="alert" style={{...SpanStyle,backgroundColor:nutritions[clicked_button].color,borderColor:nutritions[clicked_button].color}} >
                             <Stack direction="column">
                                 <span className="badge badge-primary btn-lg" style={{...badgeStyle,color:"black"}}>{nutritions[clicked_button].name}</span> 
-                                <span className="alert-text" style={{fontSize:"1rem",marginTop:"1rem"}}>{nutritions[clicked_button].name} 150g을 채울려면?</span>
+                                <span className="alert-text" style={{fontSize:"1rem",marginTop:"1rem"}}>{nutritions[clicked_button].name} {nutritions[clicked_button].target}g을 채울려면?</span>
                             
 
                                 <Stack direction="row" spacing={4} sx={{marginTop:"1rem",justifyContent:"center"}}>
@@ -303,7 +309,7 @@ function TodayRecommend(){
             </CardWrapper>
 
             <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-specific-info">Default</button>
-            <SpecificInfo/>
+            <SpecificInfo food_name={food_name}/>
 
 
            

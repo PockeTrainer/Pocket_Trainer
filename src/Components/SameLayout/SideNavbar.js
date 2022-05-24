@@ -133,16 +133,7 @@ function SideNavBar(){
               </div>
             </div>
             <h6 className="navbar-heading text-muted">서비스</h6>
-            <form className="mt-4 mb-3 d-md-none">
-              <div className="input-group input-group-rounded input-group-merge">
-                <input type="search" className="form-control form-control-rounded form-control-prepended" placeholder="ex)어깨운동" aria-label="Search" />
-                <div className="input-group-prepend">
-                  <div className="input-group-text">
-                    <span className="fa fa-search" />
-                  </div>
-                </div>
-              </div>
-            </form>
+          
 
             <ul className="navbar-nav">
               
@@ -162,14 +153,8 @@ function SideNavBar(){
                   <i className="fas fa-running"></i>오늘의루틴
                 </Link>
               </li>
-              <li className={clickedId=="list4"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list4")}>
-                <Link className={clickedId=="list4"? "nav-link active" :"nav-link"} to="/main/exercise_counter">
-                  <i className="fas fa-dumbbell"></i>부위별운동
-                </Link>
-              </li>
 
-
-              <li className={clickedId=="list5"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list5")}>
+              <li className={clickedId=="list5"? "nav-item active" :"nav-item"} onClick={()=>showGetId("list4")}>
                 <Link className={clickedId=="list5"? "nav-link active" :"nav-link"} to="/diet">
                   <i className="fas fa-utensils"></i>식단플랜
                 </Link>

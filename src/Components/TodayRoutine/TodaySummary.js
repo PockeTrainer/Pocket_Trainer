@@ -108,7 +108,7 @@ function TodaySummary({last_routine_date}){
       {...(checked ? { timeout: 1000 } : {})}>
 
       
-        <div className="card bg-secondary shadow mb-3" data-component="AccountInformationCard" style={{marginTop:"1.0rem"}}>
+        <div className="card bg-secondary shadow  mb-5" data-component="AccountInformationCard" style={{marginTop:"1.0rem"}}>
       
         <div className="card-body" style={{padding:"1rem"}}>
             <i className="far fa-clipboard" style={{fontSize:"3.5em",color:"#5e72e4"}}></i>

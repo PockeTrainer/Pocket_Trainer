@@ -186,7 +186,7 @@ console.log("음식정보들:",foods)
                 <ListItem
                   key={index}
                   secondaryAction={
-                    <IconButton aria-label="delete" onClick={pop_Food}>
+                    <IconButton aria-label="delete" onClick={()=>pop_Food(index)}>
                       <DeleteIcon />
                     </IconButton>
                   }

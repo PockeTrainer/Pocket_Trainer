@@ -633,8 +633,8 @@ export default function HeaderInSwipeTab({clicked_date}) {
                                                 </div>
                                             </div>
 
-                                            <Typography variant="body1" sx={KcalGramStyle} gutterBottom><RamenDiningIcon/>칼로리:{parseInt(nutrient.province*9)}Kcal/{parseInt(nutrient.province*9)}Kcal</Typography>
-                                            <Typography variant="body1" sx={{...KcalGramStyle,color:"black"}} gutterBottom><LunchDiningIcon/>양:{parseInt(nutrient.province)}g/{parseInt(nutrient.province)}g</Typography>
+                                            <Typography variant="body1" sx={KcalGramStyle} gutterBottom><RamenDiningIcon/>칼로리:{parseInt(nutrient.province*9)}Kcal/{parseInt(nutrient.target_province*9)}Kcal</Typography>
+                                            <Typography variant="body1" sx={{...KcalGramStyle,color:"black"}} gutterBottom><LunchDiningIcon/>양:{parseInt(nutrient.province)}g/{parseInt(nutrient.target_province)}g</Typography>
                                         </div>
                                     </Stack>
 

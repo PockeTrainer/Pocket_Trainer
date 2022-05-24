@@ -256,18 +256,18 @@ export default function Calandar() {
                 let day_total_list=[];//해당 일에 모든 appointment 박스들을 담는 리스트
                 let module= require("../../ExercisesInfo/ExerciseInfo.js");//한글운동명을 불러와줘야함
 
-                if(res.data.day_bmi!==null){
-                    let tmp={   
-                        title: res.data.day_bmi,
-                        startDate: new Date(clicked_cell.year,clicked_cell.month-1,clicked_cell.days , 0, 0),
-                        endDate: new Date(clicked_cell.year,clicked_cell.month-1,clicked_cell.days, 23, 59),
-                        id: clicked_cell.days+"_daily_bmi",//아마 해당아이디가 그대로 key값으로 쓰이나 봄 따라서 밑에 운동쪽이랑 겹치지 않게 하기위해 _daily_bmi 붙임
-                        location: 'bmi지수',
-                        roomId:5
-                    }
+                // if(res.data.day_bmi!==null){
+                //     let tmp={   
+                //         title: res.data.day_bmi,
+                //         startDate: new Date(clicked_cell.year,clicked_cell.month-1,clicked_cell.days , 0, 0),
+                //         endDate: new Date(clicked_cell.year,clicked_cell.month-1,clicked_cell.days, 23, 59),
+                //         id: clicked_cell.days+"_daily_bmi",//아마 해당아이디가 그대로 key값으로 쓰이나 봄 따라서 밑에 운동쪽이랑 겹치지 않게 하기위해 _daily_bmi 붙임
+                //         location: 'bmi지수',
+                //         roomId:5
+                //     }
 
-                    day_total_list.push(tmp);
-                }
+                //     day_total_list.push(tmp);
+                // }
                 for(const exercise of res.data.day_history_workout){
                     if(exercise.workout_time!==null){//즉 운동시간이 있던 것들로만 기록을 할 것임
                         let start_datetime=new Date(exercise.start_datetime);
@@ -625,9 +625,9 @@ export default function Calandar() {
             onAppointmentMetaChange={setAppointmentMeta}
           />
           {/* 일정들에 해당하는 툴팁들 자세한 정보를 보여줌 */}
-          <AllDayPanel 
+          {/* <AllDayPanel 
             messages={{allDay:"BMI지수"}}
-          />
+          /> */}
           {/* 일간 달력에 해당하는 맨 위 상단 */}
           <Resources
             data={state.resources}

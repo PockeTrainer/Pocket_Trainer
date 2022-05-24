@@ -10,9 +10,20 @@ import Grow from '@mui/material/Grow';
 import Calandar from './Calandar'
 import Demo from "./TestScheduler";
 
+import { not_exercise_start } from "../../modules/action";
+import { useDispatch,useSelector } from "react-redux";
+
 
 function CardLayout(props){
 
+    const exercise_start_page=useSelector(state=>state.Exercise_start_reducer.page);//본 메인 운동스텝에 들어갔는지 여부로 상단메뉴를 결정해줌
+    const dispatch=useDispatch();
+
+    useEffect(()=>{//혹시나 뒤로가기나 이런걸로 다시 왔을때를 대비해 운동모드를 꺼준다
+        if(exercise_start_page){
+            dispatch(not_exercise_start());
+        }
+    },[exercise_start_page])
 
     const padding_style={
         paddingRight:"7px",
