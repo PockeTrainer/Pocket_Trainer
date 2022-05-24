@@ -2,10 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../SameLayout/Modal';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import SignPartModal from './SignPartModal';
 
 function LoginPart(){
 
     const navigate = useNavigate();
+    const modalRef=useRef();
+
+    const ShowWrongInfo=()=>{//모달창 보여주기
+      modalRef.current.click();
+    }
 
     let [id, changeId] = useState();
     let [password, changePassword] = useState();
@@ -26,9 +32,14 @@ function LoginPart(){
             //navigate('/');
             window.location.replace("/");//상위 app 컴포넌트에서의 useEffect가 다시 돌아가줘야 after_login이 업데이트됨
         })
-        .catch(err => 
-            console.log(err.response.data)
-        )
+        .catch(err => {
+
+          console.log(err.response.data)
+          if(err.response.data.error==="존재하지 않는 ID 이거나 PassWord입니다"){
+            ShowWrongInfo();//모달창 보여주기
+          }
+          
+        })
     }
     return (
         <div>
@@ -101,6 +112,9 @@ function LoginPart(){
           <div className="text-center">
             <Link to="/account/signUp" className="text-light"><p>회원가입</p><i className="ni ni-single-02" /></Link>
           </div>
+
+          <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-show-Wrong-login">Default</button>
+          <SignPartModal which_error={"wrong_login"}/>
 
         </div>
         

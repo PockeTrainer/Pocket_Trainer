@@ -27,7 +27,7 @@ const PLANK_TIME_SET="plank_time_set";
 //운동추천 루틴페이지에서 눌린 버튼변경 액션
 const CHANGE_CLICKED_BUTTON="change_clicked_button";
 
-//현재 중량을 변경해주는 액션
+//현재 중량,시간,개수를 변경해주는 액션
 const SET_CURRENT_WEIGHT="set_current_weight";
 const SET_CURRENT_TIME="set_current_time";
 const SET_CURRENT_CNT="set_current_count";
@@ -89,6 +89,11 @@ const POP_WHAT_I_WANT_EXERCISE="pop_what_i_want_exercise";
 //추가운동에서 즐겨찾기 체크한 운동들을 담음
 const PUSH_FAVORITE_EXERCISE="push_favorite_exercise";
 const POP_FAVORITE_EXERCISE="pop_favorite_exercise";
+
+//운동별 잘못된 자세를 담아주는 액션
+const SEND_POSTURE_OF_EXERCISE=" send_posture_of_exercise";
+//지금 힘을 쓰고 있는 게이지를 보여주는 액션
+const SEND_ANGLE='send_angle';
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -392,6 +397,16 @@ export const pop_favorite_exercise=(new_arr)=>({
     type:POP_FAVORITE_EXERCISE,
     new_arr
 });
+
+export const send_posture_of_exercise=(text)=>({
+    type:SEND_POSTURE_OF_EXERCISE,
+    text
+});
+
+export const send_angle=(angle)=>({
+    type:SEND_ANGLE,
+    angle
+})
 //액션생성함수
 
 const initialState={//모달창들에서 페이지들을 의미
@@ -507,6 +522,14 @@ const initialExtraExerciseInfo={//추가운동페이지에서 하고싶은것 �
     what_i_want_exercise:[],
     favorite:[],
     clicked_part:""
+}
+
+const intialPostureText={//잘못된 자세교정 멘트 담아줌
+    text:""
+};
+
+const initialAngle={//잘못된 자세의 각도를 보여줌
+    angle:0
 }
 
 //초기페이지 정보
@@ -1001,6 +1024,28 @@ export function update_extra_exercise_reducer(state=initialExtraExerciseInfo,act
             return{
                 ...state,
                 favorite:action.new_arr
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_wrong_posture_reducer(state=intialPostureText,action){//식단파트에서 달력에서 고른날짜객체 정보가 담김
+    switch(action.type){
+        case SEND_POSTURE_OF_EXERCISE:
+            return{
+                text:action.text
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_angle_reducer(state=initialAngle,action){//식단파트에서 달력에서 고른날짜객체 정보가 담김
+    switch(action.type){
+        case SEND_ANGLE:
+            return{
+                angle:action.angle
             }
         default:
             return state;    

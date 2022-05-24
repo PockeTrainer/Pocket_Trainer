@@ -19,7 +19,7 @@ import { update_meals_reducer } from './action';
 import { update_choose_meal_date_reducer } from './action';
 import { plank_time_update_reducer } from './action';
 import { update_day_info_obj_reducer } from './action';
-import { update_extra_exercise_reducer,update_mainpage_reducer } from './action';
+import { update_extra_exercise_reducer,update_mainpage_reducer,update_angle_reducer,update_wrong_posture_reducer} from './action';
 
 const persistConfig={
     key:"root",
@@ -45,7 +45,9 @@ const rootReducer=combineReducers({
     update_meals_reducer,
     update_choose_meal_date_reducer,
     plank_time_update_reducer,
-    update_extra_exercise_reducer
+    update_extra_exercise_reducer,
+    update_angle_reducer,
+    update_wrong_posture_reducer
 });
 
 // export default persistReducer(persistConfig,rootReducer);

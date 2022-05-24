@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import ResponsiveDatePickers from '../SameLayout/DatePicker';
 import { useNavigate} from 'react-router'; 
 import axios from "axios";
+import SignPartModal from "./SignPartModal"
 
 function SignUpPart(){
 
     const navigate = useNavigate();
+    const modalRef=useRef();
+    
 
     let [id, changeId] = useState();
     let [password, changePassword] = useState();
@@ -13,6 +16,11 @@ function SignUpPart(){
     let [gender, changeGender] = useState();
     let [email, changeEmail] = useState();
     let [birth, changeBirth] = useState();
+
+    const ShowWrongInfo=()=>{//모달창 보여주기
+        modalRef.current.click();
+      }
+  
 
     const signUpBTNClick = (e) => {
         e.preventDefault();
@@ -31,8 +39,14 @@ function SignUpPart(){
             //axios.defaults.headers.common['Authorization'] = `token ${res.payload.accessToken}`
             navigate('/account/signIn');
         })
-        .catch(err => 
-            console.log(err.response.data)
+        .catch(err => {
+            console.log(err.response.data);
+            if(err.response.data.error==="모두 입력해주세요"){
+
+            }
+        }
+            
+            
         )
     }
 
@@ -121,8 +135,9 @@ function SignUpPart(){
                         </div>
                         <input type="date" id="birth" onChange={(e) => {
                             changeBirth(e.target.value.toString());
+                            console.log(e.target.value.toString());
                         }}/>
-                        <ResponsiveDatePickers/>
+                        <ResponsiveDatePickers changeBirth={changeBirth}/>
                     </form>
                     <div className="card-header_ bg-transparent_ pb-5_">
                         <div className="text-muted text-center_ mt-2 mb-3"><small className="login_method_">다른계정으로 계정생성</small></div>
@@ -145,6 +160,10 @@ function SignUpPart(){
                 </div>
             </div>
             </div>
+
+            <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-show-Wrong-signup">Default</button>
+            <SignPartModal which_error={"wrong_signup"}/>
+
         </div>
       );
 }

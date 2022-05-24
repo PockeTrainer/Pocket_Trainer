@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useDispatch, useSelector } from "react-redux";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -28,25 +29,27 @@ LinearProgressWithLabel.propTypes = {
 };
 
 export default function LinearWithValueLabel() {
-  const [progress, setProgress] = React.useState(10);
+  // const [progress, setProgress] = useState(10);
 
   const LinearStyle={
     height:"1rem",
     
   }
+  const anglePercentage=useSelector(state=>state.update_angle_reducer.angle);//현재프레임의 앵글을 받아옴
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+  //   }, 800);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   return (
     <Box sx={{ width: '100%',transform:"rotate(-90deg)",position:"absolute !important",top:"15rem",left:"9rem"}}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={anglePercentage} />
     </Box>
   );
 }

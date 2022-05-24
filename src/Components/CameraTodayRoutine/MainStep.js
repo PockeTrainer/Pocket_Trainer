@@ -14,6 +14,7 @@ import AlertModal from "../SameLayout/AlertModal";
 import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
 
 import axios from "axios";
+import LinearWithValueLabel from "./LinearWithValueLabel";
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
@@ -418,7 +419,7 @@ function MainStep(){
                        null
                    } 
                    
-                  
+                  <LinearWithValueLabel/>
                </div>
                
             </div>

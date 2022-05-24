@@ -50,10 +50,13 @@ function PracticeStep(){
 
     let key_for_message=useRef();//메시지를 주기위한 메시지 객체의 키값
 
-    //그리에서 쓸 준비타임 타이머
+    //그리드에서 쓸 준비타임 타이머
     const timerId=useRef(null);
     const [grid_timer_sec,set_Grid_timer_sec]=useState(10);//10초 준비시간
 
+    //자세교정멘트를 불러옴
+    const wrong_posture=useSelector(state=>state.update_wrong_posture_reducer.text);
+    const [show_posture,set_show_posture]=useState("");
 
 
     //위에는 각종 상수및 state
@@ -72,6 +75,10 @@ function PracticeStep(){
 
     const handleMessage=()=>{//그리드 뜰 때의 메시지
         set_message_effect(prev=>!prev);
+    }
+
+    const handleShowPosture=()=>{//자세교정 멘트를 뜰 때 보여줌
+        set_show_posture(prev=>!prev);
     }
   
     const openModal=()=>{
@@ -174,6 +181,13 @@ function PracticeStep(){
             showGridAndMessge();
         }
     },[testState])
+
+    useEffect(()=>{
+        if(wrong_posture!==""){
+            handleShowPosture();
+            setTimeout(handleShowPosture,1000);
+        }
+    },[wrong_posture])//잘못된 자세가 인식될 때마다 멘트를 쳐줌
     
 
     const Pstyled=styled('p')((props)=>({
@@ -467,6 +481,19 @@ function PracticeStep(){
             </>
             
         }
+        <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+            }}>
+                <Zoom in={show_posture}>
+                    <div className="alert alert-warning" role="alert" style={GridMessageTimerStyle} >
+                        <Pstyled bold="etc" size="1.5rem">
+                            {wrong_posture}
+                        </Pstyled>
+                    </div>
+                </Zoom>
+            </div>
         
        
         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-default">Default</button>
