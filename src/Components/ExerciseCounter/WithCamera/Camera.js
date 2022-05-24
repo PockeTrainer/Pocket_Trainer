@@ -83,7 +83,7 @@ function Camera({display}) {
     let loadedModel = null;
 
     // snake_case로 넘어온 url 운동명을 PaskalCase로 변경
-    if (exercise_name.exercise_name == 'Squat') {
+    if (exercise_name.exercise_name == 'squat') {
         exerciseName = 'LightSquat';
     } else if (exercise_name.exercise_name == 'pushup') {
         exerciseName = 'PushUp';
@@ -111,6 +111,7 @@ function Camera({display}) {
         case 'BenchPress':
         case 'LyingTricepsExtension':
         case 'SideLateralRaise':
+        case 'SitUp':
             modelOutputSize = 4;
             break;
         default:
