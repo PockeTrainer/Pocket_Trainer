@@ -89,6 +89,10 @@ function Camera({display}) {
         exerciseName = 'PushUp';
     } else if (exercise_name.exercise_name == 'situp') {
         exerciseName = 'SitUp';
+    } else if (exercise_name.exercise_name == 'pec_dec_fly') {
+        exerciseName = 'PeckDeckFly';
+    } else if (exercise_name.exercise_name == 'reverse_pec_dec_fly') {
+        exerciseName = 'ReversePecDeckFly';
     } else {
         exerciseName = snake2Pascal(exercise_name.exercise_name);
     }
@@ -254,9 +258,12 @@ function Camera({display}) {
         
         // let xScale = 640 / videoRef.current.videoWidth;
         // let yScale = 480 / videoRef.current.videoHeight;
-        let xScale = 640 / webcamRef.current.video.videoWidth;
-        let yScale = 480 / webcamRef.current.video.videoHeight;
+        // let xScale = 640 / webcamRef.current.video.videoWidth;
+        // let yScale = 480 / webcamRef.current.video.videoHeight;
+        let xScale = 1;
+        let yScale = 1;
 
+        console.log('운동명: ', exerciseName);
         console.log(classifiedPose + ", "+ count.current + "개, [" + countStack + "]");
 
         // 운동 별 다른 하이라이트를 위해 exerciseName을 매개변수로 넘겨줌
@@ -737,7 +744,7 @@ function Camera({display}) {
                 break;
             case 'SitUp':
                 anglePercentage = getAnglePercentage(
-                    135,
+                    130,
                     45,
                     detectedPose['keypoints'][5], 
                     detectedPose['keypoints'][11], 
