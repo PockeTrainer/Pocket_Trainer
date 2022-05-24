@@ -252,8 +252,8 @@ export const barbell_row={
     eng_part:"back",
     unit_kg:1,
     break_time:90,
-    wrong_pose_1:"1.아직모름",
-    wrong_pose_2:"2.아직모름"
+    wrong_pose_1:"1.허리를 덜 굽힌 경우",
+    wrong_pose_2:"2.팔을 끝까지 올리지 않고 덜 올린경우"
 }
 //어깨
 export const dumbbell_shoulder_press={

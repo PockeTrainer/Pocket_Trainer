@@ -32,6 +32,7 @@ import { push_breakfast,push_lunch,push_dinner,pop_breakfast,pop_lunch,pop_dinne
 import Button from '@mui/material/Button';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EachDialog from "./EachDialog";
+import SpecificInfoFoodsInList from "./SpecificInfoFoodsInLitst";
 
 
 
@@ -44,6 +45,7 @@ function sleep(ms){
 function SearchModal({change_searchModal_submit_clicked}){
 
     const closeRef=useRef("");
+    const modalRef=useRef("");
     const [how_many_people,set_how_many_people]=useState(1);//몇 인분인지 
     const [meals_idx,set_Meals_idx]=useState(0);//끼니의 인덱스를 의미함
     const [keyword,change_keyword]=useState("");//검색어
@@ -61,10 +63,18 @@ function SearchModal({change_searchModal_submit_clicked}){
     const clicked_food_func_set=useRef("");//수정하기 버튼을 누를때의 해당 메뉴의 아침,점심,저녁으로서 접근 가능하게 하는 함수
     const [clicked_food_when,set_clicked_food_when]=useState("");//클릭된 음식이 아침,점심,저녁인지 리스트 전체 넘겨줌
 
+    const [specific_food_obj,set_spcific_food_obj]=useState("");//각 상세설명 음식
+
     // const cancelTokensource=useRef();//취소토큰을 담아준다
     // const cancel_or_not=useRef(false);//처음들어오는 입력에대해서는 취소할 요청이 없기에 요청취소의 기준이 됨
 
     const dispatch=useDispatch();
+
+    
+    const handleSpcificInfo=(food_obj)=>{//음식별 상세정보 보여주기 모달
+        set_spcific_food_obj(food_obj);
+        modalRef.current.click();
+    }
 
 
     const meals=[
@@ -180,6 +190,7 @@ function SearchModal({change_searchModal_submit_clicked}){
         fontWeight:"600"
     }
     const secondary_Action=(value)=>{//리스트아이템에서 쓰이는 부가적으로 오른쪽 옆에 뜨는 버튼들
+        console.log(value);
         let result_idx=check_toggle(value);//해당 value가 checked에 존재하는지
         let boolean_result;
         let tmp;
@@ -205,7 +216,7 @@ function SearchModal({change_searchModal_submit_clicked}){
         else{
             return(
                 <>
-                    <IconButton edge="end" aria-label="comments">
+                    <IconButton edge="end" aria-label="comments" onClick={()=>handleSpcificInfo(value)}>
                         <CommentIcon />
                     </IconButton>
                 </>
@@ -617,6 +628,8 @@ function SearchModal({change_searchModal_submit_clicked}){
 
 
           <EachDialog open_state={dialog_open} open_state_func={set_dialog_open} clicked_idx={clicked_food_idx} clicked_food_when_list={clicked_food_when} clicked_food_func={clicked_food_func_set.current} how_many_people_default={how_many_people}/>
+          <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-specific-info">Default</button>           
+          <SpecificInfoFoodsInList food_obj={specific_food_obj}/>
           </>
         );
     

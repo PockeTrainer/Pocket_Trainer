@@ -5,6 +5,8 @@ import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import { useNavigate } from "react-router-dom";
+import session from 'redux-persist/lib/storage/session';
 
 function sleep(ms){
   return new Promise((r)=>setTimeout(r,ms));
@@ -12,7 +14,7 @@ function sleep(ms){
 
 function SideNavBar(){ 
   
-  
+  const navigate=useNavigate();
   const [clickedId,setClickedId]=useState(
     ()=>JSON.parse(sessionStorage.getItem("clickedId"))||"list1"
   ); //사이드메뉴가 눌렸는지 안 눌렸는지여부를 웹 스토리지를 사용하여 새로고침을 해도 눌린 값은 유지하도록 함
@@ -40,6 +42,13 @@ function SideNavBar(){
     setClickedId(id);
     
   };
+
+  const Logout=(e)=>{
+    e.preventDefault();
+    sessionStorage.removeItem("user_id");
+    sessionStorage.removeItem("isAuthorized");
+    window.location.replace("/");
+  }
   const closebutton=useRef();
 
   const Pstyled=styled('p')((props)=>({
@@ -109,14 +118,14 @@ function SideNavBar(){
                   <span>나의 식단일지</span>
                 </a>
                 <div className="dropdown-divider" />
-                <a href="#!" className="dropdown-item">
+                <a className="dropdown-item" onClick={Logout}>
                   <i className="ni ni-user-run" />
                   <span>로그아웃</span>
                 </a>
               </div>
             </li>
           </ul>
-          <div ref={collapse_nav_bar} className="collapse navbar-collapse" id="sidenav-collapse-main">
+          <div ref={collapse_nav_bar} className="collapse navbar-collapse" id="sidenav-collapse-main" style={{position:"fixed"}}>
             <div className="navbar-collapse-header d-md-none">
               <div className="row">
                 <div className="col-6 collapse-brand">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import RecordChangeGraph from './RecordChangeGraph';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
+import { Stack } from '@mui/material';
 
 function CardGraph(){
 
@@ -64,7 +65,7 @@ function CardGraph(){
                   <span className="badge badge-success" style={{fontSize:"1.0rem",color:"#2dce89"}}>개</span>
                 }
                 {
-                  (select!=="plank"&&select!=="pec_dec_fly"&&select!=="lat_pull_down"&&select!=="seated_row"&&select!=="reverse_pec_dec_fly"&&select!=="cable_push_down"&&select!=="arm_curl"&&select!=="leg_extension"&&select==="crunch"&&select==="seated_knees_up")
+                  (select!=="plank"&&select!=="pec_dec_fly"&&select!=="lat_pull_down"&&select!=="seated_row"&&select!=="reverse_pec_dec_fly"&&select!=="cable_push_down"&&select!=="arm_curl"&&select!=="leg_extension"&&select!=="crunch"&&select!=="seated_knees_up")
                   &&
                   <span className="badge badge-success" style={{fontSize:"1.0rem",color:"#2dce89"}}>Kg</span>
                 }
@@ -72,16 +73,26 @@ function CardGraph(){
               <div className="col">
                 <form>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlSelect1" style={{color:"white"}}>운동종류</label>
-                        <select className="form-control" id="exampleFormControlSelect1" value={select} onChange={handleSelectChange}  >
-                        {
-                          total_exercises.map((exercise,index)=>{
-                            return(
-                              <option key={exercise.eng_name+"하하"} value={exercise.eng_name}>{exercise.name}</option>
-                            );
-                          })
-                        }
-                        </select>
+                        
+                        <Stack direction={"row"} style={{alignItems:"end"}}>
+                          <Stack direction={"column"}>
+                              <label htmlFor="exampleFormControlSelect1" style={{color:"white"}}>운동종류</label>
+                              <select className="form-control" id="exampleFormControlSelect1" value={select} onChange={handleSelectChange}  >
+                            {
+                              total_exercises.map((exercise,index)=>{
+                                return(
+                                  <option key={exercise.eng_name+"하하"} value={exercise.eng_name}>{exercise.name}</option>
+                                );
+                              })
+                            }
+                            </select>
+                          </Stack>
+                          <div className="arrow_going_down">
+                            <i className="fas fa-arrow-down" style={{fontSize:"2rem",color:"#2dce89"}}></i>
+                          </div>
+                        </Stack>
+                       
+                       
                        
                     </div>
                 </form>
