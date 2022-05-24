@@ -125,7 +125,7 @@ function AlertModal({where}){
             exercise_name_tmp=exercise.exercise_name;
         }
     
-        await axios.post(`/workout/endDateTime/${exercise_name_tmp}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+        await axios.post(`http://127.0.0.1:8000/workout/endDateTime/${exercise_name_tmp}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
         .then((res) => {
             console.log(res.data);
     
@@ -139,7 +139,7 @@ function AlertModal({where}){
         const today=new Date();
         const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
         const startExercise=async()=>{
-            await axios.put(`/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${today_date_form}/${id}`,sendData[key_for_sendData.current])//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+            await axios.put(`http://127.0.0.1:8000/workout/changeUserWorkoutInfo/${exercise.exercise_name}/${today_date_form}/${id}`,sendData[key_for_sendData.current])//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
             .then((res) => {
                 console.log(res.data);
 

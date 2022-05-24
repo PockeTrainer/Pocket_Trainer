@@ -3,11 +3,17 @@ import Modal from '../SameLayout/Modal';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import SignPartModal from './SignPartModal';
+import { NAVER_AUTH_URL } from "./naver";
+import { KAKAO_AUTH_URL } from "./kakao";
 
 function LoginPart(){
 
     const navigate = useNavigate();
     const modalRef=useRef();
+
+    const code = new URL(window.location.href).searchParams.get("code")
+    const state = new URL(window.location.href).searchParams.get("state")
+  //소셜계정용
 
     const ShowWrongInfo=()=>{//모달창 보여주기
       modalRef.current.click();
@@ -18,7 +24,7 @@ function LoginPart(){
 
     const logInBTNClick = (e) => {
         e.preventDefault();
-        axios.post("/user/login", {
+        axios.post("http://127.0.0.1:8000/user/login", {
             id : id,
             password : password
         })
@@ -41,6 +47,34 @@ function LoginPart(){
           
         })
     }
+
+  
+    
+    useEffect(()=>{
+       //네이버 로그인
+       if (code != null & state != null) {
+        console.log('naver')
+        axios.get(`http://127.0.0.1:8000/api/user/naver/login/${code}/${state}`)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => console.log(err))
+      }
+    //카카오 로그인
+      else if (code != null) {
+          console.log('kakao')
+          axios.get(`http://127.0.0.1:8000/api/user/kakao/login/${code}`)
+              .then(res => {
+                  console.log(res)
+              })
+              .catch(err => console.log(err))
+      }
+
+    },[code,state])
+
+    console.log(code);
+    console.log(state);
+
     return (
         <div>
           {/* Page content */}
@@ -49,9 +83,6 @@ function LoginPart(){
               <div className="col-lg-5 col-md-7">
                 <div className="card bg-secondary_ shadow_ border-0">
                   <div className="card-body px-lg-5 py-lg-5">
-                    <div className="text-center_ text-muted mb-4">
-                      <small>로그인하기</small>
-                    </div>
                     <form role="form">
                       <div className="form-group mb-3">
                         <div className="input-group input-group-alternative">
@@ -87,13 +118,13 @@ function LoginPart(){
                   <div className="card-header_ bg-transparent_ pb-5_">
                     <div className="text-muted text-center mt-2 mb-3"><small className="login_method_">다른계정으로 로그인</small></div>
                     <div className="btn-wrapper text-center">
-                      <a href="#" className="btn btn-neutral btn-icon">
+                      <a href={KAKAO_AUTH_URL} className="btn btn-neutral btn-icon">
                         <span className="btn-inner--icon"><img src="../assets/img/brand/카카오톡로고.png" /></span>
                         <span className="btn-inner--text">KAKAO</span>
                       </a>
-                      <a href="#" className="btn btn-neutral btn-icon">
-                        <span className="btn-inner--icon"><img src="../assets/img/icons/common/google.svg" /></span>
-                        <span className="btn-inner--text">GOOGLE</span>
+                      <a href={NAVER_AUTH_URL} className="btn btn-neutral btn-icon" >
+                        <span className="btn-inner--icon"><img src="../assets/img/brand/naver.png" /></span>
+                        <span className="btn-inner--text">NAVER</span>
                       </a>
                     </div>
                   </div>

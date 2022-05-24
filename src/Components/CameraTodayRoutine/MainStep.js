@@ -86,7 +86,7 @@ function MainStep(){
 
 
     const sendData=async()=>{
-            await axios.put(`/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
+            await axios.put(`http://127.0.0.1:8000/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
                 workout_set:howmanySet,
                 workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60)
             })//각 세트 끝날 때마다 현재진행 세트 수와 현재까지의 운동시간을 보내준다
@@ -100,7 +100,7 @@ function MainStep(){
     }
 
     const sendStartWorkoutTime=async()=>{//운동 시작시간을 서버로 보내준다
-        await axios.post(`/workout/startDateTime/${exercise_name.exercise_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+        await axios.post(`http://127.0.0.1:8000/workout/startDateTime/${exercise_name.exercise_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
             .then((res) => {
                 console.log(res.data);
 
@@ -111,7 +111,7 @@ function MainStep(){
     };
 
     const getDataFromServer=async()=>{//서버로부터 해당운동의 정보를 가져온다-weightcheck를 안했을 때 사용
-        await axios.get(`/workout/userWorkoutInfo/${exercise_name.exercise_name}/${id}`)
+        await axios.get(`http://127.0.0.1:8000/workout/userWorkoutInfo/${exercise_name.exercise_name}/${id}`)
         .then((res) => {
                 console.log(res.data);
                 dispatch(set_exercise_record(res.data.is_first));//리덕스에서 쓸수있게함=is_first값

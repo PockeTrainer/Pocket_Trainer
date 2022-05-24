@@ -17,8 +17,8 @@ function NavBar(props){
             <div className="header-body text-center_ mb-7_">
               <div className="row justify-content-center">
                 <div className="col-lg-5 col-md-6">
-                  <h1 className="text-white">{props.text.main}</h1>
-                  <p className="text-lead text-light">{props.text.sub}</p>
+                  <h1 className="text-white" style={{fontSize:"1.4rem",wordBreak:"keep-all"}}>{props.text.main}</h1>
+                  <p className="text-lead text-light" style={{wordBreak:"keep-all"}}>{props.text.sub}</p>
                 </div>
               </div>
             </div>

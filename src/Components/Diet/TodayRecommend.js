@@ -61,7 +61,7 @@ function TodayRecommend(){
 
     const get_recommend_data=async()=>{//서버로부터 금일 할당된 추천음식 정보 가져와줌
         
-        await axios.get(`/diet/${selectDate.getFullYear()+"-"+parseInt(selectDate.getMonth()+1)+"-"+selectDate.getDate()}/${id}`)
+        await axios.get(`http://127.0.0.1:8000/diet/${selectDate.getFullYear()+"-"+parseInt(selectDate.getMonth()+1)+"-"+selectDate.getDate()}/${id}`)
         .then((res) => {
             console.log(res.data);
             let part1=[];

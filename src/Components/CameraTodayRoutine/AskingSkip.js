@@ -134,7 +134,7 @@ function AskingSkip(){
         const today=new Date();
         const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
     
-        await axios.post(`/workout/endDateTime/${now_exercise.eng_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
+        await axios.post(`http://127.0.0.1:8000/workout/endDateTime/${now_exercise.eng_name}/${today_date_form}/${id}`)//맨 처음에 들어왔을 때 운동시작 시간을 보내준다 ex)날짜형식
         .then((res) => {
             console.log(res.data);
     
@@ -145,7 +145,7 @@ function AskingSkip(){
     };
 
     const getDataFromServer=async()=>{//서버로부터 해당운동의 최신화된 정보를 가져온다-weightcheck를 했을 때에 새로운 무게값이 안 들어가 있어서 호출해줌
-        await axios.get(`/workout/userWorkoutInfo/${now_exercise.eng_name}/${id}`)
+        await axios.get(`http://127.0.0.1:8000/workout/userWorkoutInfo/${now_exercise.eng_name}/${id}`)
         .then((res) => {
                 console.log(res.data);
                 

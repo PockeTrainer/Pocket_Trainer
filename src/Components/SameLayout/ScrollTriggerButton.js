@@ -155,7 +155,7 @@ function ScrollButton(props) {
         else{//쉬움
           modified_grade=2;
         }
-        await axios.put(`/workout/changeWorkoutFeedback/${exercise_name.exercise_name}/${id}`,{
+        await axios.put(`http://127.0.0.1:8000/workout/changeWorkoutFeedback/${exercise_name.exercise_name}/${id}`,{
             feedback:modified_grade
         })//피드백 결과가 생기면-api로 보내주기
         .then((res) => {

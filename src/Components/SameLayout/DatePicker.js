@@ -43,8 +43,9 @@ const InputStyle={
           okText="완료"
           onChange={(newValue) => {
             setValue(newValue);
-            console.log(newValue)
-            changeBirth(newValue);//부모컴포넌트로 올림
+            let result=new Date(newValue);
+            let result_format=result.getFullYear()+"-"+parseInt(result.getMonth()+1)+"-"+result.getDate();
+            changeBirth(result_format);//부모컴포넌트로 올림
           }}
           renderInput={(params) => <TextField {...params} InputLabelProps={InputStyle} />}
         />
