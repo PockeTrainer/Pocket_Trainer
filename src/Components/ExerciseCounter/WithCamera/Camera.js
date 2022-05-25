@@ -83,6 +83,8 @@ function Camera({display}) {
         exerciseName = 'PeckDeckFly';
     } else if (exercise_name.exercise_name == 'reverse_pec_dec_fly') {
         exerciseName = 'ReversePecDeckFly';
+    } else if (exercise_name.exercise_name == 'dumbbell_shoulder_press') {
+        exerciseName = 'ShoulderPress';
     } else {
         exerciseName = snake2Pascal(exercise_name.exercise_name);
     }

@@ -148,10 +148,10 @@ function AlertModal({where}){
                 console.log(err)
             })
             
-            setTimeout(handleClose,500);
+            // setTimeout(handleClose,100);
             dispatch(none_testState());//다시 카메라상태 끄기로 변경
             dispatch(reset_count());//카운트된 개수 다시 초기화
-            sleep(2000).then(()=>navigate("/routine/exercise/"+exercise.exercise_name));
+            navigate("/routine/exercise/"+exercise.exercise_name);
             
         }
 

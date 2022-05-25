@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import { useParams } from "react-router-dom";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CampaignIcon from '@mui/icons-material/Campaign';
+import $ from "jquery";
 
 import AlertModal from "../SameLayout/AlertModal";
 import {reset_send_wrong_posture,reset_send_angle,reset_send_posture_of_exercise,timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
@@ -88,6 +89,7 @@ function MainStep(){
 
      const [key_for_css,set_key_for_css]=useState("gridStyle");//운동마다 다른 그리드 스타일-디폴트는 gridStyle
 
+     const set_count=useRef(12);//기본적으로 해줘야할 한세트의 개수
 
     const handleGridShow=()=>{//그리드 보여주기
         set_grid_show(prev=>!prev);
@@ -224,6 +226,9 @@ function MainStep(){
 
     useEffect(()=>{
         if(count.current===1){
+            //$('.modal-backdrop').innerHTML.replace(/(<div>|<\/div>)/gi, "");
+           //console.log($('.modal-backdrop').innerHTML)/
+            
             handleChange();// 전체화면트랜지션
 
             dispatch(reset_send_angle());
@@ -237,6 +242,16 @@ function MainStep(){
                 set_key_for_css(exercise_name.exercise_name+"_Grid");
 
             }
+
+            if(exercise_name.exercise_name==="crunch"){
+                set_count.current=current_cnt;//크런치는 설정한 개수를 가져와 설정
+            }
+            else if(exercise_name.exercise_name==="side_lateral_raise"){//사레레는 20개로 고정 되어있음
+                set_count.current=20;
+            }
+            else{
+                set_count.current=12;//그 외의 운동에 대해서는 12개
+            }
             
             start();//스탑워치 시작
             previous_testState.current=testState;//이전값이랑 비교하기 위해 담아둔다
@@ -248,7 +263,7 @@ function MainStep(){
 
         }
 
-        if(count_result===2||(plank_time.current===5 && plank_time_state===false)){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
+        if(count_result===set_count.current||(plank_time.current===5 && plank_time_state===false)){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
             dispatch(timeToModal())//모달창을 이제 쓰겠다 그러니 타이머를 돌려라 이런뜻..
             return;
         }

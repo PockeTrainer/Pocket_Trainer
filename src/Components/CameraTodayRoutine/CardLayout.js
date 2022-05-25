@@ -88,7 +88,7 @@ function CardLayout(){
                 let tmp=url[url.length-1];//운동명 또는 부위명이 담긴다
                 const module=await import("../../ExercisesInfo/ExerciseInfo.js");
 
-                if(tmp==="chest"||tmp==="back"||tmp==="shoulder"||tmp==="bicep"||tmp==="tricep"||tmp==="abs"){
+                if(tmp==="chest"||tmp==="back"||tmp==="shoulder"||tmp==="bicep"||tmp==="tricep"||tmp==="abs"||tmp==="leg"){
                     bodypart=module.bodypart[tmp]; //부위명을 가져온다
                 }
                 else{
