@@ -134,7 +134,7 @@ export default function FullScreenDialog() {
   }
 
   const sendInfo=async () => {//api로 사용자한테 받은 입력값 보내주기
-     await axios.post(`http://127.0.0.1:8000/user/userInfo/${id}`,{
+     await axios.post(`/user/userInfo/${id}`,{
       height:each_value_list.height,
       weight:each_value_list.weight,
       activation_level:each_value_list.activation_level,

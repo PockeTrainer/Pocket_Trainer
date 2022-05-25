@@ -43,7 +43,7 @@ function WeightCheckInstruction(){
 
     useEffect(async()=>{
 
-            await axios.get(`http://127.0.0.1:8000/workout/userWorkoutInfo/${exercise.exercise_name}/${id}`)
+            await axios.get(`/workout/userWorkoutInfo/${exercise.exercise_name}/${id}`)
             .then((res) => {
                 let time_format_result="0초";
                 console.log(res.data);

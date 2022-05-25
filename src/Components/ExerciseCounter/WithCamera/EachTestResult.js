@@ -63,7 +63,7 @@ function EachTestResult(){
             appRef.current.click();//루틴생성 데이터가 없을때는 모달창을 띄워주는 것
 
             //서버로 모든 운동 정보를 전송
-            axios.post(`http://127.0.0.1:8000/workout/testResult/${id}`, {
+            axios.post(`/workout/testResult/${id}`, {
                 pushUp : sessionStorage.getItem("pushup"),
                 sitUp :  sessionStorage.getItem("situp"),
                 squat:  sessionStorage.getItem("squat")

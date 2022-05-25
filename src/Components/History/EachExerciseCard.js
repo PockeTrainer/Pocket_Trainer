@@ -71,7 +71,7 @@ export default function EachExerciseCard({exercise_obj,clicked_date}) {
     }
 
     const get_latest_workout_info=async()=>{//서버로부터 운동정보 가져오기
-      await axios.get(`http://127.0.0.1:8000/history/day/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${exercise_obj.eng_name}/${id}`)
+      await axios.get(`/history/day/${clicked_date.year+"-"+clicked_date.month+"-"+clicked_date.days}/${exercise_obj.eng_name}/${id}`)
         .then((res) => {
          
           console.log(res.data);

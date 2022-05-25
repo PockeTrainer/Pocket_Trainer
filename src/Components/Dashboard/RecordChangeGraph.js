@@ -123,7 +123,7 @@ export default function RecordChangeGraph({exercise_eng_name}) {
       if(exercise_eng_name===""){
           return;
       }
-      await axios.get(`http://127.0.0.1:8000/history/workoutGraph/${exercise_eng_name}/${id}`)//그래프정보를 불러온다
+      await axios.get(`/history/workoutGraph/${exercise_eng_name}/${id}`)//그래프정보를 불러온다
       .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
           console.log(res.data);
 

@@ -53,7 +53,7 @@ function CardLayout(props){
             }
         }
 
-        await axios.post(`http://127.0.0.1:8000/workout/createRoutine/${id}`)
+        await axios.post(`/workout/createRoutine/${id}`)
             .then((res) => {//루틴이 성공적생성가능하다는 것 결국->이미 한 번 평가를 봤다는 뜻 
                 console.log(res.data);
             })
@@ -68,7 +68,7 @@ function CardLayout(props){
                 }
             })
 
-        await axios.get(`http://127.0.0.1:8000/workout/todayRoutine/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
+        await axios.get(`/workout/todayRoutine/${id}`)//루틴정보 불러와서 부위종류,part1,part2,part3 운동을 나눠서 데이터를 나눠줌
         .then((res) => {
 
             console.log(res.data);
