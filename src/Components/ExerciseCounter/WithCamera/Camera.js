@@ -251,15 +251,15 @@ function Camera({display}) {
         canvas.width = videoWidth;
         canvas.height = videoHeight;
 
-        //ctx.translate(canvas.width, 0);
-        //ctx.scale(-1, 1);
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
         
-        let xScale = 640 / videoRef.current.videoWidth;
-        let yScale = 480 / videoRef.current.videoHeight;
+        // let xScale = 640 / videoRef.current.videoWidth;
+        // let yScale = 480 / videoRef.current.videoHeight;
         // let xScale = 640 / webcamRef.current.video.videoWidth;
         // let yScale = 480 / webcamRef.current.video.videoHeight;
-        // let xScale = 1;
-        // let yScale = 1;
+        let xScale = 1;
+        let yScale = 1;
 
         // console.log('운동명: ', exerciseName);
         console.log(classifiedPose + ", "+ exerciseCount + "개, [" + countStack + "]" + sideLateralRaiseTooDown);
@@ -280,10 +280,10 @@ function Camera({display}) {
                 let x = detectedPose['keypoints'][i]['x'];
                 let y = detectedPose['keypoints'][i]['y'];
                 
-                let videoWidth = videoRef.current.videoWidth;
-                let videoHeight = videoRef.current.videoHeight;
-                // let videoWidth = webcamRef.current.video.videoWidth;
-                // let videoHeight = webcamRef.current.video.videoHeight;
+                // let videoWidth = videoRef.current.videoWidth;
+                // let videoHeight = videoRef.current.videoHeight;
+                let videoWidth = webcamRef.current.video.videoWidth;
+                let videoHeight = webcamRef.current.video.videoHeight;
 
                 let ratioX = x / videoWidth;
                 let ratioY = y / videoHeight;
