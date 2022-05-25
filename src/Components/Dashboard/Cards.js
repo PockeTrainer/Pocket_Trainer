@@ -279,7 +279,7 @@ function Cards(){
 
                   <div className="alert alert-secondary" role="alert" style={{marginTop:"1rem",marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
                     {
-                      wrong_poses_dict===""
+                      wrong_poses_dict===""||!Object.keys(wrong_poses_dict).includes(select)
                       ?
                         null
                       :(

@@ -81,6 +81,7 @@ function MainStep(){
      const what_wrong_posture=useSelector(state=>state.update_what_wrong_posture_reducer.posture);
 
 
+     const [key_for_css,set_key_for_css]=useState("gridStyle");//운동마다 다른 그리드 스타일-디폴트는 gridStyle
 
 
     const handleGridShow=()=>{//그리드 보여주기
@@ -224,6 +225,13 @@ function MainStep(){
             dispatch(reset_send_posture_of_exercise());
             dispatch(reset_send_wrong_posture());
            
+            if (exercise_name.exercise_name!=="bench_press"&&exercise_name.exercise_name!=="incline_press"&&exercise_name.exercise_name!=="side_lateral_raise"){
+                set_key_for_css("gridStyle");
+               
+            }else{
+                set_key_for_css(exercise_name.exercise_name+"_Grid");
+
+            }
             
             start();//스탑워치 시작
             previous_testState.current=testState;//이전값이랑 비교하기 위해 담아둔다
@@ -367,6 +375,43 @@ function MainStep(){
         width:"100%",
         overflow:"hidden"
     }
+
+    const bench_press_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"85%",
+        overflow:"hidden"
+    }
+
+    const incline_press_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"82%",
+        overflow:"hidden"
+    }
+
+    const side_lateral_raise_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"10em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"53%",
+        overflow:"hidden"
+    }
+
     const GridMessageTimerStyle={
         backgroundColor:"rgba(45, 206, 137, 0)",
         borderColor:"rgba(45, 206, 137, 0)",
@@ -603,7 +648,7 @@ function MainStep(){
                       <img src={module[exercise_name.exercise_name+"_content"].grid}/>
                   </span> */}
 
-                  <div className="badge badge-primary" style={gridStyle}>
+                  <div className="badge badge-primary" style={eval(key_for_css)}>
                       <img src={module[exercise_name.exercise_name].grid} style={{maxWidth:"100%",display:"block",objectFit:"cover"}}/>
                   </div>
                 </Zoom>

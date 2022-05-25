@@ -161,7 +161,7 @@ export const squat_content={
     wrong_posture:"무릎이 안쪽으로 쏠리게 되면 엉덩이 근육과 허벅지근육에 불균형을 초래하여 무릎에 통증이 발생할 수 있습니다.무릎과 발은 동일선상에 위치할 수 있도록 합니다.",
     wrong_posture_pic:"../assets/img/theme/squat_notgood.png",
     youtube_url:"https://www.youtube.com/watch?v=vQNFiMi0m9M",
-    grid:"../assets/img/theme/exercise_grid/squat.png"//여기 푸시업으로 바꿔줄것
+    grid:"../assets/img/theme/exercise_grid/squat_edit.png"//여기 푸시업으로 바꿔줄것
 };
 
 

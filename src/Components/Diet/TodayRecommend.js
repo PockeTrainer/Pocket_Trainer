@@ -252,7 +252,7 @@ function TodayRecommend(){
                         ]}
                             />
                     <hr></hr>
-                    <h4 className="heading" style={{fontSize:"1.5rem"}}>{selectDate.getMonth()+1+"/"+selectDate.getDate()}목표량</h4>
+                    <h4 className="heading" style={{fontSize:"1.5rem"}}>{selectDate.getMonth()+1+"/"+selectDate.getDate()}추천양</h4>
                     <br></br>
 
                     <Stack direction="row" spacing={4} sx={{marginBottom:"1rem",justifyContent:"center"}}>

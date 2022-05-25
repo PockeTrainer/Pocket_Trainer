@@ -8,9 +8,23 @@ import { CardActionArea,CardActions} from '@mui/material';
 import Button from '@mui/material/Button';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ArticleIcon from '@mui/icons-material/Article';
+import { useNavigate } from "react-router-dom";
 
 
 export default function ExerciseCard({exercise}) {
+  const navigate=useNavigate();
+
+  const goto_practice=()=>{
+    if(exercise.name==="푸시업"){
+      navigate("/test/pushup");
+    }
+    else if(exercise.name==="싯업"){
+      navigate("/test/situp");
+    }
+    else{
+      navigate("/test/squat");
+    }
+}
   return (
     <Card sx={{ maxWidth: 345 ,marginBottom:"1em",marginRight:"1em"}}>
       <CardActionArea>
@@ -30,7 +44,7 @@ export default function ExerciseCard({exercise}) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-            <Button variant="outlined" startIcon={<PlayCircleIcon />} sx={{color:"white",border: "1px solid #f7fafc",fontFamily:"Noto Sans KR"}}>
+            <Button onClick={goto_practice} variant="outlined" startIcon={<PlayCircleIcon />} sx={{color:"white",border: "1px solid #f7fafc",fontFamily:"Noto Sans KR"}}>
                 연습해보기
             </Button>
       </CardActions>

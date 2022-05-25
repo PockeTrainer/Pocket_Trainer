@@ -59,6 +59,8 @@ function PracticeStep(){
     const wrong_posture=useSelector(state=>state.update_wrong_posture_reducer.text);
     const [show_posture,set_show_posture]=useState(false);
 
+    const [key_for_css,set_key_for_css]=useState("gridStyle");//운동마다 다른 그리드 스타일-디폴트는 gridStyle
+
 
     //위에는 각종 상수및 state
 
@@ -87,7 +89,7 @@ function PracticeStep(){
     }
 
     const showGridAndMessge=()=>{
-        if (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise"){
+        if (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_lateral_raise"){
             handleGridShow();//그리드 열어주기-졸작시연에서는 위에 그리드밖에 준비를 못해 이것만 보여줄거임
             handleMessage();//그리드랑 같이 뜨는 메시지
             timerId.current = setInterval(() => {
@@ -103,6 +105,14 @@ function PracticeStep(){
             dispatch(reset_send_angle());
             dispatch(reset_send_posture_of_exercise());
             dispatch(reset_send_wrong_posture());
+
+            if (exercise_name.exercise_name!=="bench_press"&&exercise_name.exercise_name!=="incline_press"&&exercise_name.exercise_name!=="side_lateral_raise"){
+                set_key_for_css("gridStyle");
+               
+            }else{
+                set_key_for_css(exercise_name.exercise_name+"_Grid");
+
+            }
            
             
 
@@ -175,7 +185,7 @@ function PracticeStep(){
         if(grid_timer_sec===0){
             console.log('아아아?');
             clearInterval(timerId.current);
-            timerId=null;
+            timerId.current=null;
             handleGridShow();
             handleMessage();
         }
@@ -343,6 +353,43 @@ function PracticeStep(){
         overflow:"hidden"
     }
 
+    const bench_press_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"85%",
+        overflow:"hidden"
+    }
+
+    const incline_press_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"82%",
+        overflow:"hidden"
+    }
+
+    const side_lateral_raise_Grid={
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"10em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"53%",
+        overflow:"hidden"
+    }
+
+  
     return(
         <>
         <div style={{position:"relative"}}>
@@ -447,7 +494,7 @@ function PracticeStep(){
         </div>
 
         {
-            (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise")
+            (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_lateral_raise")
             &&
             <>
             
@@ -461,7 +508,7 @@ function PracticeStep(){
                       <img src={module[exercise_name.exercise_name+"_content"].grid}/>
                   </span> */}
 
-                  <div className="badge badge-primary" style={gridStyle}>
+                  <div className="badge badge-primary" style={eval(key_for_css)}>
                       <img src={module[exercise_name.exercise_name].grid} style={{maxWidth:"100%",display:"block",objectFit:"cover"}}/>
                   </div>
                 </Zoom>

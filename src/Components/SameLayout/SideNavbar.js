@@ -129,7 +129,7 @@ function SideNavBar(){
             <div className="navbar-collapse-header d-md-none">
               <div className="row">
                 <div className="col-6 collapse-brand">
-                  <a href="./index.html">
+                  <a>
                     <img src="./assets/img/brand/PocketTrainer.png" />
                   </a>
                 </div>
