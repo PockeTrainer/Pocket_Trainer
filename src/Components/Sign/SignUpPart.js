@@ -45,7 +45,7 @@ function SignUpPart(){
             ShowWrongInfo("empty_value");//값이 비어있으면 다시 채우라고 알림-빈값 오류
             return;
         }
-        axios.post(" /user/signup", {
+        axios.post("/user/signup", {
             id : id,
             password : password,
             name : name,

@@ -64,7 +64,7 @@ export default function EachExerciseClear({exercise_obj}){//메인페이지에�
                     <Typography variant="caption" color="text.secondary" sx={{fontWeight:"600",color:"white"}}>
                       {today_data}{exercise_obj.part}
                     </Typography>
-                    <Typography  sx={{fontWeight:"600",color:"white",fontSize:"30px"}}>
+                    <Typography  sx={{fontWeight:"600",color:"white",fontSize:"25px"}}>
                       {exercise_obj.name}
                     </Typography>
                     {

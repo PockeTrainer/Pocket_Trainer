@@ -40,7 +40,7 @@ function CardStickGraph(){
                                         <form>
                                             <div className="form-group">
                                                 <Stack direction={"row"} style={{alignItems:"end"}}>
-                                                    <Stack direction={"column"} style={{marginLeft:"2rem"}}>
+                                                    <Stack direction={"column"} >
                                                         <label htmlFor="exampleFormControlSelect1" style={{color:"white"}}>영양소종류</label>
                                                         <select className="form-control" id="exampleFormControlSelect1" value={select} onChange={handleSelectChange} >
                                                             <option value={"carbohydrate_list"} key={"carbohydrate_list"}>탄수화물</option>

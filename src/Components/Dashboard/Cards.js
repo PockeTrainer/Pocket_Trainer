@@ -59,11 +59,12 @@ function Cards(){
     };
 
     const Pstyled=styled('p')((props)=>({
-      fontSize:"1.0rem",
+      fontSize:"0.85rem",
       fontWeight:props.bold=="lighter"?"lighter":"600",
       lineWeight:"1.0",
       marginBottom:"0",
-      color:props.color?props.color:"white"
+      color:props.color?props.color:"white",
+      wordBreak:"keep-all"
     }));
 
     useEffect(()=>{
@@ -254,6 +255,9 @@ function Cards(){
                   <Pstyled bold="etc">
                    오늘의 잘못된 자세
                   </Pstyled>
+                  <div className="arrow_going_down" style={{position:"absolute",right:"20px",top:"4rem"}}>
+                      <i className="fas fa-arrow-down" style={{fontSize:"2rem",color:"#5e72e4"}}></i>
+                  </div>
                   <div className="form-group">
                                 <select className="form-control" id="exampleFormControlSelect1" value={select} onChange={handleSelectChange}>
                                 {
@@ -288,7 +292,7 @@ function Cards(){
                         <>
                              <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
                                 <Pstyled bold="ligther">
-                                  <ErrorIcon/>해당 운동의 잘못된 자세 데이터가 없습니다
+                                  <ErrorIcon/>해당 운동의 잘못된자세 데이터가 없습니다
                                 </Pstyled>
                               </div>
                         </>

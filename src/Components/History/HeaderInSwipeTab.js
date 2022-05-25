@@ -200,12 +200,13 @@ export default function HeaderInSwipeTab({clicked_date}) {
    }
 
   
-   let carbo_percent=parseInt(nutrient.carbohydrate/nutrient.target_carbohydrate)*100;//탄수화물 비율
-   let protein_percent=parseInt(nutrient.protein/nutrient.target_protein)*100;//단백질 비율
-   let fat_percent=parseInt(nutrient.province/nutrient.target_province)*100;//지방비율
+   let carbo_percent=parseInt(parseFloat(nutrient.carbohydrate/nutrient.target_carbohydrate)*100);//탄수화물 비율
+   let protein_percent=parseInt(parseFloat(nutrient.protein/nutrient.target_protein)*100);//단백질 비율
+   let fat_percent=parseInt(parseFloat(nutrient.province/nutrient.target_province)*100);//지방비율
    let tmp_total_list=[]//전체를 담아줄 리스트
 
    let tmp_percent_list=[carbo_percent,protein_percent,fat_percent];
+   console.log(tmp_percent_list);
 
    for(const percent of tmp_percent_list){
      let tmp_state;
@@ -625,7 +626,7 @@ export default function HeaderInSwipeTab({clicked_date}) {
                                                         <span style={{fontSize:"0.925rem",backgroundColor:"#2dce89",color:"white"}}>지방(g)</span>
                                                     </div>
                                                     <div className="progress-percentage">
-                                                        <span style={progressPercentageStyle}>{diet_info.protein.fat}%</span>
+                                                        <span style={progressPercentageStyle}>{diet_info.fat.percent}%</span>
                                                     </div>
                                                 </div>
                                                 <div className="progress">
