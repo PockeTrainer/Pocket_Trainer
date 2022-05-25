@@ -21,6 +21,8 @@ import { reset_send_angle,reset_send_wrong_posture,reset_send_posture_of_exercis
 function sleep(ms){
   return new Promise((r)=>setTimeout(r,ms));
 }
+var ready_audio = new Audio('/audios/ready1.mp3');
+var start_audio=new Audio('/audios/start1.mp3');
 
 function Test(){
 
@@ -210,6 +212,9 @@ const side_lateral_raise_Grid={
     useEffect(()=>{
       if(message_state===true){
         handleMessage();//다시 열어주기-준비 시작
+        ready_audio.play().catch(e => {
+            console.log(e);
+        });
         sleep(2000).then(()=>{
           handleMessage();
         });
@@ -221,7 +226,9 @@ const side_lateral_raise_Grid={
     useEffect(()=>{
 
       if(testState==="true"){
-
+        start_audio.play().catch(e => {
+          console.log(e);
+      });
         handleMessage();//열기
         setTimeout(handleMessage,1000);//닫기
         handleGridShow();//그리드 닫기

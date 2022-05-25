@@ -259,18 +259,19 @@ function TodayRecord(){
             console.log(item);
             if(item.Info_from_api.NUTR_CONT2!==""&& item.Info_from_api.NUTR_CONT1!==""){//칼로리가 존재하는 음식들에 한하여..
                 tmp.carbo.gram+=(parseInt(item.Info_from_api.NUTR_CONT2)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
-                tmp.carbo.kcal+=4*tmp.carbo.gram;
             }
             if(item.Info_from_api.NUTR_CONT3!=="" && item.Info_from_api.NUTR_CONT1!==""){
                 tmp.protein.gram+=(parseInt(item.Info_from_api.NUTR_CONT3)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
-                tmp.protein.kcal+=4*tmp.protein.gram;
-                console.log(tmp.carbo.gram);
             }
             if(item.Info_from_api.NUTR_CONT4!=="" && item.Info_from_api.NUTR_CONT1!==""){
                 tmp.fat.gram+=(parseInt(item.Info_from_api.NUTR_CONT4)*(item.gram/parseInt(item.Info_from_api.SERVING_SIZE)));
-                tmp.fat.kcal+=9*tmp.fat.gram;
             }
         }
+        tmp.carbo.kcal=4*tmp.carbo.gram;
+        tmp.protein.kcal=4*tmp.protein.gram;
+        tmp.fat.kcal=9*tmp.fat.gram;
+
+        console.log("단백질:",tmp.protein.kcal)
         tmp.carbo.rate=Math.round((tmp.carbo.gram/day_recommend_amount.carbo.gram)*100);
         tmp.protein.rate=Math.round((tmp.protein.gram/day_recommend_amount.protein.gram)*100);
         tmp.fat.rate=Math.round((tmp.fat.gram/day_recommend_amount.fat.gram)*100);

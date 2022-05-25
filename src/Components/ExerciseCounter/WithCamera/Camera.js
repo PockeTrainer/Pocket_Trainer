@@ -27,36 +27,26 @@ let classifiedPose = null;
 // -> exerciseName이 변경되면 modelName, modelPath에 반영됨.
 let exerciseName;
 
-switch(exerciseName) {
-    case 'SideLateralRaise':
-        var videoPaths = {
-            path0: `${process.env.PUBLIC_URL}/videos/SideLateralRaise/test_h264.mp4`,
-            path1: `${process.env.PUBLIC_URL}/videos/SideLateralRaise/test2_h264.mp4`,
-            path2: `${process.env.PUBLIC_URL}/videos/SideLateralRaise/test3_h264.mp4`,
-            path3: `${process.env.PUBLIC_URL}/videos/SideLateralRaise/test4_h264.mp4`,
-        }
-        break;
-    case 'BenchPress':
-        var videoPaths = {
-            path0: `${process.env.PUBLIC_URL}/videos/BenchPress/test_h264.mp4`,
-            path1: `${process.env.PUBLIC_URL}/videos/BenchPress/test2_h264.mp4`,
-            path2: `${process.env.PUBLIC_URL}/videos/BenchPress/test3_h264.mp4`,
-            path3: `${process.env.PUBLIC_URL}/videos/BenchPress/test4_h264.mp4`,
-        }
-        break;
-    case 'SeatedKneeUp':
-        var videoPaths = {
-            path0: `${process.env.PUBLIC_URL}/videos/SeatedKneeUp/test_h264.mp4`,
-            path1: `${process.env.PUBLIC_URL}/videos/SeatedKneeUp/test2_h264.mp4`,
-            path2: `${process.env.PUBLIC_URL}/videos/SeatedKneeUp/test3_h264.mp4`,
-            path3: `${process.env.PUBLIC_URL}/videos/SeatedKneeUp/test4_h264.mp4`,
-        }
-        break;
-    default:
-        var videoPaths = {
-            path0: `${process.env.PUBLIC_URL}/videos/SeatedKneeUp/test_h264.mp4`,
-        }
-        break;
+var videoPaths = {
+    path0: `${process.env.PUBLIC_URL}/videos/test/BenchPress1.mp4`,
+    path1: `${process.env.PUBLIC_URL}/videos/test/BenchPress2.mp4`,
+
+    path2: `${process.env.PUBLIC_URL}/videos/test/InclinePress1.mp4`,
+    path3: `${process.env.PUBLIC_URL}/videos/test/InclinePress2.mp4`,
+
+    path4: `${process.env.PUBLIC_URL}/videos/test/SeatedKneeUp1.mp4`,
+    path5: `${process.env.PUBLIC_URL}/videos/test/SeatedKneeUp2.mp4`,
+
+    path6: `${process.env.PUBLIC_URL}/videos/test/SideLateralRaise1.mp4`,
+    path7: `${process.env.PUBLIC_URL}/videos/test/SideLateralRaise2.mp4`,
+
+    path8: `${process.env.PUBLIC_URL}/videos/test/SitUp1.mp4`,
+    path9: `${process.env.PUBLIC_URL}/videos/test/SitUp2.mp4`,
+
+    path10: `${process.env.PUBLIC_URL}/videos/test/Squat1.mp4`,
+    path11: `${process.env.PUBLIC_URL}/videos/test/Squat2.mp4`,
+
+    path12: `${process.env.PUBLIC_URL}/videos/test/PushUp.mp4`,
 }
 
 function Camera({display}) {
@@ -67,7 +57,7 @@ function Camera({display}) {
 
     // 테스트 비디오 사용 세팅
     const videoRef = useRef(null);
-    const videoPathNum = 0;
+    const videoPathNum = 6;
     let movenetLoaded = false;
 
     // 오디오 중복 방지
@@ -126,9 +116,13 @@ function Camera({display}) {
 
     // 운동 수행 갯수
     const count = useRef(0);//딱 처음에만 테스트 들어간 상황을 디스패치해주기위해서
-    //let count = 0;
+    let exerciseCount = 0;
     let countStack = [];
     let countState = false;
+
+    let sideLateralRaiseTooDown = false;
+
+    let lastClassifiedPose;
 
     // 여러가지 함수 부분
 
@@ -138,7 +132,6 @@ function Camera({display}) {
     //                  THUNDER : 약간 무겁고 성능 높음
     const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
     const runMovenet = async () => {
-        console.log("여기기기?");
         // InputSize, OutputSize에 맞는 모델 생성
         if (brain == null) {
             brain = new cm.ClassificationModel(modelInputSize, modelOutputSize);
@@ -179,16 +172,14 @@ function Camera({display}) {
             //카메라가 가동되기 시작함-이때부터 점도 찍을수 있게 됨
             if (poses.length > 0) { 
                 if(count.current==0) {
-                    count.current+=1;
-                    dispatch(setting_completed());//카메라 완료상태를 의미
+                   count.current += 1;
+                   dispatch(setting_completed());//카메라 완료상태를 의미
                 }
 
                 detectedPose = poses[0];
 
                 classifyPose();
                 let angle=await setAnglePercentage();
-                //각도보낼거임
-                // console.log(angle)
                 dispatch(send_angle(angle));
                 
                 countExercise();
@@ -197,55 +188,61 @@ function Camera({display}) {
             }
         }
 
-    //     if (
-    //         typeof videoRef.current !== "undefined" &&
-    //         videoRef.current !== null &&
-    //         videoRef.current.readyState == 4
-    //     ) {
-    //         // Get Video Properties
-    //         const video = videoRef.current;
+        // if (
+        //     typeof videoRef.current !== "undefined" &&
+        //     videoRef.current !== null &&
+        //     videoRef.current.readyState == 4
+        // ) {
+        //     // Get Video Properties
+        //     const video = videoRef.current;
                 
-    //         // const videoWidth = videoRef.current.videoWidth;
-    //         // const videoHeight = videoRef.current.videoHeight;
-    //         const videoWidth = 640;
-    //         const videoHeight = 480;
+        //     // const videoWidth = videoRef.current.videoWidth;
+        //     // const videoHeight = videoRef.current.videoHeight;
+        //     const videoWidth = 640;
+        //     const videoHeight = 480;
 
-    //         videoRef.current.width = videoWidth;
-    //         videoRef.current.height = videoHeight;
+        //     videoRef.current.width = videoWidth;
+        //     videoRef.current.height = videoHeight;
 
-    //         if (!movenetLoaded) {
-    //             console.log('movenet now loading...');
-    //         }
-    //         const poses = await detector.estimatePoses(video);
-    //         if (!movenetLoaded) {
-    //             console.log('load movenet complete');
-    //             movenetLoaded = true;
-    //             dispatch(setting_completed())
-    //         }
+        //     if (!movenetLoaded) {
+        //         console.log('movenet now loading...');
+        //     }
+        //     const poses = await detector.estimatePoses(video);
+        //     if (!movenetLoaded) {
+        //         console.log('load movenet complete');
+        //         movenetLoaded = true;
+        //         dispatch(setting_completed())
+        //     }
+            
+            
 
-    //         videoRef.current.play();
+        //     if (poses.length > 0) {
+        //         detectedPose = poses[0];
+        //         // for classifying...3s
+        //         classifyPose();
+        //         // let angle=await setAnglePercentage();
+        //         // dispatch(send_angle(angle));
+        //         countExercise();
+        //     }
 
-    //         if (poses.length > 0) {
-    //             detectedPose = poses[0];
-    //             // for classifying...3s
-    //             classifyPose();
-    //             setAnglePercentage();
-    //             // 각도 보낼거임
-    //             //anglePercentage;
-    //             countExercise();
-    //         }
+        //     drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
 
-    //         drawCanvas(poses[0], video, videoWidth, videoHeight, canvasRef.current);
+        //     videoRef.current.play();
 
-    //         if(count.current == 10) {
-    //             loadedModel = null;
-    //             count.current = 0;
+        //     if(exerciseCount == 10) {
+        //         videoRef.current.pause();
+        //         videoRef.current.currentTime = 0;
+
+        //         loadedModel = null;
+        //         exerciseCount = 0;
                 
-    //             setInterval(() => {
-    //                 loadedModel = currentModel;
-    //               }, 3000);
-    //         }
-    //     }
+        //         setInterval(() => {
+        //             loadedModel = currentModel;
+        //           }, 3000);
+        //         videoRef.current.play();
+                  
+        //     }
+        // }
     }
 
     const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
@@ -254,18 +251,18 @@ function Camera({display}) {
         canvas.width = videoWidth;
         canvas.height = videoHeight;
 
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
+        //ctx.translate(canvas.width, 0);
+        //ctx.scale(-1, 1);
         
-        // let xScale = 640 / videoRef.current.videoWidth;
-        // let yScale = 480 / videoRef.current.videoHeight;
+        let xScale = 640 / videoRef.current.videoWidth;
+        let yScale = 480 / videoRef.current.videoHeight;
         // let xScale = 640 / webcamRef.current.video.videoWidth;
         // let yScale = 480 / webcamRef.current.video.videoHeight;
-        let xScale = 1;
-        let yScale = 1;
+        // let xScale = 1;
+        // let yScale = 1;
 
         // console.log('운동명: ', exerciseName);
-        // console.log(classifiedPose + ", "+ count.current + "개, [" + countStack + "]");
+        console.log(classifiedPose + ", "+ exerciseCount + "개, [" + countStack + "]" + sideLateralRaiseTooDown);
 
         // 운동 별 다른 하이라이트를 위해 exerciseName을 매개변수로 넘겨줌
         drawKeypoints(pose["keypoints"], exerciseName, 0.3, ctx, xScale, yScale); //0.6
@@ -283,10 +280,10 @@ function Camera({display}) {
                 let x = detectedPose['keypoints'][i]['x'];
                 let y = detectedPose['keypoints'][i]['y'];
                 
-                // let videoWidth = videoRef.current.videoWidth;
-                // let videoHeight = videoRef.current.videoHeight;
-                let videoWidth = webcamRef.current.video.videoWidth;
-                let videoHeight = webcamRef.current.video.videoHeight;
+                let videoWidth = videoRef.current.videoWidth;
+                let videoHeight = videoRef.current.videoHeight;
+                // let videoWidth = webcamRef.current.video.videoWidth;
+                // let videoHeight = webcamRef.current.video.videoHeight;
 
                 let ratioX = x / videoWidth;
                 let ratioY = y / videoHeight;
@@ -407,10 +404,10 @@ function Camera({display}) {
                     classifiedPose = 'correctDown';
                     break;
                 case 1:
-                    classifiedPose = 'correctUp';
+                    classifiedPose = 'lessUp';
                     break;
                 case 2:
-                    classifiedPose = 'lessUp';
+                    classifiedPose = 'correctUp';
                     break;
                 default:
                     classifiedPose = 'none';
@@ -423,15 +420,23 @@ function Camera({display}) {
                     break;
                 case 1:
                     classifiedPose = 'correctDown';
+                    if (lastClassifiedPose == 'lessUp' && countStack.length == 0) {
+                        var audio = new Audio('/audios/arm_down_to_down.mp3');
+                        audioPlay(audio);
+                    }
                     break;
                 case 2:
                     classifiedPose = 'lessUp';
+                    if(lastClassifiedPose == 'correctDown' && sideLateralRaiseTooDown == true) {
+                        sideLateralRaiseTooDown = false;
+                    }
                     break;
                 case 3:
                     classifiedPose = 'tooUp';
                     var audio = new Audio('/audios/arm_up_to_up.mp3');
                     dispatch(send_posture_of_exercise("팔을 더 내려주세요"));
                     dispatch(send_wrong_posture("팔이 너무 올라감"));
+                    sideLateralRaiseTooDown = true;
                     audioPlay(audio);
                     break;
                 default:
@@ -735,6 +740,8 @@ function Camera({display}) {
                     break;
             }
         }
+
+        lastClassifiedPose = classifiedPose;
     }
 
     // 운동의 퍼센트 반환
@@ -1100,31 +1107,31 @@ function Camera({display}) {
 
     const countEnd = () => {
         if(countStack.length > 0) {
-            if(countStack.length == 1 && countState == true) {
+            if(countStack.length == 1 && countState == true && sideLateralRaiseTooDown == false) {
                 countState = false;
-                count.current++;
+                exerciseCount++;
                 dispatch(pushup_count());
 
-                if(count.current == 7 || count.current == 11) {
+                if(exerciseCount == 7 || exerciseCount == 11) {
                     var audio = new Audio('/audios/good.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
                 } 
-                else if(count.current == 12) {
+                else if(exerciseCount == 12) {
                     var audio = new Audio('/audios/excellent.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
                 }
                 else {
-                    var audio = new Audio('/audios/intermediate_' + count.current + '.mp3');
+                    var audio = new Audio('/audios/intermediate_' + exerciseCount + '.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
                 }   
             }
-            else if(countStack.length == 1 && countState == false) {
+            else if((countStack.length == 1 && countState == false)) {
                 switch(exerciseName) {
                     case 'BenchPress':
                         var audio = new Audio('/audios/arm_up_to_up.mp3');

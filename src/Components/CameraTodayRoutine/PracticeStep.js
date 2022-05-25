@@ -17,6 +17,8 @@ import LinearWithValueLabel from "./LinearWithValueLabel";
 import { styled } from "@mui/system";
 
 
+var ready_audio = new Audio('/audios/ready1.mp3');
+var start_audio=new Audio('/audios/start1.mp3');
 
 function PracticeStep(){
     const testState=useSelector(state=>state.testState_reducer.testState);//카메라가 성공적으로 불러와졌는지 여부
@@ -183,17 +185,23 @@ function PracticeStep(){
 
     useEffect(()=>{
         if(grid_timer_sec===0){
-            console.log('아아아?');
             clearInterval(timerId.current);
             timerId.current=null;
             handleGridShow();
             handleMessage();
+            start_audio.play().catch(e => {//시작 음성
+                console.log(e);
+            });
         }
     },[grid_timer_sec])
 
     useEffect(()=>{
         if(testState==="completed"){
             showGridAndMessge();
+            ready_audio.play().catch(e => {//준비 음성
+                console.log(e);
+            });
+            
         }
     },[testState])
 

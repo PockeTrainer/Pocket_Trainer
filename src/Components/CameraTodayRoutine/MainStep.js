@@ -21,6 +21,11 @@ function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
 }
 
+
+
+var ready_audio = new Audio('/audios/ready1.mp3');
+var start_audio=new Audio('/audios/start1.mp3');
+
 function MainStep(){
     const id=sessionStorage.getItem("user_id");
     let posture_wrong_set=useRef(new Set());//잘못된 자세를 담아준다
@@ -285,7 +290,6 @@ function MainStep(){
 
     useEffect(()=>{//플랭크일 때만 타이머가 가동됨
         if(exercise_name.exercise_name==="plank"&&plank_time_state&&!modalTime){
-            console.log("여기 들어오오오아?:",plank_time_state)
             plankTimerStart();//플랭크 타이머 시작
             handlePlankMessageChange();//열기
             return () => clearInterval(plank_timeId.current);
@@ -325,15 +329,21 @@ function MainStep(){
         if(grid_timer_sec===0){
             console.log('아아아?');
             clearInterval(timerId.current);
-            timerId=null;
+            timerId.current=null;
             handleGridShow();
             handleMessage();
+            start_audio.play().catch(e => {//시작 음성
+                console.log(e);
+            });
         }
     },[grid_timer_sec])
 
     useEffect(()=>{
         if(testState==="completed"){
             showGridAndMessge();
+            ready_audio.play().catch(e => {//준비 음성
+                console.log(e);
+            });
         }
     },[testState])
 
