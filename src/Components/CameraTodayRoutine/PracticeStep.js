@@ -10,9 +10,8 @@ import { useParams } from "react-router-dom";
 
 import { set_current_weight } from "../../modules/action";
 import { set_current_time } from "../../modules/action";
-import { set_current_cnt } from "../../modules/action";
+import { set_current_cnt,reset_send_angle,reset_send_wrong_posture,reset_send_posture_of_exercise } from "../../modules/action";
 import AlertModal from "../SameLayout/AlertModal";
-
 import Typography from '@mui/material/Typography';
 import LinearWithValueLabel from "./LinearWithValueLabel";
 import { styled } from "@mui/system";
@@ -32,6 +31,8 @@ function PracticeStep(){
     const [message_effect,set_message_effect]=useState(false);//준비,시작 transition
 
     const module=require("../../ExercisesInfo/ExerciseInfo");
+
+    const count_result=useSelector(state=>state.exercise_count_reducer.pushup);//운동세주는 개수
 
     const exercise_name=useParams();//url에서 운동명 가져오기-벤치프레스이면 해당 초기무게를 따로 설정해둔것에서 가져오자-ExerciseInfo.js에 넣자
     const routine_info=useSelector(state=>state.update_routineInfo_reducer);//api로부터 불러온 운동정보를 가져옴
@@ -56,7 +57,7 @@ function PracticeStep(){
 
     //자세교정멘트를 불러옴
     const wrong_posture=useSelector(state=>state.update_wrong_posture_reducer.text);
-    const [show_posture,set_show_posture]=useState("");
+    const [show_posture,set_show_posture]=useState(false);
 
 
     //위에는 각종 상수및 state
@@ -99,6 +100,9 @@ function PracticeStep(){
             count.current+=1;
             handleChange();// 전체화면트랜지션
 
+            dispatch(reset_send_angle());
+            dispatch(reset_send_posture_of_exercise());
+            dispatch(reset_send_wrong_posture());
            
             
 
@@ -171,6 +175,7 @@ function PracticeStep(){
         if(grid_timer_sec===0){
             console.log('아아아?');
             clearInterval(timerId.current);
+            timerId=null;
             handleGridShow();
             handleMessage();
         }
@@ -183,11 +188,11 @@ function PracticeStep(){
     },[testState])
 
     useEffect(()=>{
-        if(wrong_posture!==""){
+        if(wrong_posture!==""&&grid_timer_sec===0){
             handleShowPosture();
             setTimeout(handleShowPosture,1000);
         }
-    },[wrong_posture])//잘못된 자세가 인식될 때마다 멘트를 쳐줌
+    },[wrong_posture,grid_timer_sec])//잘못된 자세가 인식될 때마다 멘트를 쳐줌
     
 
     const Pstyled=styled('p')((props)=>({
@@ -366,7 +371,7 @@ function PracticeStep(){
                 justifyContent:"center",
                 alignItems:"center",
                }}>
-                   <span className="badge badge-primary" style={ShowCount}>0개</span>
+                   <span className="badge badge-primary" style={ShowCount}>{count_result}개</span>
                </div>
                
 

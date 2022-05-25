@@ -12,7 +12,7 @@ import { situp_count } from '../../../modules/action.js';
 import { squat_count } from '../../../modules/action.js';
 import { testState } from '../../../modules/action.js';
 import {none_testState} from '../../../modules/action.js';
-import {setting_completed,send_angle} from '../../../modules/action.js';
+import {setting_completed,send_angle,send_wrong_posture} from '../../../modules/action.js';
 
 import * as cm from './ClassificationModel';
 
@@ -264,8 +264,8 @@ function Camera({display}) {
         let xScale = 1;
         let yScale = 1;
 
-        console.log('운동명: ', exerciseName);
-        console.log(classifiedPose + ", "+ count.current + "개, [" + countStack + "]");
+        // console.log('운동명: ', exerciseName);
+        // console.log(classifiedPose + ", "+ count.current + "개, [" + countStack + "]");
 
         // 운동 별 다른 하이라이트를 위해 exerciseName을 매개변수로 넘겨줌
         drawKeypoints(pose["keypoints"], exerciseName, 0.3, ctx, xScale, yScale); //0.6
@@ -342,6 +342,7 @@ function Camera({display}) {
                     classifiedPose = 'tooDown';
                     var audio = new Audio('/audios/leg_too_open.mp3');
                     dispatch(send_posture_of_exercise("다리를 좁혀주세요"));
+                    dispatch(send_wrong_posture("다리가 벌어짐"));
                     audioPlay(audio);
                     break;
                 default:
@@ -363,6 +364,7 @@ function Camera({display}) {
                     classifiedPose = 'tooBend';
                     var audio = new Audio('/audios/waist_too_bent.mp3');
                     dispatch(send_posture_of_exercise("허리를 펴주세요"));
+                    dispatch(send_wrong_posture("허리가 너무 굽혀짐"));
                     audioPlay(audio);
                     break;
                 default:
@@ -385,12 +387,14 @@ function Camera({display}) {
                     classifiedPose = 'leanToLeft';
                     var audio = new Audio('/audios/benchpress_left_up.mp3');
                     dispatch(send_posture_of_exercise("왼쪽 팔을 더 올려 주세요"));
+                    dispatch(send_wrong_posture("왼쪽팔에 기울여짐"))
                     audioPlay(audio);
                     break;
                 case 4:
                     classifiedPose = 'leanToRight';
                     var audio = new Audio('/audios/benchpress_right_up.mp3');
                     dispatch(send_posture_of_exercise("오른쪽 팔을 더 올려 주세요"));
+                    dispatch(send_wrong_posture("오른쪽팔에 기울여짐"))
                     audioPlay(audio);
                     break;
                 default:
@@ -427,6 +431,7 @@ function Camera({display}) {
                     classifiedPose = 'tooUp';
                     var audio = new Audio('/audios/arm_up_to_up.mp3');
                     dispatch(send_posture_of_exercise("팔을 더 내려주세요"));
+                    dispatch(send_wrong_posture("팔이 너무 올라감"))
                     audioPlay(audio);
                     break;
                 default:
@@ -445,12 +450,14 @@ function Camera({display}) {
                     classifiedPose = 'tooBack';
                     var audio = new Audio('/audios/upperbody_down_to_down.mp3');
                     dispatch(send_posture_of_exercise("상체를 더 올려주세요"));
+                    dispatch(send_wrong_posture("상체가 너무 뒤로 감"))
                     audioPlay(audio);
                     break;
                 case 3:
                     classifiedPose = 'tooDown';
                     var audio = new Audio('/audios/leg_too_down.mp3');
                     dispatch(send_posture_of_exercise("다리를 더 올려주세요"));
+                    dispatch(send_wrong_posture("다리가 너무 내려감"))
                     audioPlay(audio);
                     break;
                 default:
@@ -1046,6 +1053,7 @@ function Camera({display}) {
                         case 'BenchPress':
                             var audio = new Audio('/audios/arm_down_to_down.mp3');
                             dispatch(send_posture_of_exercise("팔을 더 올려주세요"));
+                            dispatch(send_wrong_posture("팔이 덜 올라감"))
                             break;
                         
                         case 'InclinePress':
@@ -1116,6 +1124,7 @@ function Camera({display}) {
                     case 'BenchPress':
                         var audio = new Audio('/audios/arm_up_to_up.mp3');
                         dispatch(send_posture_of_exercise("팔을 더 내려주세요"));
+                        dispatch(send_wrong_posture("팔이 덜 내려옴"))
                         break;
                     
                     case 'InclinePress':

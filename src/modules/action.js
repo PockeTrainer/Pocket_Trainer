@@ -90,10 +90,15 @@ const POP_WHAT_I_WANT_EXERCISE="pop_what_i_want_exercise";
 const PUSH_FAVORITE_EXERCISE="push_favorite_exercise";
 const POP_FAVORITE_EXERCISE="pop_favorite_exercise";
 
-//운동별 잘못된 자세를 담아주는 액션
+//운동별 잘못된 자세교정을 담아주는 액션
 const SEND_POSTURE_OF_EXERCISE=" send_posture_of_exercise";
+const RESET_SEND_POSTURE_OF_EXERCISE="reset_posture_of_exercise";
 //지금 힘을 쓰고 있는 게이지를 보여주는 액션
 const SEND_ANGLE='send_angle';
+const RESET_SEND_ANGLE="reset_send_angle";
+//운동별 잘못된 자세를 담아주는 액션
+const SEND_WRONG_POSTURE="send_wrong_posture";
+const RESET_SEND_WRONG_POSTURE="reset_send_wrong_posture";
 //액션 타입들
 
 export const First_clear_page=()=>({
@@ -403,9 +408,26 @@ export const send_posture_of_exercise=(text)=>({
     text
 });
 
+export const reset_send_posture_of_exercise=()=>({
+    type:RESET_SEND_POSTURE_OF_EXERCISE
+});
+
 export const send_angle=(angle)=>({
     type:SEND_ANGLE,
     angle
+})
+
+export const reset_send_angle=()=>({
+    type:RESET_SEND_ANGLE
+})
+
+export const send_wrong_posture=(posture)=>({
+    type:SEND_WRONG_POSTURE,
+    posture
+})
+
+export const reset_send_wrong_posture=()=>({
+    type:RESET_SEND_WRONG_POSTURE
 })
 //액션생성함수
 
@@ -530,6 +552,10 @@ const intialPostureText={//잘못된 자세교정 멘트 담아줌
 
 const initialAngle={//잘못된 자세의 각도를 보여줌
     angle:0
+}
+
+const initialWrongPosture={//운동에 잘못된 자세들을 모아준다
+    posture:""
 }
 
 //초기페이지 정보
@@ -1036,6 +1062,10 @@ export function update_wrong_posture_reducer(state=intialPostureText,action){//�
             return{
                 text:action.text
             }
+        case RESET_SEND_POSTURE_OF_EXERCISE:
+                return{
+                    ...intialPostureText
+                }
         default:
             return state;    
     }
@@ -1046,6 +1076,25 @@ export function update_angle_reducer(state=initialAngle,action){//식단파트�
         case SEND_ANGLE:
             return{
                 angle:action.angle
+            }
+        case RESET_SEND_ANGLE:
+            return{
+                ...initialAngle
+            }
+        default:
+            return state;    
+    }
+}
+
+export function update_what_wrong_posture_reducer(state=initialWrongPosture,action){//식단파트에서 달력에서 고른날짜객체 정보가 담김
+    switch(action.type){
+        case SEND_WRONG_POSTURE:
+            return{
+                posture:action.posture
+            }
+        case RESET_SEND_WRONG_POSTURE:
+            return{
+                ...initialWrongPosture
             }
         default:
             return state;    

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { useNavigate } from 'react-router-dom';
+import ErrorIcon from '@mui/icons-material/Error';
 
 function Cards(){
 
@@ -22,6 +23,13 @@ function Cards(){
     const navigate=useNavigate();
 
     const [left_First_exercise,set_left_First_exercise]=useState("");//클리어하지 못한 운동 중 첫 운동
+
+    const [select,set_select]=useState("bench_press");//셀렉트바 눌린값
+
+    const handleSelectChange=(e)=>{//셀렉트 값 변경시
+      set_select(e.target.value);
+      console.log(e.target.value )
+    }
 
     const settings_for_clear={
       arrows:false,
@@ -74,8 +82,12 @@ function Cards(){
       }
       console.log(tmp_first_left);
       set_left_First_exercise(tmp_first_left);//앞으로 해야하는 첫 운동
+      set_select(part1[0].eng_name);//초기설정해주기
 
     },[today_info])
+
+    console.log([...part1,...part2,...part3]);
+    console.log(wrong_poses_dict)
 
 
         return(
@@ -243,23 +255,61 @@ function Cards(){
                    오늘의 잘못된 자세
                   </Pstyled>
                   <div className="form-group">
-                                <select className="form-control" id="exampleFormControlSelect1">
-                                <option>벤치프레스</option>
-                                <option>인클라인프레스</option>
-                                <option>펙덱 플라이</option>
+                                <select className="form-control" id="exampleFormControlSelect1" value={select} onChange={handleSelectChange}>
+                                {
+                                  [...part1,...part2,...part3].length>0
+                                  ?
+                                  
+                                  [...part1,...part2,...part3].map((exercise,index)=>{
+
+                                    return(
+                                      <>
+                                       <option value={exercise.eng_name} key={exercise.name+"아무말5"}>{exercise.name}</option>
+                                      </>
+                                    );
+                                  })
+                                  :
+                                  null
+                                   
+                                }
                                 </select>
+                                
+                               
                   </div>
 
                   <div className="alert alert-secondary" role="alert" style={{marginTop:"1rem",marginBottom:"0em",padding:"0.5rem 0.5rem"}}>
-                    <Pstyled bold="lighter" color="black">
-                      1.왼쪽으로 기울어짐
-                    </Pstyled>
-                    <Pstyled bold="lighter" color="black">
-                      2.왼쪽으로 기울어짐
-                    </Pstyled>
-                    <Pstyled bold="lighter" color="black">
-                      3.왼쪽으로 기울어짐
-                    </Pstyled>
+                    {
+                      wrong_poses_dict===""
+                      ?
+                        null
+                      :(
+                        wrong_poses_dict[select].length===0
+                        ?
+                        <>
+                             <div className="alert alert-warning" role="alert" style={{padding:"1em 1em",marginBottom:"0em"}}>
+                                <Pstyled bold="ligther">
+                                  <ErrorIcon/>해당 운동의 잘못된 자세 데이터가 없습니다
+                                </Pstyled>
+                              </div>
+                        </>
+                        :
+                        
+                          
+                          wrong_poses_dict[select].map((exercise,index)=>{
+
+                                return(
+                                  <>
+                                      <Pstyled bold="lighter" color="black">
+                                        {exercise}
+                                      </Pstyled>
+                                  </>
+                                );
+                                })
+                        
+
+                      )
+                      
+                    }
                   </div>
 
 

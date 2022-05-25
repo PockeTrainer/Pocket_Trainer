@@ -11,10 +11,11 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CampaignIcon from '@mui/icons-material/Campaign';
 
 import AlertModal from "../SameLayout/AlertModal";
-import {timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
+import {reset_send_wrong_posture,reset_send_angle,reset_send_posture_of_exercise,timeToModal,how_long,set_exercise_record,last_record,set_current_weight,set_current_time,set_current_cnt,plank_time_set} from "../../modules/action"
 
 import axios from "axios";
 import LinearWithValueLabel from "./LinearWithValueLabel";
+import { styled } from "@mui/system";
 
 function sleep(ms){
     return new Promise((r)=>setTimeout(r,ms));
@@ -22,6 +23,7 @@ function sleep(ms){
 
 function MainStep(){
     const id=sessionStorage.getItem("user_id");
+    let posture_wrong_set=useRef(new Set());//잘못된 자세를 담아준다
 
     const testState=useSelector(state=>state.testState_reducer.testState);//카메라가 성공적으로 불러와졌는지 여부
     const count=useRef(1);//카운트용
@@ -61,6 +63,48 @@ function MainStep(){
     //위에는 각종 상수및 state
 
 
+
+    const [grid_show,set_grid_show]=useState(false);//그리드 보여주기 transition
+    const [message_effect,set_message_effect]=useState(false);//준비,시작 transition
+
+    const module=require("../../ExercisesInfo/ExerciseInfo");
+
+     //그리드에서 쓸 준비타임 타이머
+     const timerId=useRef(null);
+     const [grid_timer_sec,set_Grid_timer_sec]=useState(10);//10초 준비시간
+ 
+     //자세교정멘트를 불러옴
+     const wrong_posture=useSelector(state=>state.update_wrong_posture_reducer.text);
+     const [show_posture,set_show_posture]=useState(false);
+
+     //잘못된 자세들을 보내줌
+     const what_wrong_posture=useSelector(state=>state.update_what_wrong_posture_reducer.posture);
+
+
+
+
+    const handleGridShow=()=>{//그리드 보여주기
+        set_grid_show(prev=>!prev);
+    };
+
+    const handleMessage=()=>{//그리드 뜰 때의 메시지
+        set_message_effect(prev=>!prev);
+    }
+
+    const handleShowPosture=()=>{//자세교정 멘트를 뜰 때 보여줌
+        set_show_posture(prev=>!prev);
+    }
+
+    const showGridAndMessge=()=>{
+        if (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise"){
+            handleGridShow();//그리드 열어주기-졸작시연에서는 위에 그리드밖에 준비를 못해 이것만 보여줄거임
+            handleMessage();//그리드랑 같이 뜨는 메시지
+            timerId.current = setInterval(() => {
+                set_Grid_timer_sec(prev=>prev-1);
+            }, 1000);
+        }
+    }
+
     //메시지 띄워주는 용도
     const handleMessageChange=()=>{
         setMessage((prev)=>!prev);
@@ -84,11 +128,18 @@ function MainStep(){
     const today=new Date();
     const today_date_form=today.getFullYear()+"-"+parseInt(today.getMonth()+1)+"-"+today.getDate();
 
+  
 
     const sendData=async()=>{
+            let reuslt_format="";
+            for(const pose of [...posture_wrong_set.current]){
+                reuslt_format+=pose+","
+            }
             await axios.put(`http://127.0.0.1:8000/workout/workoutResult/${exercise_name.exercise_name}/${today_date_form}/${id}`,{
                 workout_set:howmanySet,
-                workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60)
+                workout_time:"00:"+parseInt(time.current/60)+":"+parseInt(time.current%60),
+                wrong_poses:reuslt_format
+
             })//각 세트 끝날 때마다 현재진행 세트 수와 현재까지의 운동시간을 보내준다
             .then((res) => {
                 console.log(res.data);
@@ -168,6 +219,11 @@ function MainStep(){
     useEffect(()=>{
         if(count.current===1){
             handleChange();// 전체화면트랜지션
+
+            dispatch(reset_send_angle());
+            dispatch(reset_send_posture_of_exercise());
+            dispatch(reset_send_wrong_posture());
+           
             
             start();//스탑워치 시작
             previous_testState.current=testState;//이전값이랑 비교하기 위해 담아둔다
@@ -179,7 +235,7 @@ function MainStep(){
 
         }
 
-        if(count_result===1||(plank_time.current===5 && plank_time_state===false)){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
+        if(count_result===2||(plank_time.current===5 && plank_time_state===false)){//여기는 임시로 지금 개수를 1개 일 때 모달창 띄우게함
             dispatch(timeToModal())//모달창을 이제 쓰겠다 그러니 타이머를 돌려라 이런뜻..
             return;
         }
@@ -255,6 +311,37 @@ function MainStep(){
         }
 
     },[plank_sec])
+
+
+    useEffect(()=>{
+        if(grid_timer_sec===0){
+            console.log('아아아?');
+            clearInterval(timerId.current);
+            timerId=null;
+            handleGridShow();
+            handleMessage();
+        }
+    },[grid_timer_sec])
+
+    useEffect(()=>{
+        if(testState==="completed"){
+            showGridAndMessge();
+        }
+    },[testState])
+
+    useEffect(()=>{
+        if(wrong_posture!==""&&grid_timer_sec==0){
+            handleShowPosture();
+            setTimeout(handleShowPosture,1000);
+        }
+    },[wrong_posture,grid_timer_sec])//잘못된 자세가 인식될 때마다 멘트를 쳐줌
+
+    useEffect(()=>{
+        if(what_wrong_posture!==""){
+            posture_wrong_set.current.add(what_wrong_posture);//잘못된 자세들을 set에 담아줌
+            console.log("하이");
+        }
+    },[what_wrong_posture])
   
 
     const setName={
@@ -268,6 +355,28 @@ function MainStep(){
         backgroundColor:"#2dce8996"
     }
 
+
+    const gridStyle={//그리드 보여주기 transition
+        position:"absolute",
+        color:"#5e72e4",
+        zIndex:"1",
+        fontSize:"1em",
+        bottom:"8em",
+        backgroundColor:"rgb(247 250 252 / 0%)",
+        lineHeight:"1.5em",
+        width:"100%",
+        overflow:"hidden"
+    }
+    const GridMessageTimerStyle={
+        backgroundColor:"rgba(45, 206, 137, 0)",
+        borderColor:"rgba(45, 206, 137, 0)",
+        color:"#2dce89",
+        padding:"0.5rem 1.1rem",
+        fontSize:"1.875rem",
+        marginTop:"0.3em",
+        position:"absolute",
+        top:"0"
+    }
     const subtitle={
         position:"absolute",
         color:"#5e72e4",
@@ -318,6 +427,14 @@ function MainStep(){
         lineHeight:"1.5em"
     }
 
+    const Pstyled=styled('p')((props)=>({
+        fontSize:props.size?props.size:"1.0rem",
+        fontWeight:props.bold=="lighter"?"lighter":"600",
+        lineWeight:"1.0",
+        marginBottom:"0"
+    }));
+
+
     const SpanStyle={
         backgroundColor:"#2dce89",
         borderColor:"#2dce89",
@@ -348,6 +465,8 @@ function MainStep(){
         pre_timer:"엎드리세요!",
         main_timer:"시작!"
     }
+
+    console.log(what_wrong_posture);
     return(
         <>
         <div style={{position:"relative"}}>
@@ -468,6 +587,60 @@ function MainStep(){
                }}>
                 <Zoom in={message}><span className="badge badge-primary" style={subtitle}>{content[testState]}</span></Zoom>
         </div>
+
+        {
+            (exercise_name.exercise_name==="bench_press"||exercise_name.exercise_name==="incline_press"||exercise_name.exercise_name==="seated_knees_up"||exercise_name.exercise_name==="side_laterl_raise")
+            &&
+            <>
+            
+            <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+               }}>
+                <Zoom in={grid_show}>
+                  {/* <span className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name+"_content"].grid}/>
+                  </span> */}
+
+                  <div className="badge badge-primary" style={gridStyle}>
+                      <img src={module[exercise_name.exercise_name].grid} style={{maxWidth:"100%",display:"block",objectFit:"cover"}}/>
+                  </div>
+                </Zoom>
+            </div>
+
+            <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+            }}>
+                <Zoom in={message_effect}>
+                    <div className="alert alert-warning" role="alert" style={GridMessageTimerStyle} >
+                        <span className="badge badge-primary" >
+                            {grid_timer_sec}초
+                        </span>
+                        <Pstyled bold="etc" size="1.5rem">
+                            그리드에 몸을 맞춰주세요
+                        </Pstyled>
+                    </div>
+                </Zoom>
+            </div>
+            </>
+            
+        }
+        <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+            }}>
+                <Zoom in={show_posture}>
+                    <div className="alert alert-warning" role="alert" style={GridMessageTimerStyle} >
+                        <Pstyled bold="etc" size="1.5rem">
+                            {wrong_posture}
+                        </Pstyled>
+                    </div>
+                </Zoom>
+            </div>
 
         <Slide  mountOnEnter unmountOnExit direction="up"  in={showChecked}>
                 <span className="badge badge-primary" style={setName}>

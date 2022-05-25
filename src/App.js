@@ -103,7 +103,7 @@ function App(){
             </Route>
 
           </Routes>
-          {first_login&&<button type="button" ref={button1}  className="btn btn-block btn-warning mb-3" data-toggle="modal" data-target="#modal-notification">Notification</button>}
+          {first_login&&<button type="button" styled={{display:"none"}} ref={button1}  className="btn btn-block btn-warning mb-3" data-toggle="modal" data-target="#modal-notification">Notification</button>}
           {first_login&&<StartModal/>}
         </BrowserRouter>
       </div>

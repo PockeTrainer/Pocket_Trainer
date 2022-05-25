@@ -11,6 +11,9 @@ import ModalInstruction from "./ModalInstruction";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import FlagIcon from '@mui/icons-material/Flag';
+import LinearWithValueLabel from "../../CameraTodayRoutine/LinearWithValueLabel";
+import { styled } from "@mui/system";
+import { reset_send_angle,reset_send_wrong_posture,reset_send_posture_of_exercise } from "../../../modules/action";
 
 
 
@@ -36,6 +39,8 @@ function Test(){
     const [buttonClicked,set_ButtonClicked]=useState(false);//모달창에서 최종 모달닫기 버튼 눌렸는지를 알려준다
     const count=useRef(1);//초반랜더링 잡기
     const [message_state,set_message_state]=useState(false);//3초남았는지 준비시간까지
+    const [show_posture,set_show_posture]=useState(false);//잘못된 자세 교정멘트
+    const wrong_posture=useSelector(state=>state.update_wrong_posture_reducer.text);//멘트 밑에서부터 받기
 
 
     const handleChange = () => {//transition 
@@ -55,16 +60,14 @@ function Test(){
       set_message_effect(prev=>!prev);
     }
 
+    const handleShowPosture=()=>{//자세교정 멘트를 뜰 때 보여줌
+      set_show_posture(prev=>!prev);
+  }
+
     let result=useSelector(state=>state.exercise_count_reducer);//방금 운동의 카운트된 개수
-    if(exercise_name.exercise_name==="pushup"){
-        result=result.pushup
-    }
-    else if(exercise_name.exercise_name==="situp"){
-        result=result.situp
-    }
-    else{
-        result=result.squat
-    }
+    result=result.pushup
+    sessionStorage.setItem(exercise_name.exercise_name,result);//해당 운동명 키 값으로 업데이트
+    
 
     const skeleton={
       width:"100%",
@@ -95,7 +98,12 @@ function Test(){
       lineHeight:"1.5em"
   }
 
-
+  const Pstyled=styled('p')((props)=>({
+    fontSize:props.size?props.size:"1.0rem",
+    fontWeight:props.bold=="lighter"?"lighter":"600",
+    lineWeight:"1.0",
+    marginBottom:"0"
+}));
 
 const MessageStyle={
   position:"absolute",
@@ -118,6 +126,16 @@ const MessageStyle={
     width:"100%",
     overflow:"hidden"
   }
+  const GridMessageTimerStyle={
+    backgroundColor:"rgba(45, 206, 137, 0)",
+    borderColor:"rgba(45, 206, 137, 0)",
+    color:"#2dce89",
+    padding:"0.5rem 1.1rem",
+    fontSize:"1.875rem",
+    marginTop:"0.3em",
+    position:"absolute",
+    top:"0"
+}
 
     //위에는 스타일 객체 및 멘트
 
@@ -129,6 +147,9 @@ const MessageStyle={
 
     useEffect(()=>{
       if(count.current===1){
+        dispatch(reset_send_angle());
+        dispatch(reset_send_posture_of_exercise());
+        dispatch(reset_send_wrong_posture());
         count.current+=1;
         return;
       }
@@ -160,6 +181,12 @@ const MessageStyle={
       }
     },[testState])
     
+    useEffect(()=>{
+      if(wrong_posture!==""&& testState==="true"){
+          handleShowPosture();
+          setTimeout(handleShowPosture,1000);
+      }
+  },[wrong_posture,testState])//잘못된 자세가 인식될 때마다 멘트를 쳐줌
 
     const message_content={
       false:"",
@@ -206,6 +233,7 @@ const MessageStyle={
                     <span className="badge badge-primary" style={ShowCount}>{result}개</span>
                 </div>
 
+                <LinearWithValueLabel />
               
 
                
@@ -251,6 +279,20 @@ const MessageStyle={
                }}>
                 <Zoom in={message_effect}><span className="badge badge-primary" style={MessageStyle}>{message_state?message_content.before_start:message_content[testState]}</span></Zoom>
         </div>
+
+        <div style={{
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+            }}>
+                <Zoom in={show_posture}>
+                    <div className="alert alert-warning" role="alert" style={GridMessageTimerStyle} >
+                        <Pstyled bold="etc" size="1.5rem">
+                            {wrong_posture}
+                        </Pstyled>
+                    </div>
+                </Zoom>
+            </div>
 
         <button ref={modalRef} style={{display:"none"}} type="button" className="btn btn-block btn-primary mb-3" data-toggle="modal" data-target="#modal-instruction">Default</button>
         <ModalInstruction set_modalTime={set_modalTime} set_ButtonClicked={set_ButtonClicked} />

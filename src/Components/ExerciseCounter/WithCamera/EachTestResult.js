@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TitleMessage from "./TitleMessage";
-import { Second_clear_page } from "../../../modules/action";
+import { reset_count, Second_clear_page } from "../../../modules/action";
 import { exercise_count_reducer } from "../../../modules/action";
 import axios from "axios";
 import CardWrapper from "../../CameraTodayRoutine/CardWrapper";
@@ -46,17 +46,10 @@ function EachTestResult(){
     let result;//운동개수를 담는다
     let id=sessionStorage.getItem("user_id");//세션에서 아이디 가져오기
 
-    if(exercise_name.exercise_name==="pushup"){
-        result=exercise_count.pushup
-    }
-    else if(exercise_name.exercise_name==="situp"){
-        result=exercise_count.situp
-    }
-    else{
-        result=exercise_count.squat
-    }
-
+    result=sessionStorage.getItem(exercise_name.exercise_name);
+    result=JSON.parse(result);
     const moveToNext=()=>{
+        dispatch(reset_count());//다시 개수 초기화시켜줌 다음 운동들어가기전
         if(exercise_name.exercise_name=="pushup"){//싯업 평가전 페이지로 이동
             navigate("/test/situp");
         }
@@ -71,9 +64,9 @@ function EachTestResult(){
 
             //서버로 모든 운동 정보를 전송
             axios.post(`http://127.0.0.1:8000/workout/testResult/${id}`, {
-                pushUp : exercise_count.pushup,
-                sitUp : exercise_count.situp,
-                squat:exercise_count.squat
+                pushUp : sessionStorage.getItem("pushup"),
+                sitUp :  sessionStorage.getItem("situp"),
+                squat:  sessionStorage.getItem("squat")
             })
             .then(res => {
                 console.log(res.data);                  
