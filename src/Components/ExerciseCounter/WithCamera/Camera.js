@@ -1114,20 +1114,20 @@ function Camera({display}) {
                 exerciseCount++;
                 dispatch(pushup_count());
 
-                if(exerciseCount == 7 || exerciseCount == 11) {
+                if(exerciseCount % 10 == 7 || exerciseCount % 10 == 11) {
                     var audio = new Audio('/audios/good.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
                 } 
-                else if(exerciseCount == 12) {
+                else if(exerciseCount % 10== 12) {
                     var audio = new Audio('/audios/excellent.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
                 }
                 else {
-                    var audio = new Audio('/audios/intermediate_' + exerciseCount + '.mp3');
+                    var audio = new Audio('/audios/intermediate_' + exerciseCount % 10 + '.mp3');
                     audio.play().catch(e => {
                         console.log(e);
                     });
