@@ -276,14 +276,14 @@ function PracticeStep(){
     }
 
     const GridMessageTimerStyle={
-        backgroundColor:"rgba(45, 206, 137, 0)",
+        backgroundColor:"rgb(255 255 255 / 65%)",
         borderColor:"rgba(45, 206, 137, 0)",
-        color:"#2dce89",
-        padding:"0.5rem 1.1rem",
+        color:"#ff011a",
+        padding:"0.3rem 1.1rem",
         fontSize:"1.875rem",
         marginTop:"0.3em",
         position:"absolute",
-        top:"0"
+        top:"7rem"
     }
 
     const badgeStyle={
