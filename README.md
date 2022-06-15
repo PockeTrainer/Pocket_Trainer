@@ -1,6 +1,10 @@
 ##최종시연모습
 https://www.youtube.com/watch?v=8MOptR-lUug
 
+##최종판넬
+
+https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
+
 
 ## 2022/03/26 업데이트내역
 1.미인증로그인 접속시 세션정보 없어서 로그인페이지로 리다이렉트 시킴-개발의 편의를 위해 잠시꺼둠 리덕스에서 state바꾸기
