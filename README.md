@@ -53,7 +53,7 @@
 
 2. 루틴추천을 받기위해서는 개인 정보와 체력평가를 꼭 우선 수행해주세요!
 
-<img src="https://user-images.githubusercontent.com/37100067/178108973-fbe54e55-22a7-4c00-8828-bba90cf8a619.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178110084-92184feb-2192-46f2-901c-a98b7a409829.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178109771-0db64fb6-0313-4ee9-9136-9c727d4325fb.gif" height="500" />
+<img src="https://user-images.githubusercontent.com/37100067/178108973-fbe54e55-22a7-4c00-8828-bba90cf8a619.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178110084-92184feb-2192-46f2-901c-a98b7a409829.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178113892-3797edcd-fbb6-499c-bc45-5d99fc9ad100.gif" height="500" />
 
 
 
