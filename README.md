@@ -96,7 +96,7 @@ npm start 또는 yarn start
 
 
 
-## 기여 방법
+## :computer_mouse:기여 방법
 
 1. (<https://github.com/yourname/yourproject/fork>)을 포크합니다.
 2. (`git checkout -b feature/fooBar`) 명령어로 새 브랜치를 만드세요.
@@ -113,8 +113,19 @@ npm start 또는 yarn start
 [wiki]: https://github.com/yourname/yourproject/wiki
 
 
+## :keyboard:참고한 OpenSource
 
-## 추가판넬자료
+1. <a href="https://www.npmjs.com/package/react-horizontal-datepicker"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">(Component)구성-HorizontalDatePicker</a>
+
+2. <a href="https://mui.com/"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">(Component)구성-UI라이브러리</a>
+
+3. <a href="https://devexpress.github.io/devextreme-reactive/react/scheduler/docs/guides/getting-started/"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">(Component)구성-Scheduler,Chart</a>
+
+4. <a href="https://www.creative-tim.com/product/argon-dashboard"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">(Component)구성-반응형 레이아웃</a>
+
+
+
+## :roll_of_paper:추가판넬자료
 
 https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
 
