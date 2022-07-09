@@ -1,21 +1,45 @@
-##최종시연모습
-https://www.youtube.com/watch?v=8MOptR-lUug
+![transparent](https://capsule-render.vercel.app/api?type=transparent&fontColor=703ee5&text=Transparent&height=150&fontSize=60&desc=Only%20Use%20Text&descAlignY=75&descAlign=60)
 
-##최종판넬
+![header](https://capsule-render.vercel.app/api?type=waving&color=703ee5&height=300&section=header&text=PocketTrainer&fontSize=90&animation=fadeIn&fontAlignY=38&desc=내%20주머니%20속의%20작은%20트레이너&descAlignY=51&fontColor=ffffff)
 
-https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
+<h3 align="center">🛠 포켓트레이너 🛠</h3>
+<p align="center"><img width="30%"  align="center" src="https://user-images.githubusercontent.com/37100067/178106686-9e2b93f7-78aa-48f0-b4a5-2b6b4ad9afcf.jpg"></p>
 
 
-# 프로젝트명
-> 간략한 프로젝트 소개 문구를 작성합니다.
+<h1><img src="https://user-images.githubusercontent.com/37100067/178103583-bb123eb6-a887-4b6f-95fc-45edaeaad4e3.png" width="5%" />포켓트레이너</h1>
+> 인공지능 기반 자세추정을 통한 헬스트레이너 서비스 
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FPockeTrainer%2FPocket_Trainer&count_bg=%2379C83D&title_bg=%23555555&icon=insomnia.svg&icon_color=%232DCE89&title=%EB%B0%A9%EB%AC%B8&edge_flat=false)](https://hits.seeyoufarm.com)
+[![GitHub forks](https://img.shields.io/github/forks/PockeTrainer/Pocket_Trainer)](https://github.com/PockeTrainer/Pocket_Trainer/network)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/PockeTrainer/Pocket_Trainer)
 
-한 두 문단으로 프로젝트 소개 글을 작성합니다.
+사람의 관절좌표를 뽑아 직접 데이터를 모델링하여 만든 정보를 Movenet을 사용하여 사람의 자세교정,개수체크,실시간 힘의 변화를 체크할 수 있는 리액트기반 웹앱 서비스
 
-![](../header.png)
+## :hammer_and_pick:(Front)기술태그:hammer_and_pick:
+
+<div style="display:flex">
+   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+   <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=MUI&logoColor=white">
+   <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
+   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+</div>
+
+<!-- 이미지들을 깃허브에서 가로정렬을 하기위해서는 쭉 한줄로 최대한 연결해주면 됨 인라인 스타일 css안먹힘 -->
+<p>
+   <img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" />
+</p>
+
+
+
+
+# 대표적 기능
+
+<a href="">유저별 운동 루틴 생성</a>
+
+
+
 
 ## 설치 방법
 
@@ -24,8 +48,6 @@ OS X & 리눅스:
 ```sh
 npm install my-crazy-module --save
 ```
-
-윈도우:
 
 ```sh
 edit autoexec.bat
@@ -86,8 +108,13 @@ XYZ 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할
 [wiki]: https://github.com/yourname/yourproject/wiki
 
 
+## 최종시연모습
+https://www.youtube.com/watch?v=8MOptR-lUug
 
-##사용방법
+## 최종판넬
+
+https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
+## 사용방법
 1.처음 시작시 yarn install 또는 미설치시 npm install
 
 2.yarn start 또는 npm start
