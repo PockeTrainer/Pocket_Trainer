@@ -42,33 +42,24 @@
    <img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106856-17a31820-a199-4300-83eb-693492d531a9.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106862-4955b642-2851-42e6-aeca-163684593441.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106867-c18bbfb9-83b1-46cf-b7d7-beaaa6f2d9a7.jpg" width="25%" />
 </p>
 
+# :film_projector:시연영상
+[![Video Label](http://img.youtube.com/vi/8MOptR-lUug/0.jpg)](https://www.youtube.com/watch?v=8MOptR-lUug)
 
 
-## 설치 방법
 
-OS X & 리눅스:
+## :printer:사용 예제
 
+서비스를 사용하기 위해서는 우선적으로 회웝가입을 진행해주시고 이용해주세요
+
+![캡스톤_크롭_회원가입](https://user-images.githubusercontent.com/37100067/178108973-fbe54e55-22a7-4c00-8828-bba90cf8a619.gif)
+
+
+## :gear:(FrontEnd)개발 환경 설정
+
+원활한 사용을 위해서는 
 ```sh
-npm install my-crazy-module --save
-```
-
-```sh
-edit autoexec.bat
-```
-
-## 사용 예제
-
-스크린 샷과 코드 예제를 통해 사용 방법을 자세히 설명합니다.
-
-_더 많은 예제와 사용법은 [Wiki][wiki]를 참고하세요._
-
-## 개발 환경 설정
-
-모든 개발 의존성 설치 방법과 자동 테스트 슈트 실행 방법을 운영체제 별로 작성합니다.
-
-```sh
-make install
-npm test
+make install 또는 yarn install
+npm start 또는 yarn start
 ```
 
 ## 업데이트 내역
@@ -117,7 +108,4 @@ https://www.youtube.com/watch?v=8MOptR-lUug
 ## 최종판넬
 
 https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
-## 사용방법
-1.처음 시작시 yarn install 또는 미설치시 npm install
 
-2.yarn start 또는 npm start
