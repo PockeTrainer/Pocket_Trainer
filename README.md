@@ -129,7 +129,7 @@ npm start 또는 yarn start
 
 https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
 
-## 최종결과물
+## :trophy:최종결과물
 
-[산혁연계SW전시회_총장상.pdf](https://github.com/PockeTrainer/Pocket_Trainer/files/9077431/SW._.pdf)
+<img src="https://user-images.githubusercontent.com/39055981/178031983-77292b00-2f99-41cb-b8b8-d01df8efda42.jpg" width="50%" >
 
