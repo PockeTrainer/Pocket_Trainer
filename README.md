@@ -1,8 +1,6 @@
-![transparent](https://capsule-render.vercel.app/api?type=transparent&fontColor=703ee5&text=Transparent&height=150&fontSize=60&desc=Only%20Use%20Text&descAlignY=75&descAlign=60)
-
 ![header](https://capsule-render.vercel.app/api?type=waving&color=703ee5&height=300&section=header&text=PocketTrainer&fontSize=90&animation=fadeIn&fontAlignY=38&desc=내%20주머니%20속의%20작은%20트레이너&descAlignY=51&fontColor=ffffff)
 
-<h3 align="center">🛠 포켓트레이너 🛠</h3>
+<h3 align="center">:weight_lifting:포켓트레이너:weight_lifting:</h3>
 <p align="center"><img width="30%"  align="center" src="https://user-images.githubusercontent.com/37100067/178106686-9e2b93f7-78aa-48f0-b4a5-2b6b4ad9afcf.jpg"></p>
 
 
@@ -26,18 +24,23 @@
    <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
 </div>
 
+
+
+
+
+
+# :desktop_computer:대표적 기능
+
+* <a href="">유저별 운동 루틴 생성</a>
+* <a href="">유저별 칼로리 분석 및 기록</a>
+* <a href="">유저별 자세교정 및 카운트</a>
+* <a href="">캘린더 기능으로 기록열람</a>
+
+
 <!-- 이미지들을 깃허브에서 가로정렬을 하기위해서는 쭉 한줄로 최대한 연결해주면 됨 인라인 스타일 css안먹힘 -->
 <p>
-   <img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" />
+   <img src="https://user-images.githubusercontent.com/37100067/178102288-e9efafa6-45e1-453e-9e30-9faca0ecc83e.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106856-17a31820-a199-4300-83eb-693492d531a9.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106862-4955b642-2851-42e6-aeca-163684593441.jpg" width="25%" /><img src="https://user-images.githubusercontent.com/37100067/178106867-c18bbfb9-83b1-46cf-b7d7-beaaa6f2d9a7.jpg" width="25%" />
 </p>
-
-
-
-
-# 대표적 기능
-
-<a href="">유저별 운동 루틴 생성</a>
-
 
 
 
