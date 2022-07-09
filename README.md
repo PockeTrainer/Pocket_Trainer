@@ -49,41 +49,52 @@
 
 ## :printer:사용 예제
 
-서비스를 사용하기 위해서는 우선적으로 회웝가입을 진행해주시고 이용해주세요
+1. 서비스를 사용하기 위해서는 우선적으로 회원가입을 진행해주시고 이용해주세요!
 
-![캡스톤_크롭_회원가입](https://user-images.githubusercontent.com/37100067/178108973-fbe54e55-22a7-4c00-8828-bba90cf8a619.gif)
+2. 루틴추천을 받기위해서는 개인 정보와 체력평가를 꼭 우선 수행해주세요!
+
+<img src="https://user-images.githubusercontent.com/37100067/178108973-fbe54e55-22a7-4c00-8828-bba90cf8a619.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178110084-92184feb-2192-46f2-901c-a98b7a409829.gif" height="500" /><img src="https://user-images.githubusercontent.com/37100067/178109771-0db64fb6-0313-4ee9-9136-9c727d4325fb.gif" height="500" />
+
 
 
 ## :gear:(FrontEnd)개발 환경 설정
 
 원활한 사용을 위해서는 
+<a href="https://github.com/PockeTrainer/Pocket_Trainer_Server.git">(BackEnd)Server</a>또한 참고해보세요 
 ```sh
 make install 또는 yarn install
 npm start 또는 yarn start
 ```
 
-## 업데이트 내역
+## :watch:업데이트 내역
 
-* 0.2.1
-    * 수정: 문서 업데이트 (모듈 코드 동일)
-* 0.2.0
-    * 수정: `setDefaultXYZ()` 메서드 제거
-    * 추가: `init()` 메서드 추가
-* 0.1.1
-    * 버그 수정: `baz()` 메서드 호출 시 부팅되지 않는 현상 (@컨트리뷰터 감사합니다!)
-* 0.1.0
-    * 첫 출시
-    * 수정: `foo()` 메서드 네이밍을 `bar()`로 수정
-* 0.0.1
-    * 작업 진행 중
+* 1.0.1(미정)
+   * 리팩토링 예정
+* 1.0.0(05.26)
+    * 1차 최종판 릴리즈
 
-## 정보
 
-이름 – [@트위터 주소](https://twitter.com/dbader_org) – 이메일주소@example.com
+## :technologist:개발자정보
 
-XYZ 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.
+* :technologist: 조민수 –<a href="https://github.com/Chominsu98/"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a><a href="https://velog.io/@woo0_hooo"><img src="https://img.shields.io/badge/Tech%20Blog-11B48A?style=flat-square&logo=Vimeo&logoColor=white&link=https://velog.io/@woo0_hooo"/></a>
 
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+* :technologist:권준우–<a href="https://github.com/top7578"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a><a href="https://velog.io/@woo0_hooo"><img src="https://img.shields.io/badge/Tech%20Blog-11B48A?style=flat-square&logo=Vimeo&logoColor=white&link=https://velog.io/@woo0_hooo"/></a>
+
+* :technologist:임정상–<a href="https://github.com/Oneul1213"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a><a href="https://velog.io/@woo0_hooo"><img src="https://img.shields.io/badge/Tech%20Blog-11B48A?style=flat-square&logo=Vimeo&logoColor=white&link=https://velog.io/@woo0_hooo"/></a>
+
+* :technologist:김두열–<a href="https://github.com/enduf7686"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a><a href="https://velog.io/@woo0_hooo"><img src="https://img.shields.io/badge/Tech%20Blog-11B48A?style=flat-square&logo=Vimeo&logoColor=white&link=https://velog.io/@woo0_hooo"/></a>
+
+* :technologist:이재하–<a href="https://github.com/jaehawilly"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a><a href="https://velog.io/@woo0_hooo"><img src="https://img.shields.io/badge/Tech%20Blog-11B48A?style=flat-square&logo=Vimeo&logoColor=white&link=https://velog.io/@woo0_hooo"/></a>
+
+> 포켓트레이너 프로젝트와 연관 Repository
+
+> <a href="https://github.com/PockeTrainer/Pocket_Trainer_Server.git">:man_technologist:(BackEnd) Server</a>
+
+> <a href="https://github.com/PockeTrainer/Pocket_Trainer_Model">:robot: (AI) Model</a>
+
+> <a href="https://github.com/PockeTrainer/Pocket_Trainer_iOS">:iphone: (Ios) Native-App</a>
+
+
 
 ## 기여 방법
 
@@ -102,10 +113,8 @@ XYZ 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할
 [wiki]: https://github.com/yourname/yourproject/wiki
 
 
-## 최종시연모습
-https://www.youtube.com/watch?v=8MOptR-lUug
 
-## 최종판넬
+## 추가판넬자료
 
 https://drive.google.com/file/d/18B1whDcwz5KmK2FqZaZAn1tmMmeW0OHe/view?usp=sharing
 
