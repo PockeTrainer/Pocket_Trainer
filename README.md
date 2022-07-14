@@ -11,7 +11,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/PockeTrainer/Pocket_Trainer)](https://github.com/PockeTrainer/Pocket_Trainer/network)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/PockeTrainer/Pocket_Trainer)
 
-사람의 관절좌표를 뽑아 직접 데이터를 모델링하여 만든 정보를 Movenet을 사용하여 사람의 자세교정,개수체크,실시간 힘의 변화를 체크할 수 있는 리액트기반 웹앱 서비스
+Tensorflow MoveNet을 사용하여 추출한 관절 좌표를 기반으로 학습시킨 모델을 통해 사람의 자세교정,개수체크,실시간 힘의 변화를 체크할 수 있는 리액트기반 웹앱 서비스
 
 ## :hammer_and_pick:(Front)기술태그:hammer_and_pick:
 
